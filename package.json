@@ -1,0 +1,9 @@
+{
+  "name": "potato-golem",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "phaser": "^3.55.2"
+  },
+  "devDependencies": {
+  }
+}
