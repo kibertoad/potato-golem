@@ -1,39 +1,15 @@
-import { Game } from 'phaser';
-const logoImg = require('./assets/img/logo.png');
+import { startingSceneBlock } from "./scenes/StartingScene";
+import {Game} from "phaser";
 
-class MyGame extends Phaser.Scene
-{
-    constructor ()
-    {
-        super({});
-    }
-
-    preload ()
-    {
-        this.load.image('logo', logoImg);
-    }
-
-    create ()
-    {
-        const logo = this.add.image(400, 150, 'logo');
-
-        this.tweens.add({
-            targets: logo,
-            y: 450,
-            duration: 2000,
-            ease: "Power2",
-            yoyo: true,
-            loop: -1
-        });
-    }
-}
-
-const config = {
+const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 1280,
-    height: 1024,
-    scene: MyGame
+    parent: undefined,
+    width: 1024,
+    height: 768,
+    scene: startingSceneBlock.getScene()
 };
 
-const game = new Game(config);
+// For some reason this must happen in root TS file
+new Game(config);
+
+console.log("End of TS file")
