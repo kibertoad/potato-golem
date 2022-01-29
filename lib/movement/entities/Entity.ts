@@ -1,4 +1,4 @@
-export type Entity = {
+export type Entity<EntityDescriptor> = {
     id: number
-    name: string
+    descriptor: EntityDescriptor
 }

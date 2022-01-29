@@ -1,16 +1,21 @@
 import {DrawnEntity} from "./DrawnEntity";
 import {MovableEntity} from "./MovableEntity";
+import {Entity} from "./Entity";
+import {CommonEntityDescriptor} from "../../spawners/Spawner";
 
-export class CommonMovableEntity implements DrawnEntity, MovableEntity {
+export class CommonMovableEntity<T extends CommonEntityDescriptor<any> = CommonEntityDescriptor<any>> implements DrawnEntity, MovableEntity, Entity<T> {
     public image: Phaser.GameObjects.Image;
     public x: number;
     public y: number;
+    public id: number;
+    public descriptor: T;
 
-    constructor(image: Phaser.GameObjects.Image) {
+    constructor(descriptor: T, image: Phaser.GameObjects.Image) {
         this.image = image
         this.x = 0
         this.y = 0
     }
+
 
     move(deltaX: number, deltaY: number) {
         this.x += deltaX

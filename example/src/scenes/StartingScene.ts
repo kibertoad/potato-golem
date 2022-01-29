@@ -2,7 +2,11 @@ import Phaser = require("phaser");
 import {CommonScene} from "../../../lib/scenes/CommonScene";
 import {CommonInputHandler} from "../../../lib/input/presets/CommonInputHandler";
 import {CommonMovementProcessor} from "../../../lib/movement/processors/CommonMovementProcessor";
-import {CommonMovableEntity} from "../../../lib/movement/entities/CommonMovableEntity";
+import {InputEvent} from "../../../lib/input/InputBlock";
+import {CreatureSpawner} from "../../../lib/spawners/presets/CreatureSpawner";
+import {creatureRegistry} from "../registries/CreatureRegistry";
+import {BulletSpawner} from "../../../lib/spawners/presets/BulletSpawner";
+import {bulletRegistry} from "../registries/BulletRegistry";
 
 const logoImg = require('../assets/img/logo.png');
 
@@ -19,16 +23,39 @@ class StartingScene extends Phaser.Scene {
 
     create() {
         console.log('Create StartingScene')
-        const logo = this.add.image(400, 150, 'logo');
+        const creatures = []
+        const creatureSpawner = new CreatureSpawner(creatures, creatureRegistry)
+
+        const bullets = []
+        const bulletSpawner = new BulletSpawner(bullets, bulletRegistry)
 
         const movementProcessor = new CommonMovementProcessor()
         const inputHandler = new CommonInputHandler(movementProcessor)
+
+        /*
         const protagonist = new CommonMovableEntity(logo)
         protagonist.moveTo(400, 150)
+         */
+        const protagonist = creatureSpawner.spawn("protagonist", {
+            scene: this,
+            x: 400,
+            y: 150,
+        })
+
 
         inputHandler.registerCommonInputHandlers(startingSceneBlock.input, {
             agent: protagonist,
-            stepSize: 5
+            stepSize: 2
+        })
+        startingSceneBlock.input.registerHandler(InputEvent.KEY_DOWN_SPACE, () => {
+            console.log('firing laser')
+            bulletSpawner.spawn('laser', {
+                scene: this,
+                x: 300,
+                y: 150,
+                direction: 8,
+                faction: "player"
+            })
         })
 
 

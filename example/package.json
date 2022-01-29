@@ -2,8 +2,8 @@
   "name": "potato-golem-example",
   "version": "1.0.0",
   "scripts": {
-    "build": "del-cli dist && del-cli .parcel-cache && parcel src/assets/html/index.html",
-    "build:example": "parcel src/assets/html/index.html"
+    "build": "del-cli dist && del-cli .parcel-cache && parcel ./src/assets/html/index.html ./src/**/*.ts",
+    "build:example": "parcel ./src/assets/html/index.html ./src/**/*.ts"
   },
   "dependencies": {
     "phaser": "^3.55.2"
