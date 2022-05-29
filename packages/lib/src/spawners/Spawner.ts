@@ -12,6 +12,7 @@ export const commonCreateInstance = (
   descriptor: CommonEntityDescriptor<CommonEntityInstanceContext>,
   context: CommonEntityInstanceContext,
 ) => {
+  console.log(`Creating instance of ${descriptor.name}`)
   const image = context.scene.add.image(context.x, context.y, descriptor.image)
   const entity = new CommonMovableEntity(descriptor, image)
   entity.moveTo(context.x, context.y)

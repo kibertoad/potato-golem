@@ -2,6 +2,7 @@ import { DrawnEntity } from './DrawnEntity'
 import { MovableEntity } from './MovableEntity'
 import { Entity } from './Entity'
 import { CommonEntityDescriptor } from '../../spawners/Spawner'
+import { validateNotNil } from 'validation-utils'
 
 export let idCounter = 0
 
@@ -37,7 +38,7 @@ export class CommonMovableEntity<
     this.x = x
     this.y = y
 
-    this.image.x = x
-    this.image.y = y
+    this.image.setX(x)
+    this.image.setY(y)
   }
 }
