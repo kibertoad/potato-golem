@@ -1,0 +1,34 @@
+{
+  "name": "@potato-golem/core",
+  "version": "1.0.0",
+  "description": "potato golem game lib",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha **/*.spec.ts --require ts-node/register",
+    "lint": "eslint",
+    "prettier": "prettier --write \"{src,test}/**/*.{js,ts}\" index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kibertoad/potato-golem.git"
+  },
+  "author": "kibertoad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kibertoad/potato-golem/issues"
+  },
+  "homepage": "https://github.com/kibertoad/potato-golem#readme",
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^17.0.36",
+    "chai": "^4.3.6",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^10.0.0",
+    "prettier": "^2.6.2",
+    "ts-node": "^10.8.0"
+  }
+}
