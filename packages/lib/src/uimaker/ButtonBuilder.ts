@@ -16,9 +16,11 @@ export class ButtonBuilder {
   #onClick?: OnClickCallback
 
   readonly #scene: Scene
+  readonly #targetList?: Phaser.GameObjects.Image[]
 
-  constructor(scene: Scene) {
+  constructor(scene: Scene, targetList?: Phaser.GameObjects.Image[]) {
     this.#scene = scene
+    this.#targetList = targetList
   }
 
   public onclick(callback: OnClickCallback) {
@@ -71,6 +73,10 @@ export class ButtonBuilder {
 
     if (this.#onClick) {
       newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(this.#onClick))
+    }
+
+    if (this.#targetList) {
+      this.#targetList.push(newButton)
     }
 
     return newButton

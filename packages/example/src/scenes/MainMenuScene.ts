@@ -1,6 +1,6 @@
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
-import { ButtonBuilder } from "@potato-golem/core";
+import { ButtonListBuilder } from '@potato-golem/core'
 
 export class MainMenuScene extends Phaser.Scene {
   private buttonSelector!: Phaser.GameObjects.Image;
@@ -26,41 +26,25 @@ export class MainMenuScene extends Phaser.Scene {
     const { width, height } = this.scale;
 
     // Play button
-    const playButton = new ButtonBuilder(this)
-      .text("Play")
-      .position(width * 0.5, height * 0.6)
+    const buttonList = new ButtonListBuilder(this)
       .textureKey("glass-panel")
       .displaySize(150, 50)
+      .setExactPosition(width * 0.5, height * 0.6)
+      .setSpacingOffset(0, 10)
+
+    const playButton = buttonList.addButton()
+      .text("Play")
       .build();
-    //= this.add
-    //.image(width * 0.5, height * 0.6, "glass-panel")
-    //.setDisplaySize(150, 50);
 
-    //this.add.text(playButton.x, playButton.y, "Play").setOrigin(0.5);
 
-    // Settings button
-    const settingsButton = this.add
-      .image(
-        playButton.x,
-        playButton.y + playButton.displayHeight + 10,
-        "glass-panel"
-      )
-      .setDisplaySize(150, 50);
-
-    this.add
-      .text(settingsButton.x, settingsButton.y, "Settings")
-      .setOrigin(0.5);
+    const settingsButton = buttonList.addButton()
+      .text("Settings")
+      .build();
 
     // Credits button
-    const creditsButton = this.add
-      .image(
-        settingsButton.x,
-        settingsButton.y + settingsButton.displayHeight + 10,
-        "glass-panel"
-      )
-      .setDisplaySize(150, 50);
-
-    this.add.text(creditsButton.x, creditsButton.y, "Credits").setOrigin(0.5);
+    const creditsButton = buttonList.addButton()
+      .text("Credits")
+      .build();
 
     this.buttons.push(playButton);
     this.buttons.push(settingsButton);
@@ -77,14 +61,6 @@ export class MainMenuScene extends Phaser.Scene {
     creditsButton.on("selected", () => {
       console.log("credits");
     });
-
-    /*
-        creditsButton.setInteractive(new Phaser.Geom.Rectangle(100, 100, 900, 900), Phaser.Geom.Rectangle.Contains)
-        creditsButton.on('pointerover', () => {
-            console.log('credits hover')
-        })
-
-         */
 
     const r1 = this.add.graphics();
 
@@ -107,17 +83,6 @@ export class MainMenuScene extends Phaser.Scene {
     });
     r1.on(Phaser.Input.Events.POINTER_DOWN, function () {
       console.log("clickety clackety");
-    });
-
-    creditsButton.setInteractive();
-    creditsButton.on(Phaser.Input.Events.POINTER_OVER, () => {
-      creditsButton.setTint(0x66ff7f);
-    });
-    creditsButton.on(Phaser.Input.Events.POINTER_OUT, () => {
-      creditsButton.setTint(0xffffff);
-    });
-    creditsButton.on(Phaser.Input.Events.POINTER_DOWN, function () {
-      console.log("clickety clackety2");
     });
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
