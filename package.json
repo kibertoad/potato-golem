@@ -1,8 +1,7 @@
 {
   "name": "@potato-golem/parent",
   "version": "1.0.0",
-  "scripts": {
-  },
+  "scripts": {},
   "peerDependencies": {
     "phaser": "^3.55.2"
   },

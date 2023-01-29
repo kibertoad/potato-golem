@@ -17,3 +17,6 @@ export {
   commonCreateInstance,
   Spawner,
 } from './src/spawners/Spawner'
+
+export { ButtonBuilder } from './src/uimaker/ButtonBuilder'
+export type { OnClickCallback } from './src/uimaker/ButtonBuilder'

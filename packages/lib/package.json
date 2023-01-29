@@ -19,6 +19,9 @@
     "url": "https://github.com/kibertoad/potato-golem/issues"
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
+  "dependencies": {
+    "validation-utils": "^7.0.0"
+  },
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",

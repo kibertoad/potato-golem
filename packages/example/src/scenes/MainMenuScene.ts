@@ -1,5 +1,6 @@
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
+import { ButtonBuilder } from "@potato-golem/core";
 
 export class MainMenuScene extends Phaser.Scene {
   private buttonSelector!: Phaser.GameObjects.Image;
@@ -25,11 +26,17 @@ export class MainMenuScene extends Phaser.Scene {
     const { width, height } = this.scale;
 
     // Play button
-    const playButton = this.add
-      .image(width * 0.5, height * 0.6, "glass-panel")
-      .setDisplaySize(150, 50);
+    const playButton = new ButtonBuilder(this)
+      .text("Play")
+      .position(width * 0.5, height * 0.6)
+      .textureKey("glass-panel")
+      .displaySize(150, 50)
+      .build();
+    //= this.add
+    //.image(width * 0.5, height * 0.6, "glass-panel")
+    //.setDisplaySize(150, 50);
 
-    this.add.text(playButton.x, playButton.y, "Play").setOrigin(0.5);
+    //this.add.text(playButton.x, playButton.y, "Play").setOrigin(0.5);
 
     // Settings button
     const settingsButton = this.add
