@@ -1,7 +1,7 @@
 import { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
 
-export type OnClickCallback = (button: any) => {}
+export type OnClickCallback = (button: any) => void
 
 export class ButtonBuilder {
   #text?: string
@@ -25,6 +25,8 @@ export class ButtonBuilder {
 
   public onclick(callback: OnClickCallback) {
     this.#onClick = callback
+
+    return this
   }
 
   public text(value: string) {

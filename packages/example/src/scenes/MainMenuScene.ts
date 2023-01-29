@@ -34,16 +34,18 @@ export class MainMenuScene extends Phaser.Scene {
 
     const playButton = buttonList.addButton()
       .text("Play")
+      .onclick(() => { console.log('clickety click ')})
       .build();
-
 
     const settingsButton = buttonList.addButton()
       .text("Settings")
+      .onclick(() => { console.log('clickety click ')})
       .build();
 
     // Credits button
     const creditsButton = buttonList.addButton()
       .text("Credits")
+      .onclick(() => { console.log('clickety click ')})
       .build();
 
     this.buttons.push(playButton);
