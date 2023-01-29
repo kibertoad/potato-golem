@@ -1,5 +1,5 @@
 export const enemyRegistry = {
-    'ufo': {
-        name: 'ufo'
-    }
-}
+  ufo: {
+    name: "ufo",
+  },
+};

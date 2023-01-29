@@ -7,7 +7,7 @@
     "build": "tsc",
     "test": "mocha **/*.spec.ts --require ts-node/register",
     "lint": "eslint",
-    "prettier": "prettier --write \"{src,test}/**/*.{js,ts}\" index.ts"
+    "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.ts"
   },
   "repository": {
     "type": "git",
