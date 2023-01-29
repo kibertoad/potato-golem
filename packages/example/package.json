@@ -23,7 +23,7 @@
     "validation-utils": "^7.0.0"
   },
   "devDependencies": {
-    "del-cli": "^4.0.1",
-    "parcel": "^2.6.0"
+    "del-cli": "^5.0.0",
+    "parcel": "^2.8.3"
   }
 }

@@ -14,7 +14,7 @@ export abstract class PotatoScene extends Phaser.Scene {
   protected inputBlock!: InputBlock
   private readonly definition: PotatoSceneDefinition
   constructor(definition: PotatoSceneDefinition) {
-    super({});
+    super({})
     this.definition = definition
     console.log(`Constructed scene ${definition.name}`)
   }
@@ -33,7 +33,7 @@ export abstract class PotatoScene extends Phaser.Scene {
     console.log(`Preloading scene ${this.definition.name}`)
 
     for (const image of this.definition.images) {
-      this.load.image(image.key, image.file);
+      this.load.image(image.key, image.file)
     }
 
     console.log(`Preload complete.`)
