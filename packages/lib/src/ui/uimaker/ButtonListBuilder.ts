@@ -1,11 +1,7 @@
 import { ButtonBuilder } from './ButtonBuilder'
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-
-export type Position = {
-  x: number
-  y: number
-}
+import { Position } from '../common/CommonUITypes'
 
 export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]
