@@ -2,6 +2,7 @@ import { Scenes } from '../registries/SceneRegistry'
 import { ButtonListBuilder, ButtonSquareBuilder, ChangeSceneActivation } from '@potato-golem/core'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
 import { MapOverlay } from '../uiblocks/MapOverlay'
+import { EndTurnProcessor } from '../processors/endTurnProcessor'
 
 export class OverviewScene extends Phaser.Scene {
 
@@ -34,7 +35,7 @@ export class OverviewScene extends Phaser.Scene {
 
     const endTurnButton = buttonList.addButton()
       .text("End turn")
-      //.onclick(new ChangeSceneActivation(this, Scenes.OVERVIEW_SCENE))
+      .onclick(EndTurnProcessor.build())
       .build();
 
     const scienceSquare = TechnologyGroupList.build(this)

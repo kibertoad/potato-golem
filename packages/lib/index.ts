@@ -25,6 +25,9 @@ export type { OnClickCallback } from './src/ui/uimaker/ButtonBuilder'
 export { ButtonSquareBuilder } from './src/ui/uimaker/ButtonSquareBuilder'
 
 export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'
+export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
 
-export type { Activation } from './src/ui/activations/ActivationTypes'
+export type { Activation, ActivationCallback } from './src/ui/activations/ActivationTypes'
 export type { Position } from './src/ui/common/CommonUITypes'
+
+export { LimitedNumber } from './src/core/primitives/LimitedNumber'
