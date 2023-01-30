@@ -1,5 +1,6 @@
 import { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
+import { Activation } from '../activations/ActivationTypes'
 
 export type OnClickCallback = (button: any) => void
 
@@ -13,7 +14,7 @@ export class ButtonBuilder {
   #positionX?: number
   #positionY?: number
 
-  #onClick?: OnClickCallback
+  #onClick?: Activation | OnClickCallback
 
   readonly #scene: Scene
   readonly #targetList?: Phaser.GameObjects.Image[]
@@ -23,7 +24,7 @@ export class ButtonBuilder {
     this.#targetList = targetList
   }
 
-  public onclick(callback: OnClickCallback) {
+  public onclick(callback: Activation | OnClickCallback) {
     this.#onClick = callback
 
     return this
@@ -74,12 +75,17 @@ export class ButtonBuilder {
     })
 
     if (this.#onClick) {
-      newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(this.#onClick))
+      const callback = this.#onClick['execute'] ? () => { this.#onClick!['execute']() } : this.#onClick
+      newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(callback))
     }
 
     if (this.#targetList) {
       this.#targetList.push(newButton)
     }
+
+    console.log(`New Button: ${JSON.stringify(newButton)}`)
+    console.log(`Button extra stuff: W: ${newButton.width}, H: ${newButton.height}`)
+    console.log(`Button extra stuff: DW: ${newButton.displayWidth}, DH: ${newButton.displayHeight}`)
 
     return newButton
   }

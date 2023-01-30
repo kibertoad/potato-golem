@@ -18,6 +18,8 @@ export {
   Spawner,
 } from './src/spawners/Spawner'
 
-export { ButtonBuilder } from './src/uimaker/ButtonBuilder'
-export { ButtonListBuilder } from './src/uimaker/ButtonListBuilder'
-export type { OnClickCallback } from './src/uimaker/ButtonBuilder'
+export { ButtonBuilder } from './src/ui/uimaker/ButtonBuilder'
+export { ButtonListBuilder } from './src/ui/uimaker/ButtonListBuilder'
+export type { OnClickCallback } from './src/ui/uimaker/ButtonBuilder'
+
+export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'

@@ -67,7 +67,7 @@ export class ButtonListBuilder {
     const lastButton = this.#buttons.at(-1)
     if (this.#spacingOffsetX) {
       return {
-        x: lastButton!.x + lastButton!.width + this.#spacingOffsetX,
+        x: lastButton!.x + lastButton!.displayWidth + this.#spacingOffsetX,
         y: this.#positionY!
       }
     }
@@ -75,7 +75,7 @@ export class ButtonListBuilder {
     if (this.#spacingOffsetY) {
       return {
         x: this.#positionX!,
-        y: lastButton!.y + lastButton!.height + this.#spacingOffsetY,
+        y: lastButton!.y + lastButton!.displayHeight + this.#spacingOffsetY,
       }
     }
 

@@ -1,6 +1,8 @@
+import { Scenes } from '../registries/SceneRegistry'
+
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
-import { ButtonListBuilder } from '@potato-golem/core'
+import { ButtonListBuilder, ChangeSceneActivation } from '@potato-golem/core'
 
 export class MainMenuScene extends Phaser.Scene {
   private buttonSelector!: Phaser.GameObjects.Image;
@@ -10,7 +12,7 @@ export class MainMenuScene extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor() {
-    super("main-menu");
+    super(Scenes.MAIN_MENU_SCENE);
   }
 
   init() {
@@ -25,7 +27,6 @@ export class MainMenuScene extends Phaser.Scene {
   create() {
     const { width, height } = this.scale;
 
-    // Play button
     const buttonList = new ButtonListBuilder(this)
       .textureKey("glass-panel")
       .displaySize(150, 50)
@@ -34,7 +35,7 @@ export class MainMenuScene extends Phaser.Scene {
 
     const playButton = buttonList.addButton()
       .text("Play")
-      .onclick(() => { console.log('clickety click ')})
+      .onclick(ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE))
       .build();
 
     const settingsButton = buttonList.addButton()

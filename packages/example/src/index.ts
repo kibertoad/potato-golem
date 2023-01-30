@@ -1,13 +1,13 @@
 import { Game } from "phaser";
-import { startingScene } from "./scenes/StartingScene";
 import { MainMenuScene } from "./scenes/MainMenuScene";
+import { OverviewScene } from './scenes/OverviewScene'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: undefined,
   width: 1024,
   height: 768,
-  scene: new MainMenuScene(),
+  scene: [new MainMenuScene(), new OverviewScene()],
 };
 
 // For some reason this must happen in root TS file
