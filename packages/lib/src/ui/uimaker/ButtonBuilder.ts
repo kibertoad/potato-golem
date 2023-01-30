@@ -31,6 +31,8 @@ export class ButtonBuilder {
   }
 
   public text(value: string) {
+    validateString(value, 'Text must be a string')
+
     this.#text = value
     return this
   }
@@ -64,7 +66,7 @@ export class ButtonBuilder {
         validateNumber(this.#displaySizeY, 'displaySizeY must be a number'),
       )
 
-    this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text)).setOrigin(0.5)
+    this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text, `Button text must be a string, but it was ${JSON.stringify(this.#text)}`)).setOrigin(0.5)
 
     newButton.setInteractive()
     newButton.on(Phaser.Input.Events.POINTER_OVER, () => {

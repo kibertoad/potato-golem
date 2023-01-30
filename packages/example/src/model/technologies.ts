@@ -4,7 +4,7 @@ export type ParentTechnologyDefinition = {
 
 export type TechnologyDefinition = {
   id: string
-  name?: string
+  name: string
   description?: string
   icon?: string
 }
@@ -19,9 +19,10 @@ enum TechnologyIds {
 }
 
 
-export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
+export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.DRONES]: {
     id: TechnologyIds.DRONES,
+    name: 'Drones',
     branches: {
       payloadSize: {
         id: 'payloadSize',
@@ -44,6 +45,7 @@ export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   },
   [TechnologyIds.ANTI_AIR]: {
     id: TechnologyIds.ANTI_AIR,
+    name: 'Anti-air defense',
     branches: {
       antiAircraft: {
         id: 'antiAircraft',
@@ -66,6 +68,7 @@ export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   },
   [TechnologyIds.COMMUNICATIONS]: {
     id: TechnologyIds.COMMUNICATIONS,
+    name: 'Communications',
     branches: {
       netOps: {
         id: 'netOps',
@@ -91,6 +94,7 @@ export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   },
   [TechnologyIds.INFANTRY]: {
     id: TechnologyIds.INFANTRY,
+    name: 'Infantry',
     branches: {
       smallArms: {
         id: 'smallArms',
@@ -115,9 +119,11 @@ export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   },
   [TechnologyIds.TANKS]: {
     id: TechnologyIds.TANKS,
+    name: 'Tanks',
     branches: {
       fireSystems: {
-        id: 'Fire systems',
+        id: 'fireSystems',
+        name: 'Fire systems',
         description: 'Tank guns and turrets',
       },
       armour: {
@@ -137,6 +143,7 @@ export const Technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   },
   [TechnologyIds.ARTILLERY]: {
     id: TechnologyIds.ARTILLERY,
+    name: 'Artillery',
     branches: {
       targettingSystems: {
         id: 'targetingSystems',
