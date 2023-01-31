@@ -2,8 +2,9 @@ import { ButtonBuilder } from './ButtonBuilder'
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
 import { Position } from '../common/CommonUITypes'
+import { AbstractUIElement, CommonUIGroup, UIGroup } from './UIGroup'
 
-export class ButtonListBuilder {
+export class ButtonListBuilder extends CommonUIGroup{
   public readonly buttons: Phaser.GameObjects.Image[]
   protected buttonBuilder?: ButtonBuilder
   protected scene: Scene
@@ -20,6 +21,7 @@ export class ButtonListBuilder {
   #spacingOffsetY?: number
 
   constructor(scene: Scene) {
+    super()
     this.buttons = []
     this.scene = scene
   }
@@ -80,7 +82,7 @@ export class ButtonListBuilder {
 
   protected initButtonBuilder(listBuilder: ButtonListBuilder) {
     const position = listBuilder.resolveNextButtonPosition()
-    return new ButtonBuilder(listBuilder.scene, listBuilder.buttons)
+    return new ButtonBuilder(listBuilder.scene, listBuilder.children, listBuilder.buttons)
       .position(position.x, position.y)
       .textureKey(validateString(listBuilder.#textureKey))
       .displaySize(validateNumber(listBuilder.displaySizeX), validateNumber(listBuilder.displaySizeY))
@@ -97,5 +99,9 @@ export class ButtonListBuilder {
   public addButton(): ButtonBuilder {
     this.buttonBuilder = this.initButtonBuilder(this)
     return this.buttonBuilder
+  }
+
+  public build(): AbstractUIElement[] {
+    return this.getChildren()
   }
 }

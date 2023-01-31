@@ -1,6 +1,7 @@
 import { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
 import { Activation } from '../activations/ActivationTypes'
+import { AbstractUIElement } from './UIGroup'
 
 export type OnClickCallback = (button: any) => void
 
@@ -17,11 +18,13 @@ export class ButtonBuilder {
   #onClick?: Activation | OnClickCallback
 
   readonly #scene: Scene
-  readonly #targetList?: Phaser.GameObjects.Image[]
+  readonly #targetButtonList?: AbstractUIElement[]
+  readonly #targetChildrenList?: AbstractUIElement[]
 
-  constructor(scene: Scene, targetList?: Phaser.GameObjects.Image[]) {
+  constructor(scene: Scene, childrenList?: AbstractUIElement[], buttonList?: Phaser.GameObjects.Image[]) {
     this.#scene = scene
-    this.#targetList = targetList
+    this.#targetButtonList = buttonList
+    this.#targetChildrenList = childrenList
   }
 
   public onclick(callback: Activation | OnClickCallback) {
@@ -66,7 +69,7 @@ export class ButtonBuilder {
         validateNumber(this.#displaySizeY, 'displaySizeY must be a number'),
       )
 
-    this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text, `Button text must be a string, but it was ${JSON.stringify(this.#text)}`)).setOrigin(0.5)
+    const newText = this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text, `Button text must be a string, but it was ${JSON.stringify(this.#text)}`)).setOrigin(0.5)
 
     newButton.setInteractive()
     newButton.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -81,8 +84,13 @@ export class ButtonBuilder {
       newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(callback))
     }
 
-    if (this.#targetList) {
-      this.#targetList.push(newButton)
+    if (this.#targetButtonList) {
+      this.#targetButtonList.push(newButton)
+    }
+
+    if (this.#targetChildrenList) {
+      this.#targetChildrenList.push(newButton)
+      this.#targetChildrenList.push(newText)
     }
 
     console.log(`New Button: ${JSON.stringify(newButton)}`)

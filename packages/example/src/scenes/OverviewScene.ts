@@ -3,6 +3,7 @@ import { ButtonListBuilder, ButtonSquareBuilder, ChangeSceneActivation } from '@
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
 import { MapOverlay } from '../uiblocks/MapOverlay'
 import { EndTurnProcessor } from '../processors/endTurnProcessor'
+import { TechnologyBranchesList } from '../uiblocks/TechnologyBranchesList'
 
 export class OverviewScene extends Phaser.Scene {
 
@@ -39,6 +40,8 @@ export class OverviewScene extends Phaser.Scene {
       .build();
 
     const scienceSquare = TechnologyGroupList.build(this)
+    //const branchesSquare = TechnologyBranchesList.build(this)
+
     const map = MapOverlay.build(this, {
       x: 300,
       y: 300,

@@ -1,10 +1,14 @@
-import { ButtonListBuilder, ButtonSquareBuilder, ChangeSceneActivation } from '@potato-golem/core'
+import { ActivationCallback, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/core'
 import { technologies } from '../model/technologies'
+import { TechnologyBranchesList } from './TechnologyBranchesList'
 
-export class TechnologyGroupList {
+export class TechnologyGroupList extends CommonUIGroup{
+
+  private branchesList?: TechnologyBranchesList
 
   static build(scene: Phaser.Scene) {
     const { width, height } = scene.scale;
+    const technologyGroupList = new TechnologyGroupList()
 
     const scienceSquare = new ButtonSquareBuilder(scene)
       .rowSpacingOffset(10)
@@ -16,13 +20,24 @@ export class TechnologyGroupList {
 
     for (let technology of Object.entries(technologies)) {
       const [techId, definition] = technology
+      const activation: ActivationCallback = () => {
+        if (technologyGroupList.branchesList) {
+          technologyGroupList.branchesList.destroy()
+        }
 
-      scienceSquare.addButton()
+        technologyGroupList.branchesList = TechnologyBranchesList.build(scene, definition)
+        technologyGroupList.disable()
+      }
+
+      const newButton = scienceSquare.addButton()
         .text(definition.name)
+        .onclick(activation)
         .build()
+
     }
 
-    return scienceSquare
+    technologyGroupList.addChildren(scienceSquare.build())
+    return technologyGroupList
   }
 
 }
