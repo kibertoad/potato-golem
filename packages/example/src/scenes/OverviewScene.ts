@@ -1,11 +1,12 @@
 import { Scenes } from '../registries/SceneRegistry'
-import { ButtonListBuilder, ButtonSquareBuilder, ChangeSceneActivation } from '@potato-golem/core'
+import { ButtonListBuilder, UIGroupSlot } from '@potato-golem/core'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
 import { MapOverlay } from '../uiblocks/MapOverlay'
 import { EndTurnProcessor } from '../processors/endTurnProcessor'
-import { TechnologyBranchesList } from '../uiblocks/TechnologyBranchesList'
 
 export class OverviewScene extends Phaser.Scene {
+
+  private scienceSquare: UIGroupSlot<TechnologyGroupList> = new UIGroupSlot<TechnologyGroupList>()
 
   constructor() {
     super(Scenes.OVERVIEW_SCENE);
@@ -21,12 +22,16 @@ export class OverviewScene extends Phaser.Scene {
 
     const researchButton = buttonList.addButton()
       .text("Research")
-      //.onclick(new ChangeSceneActivation(this, Scenes.OVERVIEW_SCENE))
+      .onclick(() => {
+        this.scienceSquare.populate(TechnologyGroupList.build(this))
+      })
       .build();
 
     const technologiesButton = buttonList.addButton()
       .text("Technologies")
-      //.onclick(new ChangeSceneActivation(this, Scenes.OVERVIEW_SCENE))
+      .onclick(() => {
+        this.scienceSquare.populate(TechnologyGroupList.build(this))
+      })
       .build();
 
     const mapButton = buttonList.addButton()
@@ -39,7 +44,7 @@ export class OverviewScene extends Phaser.Scene {
       .onclick(EndTurnProcessor.build())
       .build();
 
-    const scienceSquare = TechnologyGroupList.build(this)
+    //const scienceSquare = TechnologyGroupList.build(this)
     //const branchesSquare = TechnologyBranchesList.build(this)
 
     const map = MapOverlay.build(this, {

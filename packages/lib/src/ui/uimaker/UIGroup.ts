@@ -1,7 +1,23 @@
+export class UIGroupSlot<T extends UIGroup> {
+  value?: T
+
+  populate(newValue: T) {
+    if (this.value) {
+      this.value.destroy()
+    }
+    this.value = newValue
+  }
+}
+
 export type AbstractUIElement = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Visible
 
 export type UIGroup = {
   getChildren(): AbstractUIElement[]
+  addChild(child: AbstractUIElement)
+  addChildren(child: AbstractUIElement[])
+  disable()
+  enable()
+  destroy()
 }
 
 export class CommonUIGroup implements UIGroup {

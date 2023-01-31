@@ -1,10 +1,10 @@
-import { ActivationCallback, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/core'
+import { ActivationCallback, ButtonSquareBuilder, CommonUIGroup, UIGroupSlot } from '@potato-golem/core'
 import { technologies } from '../model/technologies'
 import { TechnologyBranchesList } from './TechnologyBranchesList'
 
 export class TechnologyGroupList extends CommonUIGroup{
 
-  private branchesList?: TechnologyBranchesList
+  private branchesList?: UIGroupSlot<TechnologyBranchesList> = new UIGroupSlot()
 
   static build(scene: Phaser.Scene) {
     const { width, height } = scene.scale;
@@ -21,11 +21,7 @@ export class TechnologyGroupList extends CommonUIGroup{
     for (let technology of Object.entries(technologies)) {
       const [techId, definition] = technology
       const activation: ActivationCallback = () => {
-        if (technologyGroupList.branchesList) {
-          technologyGroupList.branchesList.destroy()
-        }
-
-        technologyGroupList.branchesList = TechnologyBranchesList.build(scene, definition)
+        technologyGroupList.branchesList.populate(TechnologyBranchesList.build(scene, definition))
         technologyGroupList.disable()
       }
 

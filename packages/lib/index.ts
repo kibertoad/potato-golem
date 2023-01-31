@@ -23,7 +23,7 @@ export { ButtonListBuilder } from './src/ui/uimaker/ButtonListBuilder'
 export type { OnClickCallback } from './src/ui/uimaker/ButtonBuilder'
 
 export { ButtonSquareBuilder } from './src/ui/uimaker/ButtonSquareBuilder'
-export { CommonUIGroup } from './src/ui/uimaker/UIGroup'
+export { UIGroupSlot, CommonUIGroup } from './src/ui/uimaker/UIGroup'
 export type { UIGroup, AbstractUIElement } from './src/ui/uimaker/UIGroup'
 
 export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'
