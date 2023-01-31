@@ -36,4 +36,8 @@ export class TechnologyGroupList extends CommonUIGroup{
     return technologyGroupList
   }
 
+  destroy() {
+    this.branchesList.destroy()
+    super.destroy();
+  }
 }

@@ -7,6 +7,10 @@ export class UIGroupSlot<T extends UIGroup> {
     }
     this.value = newValue
   }
+
+  destroy() {
+    this.value?.destroy()
+  }
 }
 
 export type AbstractUIElement = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Visible

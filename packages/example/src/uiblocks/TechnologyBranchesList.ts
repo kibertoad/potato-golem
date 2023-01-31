@@ -26,5 +26,4 @@ export class TechnologyBranchesList extends CommonUIGroup {
     technologyBranchesList.addChildren(scienceBranchSquare.build())
     return technologyBranchesList
   }
-
 }
