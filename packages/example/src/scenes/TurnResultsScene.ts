@@ -32,7 +32,7 @@ export class TurnResultsScene extends Phaser.Scene {
 
     const endReviewButton = buttonList.addButton()
       .text("End review")
-      .onclick(MultiplexActivation.build([
+      .onClick(MultiplexActivation.build([
         ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE)
       ]))
       .build();

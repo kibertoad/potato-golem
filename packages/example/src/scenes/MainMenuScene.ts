@@ -2,6 +2,13 @@ import { Scenes } from '../registries/SceneRegistry'
 
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
+const violetImg = require("../../assets/img/violet.png");
+const soldierImg = require("../../assets/img/soldier.png");
+const artilleryImg = require("../../assets/img/artillery.png");
+const tanksImg = require("../../assets/img/tanks.png");
+const antiAirImg = require("../../assets/img/antiair.png");
+const dronesImg = require("../../assets/img/drones.png");
+const communicationsImg = require("../../assets/img/communications.png");
 import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/core'
 import { SetWorldActivation } from '../activations/SetWorldActivation'
 import { worldState } from '../model/worldState'
@@ -24,20 +31,29 @@ export class MainMenuScene extends Phaser.Scene {
   preload() {
     this.load.image("glass-panel", glassPanelImg);
     this.load.image("cursor-hand", cursorHandImg);
+    this.load.image("violet", violetImg);
+    this.load.image("violet-border", require("../../assets/img/violet-border.png"));
+    this.load.image("violet-border2", require("../../assets/img/violet-border2.png"));
+    this.load.image("soldier", soldierImg);
+    this.load.image("drones", dronesImg);
+    this.load.image("antiAir", antiAirImg);
+    this.load.image("tanks", tanksImg);
+    this.load.image("artillery", artilleryImg);
+    this.load.image("communications", communicationsImg);
   }
 
   create() {
     const { width, height } = this.scale;
 
     const buttonList = new ButtonListBuilder(this)
-      .textureKey("glass-panel")
+      .textureKey("violet")
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
       .setSpacingOffset(0, 10)
 
     const playButton = buttonList.addButton()
       .text("Play")
-      .onclick(MultiplexActivation.build([
+      .onClick(MultiplexActivation.build([
         SetWorldActivation.build(worldState),
         ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE)
       ]))
@@ -45,13 +61,13 @@ export class MainMenuScene extends Phaser.Scene {
 
     const settingsButton = buttonList.addButton()
       .text("Settings")
-      .onclick(() => { console.log('clickety click ')})
+      .onClick(() => { console.log('clickety click ')})
       .build();
 
     // Credits button
     const creditsButton = buttonList.addButton()
       .text("Credits")
-      .onclick(() => { console.log('clickety click ')})
+      .onClick(() => { console.log('clickety click ')})
       .build();
 
     this.buttons.push(playButton);

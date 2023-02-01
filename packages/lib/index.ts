@@ -20,6 +20,7 @@ export {
 
 export { ButtonBuilder } from './src/ui/uimaker/ButtonBuilder'
 export { ButtonListBuilder } from './src/ui/uimaker/ButtonListBuilder'
+export { BackgroundBuilder } from './src/ui/uimaker/BackgroundBuilder'
 export type { OnClickCallback } from './src/ui/uimaker/ButtonBuilder'
 
 export { ButtonSquareBuilder } from './src/ui/uimaker/ButtonSquareBuilder'
@@ -28,6 +29,7 @@ export type { UIGroup, AbstractUIElement } from './src/ui/uimaker/UIGroup'
 
 export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'
 export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
+export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
 export type { Activation, ActivationCallback } from './src/ui/activations/ActivationTypes'
 export type { Position } from './src/ui/common/CommonUITypes'

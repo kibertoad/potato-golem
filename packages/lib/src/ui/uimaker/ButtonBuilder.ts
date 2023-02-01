@@ -16,6 +16,8 @@ export class ButtonBuilder {
   #positionY?: number
 
   #onClick?: Activation | OnClickCallback
+  #onHover?: Activation | OnClickCallback
+  #onUnhover?: Activation | OnClickCallback
 
   readonly #scene: Scene
   readonly #targetButtonList?: AbstractUIElement[]
@@ -27,8 +29,20 @@ export class ButtonBuilder {
     this.#targetChildrenList = childrenList
   }
 
-  public onclick(callback: Activation | OnClickCallback) {
+  public onClick(callback: Activation | OnClickCallback) {
     this.#onClick = callback
+
+    return this
+  }
+
+  public onHover(callback: Activation | OnClickCallback) {
+    this.#onHover = callback
+
+    return this
+  }
+
+  public onUnhover(callback: Activation | OnClickCallback) {
+    this.#onUnhover = callback
 
     return this
   }
@@ -69,7 +83,10 @@ export class ButtonBuilder {
         validateNumber(this.#displaySizeY, 'displaySizeY must be a number'),
       )
 
-    const newText = this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text, `Button text must be a string, but it was ${JSON.stringify(this.#text)}`)).setOrigin(0.5)
+    let newText
+    if (this.#text) {
+      newText = this.#scene.add.text(newButton.x, newButton.y, validateString(this.#text, `Button text must be a string, but it was ${JSON.stringify(this.#text)}`)).setOrigin(0.5)
+    }
 
     newButton.setInteractive()
     newButton.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -84,13 +101,25 @@ export class ButtonBuilder {
       newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(callback))
     }
 
+    if (this.#onHover) {
+      const callback = this.#onHover['execute'] ? () => { this.#onHover!['execute']() } : this.#onHover
+      newButton.on(Phaser.Input.Events.POINTER_OVER, validateFunction(callback))
+    }
+
+    if (this.#onUnhover) {
+      const callback = this.#onUnhover['execute'] ? () => { this.#onUnhover!['execute']() } : this.#onUnhover
+      newButton.on(Phaser.Input.Events.POINTER_OUT, validateFunction(callback))
+    }
+
     if (this.#targetButtonList) {
       this.#targetButtonList.push(newButton)
     }
 
     if (this.#targetChildrenList) {
       this.#targetChildrenList.push(newButton)
-      this.#targetChildrenList.push(newText)
+      if (newText) {
+        this.#targetChildrenList.push(newText)
+      }
     }
 
     console.log(`New Button: ${JSON.stringify(newButton)}`)

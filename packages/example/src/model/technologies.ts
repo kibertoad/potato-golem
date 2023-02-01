@@ -23,6 +23,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.DRONES]: {
     id: TechnologyIds.DRONES,
     name: 'Drones',
+    icon: 'drones',
     branches: {
       payloadSize: {
         id: 'payloadSize',
@@ -46,6 +47,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.ANTI_AIR]: {
     id: TechnologyIds.ANTI_AIR,
     name: 'Anti-air defense',
+    icon: 'antiAir',
     branches: {
       antiAircraft: {
         id: 'antiAircraft',
@@ -69,6 +71,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.COMMUNICATIONS]: {
     id: TechnologyIds.COMMUNICATIONS,
     name: 'Communications',
+    icon: 'communications',
     branches: {
       netOps: {
         id: 'netOps',
@@ -95,6 +98,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.INFANTRY]: {
     id: TechnologyIds.INFANTRY,
     name: 'Infantry',
+    icon: 'soldier',
     branches: {
       smallArms: {
         id: 'smallArms',
@@ -120,6 +124,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.TANKS]: {
     id: TechnologyIds.TANKS,
     name: 'Tanks',
+    icon: 'tanks',
     branches: {
       fireSystems: {
         id: 'fireSystems',
@@ -144,6 +149,7 @@ export const technologies: Record<TechnologyIds, ParentTechnologyDefinition> = {
   [TechnologyIds.ARTILLERY]: {
     id: TechnologyIds.ARTILLERY,
     name: 'Artillery',
+    icon: 'artillery',
     branches: {
       targettingSystems: {
         id: 'targetingSystems',

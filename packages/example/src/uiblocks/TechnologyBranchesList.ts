@@ -1,15 +1,21 @@
-import { ButtonListBuilder, ButtonSquareBuilder, ChangeSceneActivation, CommonUIGroup } from '@potato-golem/core'
+import {
+  ButtonListBuilder,
+  ButtonSquareBuilder,
+  ChangeSceneActivation,
+  CommonUIGroup,
+  SetTextActivation,
+} from '@potato-golem/core'
 import { ParentTechnologyDefinition, technologies } from '../model/technologies'
 
 export class TechnologyBranchesList extends CommonUIGroup {
 
-  static build(scene: Phaser.Scene, technologyGroup: ParentTechnologyDefinition) {
+  static build(scene: Phaser.Scene, technologyGroup: ParentTechnologyDefinition, descriptionBox: Phaser.GameObjects.Text) {
     const { width, height } = scene.scale;
     const technologyBranchesList = new TechnologyBranchesList()
 
     const scienceBranchSquare = new ButtonSquareBuilder(scene)
       .rowSpacingOffset(10)
-      .rowSize(3)
+      .rowSize(2)
       .textureKey("glass-panel")
       .displaySize(200, 50)
       .setExactPosition(width * 0.1, height * 0.2)
@@ -20,6 +26,8 @@ export class TechnologyBranchesList extends CommonUIGroup {
 
       scienceBranchSquare.addButton()
         .text(definition.name)
+        .onUnhover(SetTextActivation.build(descriptionBox, ''))
+        .onHover(SetTextActivation.build(descriptionBox, definition.description))
         .build()
     }
 

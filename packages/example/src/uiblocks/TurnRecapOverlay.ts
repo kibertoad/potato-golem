@@ -1,4 +1,4 @@
-import { ActivationCallback, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/core'
+import { ActivationCallback, ButtonBuilder, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/core'
 import { TurnEvent } from '../processors/endTurnProcessor'
 import { technologies } from '../model/technologies'
 import { TechnologyBranchesList } from './TechnologyBranchesList'
@@ -17,6 +17,13 @@ export class TurnRecapOverlay extends CommonUIGroup{
       .setExactPosition(width * 0.1, height * 0.2)
       .setSpacingOffset(10, 0)
 
+    new ButtonBuilder(scene)
+      .textureKey("soldier")
+      .displaySize(200, 200)
+      .text('')
+      .position(width * 0.7, height * 0.4)
+      .build()
+
     for (let event of turnEvents) {
       const activation: ActivationCallback = () => {
         //technologyGroupList.branchesList.populate(TechnologyBranchesList.build(scene, definition))
@@ -25,7 +32,7 @@ export class TurnRecapOverlay extends CommonUIGroup{
 
       const newButton = turnRecapSquare.addButton()
         .text(event.name)
-        .onclick(activation)
+        .onClick(activation)
         .build()
     }
 
