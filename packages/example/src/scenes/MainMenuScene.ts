@@ -12,6 +12,7 @@ const communicationsImg = require("../../assets/img/communications.png");
 import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/core'
 import { SetWorldActivation } from '../activations/SetWorldActivation'
 import { worldState } from '../model/worldState'
+import BaseSound = Phaser.Sound.BaseSound
 
 export class MainMenuScene extends Phaser.Scene {
   private buttonSelector!: Phaser.GameObjects.Image;
@@ -19,6 +20,8 @@ export class MainMenuScene extends Phaser.Scene {
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+
+  private mainTheme: BaseSound
 
   constructor() {
     super(Scenes.MAIN_MENU_SCENE);
@@ -40,9 +43,14 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image("tanks", tanksImg);
     this.load.image("artillery", artilleryImg);
     this.load.image("communications", communicationsImg);
+
+    this.load.audio('mainTheme', require('url:../../assets/music/roots_of_peace_01.ogg'));
   }
 
   create() {
+    this.mainTheme = this.sound.add('mainTheme')
+    this.mainTheme.play()
+
     const { width, height } = this.scale;
 
     const buttonList = new ButtonListBuilder(this)
