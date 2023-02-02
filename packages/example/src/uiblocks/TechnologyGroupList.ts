@@ -34,7 +34,10 @@ export class TechnologyGroupList extends CommonUIGroup{
       const newButton = scienceSquare.addButton()
         .text('')
         .onUnhover(SetTextActivation.build(descriptionBox, ''))
-        .onHover(SetTextActivation.build(descriptionBox, definition.description))
+        .onHover(SetTextActivation.build(descriptionBox, `
+        ${definition.name}
+        ${definition.description ?? ''}
+        `))
         .textureKey(definition.icon ?? 'glass-panel')
         .onClick(activation)
         .build()

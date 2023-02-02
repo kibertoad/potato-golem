@@ -1,4 +1,8 @@
 import { Scenes } from '../registries/SceneRegistry'
+import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/core'
+import { SetWorldActivation } from '../activations/SetWorldActivation'
+import { worldState } from '../model/worldState'
+import { DirectorPortraits, Gender } from '../registries/ImageRegistry'
 
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
@@ -9,9 +13,6 @@ const tanksImg = require("../../assets/img/tanks.png");
 const antiAirImg = require("../../assets/img/antiair.png");
 const dronesImg = require("../../assets/img/drones.png");
 const communicationsImg = require("../../assets/img/communications.png");
-import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/core'
-import { SetWorldActivation } from '../activations/SetWorldActivation'
-import { worldState } from '../model/worldState'
 import BaseSound = Phaser.Sound.BaseSound
 
 export class MainMenuScene extends Phaser.Scene {
@@ -44,6 +45,45 @@ export class MainMenuScene extends Phaser.Scene {
     this.load.image("artillery", artilleryImg);
     this.load.image("communications", communicationsImg);
 
+    this.load.image("male1", require("../../assets/img/directors/male/male1.png"));
+    this.load.image("male2", require("../../assets/img/directors/male/male2.png"));
+    this.load.image("male3", require("../../assets/img/directors/male/male3.png"));
+    this.load.image("male4", require("../../assets/img/directors/male/male4.png"));
+    this.load.image("male5", require("../../assets/img/directors/male/male5.png"));
+    this.load.image("male6", require("../../assets/img/directors/male/male6.png"));
+    this.load.image("male7", require("../../assets/img/directors/male/male7.png"));
+    this.load.image("male8", require("../../assets/img/directors/male/male8.png"));
+    this.load.image("male9", require("../../assets/img/directors/male/male9.png"));
+    this.load.image("male10", require("../../assets/img/directors/male/male10.png"));
+    this.load.image("male11", require("../../assets/img/directors/male/male11.png"));
+    this.load.image("male12", require("../../assets/img/directors/male/male12.png"));
+    this.load.image("male13", require("../../assets/img/directors/male/male13.png"));
+    this.load.image("male14", require("../../assets/img/directors/male/male14.png"));
+    this.load.image("male15", require("../../assets/img/directors/male/male15.png"));
+    this.load.image("male16", require("../../assets/img/directors/male/male16.png"));
+    this.load.image("male17", require("../../assets/img/directors/male/male17.png"));
+    this.load.image("male18", require("../../assets/img/directors/male/male18.png"));
+    this.load.image("male19", require("../../assets/img/directors/male/male19.png"));
+    this.load.image("male20", require("../../assets/img/directors/male/male20.png"));
+
+    this.load.image("female1", require("../../assets/img/directors/female/female1.png"));
+    this.load.image("female2", require("../../assets/img/directors/female/female2.png"));
+    this.load.image("female3", require("../../assets/img/directors/female/female3.png"));
+    this.load.image("female4", require("../../assets/img/directors/female/female4.png"));
+    this.load.image("female5", require("../../assets/img/directors/female/female5.png"));
+    this.load.image("female6", require("../../assets/img/directors/female/female6.png"));
+    this.load.image("female7", require("../../assets/img/directors/female/female7.png"));
+    this.load.image("female8", require("../../assets/img/directors/female/female8.png"));
+    this.load.image("female9", require("../../assets/img/directors/female/female9.png"));
+    this.load.image("female10", require("../../assets/img/directors/female/female10.png"));
+    this.load.image("female11", require("../../assets/img/directors/female/female11.png"));
+    this.load.image("female12", require("../../assets/img/directors/female/female12.png"));
+    this.load.image("female13", require("../../assets/img/directors/female/female13.png"));
+    this.load.image("female14", require("../../assets/img/directors/female/female14.png"));
+    this.load.image("female15", require("../../assets/img/directors/female/female15.png"));
+    this.load.image("female16", require("../../assets/img/directors/female/female16.png"));
+    this.load.image("female17", require("../../assets/img/directors/female/female17.png"));
+
     this.load.audio('mainTheme', require('url:../../assets/music/roots_of_peace_01.ogg'));
   }
 
@@ -69,7 +109,9 @@ export class MainMenuScene extends Phaser.Scene {
 
     const settingsButton = buttonList.addButton()
       .text("Settings")
-      .onClick(() => { console.log('clickety click ')})
+      .onClick(
+        ChangeSceneActivation.build(this, Scenes.HIRE_DIRECTOR)
+      )
       .build();
 
     // Credits button

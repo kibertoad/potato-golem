@@ -35,3 +35,4 @@ export type { Activation, ActivationCallback } from './src/ui/activations/Activa
 export type { Position } from './src/ui/common/CommonUITypes'
 
 export { LimitedNumber } from './src/core/primitives/LimitedNumber'
+export { randomOneOf } from './src/core/utils/randomUtils'

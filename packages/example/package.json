@@ -20,6 +20,7 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "@potato-golem/core": "1.0.0",
+    "generate-human-names": "^1.2.2",
     "phaser": "^3.55.2",
     "validation-utils": "^7.0.0"
   },
