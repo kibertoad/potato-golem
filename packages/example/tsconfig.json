@@ -2,9 +2,11 @@
   "compilerOptions": {
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
+    "types": ["vitest/globals"],
     "target": "es2018",
     "paths": {
-      "@potato-golem": ["../lib"]
+      "@potato-golem/lib": ["../lib"],
+      "@potato-golem/core": ["../core"]
     }
   },
 

@@ -4,7 +4,7 @@ import {
   ChangeSceneActivation,
   CommonUIGroup,
   SetTextActivation,
-} from '@potato-golem/core'
+} from '@potato-golem/extras'
 import { ParentTechnologyDefinition, technologies } from '../model/technologies'
 
 export class TechnologyBranchesList extends CommonUIGroup {

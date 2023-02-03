@@ -5,7 +5,7 @@ import {
   CreatureSpawner,
   InputBlock,
   PotatoScene,
-} from "@potato-golem/core";
+} from "@potato-golem/extras";
 import { creatureRegistry } from "../registries/CreatureRegistry";
 
 const logoImg = require("../../assets/img/logo.png");

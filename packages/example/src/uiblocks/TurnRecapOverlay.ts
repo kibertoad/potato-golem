@@ -1,7 +1,5 @@
-import { ActivationCallback, ButtonBuilder, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/core'
+import { ActivationCallback, ButtonBuilder, ButtonSquareBuilder, CommonUIGroup } from '@potato-golem/extras'
 import { TurnEvent } from '../processors/endTurnProcessor'
-import { technologies } from '../model/technologies'
-import { TechnologyBranchesList } from './TechnologyBranchesList'
 
 export class TurnRecapOverlay extends CommonUIGroup{
 

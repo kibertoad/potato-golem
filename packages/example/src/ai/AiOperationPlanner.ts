@@ -1,6 +1,7 @@
 import { WorldState } from '../model/worldState'
-import { Activation, LimitedNumber } from '@potato-golem/core'
+import { Activation } from '@potato-golem/extras'
 import { AiReconPlanner } from './AiReconPlanner'
+import { LimitedNumber } from '@potato-golem/core'
 
 const expectedCapacityUtilizationPercentage = 80
 

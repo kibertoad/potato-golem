@@ -13,7 +13,11 @@ export class UIGroupSlot<T extends UIGroup> {
   }
 }
 
-export type AbstractUIElement = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Visible
+export type AbstractUIElement =
+  Phaser.GameObjects.GameObject
+  & Phaser.GameObjects.Components.Size
+  & Phaser.GameObjects.Components.Visible
+  & Phaser.GameObjects.Components.Transform
 
 export type UIGroup = {
   getChildren(): AbstractUIElement[]
@@ -38,12 +42,13 @@ export class CommonUIGroup implements UIGroup {
   addChildren(child: AbstractUIElement[]) {
     this.children.push(...child)
   }
+
   disable() {
     for (let child of this.children) {
       child.setVisible(false)
       child.disableInteractive()
     }
-}
+  }
 
   enable() {
     for (let child of this.children) {
@@ -56,7 +61,7 @@ export class CommonUIGroup implements UIGroup {
     for (let child of this.children) {
       child.destroy(true)
     }
-    this.children.splice(0,this.children.length)
+    this.children.splice(0, this.children.length)
   }
 
   getChildren(): AbstractUIElement[] {

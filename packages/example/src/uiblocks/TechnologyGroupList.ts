@@ -4,7 +4,7 @@ import {
   CommonUIGroup,
   SetTextActivation,
   UIGroupSlot,
-} from '@potato-golem/core'
+} from '@potato-golem/extras'
 import { technologies } from '../model/technologies'
 import { TechnologyBranchesList } from './TechnologyBranchesList'
 

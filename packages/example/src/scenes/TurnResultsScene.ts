@@ -1,7 +1,5 @@
 import { Scenes } from '../registries/SceneRegistry'
-import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation, UIGroupSlot } from '@potato-golem/core'
-import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
-import { MapOverlay } from '../uiblocks/MapOverlay'
+import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation, UIGroupSlot } from '@potato-golem/extras'
 import { EndTurnProcessor } from '../processors/endTurnProcessor'
 import { TurnRecapOverlay } from '../uiblocks/TurnRecapOverlay'
 

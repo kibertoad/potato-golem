@@ -1,8 +1,7 @@
 import {
   ButtonBuilder, CommonUIGroup,
   Position,
-} from '@potato-golem/core'
-import { technologies } from '../model/technologies'
+} from '@potato-golem/extras'
 import { territories } from '../model/territories'
 
 export class MapOverlay extends CommonUIGroup{

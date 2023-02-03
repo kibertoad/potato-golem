@@ -1,4 +1,4 @@
-import { LimitedNumber } from '../../core/primitives/LimitedNumber'
+import { LimitedNumber } from '@potato-golem/core'
 
 export class CommonDamageableComponent implements DamageableComponent {
   hp: LimitedNumber

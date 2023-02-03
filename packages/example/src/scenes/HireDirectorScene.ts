@@ -1,17 +1,22 @@
 import { Scenes } from '../registries/SceneRegistry'
-import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation, UIGroupSlot } from '@potato-golem/core'
-import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
-import { MapOverlay } from '../uiblocks/MapOverlay'
-import { EndTurnProcessor } from '../processors/endTurnProcessor'
-import { TurnRecapOverlay } from '../uiblocks/TurnRecapOverlay'
+import {
+  BackgroundBuilder,
+  ButtonBuilder,
+  ButtonListBuilder,
+  ChangeSceneActivation,
+  MultiplexActivation, UIContainer,
+  UIGroupSlot,
+} from '@potato-golem/extras'
 import { Director, generateDirectors } from '../generators/directorGenerator'
 
 export class HireDirectorScene extends Phaser.Scene {
 
   private directors: Director[]
+  private directorContainers: UIContainer[]
 
   constructor() {
-    super(Scenes.HIRE_DIRECTOR);
+    super(Scenes.HIRE_DIRECTOR)
+    this.directorContainers = []
   }
 
   init() {
@@ -21,26 +26,41 @@ export class HireDirectorScene extends Phaser.Scene {
   }
 
   create() {
-    const { width, height } = this.scale;
+    const { width, height } = this.scale
     const buttonList = new ButtonListBuilder(this)
-      .textureKey("glass-panel")
+      .textureKey('glass-panel')
       .displaySize(150, 150)
-      .setExactPosition(width * 0.2, height * 0.6)
-      .setSpacingOffset(10, 0)
+      .setExactPosition(width * 0.2, height * 0.3)
+      .setSpacingOffset(40, 0)
 
     for (let director of this.directors) {
-      buttonList.addButton()
+      const statsTableBuilder = new BackgroundBuilder(this)
+      const { text } =
+        statsTableBuilder.displaySize(150, 300)
+          .textureKey('glass-panel')
+          .text('Some text here')
+          .build()
+
+      const button = buttonList.addButton()
         .textureKey(director.icon)
         .build()
+
+      const optionContainer = new UIContainer(button)
+      optionContainer.addSibling({
+        sibling: text,
+        offset: {
+          x: 0,
+          y: 0,
+        },
+      })
     }
 
-
     const endReviewButton = buttonList.addButton()
-      .text("End review")
+      .text('End review')
       .onClick(MultiplexActivation.build([
-        ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE)
+        ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE),
       ]))
-      .build();
+      .build()
   }
 
 }

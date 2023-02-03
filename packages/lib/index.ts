@@ -33,6 +33,5 @@ export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
 export type { Activation, ActivationCallback } from './src/ui/activations/ActivationTypes'
 export type { Position } from './src/ui/common/CommonUITypes'
-
-export { LimitedNumber } from './src/core/primitives/LimitedNumber'
-export { randomOneOf } from './src/core/utils/randomUtils'
+export { UIContainer } from './src/ui/uimaker/UIContainer'
+export type { SiblingLink } from './src/ui/uimaker/UIContainer'

@@ -5,10 +5,9 @@ import {
   ChangeSceneActivation,
   MultiplexActivation, SetTextActivation,
   UIGroupSlot,
-} from '@potato-golem/core'
+} from '@potato-golem/extras'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
 import { MapOverlay } from '../uiblocks/MapOverlay'
-import { EndTurnProcessor } from '../processors/endTurnProcessor'
 
 export class OverviewScene extends Phaser.Scene {
 

@@ -1,7 +1,7 @@
 import { Scene } from 'phaser'
-import { validateFunction, validateNumber, validateString } from 'validation-utils'
-import { Activation } from '../activations/ActivationTypes'
+import { validateNumber, validateString } from 'validation-utils'
 import { AbstractUIElement } from './UIGroup'
+import { UIContainer } from './UIContainer'
 
 export class BackgroundBuilder {
   #text?: string
@@ -20,6 +20,8 @@ export class BackgroundBuilder {
   readonly #targetChildrenList?: AbstractUIElement[]
 
   constructor(scene: Scene, childrenList?: AbstractUIElement[], backgroundList?: Phaser.GameObjects.Image[]) {
+    this.#positionX = 0
+    this.#positionY = 0
     this.#scene = scene
     this.#targetBackgroundList = backgroundList
     this.#targetChildrenList = childrenList
@@ -77,9 +79,20 @@ export class BackgroundBuilder {
       }
     }
 
+    const textContainer = new UIContainer(this.textChild)
+    const backgroundContainer = new UIContainer(newBackground)
+
+    textContainer.addSibling({
+      sibling: backgroundContainer,
+      offset: {
+        x: 0,
+        y: 0,
+      }
+    })
+
     return {
-      text: this.textChild,
-      background: newBackground,
+      text: textContainer,
+      background: backgroundContainer,
     }
   }
 }

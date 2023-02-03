@@ -1,5 +1,5 @@
 import { Scenes } from '../registries/SceneRegistry'
-import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/core'
+import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation } from '@potato-golem/extras'
 import { SetWorldActivation } from '../activations/SetWorldActivation'
 import { worldState } from '../model/worldState'
 import { DirectorPortraits, Gender } from '../registries/ImageRegistry'
@@ -89,7 +89,9 @@ export class MainMenuScene extends Phaser.Scene {
 
   create() {
     this.mainTheme = this.sound.add('mainTheme')
-    this.mainTheme.play()
+    this.mainTheme.play({
+      loop: true
+    })
 
     const { width, height } = this.scale;
 
