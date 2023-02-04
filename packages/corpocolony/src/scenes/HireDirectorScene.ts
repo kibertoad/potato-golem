@@ -27,6 +27,7 @@ export class HireDirectorScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    /*
     const buttonList = new ButtonListBuilder(this)
       .textureKey("glass-panel")
       .displaySize(150, 150)
@@ -53,6 +54,9 @@ export class HireDirectorScene extends Phaser.Scene {
       });
     }
 
+     */
+
+    /*
     const endReviewButton = buttonList
       .addButton()
       .text("End review")
@@ -62,5 +66,7 @@ export class HireDirectorScene extends Phaser.Scene {
         ])
       )
       .build();
+
+     */
   }
 }

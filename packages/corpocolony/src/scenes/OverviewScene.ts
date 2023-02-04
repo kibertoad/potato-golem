@@ -3,7 +3,7 @@ import {
   BackgroundBuilder,
   ButtonListBuilder,
   ChangeSceneActivation,
-  MultiplexActivation,
+  MultiplexActivation, NameValueLabelBuilder,
   UIGroupSlot,
 } from '@potato-golem/ui'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
@@ -22,6 +22,16 @@ export class OverviewScene extends PotatoScene {
 
   create() {
     const { width, height } = this.scale
+
+    const resourceBarBuilder = new NameValueLabelBuilder(this)
+      .setText('ORG')
+      .setPosition({
+        x: 400,
+        y: 300,
+      })
+      .setWidth(200)
+      .setHeight(40)
+      .build()
 
     const { text: infoBackgroundText } = new BackgroundBuilder(this)
       .position(0.8 * width, 0.45 * height)

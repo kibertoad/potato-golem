@@ -28,6 +28,12 @@ export class TurnResultsScene extends PotatoScene {
     const { width, height } = this.scale;
 
     const gridBuilder = new GridButtonBuilder(this)
+      .setPosition({
+        x: 200,
+        y: 300,
+      })
+      .setWidth(100)
+      .setHeight(100)
       .setHeaderText('Turn results')
       .setChoiceRowLength(3)
       .addAction({

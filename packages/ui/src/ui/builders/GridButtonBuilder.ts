@@ -2,9 +2,9 @@ import { PotatoScene } from '../common/PotatoScene'
 import { ChoiceOption } from '../common/CommonUITypes'
 import { chunk } from '@potato-golem/core/dist/src/core/utils/arrayUtils'
 import { validateNumber } from 'validation-utils'
+import { AbstractUIBuilder } from './AbstractUIBuilder'
 
-export class GridButtonBuilder {
-  private readonly scene: PotatoScene
+export class GridButtonBuilder extends AbstractUIBuilder{
   private choiceRowLength?: number
   private headerText?: string
   private title?: string
@@ -13,7 +13,7 @@ export class GridButtonBuilder {
 
 
   constructor(scene: PotatoScene) {
-    this.scene = scene
+    super(scene)
     this.actionOptions = []
     this.choiceOptions = []
   }
@@ -55,13 +55,13 @@ export class GridButtonBuilder {
     // @ts-ignore
     // @ts-ignore
     const dialog = this.scene.rexUI.add.dialog({
-      x: 400,
-      y: 300,
+      x: validateNumber(this.position?.x, 'Position X is a mandatory parameter'),
+      y: validateNumber(this.position?.y, 'Position Y is a mandatory parameter'),
 
-      background: this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x3e2723),
+      background: this.scene.rexUI.add.roundRectangle(0, 0, validateNumber(this.width), validateNumber((this.height)), 20, 0x3e2723),
 
       title: this.headerText ? this.scene.rexUI.add.label({
-        background: this.scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0x1b0000),
+        background: this.scene.rexUI.add.roundRectangle(0, 0, validateNumber(this.width), 40, 20, 0x1b0000),
 
 
         text: this.scene.add.text(0, 0, this.headerText, {
@@ -84,14 +84,6 @@ export class GridButtonBuilder {
       choicesHeight: 300,
       // @ts-ignore
       choices: this.splitChoicesIntoRows(this.choiceOptions),
-
-        /*
-        [
-        [this.createLabel('5 AM', 'btn0'), this.createLabel('6 AM', 'btn1'), this.createLabel('7 AM', 'btn2')] as any,
-        [this.createLabel('8 AM', 'btn3'), this.createLabel('9 AM', 'btn4'), this.createLabel('10 AM', 'btn5')],
-        [this.createLabel('11 AM', 'btn6'), this.createLabel('12 PM', 'btn7'), this.createLabel('1 PM', 'btn8')]
-
-         */
       //],
       /*
       choicesSetValueCallback: function(button, value) {
@@ -129,7 +121,6 @@ export class GridButtonBuilder {
       }
     })
       .layout()
-      //.drawBounds(this.add.graphics(), 0xff0000)
       .popUp(1000);
 
     dialog
