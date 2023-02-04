@@ -7,5 +7,5 @@ export type Position = {
 
 export type ChoiceOption = {
   text: string
-  activation: ActivationCallback
+  activation?: ActivationCallback
 }

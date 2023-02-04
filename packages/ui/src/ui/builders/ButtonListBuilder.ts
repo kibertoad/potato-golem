@@ -112,7 +112,9 @@ export class ButtonListBuilder {
       background.setFillStyle(this.#defaultFillColour)
     })
 
-    label.on('click', choiceOption.activation)
+    if (choiceOption.activation) {
+      label.on('click', choiceOption.activation)
+    }
     return label
   }
 

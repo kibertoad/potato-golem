@@ -3,6 +3,7 @@ export { ButtonListBuilder1 } from './src/ui/builders/ButtonListBuilder1'
 export { ButtonListBuilder } from './src/ui/builders/ButtonListBuilder'
 export { BackgroundBuilder } from './src/ui/builders/BackgroundBuilder'
 export { TextBuilder } from './src/ui/builders/TextBuilder'
+export { GridButtonBuilder } from './src/ui/builders/GridButtonBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'

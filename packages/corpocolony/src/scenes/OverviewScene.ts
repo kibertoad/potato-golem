@@ -4,7 +4,6 @@ import {
   ButtonListBuilder,
   ChangeSceneActivation,
   MultiplexActivation,
-  SetTextActivation,
   UIGroupSlot,
 } from '@potato-golem/ui'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'

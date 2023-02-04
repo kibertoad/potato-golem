@@ -1,14 +1,13 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  ButtonListBuilder,
-  ChangeSceneActivation,
-  MultiplexActivation,
+  GridButtonBuilder,
   UIGroupSlot,
-} from "@potato-golem/ui";
+} from '@potato-golem/ui'
 import { EndTurnProcessor } from "../processors/endTurnProcessor";
 import { TurnRecapOverlay } from "../uiblocks/TurnRecapOverlay";
+import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 
-export class TurnResultsScene extends Phaser.Scene {
+export class TurnResultsScene extends PotatoScene {
   private eventsSquare: UIGroupSlot<TurnRecapOverlay> =
     new UIGroupSlot<TurnRecapOverlay>();
   private endTurnProcessor: EndTurnProcessor;
@@ -27,11 +26,35 @@ export class TurnResultsScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+
+    const gridBuilder = new GridButtonBuilder(this)
+      .setChoiceRowLength(3)
+      .addAction({
+        text: 'OK',
+      })
+      .addChoice({
+        text: '111',
+      })
+      .addChoice({
+        text: '222',
+      })
+      .addChoice({
+        text: '333',
+      })
+      .addChoice({
+        text: '444',
+      })
+
+    gridBuilder.build()
+
+    /*
     const buttonList = new ButtonListBuilder(this)
       .textureKey("glass-panel")
       .displaySize(150, 50)
       .setExactPosition(width * 0.2, height * 0.6)
       .setSpacingOffset(10, 0);
+
+
 
     const endReviewButton = buttonList
       .addButton()
@@ -42,5 +65,7 @@ export class TurnResultsScene extends Phaser.Scene {
         ])
       )
       .build();
+
+     */
   }
 }

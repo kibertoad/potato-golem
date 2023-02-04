@@ -11,53 +11,22 @@ export type BuildDialogParams = {
   backgroundColour?: number
   promptText: string
 
+  // horizontal selection bar
   actionOptions: readonly ChoiceOption[]
+
+  // vertical selection bar
   choiceOptions: readonly ChoiceOption[]
 }
 
 export function buildDialog(scene: PotatoScene, params: BuildDialogParams) {
-  /*
-  const actions = params.choiceOptions.map((choiceOption) => {
-    return createLabel(scene, choiceOption.text, choiceOption.activation)
-  })
-
-   */
-
   const dialog = scene.rexUI.add.dialog({
     x: params.x,
     y: params.y,
 
     background: scene.rexUI.add.roundRectangle(0, 0, params.backgroundWidth, params.backgroundHeight, 20, params.backgroundColour ?? BLUE),
-
-
-    /*
-    title: scene.rexUI.add.label({
-      background: scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0x003c8f),
-      text: scene.add.text(0, 0, 'Title', {
-        fontSize: '24px'
-      }),
-      space: {
-        left: 15,
-        right: 15,
-        top: 10,
-        bottom: 10
-      }
-    }),
-     */
-
     content: scene.add.text(0, 0, params.promptText, {
       fontSize: '24px'
     }),
-
-    //actions,
-
-    /*
-    actions: [
-      createLabel(scene, 'Yes', () => {}),
-      createLabel(scene, 'No', () => {)
-    ],
-
-     */
 
     actions: params.actionOptions.map((actionOption) => {
       return createLabel(scene, actionOption.text, actionOption.activation)
@@ -106,7 +75,7 @@ export function buildDialog(scene: PotatoScene, params: BuildDialogParams) {
   return dialog
 }
 
-function createLabel (scene: PotatoScene, text: string, activation: ActivationCallback) {
+function createLabel (scene: PotatoScene, text: string, activation?: ActivationCallback) {
   const label = scene.rexUI.add.label({
     // width: 40,
     // height: 40,
@@ -124,7 +93,9 @@ function createLabel (scene: PotatoScene, text: string, activation: ActivationCa
       bottom: 10
     }
   });
-  label.on('click', activation)
+  if (activation) {
+    label.on('click', activation)
+  }
 
   return label
 }

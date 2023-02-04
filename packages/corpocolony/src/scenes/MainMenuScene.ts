@@ -225,14 +225,11 @@ export class MainMenuScene extends PotatoScene {
 
 
     const title = new BackgroundBuilder(this)
-      .textureKey('violet')
+      .textureKey('glass-panel')
       .text('Colony Incorporated: \nSurvival is a vibe')
       .displaySize(250, 50)
       .position(width * 0.3, height * 0.4)
       .build()
-
-
-
 
     const subTitle = new TextBuilder(this)
       .text('The fate of humanity is in the hands of the industry veterans with dental plan and stock options.')
