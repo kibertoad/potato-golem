@@ -1,5 +1,5 @@
-import { Operation } from '../model/worldState'
+import { Operation } from "../model/worldState";
 
 export type OperationsPlannerActivation = {
-  planOperations(allowedBudget: number): Operation
-}
+  planOperations(allowedBudget: number): Operation;
+};

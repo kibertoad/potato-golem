@@ -1,7 +1,6 @@
 import { Activation, ActivationCallback } from './ActivationTypes'
 
-export class MultiplexActivation implements Activation{
-
+export class MultiplexActivation implements Activation {
   private readonly activations: ActivationCallback[]
 
   private constructor(activations: ActivationCallback[]) {
@@ -16,6 +15,8 @@ export class MultiplexActivation implements Activation{
 
   public static build(activations: ActivationCallback[]): ActivationCallback {
     const activation = new MultiplexActivation(activations)
-    return () => { activation.activate() }
+    return () => {
+      activation.activate()
+    }
   }
 }

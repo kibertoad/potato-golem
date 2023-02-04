@@ -1,5 +1,5 @@
 import { Activation } from '../activations/ActivationTypes'
-import { OnClickCallback } from './ButtonBuilder'
+import { OnClickCallback } from '../builders/ButtonBuilder'
 
 export type UIElementTemplate = {
   text?: string

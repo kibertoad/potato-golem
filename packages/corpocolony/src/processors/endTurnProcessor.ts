@@ -1,33 +1,33 @@
-import { Activation, ActivationCallback } from '@potato-golem/core'
-import { AiOperationPlanner } from '../ai/AiOperationPlanner'
-import { worldState } from '../model/worldState'
-import { Scene } from 'phaser'
+import { Activation, ActivationCallback } from "@potato-golem/ui";
+import { AiOperationPlanner } from "../ai/AiOperationPlanner";
+import { worldState } from "../model/worldState";
+import { Scene } from "phaser";
 
 export type TurnEvent = {
-  name: string
-  fullText: string
-  link?: ActivationCallback
-}
+  name: string;
+  fullText: string;
+  link?: ActivationCallback;
+};
 export class EndTurnProcessor {
-  private readonly aiOperationPlanner: AiOperationPlanner
+  private readonly aiOperationPlanner: AiOperationPlanner;
 
   constructor() {
-    this.aiOperationPlanner = new AiOperationPlanner(worldState)
+    this.aiOperationPlanner = new AiOperationPlanner(worldState);
   }
 
   process() {
-    const turnEvents: TurnEvent[] = []
+    const turnEvents: TurnEvent[] = [];
     turnEvents.push({
-      name: 'Control lost',
-      fullText: '3% control lost in Red Zone'
-    })
+      name: "Control lost",
+      fullText: "3% control lost in Red Zone",
+    });
     turnEvents.push({
-      name: 'Control gained',
-      fullText: '7% control lost in Yellow Zone'
-    })
+      name: "Control gained",
+      fullText: "7% control lost in Yellow Zone",
+    });
 
-    this.aiOperationPlanner.activate()
+    this.aiOperationPlanner.activate();
 
-    return turnEvents
+    return turnEvents;
   }
 }

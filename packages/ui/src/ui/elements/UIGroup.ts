@@ -13,11 +13,15 @@ export class UIGroupSlot<T extends UIGroup> {
   }
 }
 
-export type AbstractUIElement =
-  Phaser.GameObjects.GameObject
-  & Phaser.GameObjects.Components.Size
-  & Phaser.GameObjects.Components.Visible
-  & Phaser.GameObjects.Components.Transform
+export type AbstractUIElementLite = Phaser.GameObjects.GameObject &
+  Pick<Phaser.GameObjects.Components.Size, 'displayHeight' | 'displayWidth'> &
+  Phaser.GameObjects.Components.Visible &
+  Phaser.GameObjects.Components.Transform
+
+export type AbstractUIElement = Phaser.GameObjects.GameObject &
+  Phaser.GameObjects.Components.Size &
+  Phaser.GameObjects.Components.Visible &
+  Phaser.GameObjects.Components.Transform
 
 export type UIGroup = {
   getChildren(): AbstractUIElement[]
@@ -67,6 +71,4 @@ export class CommonUIGroup implements UIGroup {
   getChildren(): AbstractUIElement[] {
     return this.children
   }
-
-
 }

@@ -1,16 +1,14 @@
-import { AbstractUIElement } from './UIGroup'
+import { AbstractUIElement, AbstractUIElementLite } from './UIGroup'
 import { Position } from '../common/CommonUITypes'
 
 export type SiblingLink = {
-  sibling: UIContainer
+  sibling: UIContainer<AbstractUIElementLite>
   offset: Position
 }
 
-export class UIContainer<T extends AbstractUIElement = AbstractUIElement> {
-
+export class UIContainer<T extends AbstractUIElementLite = AbstractUIElement> {
   readonly value: T
   private siblings: SiblingLink[]
-
 
   constructor(value: T) {
     this.value = value
@@ -29,10 +27,9 @@ export class UIContainer<T extends AbstractUIElement = AbstractUIElement> {
 
   private updateSiblingPosition(sibling: SiblingLink) {
     sibling.sibling.setPosition({
-        x: this.value.x + sibling.offset.x,
-        y: this.value.displayHeight + (this.value.y + sibling.offset.y),
-      },
-    )
+      x: this.value.x + sibling.offset.x,
+      y: this.value.displayHeight + (this.value.y + sibling.offset.y),
+    })
     console.log(`New sibling position: ${sibling.sibling.value.x}/${sibling.sibling.value.y}`)
   }
   private updateSiblingPositions() {

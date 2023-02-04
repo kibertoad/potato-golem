@@ -1,7 +1,6 @@
 import { Activation, ActivationCallback } from './ActivationTypes'
 
-export class ChangeSceneActivation implements Activation{
-
+export class ChangeSceneActivation implements Activation {
   readonly #newScene: Phaser.Scene | string
   readonly #currentScene: Phaser.Scene
 
@@ -14,8 +13,13 @@ export class ChangeSceneActivation implements Activation{
     this.#currentScene.scene.start(this.#newScene)
   }
 
-  public static build(currentScene: Phaser.Scene, newScene: Phaser.Scene | string): ActivationCallback {
+  public static build(
+    currentScene: Phaser.Scene,
+    newScene: Phaser.Scene | string,
+  ): ActivationCallback {
     const activation = new ChangeSceneActivation(currentScene, newScene)
-    return () => { activation.activate() }
+    return () => {
+      activation.activate()
+    }
   }
 }

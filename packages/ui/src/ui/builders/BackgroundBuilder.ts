@@ -1,7 +1,7 @@
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { AbstractUIElement } from './UIGroup'
-import { UIContainer } from './UIContainer'
+import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
+import { UIContainer } from '../elements/UIContainer'
 
 export class BackgroundBuilder {
   #text?: string
@@ -16,10 +16,14 @@ export class BackgroundBuilder {
   textChild?: Phaser.GameObjects.Text
 
   readonly #scene: Scene
-  readonly #targetBackgroundList?: AbstractUIElement[]
-  readonly #targetChildrenList?: AbstractUIElement[]
+  readonly #targetBackgroundList?: AbstractUIElementLite[]
+  readonly #targetChildrenList?: AbstractUIElementLite[]
 
-  constructor(scene: Scene, childrenList?: AbstractUIElement[], backgroundList?: Phaser.GameObjects.Image[]) {
+  constructor(
+    scene: Scene,
+    childrenList?: AbstractUIElement[],
+    backgroundList?: Phaser.GameObjects.Image[],
+  ) {
     this.#positionX = 0
     this.#positionY = 0
     this.#scene = scene
@@ -63,7 +67,8 @@ export class BackgroundBuilder {
         validateNumber(this.#displaySizeY, 'displaySizeY must be a number'),
       )
 
-    this.textChild = this.#scene.add.text(newBackground.x, newBackground.y, this.#text ?? '')
+    this.textChild = this.#scene.add
+      .text(newBackground.x, newBackground.y, this.#text ?? '')
       .setOrigin(0.5)
       .setWordWrapWidth(newBackground.displayWidth)
       .setAlign('left')
@@ -87,7 +92,7 @@ export class BackgroundBuilder {
       offset: {
         x: 0,
         y: 0,
-      }
+      },
     })
 
     return {

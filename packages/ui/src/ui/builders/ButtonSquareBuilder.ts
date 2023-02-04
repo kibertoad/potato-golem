@@ -1,10 +1,9 @@
 import { ButtonListBuilder } from './ButtonListBuilder'
 import { Scene } from 'phaser'
 import { ButtonBuilder } from './ButtonBuilder'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from './UIGroup'
+import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
 
 export class ButtonSquareBuilder extends ButtonListBuilder {
-
   #buttonListBuilder?: ButtonListBuilder
   readonly #buttonLists: ButtonListBuilder[]
 
@@ -36,7 +35,9 @@ export class ButtonSquareBuilder extends ButtonListBuilder {
       this.#buttonLists.push(this.#buttonListBuilder)
       this.#buttonListBuilder?.setExactPosition(
         this.#buttonListBuilder.positionX!,
-        this.#buttonListBuilder.positionY! + this.#buttonListBuilder?.displaySizeY! + this.#rowSpacingOffset!
+        this.#buttonListBuilder.positionY! +
+          this.#buttonListBuilder?.displaySizeY! +
+          this.#rowSpacingOffset!,
       )
     }
 
@@ -45,6 +46,10 @@ export class ButtonSquareBuilder extends ButtonListBuilder {
   }
 
   build(): AbstractUIElement[] {
-    return this.#buttonLists.map((list) => { return list.getChildren() }).flat()
+    return this.#buttonLists
+      .map((list) => {
+        return list.getChildren()
+      })
+      .flat()
   }
 }

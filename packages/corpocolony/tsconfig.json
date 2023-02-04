@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "isolatedModules": true,
     "types": ["vitest/globals"],
     "target": "es2018",
     "paths": {
-      "@potato-golem/lib": ["../lib"],
+      "@potato-golem/ui": ["../ui"],
       "@potato-golem/core": ["../core"]
-    }
+    },
+    "skipLibCheck": true
   },
 
 }

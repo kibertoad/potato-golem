@@ -105,7 +105,6 @@ dist
 /example/package-lock.json
 /package-lock.json
 /.idea/
-/example/.parcel-cache/
-/packages/lib/package-lock.json
+/packages/extras/package-lock.json
 /.parcel-cache/
 *.js

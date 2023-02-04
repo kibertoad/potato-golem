@@ -1,23 +1,28 @@
-import { Scenes } from '../registries/SceneRegistry'
-import { ButtonListBuilder, ChangeSceneActivation, MultiplexActivation, UIGroupSlot } from '@potato-golem/extras'
-import { EndTurnProcessor } from '../processors/endTurnProcessor'
-import { TurnRecapOverlay } from '../uiblocks/TurnRecapOverlay'
+import { Scenes } from "../registries/SceneRegistry";
+import {
+  ButtonListBuilder,
+  ChangeSceneActivation,
+  MultiplexActivation,
+  UIGroupSlot,
+} from "@potato-golem/ui";
+import { EndTurnProcessor } from "../processors/endTurnProcessor";
+import { TurnRecapOverlay } from "../uiblocks/TurnRecapOverlay";
 
 export class TurnResultsScene extends Phaser.Scene {
-
-  private eventsSquare: UIGroupSlot<TurnRecapOverlay> = new UIGroupSlot<TurnRecapOverlay>()
-  private endTurnProcessor: EndTurnProcessor
+  private eventsSquare: UIGroupSlot<TurnRecapOverlay> =
+    new UIGroupSlot<TurnRecapOverlay>();
+  private endTurnProcessor: EndTurnProcessor;
 
   constructor() {
     super(Scenes.TURN_RESULTS);
 
-    this.endTurnProcessor = new EndTurnProcessor()
+    this.endTurnProcessor = new EndTurnProcessor();
   }
 
   init() {
-    console.log(`let's init! ${Scenes.TURN_RESULTS}`)
-    const turnEvents = this.endTurnProcessor.process()
-    this.eventsSquare.populate(TurnRecapOverlay.build(this, turnEvents))
+    console.log(`let's init! ${Scenes.TURN_RESULTS}`);
+    const turnEvents = this.endTurnProcessor.process();
+    this.eventsSquare.populate(TurnRecapOverlay.build(this, turnEvents));
   }
 
   create() {
@@ -26,14 +31,16 @@ export class TurnResultsScene extends Phaser.Scene {
       .textureKey("glass-panel")
       .displaySize(150, 50)
       .setExactPosition(width * 0.2, height * 0.6)
-      .setSpacingOffset(10, 0)
+      .setSpacingOffset(10, 0);
 
-    const endReviewButton = buttonList.addButton()
+    const endReviewButton = buttonList
+      .addButton()
       .text("End review")
-      .onClick(MultiplexActivation.build([
-        ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE)
-      ]))
+      .onClick(
+        MultiplexActivation.build([
+          ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE),
+        ])
+      )
       .build();
   }
-
 }

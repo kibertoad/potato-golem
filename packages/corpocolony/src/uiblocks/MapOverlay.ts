@@ -1,29 +1,31 @@
-import {
-  ButtonBuilder, CommonUIGroup,
-  Position,
-} from '@potato-golem/extras'
-import { territories } from '../model/territories'
+import { ButtonBuilder, CommonUIGroup, Position } from "@potato-golem/ui";
+import { territories } from "../model/territories";
 
-export class MapOverlay extends CommonUIGroup{
-
-  private readonly territoryList: Phaser.GameObjects.Image[] = []
+export class MapOverlay extends CommonUIGroup {
+  private readonly territoryList: Phaser.GameObjects.Image[] = [];
 
   static build(scene: Phaser.Scene, startingPosition: Position) {
     const { width, height } = scene.scale;
-    const mapOverlay = new MapOverlay()
+    const mapOverlay = new MapOverlay();
 
     for (let territory of Object.entries(territories)) {
-      const [territoryId, definition] = territory
+      const [territoryId, definition] = territory;
 
-      const newButton = new ButtonBuilder(scene, mapOverlay.children, mapOverlay.territoryList)
+      const newButton = new ButtonBuilder(
+        scene,
+        mapOverlay.children,
+        mapOverlay.territoryList
+      )
         .text(definition.name)
         .textureKey("glass-panel")
         .displaySize(definition.sizeX, definition.sizeY)
-        .position(startingPosition.x + definition.positionX, startingPosition.x + definition.positionY)
-        .build()
+        .position(
+          startingPosition.x + definition.positionX,
+          startingPosition.x + definition.positionY
+        )
+        .build();
     }
 
-    return mapOverlay
+    return mapOverlay;
   }
-
 }
