@@ -2,6 +2,7 @@ import { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
 import { Activation } from '../activations/ActivationTypes'
 import { AbstractUIElement } from './UIGroup'
+import { UIElementTemplate } from './UIElementTemplate'
 
 export type OnClickCallback = (button: any) => void
 
@@ -27,6 +28,40 @@ export class ButtonBuilder {
     this.#scene = scene
     this.#targetButtonList = buttonList
     this.#targetChildrenList = childrenList
+  }
+
+  public template(template: UIElementTemplate) {
+    if (template.displaySizeX) {
+      this.#displaySizeX = template.displaySizeX
+    }
+
+    if (template.displaySizeY) {
+      this.#displaySizeY = template.displaySizeY
+    }
+
+    if (template.onUnhover) {
+      this.#onUnhover = template.onUnhover
+    }
+
+    if (template.onHover) {
+      this.#onHover = template.onHover
+    }
+
+    if (template.text) {
+      this.#text = template.text
+    }
+    if (template.onClick) {
+      this.#onClick = template.onClick
+    }
+    if (template.textureKey) {
+      this.#textureKey = template.textureKey
+    }
+    if (template.positionX) {
+      this.#positionX = template.positionX
+    }
+    if (template.positionY) {
+      this.#positionY = template.positionY
+    }
   }
 
   public onClick(callback: Activation | OnClickCallback) {
