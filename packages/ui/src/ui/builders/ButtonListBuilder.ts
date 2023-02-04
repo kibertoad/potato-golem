@@ -21,6 +21,8 @@ export class ButtonListBuilder {
   public positionX?: number
   public positionY?: number
 
+  #paddingHorizontal?: number
+
   #spacingOffsetX?: number
   #spacingOffsetY?: number
 
@@ -28,6 +30,7 @@ export class ButtonListBuilder {
     this.buttons = []
     this.choiceOptions = []
     this.scene = scene
+    this.#paddingHorizontal = 0
   }
 
   public template(template: UIElementTemplate) {
@@ -58,6 +61,10 @@ export class ButtonListBuilder {
     return this
   }
 
+  public paddingHorizontal(padding: number) {
+    this.#paddingHorizontal = padding
+  }
+
   public setExactPosition(x: number, y: number) {
     this.positionX = x
     this.positionY = y
@@ -80,17 +87,20 @@ export class ButtonListBuilder {
   }
 
   private createButton (choiceOption: ChoiceOption) {
-    const background = this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, this.#defaultFillColour)
+    const background = this.scene.rexUI.add.roundRectangle(0, 0,
+      validateNumber(this.displaySizeX),
+      validateNumber(this.displaySizeY),
+      20, this.#defaultFillColour)
     const label = this.scene.rexUI.add.label({
-      width: 40,
-      height: 40,
+      width: this.displaySizeX,
+      height: this.displaySizeY,
       background,
       text: this.scene.add.text(0, 0, choiceOption.text, {
         fontSize: '18px'
       }),
       space: {
-        left: 10,
-        right: 10,
+        left: this.#paddingHorizontal,
+        right: this.#paddingHorizontal,
       },
       align: 'center'
     });
@@ -124,7 +134,7 @@ export class ButtonListBuilder {
 
       space: {
         left: 10, right: 10, top: 10, bottom: 10,
-        item: 3
+        item: this.#spacingOffsetX
       },
       expand: expand
     })

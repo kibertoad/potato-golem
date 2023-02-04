@@ -9,9 +9,8 @@ import {
 } from '@potato-golem/ui'
 import { TechnologyGroupList } from '../uiblocks/TechnologyGroupList'
 import { MapOverlay } from '../uiblocks/MapOverlay'
-import { buttonTemplate } from '../templates/UITemplates'
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
-import { COLOR_DARK, COLOR_LIGHT, SOMECOLOR } from '@potato-golem/ui/dist/src/ui/constants/Colours'
+import { COLOR_DARK, COLOR_LIGHT } from '@potato-golem/ui/dist/src/ui/constants/Colours'
 
 export class OverviewScene extends PotatoScene {
   private scienceSquare: UIGroupSlot<TechnologyGroupList> =
@@ -32,7 +31,8 @@ export class OverviewScene extends PotatoScene {
       .build()
 
     const buttonList = new ButtonListBuilder(this)
-      .setExactPosition(width * 0.2, height * 0.9)
+      .setExactPosition(width * 0.3, height * 0.9)
+      .displaySize(150, 50)
       .setSpacingOffset(10, 0)
       .addButton({
         text: 'Research',
