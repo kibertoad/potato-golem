@@ -1,11 +1,11 @@
-import { ButtonListBuilder } from './ButtonListBuilder'
+import { ButtonListBuilder1 } from './ButtonListBuilder1'
 import { Scene } from 'phaser'
 import { ButtonBuilder } from './ButtonBuilder'
 import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
 
-export class ButtonSquareBuilder extends ButtonListBuilder {
-  #buttonListBuilder?: ButtonListBuilder
-  readonly #buttonLists: ButtonListBuilder[]
+export class ButtonSquareBuilder extends ButtonListBuilder1 {
+  #buttonListBuilder?: ButtonListBuilder1
+  readonly #buttonLists: ButtonListBuilder1[]
 
   #rowSize?: number
   #rowSpacingOffset?: number
@@ -27,11 +27,11 @@ export class ButtonSquareBuilder extends ButtonListBuilder {
 
   public override addButton(): ButtonBuilder {
     if (!this.#buttonListBuilder) {
-      this.#buttonListBuilder = ButtonListBuilder.from(this)
+      this.#buttonListBuilder = ButtonListBuilder1.from(this)
       this.#buttonLists.push(this.#buttonListBuilder)
     }
     if (this.#buttonListBuilder?.buttons?.length >= this.#rowSize!) {
-      this.#buttonListBuilder = ButtonListBuilder.from(this)
+      this.#buttonListBuilder = ButtonListBuilder1.from(this)
       this.#buttonLists.push(this.#buttonListBuilder)
       this.#buttonListBuilder?.setExactPosition(
         this.#buttonListBuilder.positionX!,

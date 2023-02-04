@@ -1,8 +1,9 @@
 {
   "name": "@potato-golem/ui",
   "version": "1.0.0",
-  "description": "potato golem game lib",
-  "main": "index.js",
+  "description": "potato golem game lib UI module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "mocha **/*.spec.ts --require ts-node/register",
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "@potato-golem/core": "1.0.0",
+    "phaser3-rex-plugins": "^1.1.80",
     "validation-utils": "^7.0.0"
   },
   "devDependencies": {

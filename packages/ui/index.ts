@@ -1,7 +1,12 @@
 export { ButtonBuilder } from './src/ui/builders/ButtonBuilder'
+export { ButtonListBuilder1 } from './src/ui/builders/ButtonListBuilder1'
 export { ButtonListBuilder } from './src/ui/builders/ButtonListBuilder'
 export { BackgroundBuilder } from './src/ui/builders/BackgroundBuilder'
+export { TextBuilder } from './src/ui/builders/TextBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
+
+export { buildDialog } from './src/ui/builders/DialogBuilder'
+
 
 export { ButtonSquareBuilder } from './src/ui/builders/ButtonSquareBuilder'
 export { UIGroupSlot, CommonUIGroup } from './src/ui/elements/UIGroup'
@@ -15,3 +20,5 @@ export type { Activation, ActivationCallback } from './src/ui/activations/Activa
 export type { Position } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'
+
+export type { UIElementTemplate } from './src/ui/elements/UIElementTemplate'

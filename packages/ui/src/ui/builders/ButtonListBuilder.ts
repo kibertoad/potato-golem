@@ -1,15 +1,19 @@
 import { ButtonBuilder } from './ButtonBuilder'
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { Position } from '../common/CommonUITypes'
+import { ChoiceOption, Position } from '../common/CommonUITypes'
 import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import { UIElementTemplate } from '../elements/UIElementTemplate'
+import { PotatoScene } from '../common/PotatoScene'
+import { GREENISH } from '../constants/Colours'
 
-export class ButtonListBuilder extends CommonUIGroup {
+export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]
-  protected buttonBuilder?: ButtonBuilder
-  protected scene: Scene
+  private readonly choiceOptions: ChoiceOption[]
+  protected scene: PotatoScene
 
-  #textureKey?: string
+  #defaultFillColour?: number
+  #highlightFillColour?: number
 
   public displaySizeX?: number
   public displaySizeY?: number
@@ -20,14 +24,31 @@ export class ButtonListBuilder extends CommonUIGroup {
   #spacingOffsetX?: number
   #spacingOffsetY?: number
 
-  constructor(scene: Scene) {
-    super()
+  constructor(scene: PotatoScene) {
     this.buttons = []
+    this.choiceOptions = []
     this.scene = scene
   }
 
-  public textureKey(value: string) {
-    this.#textureKey = value
+  public template(template: UIElementTemplate) {
+    if (template.displaySizeX) {
+      this.displaySizeX = template.displaySizeX
+    }
+
+    if (template.displaySizeY) {
+      this.displaySizeY = template.displaySizeY
+    }
+
+    return this
+  }
+
+  public fillColour(value: number) {
+    this.#defaultFillColour = value
+    return this
+  }
+
+  public highlightFillColour(value: number) {
+    this.#highlightFillColour = value
     return this
   }
 
@@ -51,60 +72,69 @@ export class ButtonListBuilder extends CommonUIGroup {
     return this
   }
 
-  protected resolveNextButtonPosition(): Position {
-    validateNumber(this.positionX)
-    validateNumber(this.positionY)
-
-    if (!this.buttons.length) {
-      return {
-        x: this.positionX!,
-        y: this.positionY!,
-      }
-    }
-
-    const lastButton = this.buttons.at(-1)
-    if (this.#spacingOffsetX) {
-      return {
-        x: lastButton!.x + lastButton!.displayWidth + this.#spacingOffsetX,
-        y: this.positionY!,
-      }
-    }
-
-    if (this.#spacingOffsetY) {
-      return {
-        x: this.positionX!,
-        y: lastButton!.y + lastButton!.displayHeight + this.#spacingOffsetY,
-      }
-    }
-
-    throw new Error('No offset defined for the button list')
-  }
-
-  protected initButtonBuilder(listBuilder: ButtonListBuilder) {
-    const position = listBuilder.resolveNextButtonPosition()
-    return new ButtonBuilder(listBuilder.scene, listBuilder.children, listBuilder.buttons)
-      .position(position.x, position.y)
-      .textureKey(validateString(listBuilder.#textureKey))
-      .displaySize(
-        validateNumber(listBuilder.displaySizeX),
-        validateNumber(listBuilder.displaySizeY),
-      )
-  }
-
   public static from(source: ButtonListBuilder) {
     return new ButtonListBuilder(source.scene)
       .displaySize(source.displaySizeX!, source.displaySizeY!)
       .setSpacingOffset(source.#spacingOffsetX!, source.#spacingOffsetY!)
       .setExactPosition(source.positionX!, source.positionY!)
-      .textureKey(source.#textureKey!)
   }
 
-  public addButton(): ButtonBuilder {
-    this.buttonBuilder = this.initButtonBuilder(this)
-    return this.buttonBuilder
+  private createButton (choiceOption: ChoiceOption) {
+    const background = this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, this.#defaultFillColour)
+    const label = this.scene.rexUI.add.label({
+      width: 40,
+      height: 40,
+      background,
+      text: this.scene.add.text(0, 0, choiceOption.text, {
+        fontSize: '18px'
+      }),
+      space: {
+        left: 10,
+        right: 10,
+      },
+      align: 'center'
+    });
+
+    label.on(Phaser.Input.Events.POINTER_OVER, () => {
+      background.setFillStyle(this.#highlightFillColour)
+    })
+    label.on(Phaser.Input.Events.POINTER_OUT, () => {
+      background.setFillStyle(this.#defaultFillColour)
+    })
+
+    label.on('click', choiceOption.activation)
+    return label
   }
 
-  public build(): AbstractUIElement[] {
-    return this.getChildren()
+  public addButton(choiceOption: ChoiceOption) {
+    this.choiceOptions.push(choiceOption)
+    return this
+  }
+
+  public build() {
+    const expand = true;
+    const buttons = this.scene.rexUI.add.buttons({
+      x: this.positionX, y: this.positionY,
+      width: this.displaySizeX,
+      orientation: 'x',
+
+      buttons: this.choiceOptions.map((choiceOption) => {
+        return this.createButton(choiceOption)
+      }),
+
+      space: {
+        left: 10, right: 10, top: 10, bottom: 10,
+        item: 3
+      },
+      expand: expand
+    })
+      .layout()
+//      .drawBounds(this.scene.add.graphics(), 0xff0000)
+
+    buttons
+      .on('button.click', function (button, index, pointer, event) {
+        button.emit('click')
+      })
+
   }
 }

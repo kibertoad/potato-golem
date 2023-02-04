@@ -1,12 +1,12 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  ButtonListBuilder,
+  BackgroundBuilder, buildDialog,
+  ButtonListBuilder, ButtonListBuilder1,
   ChangeSceneActivation,
-  MultiplexActivation,
-} from "@potato-golem/ui";
+  MultiplexActivation, TextBuilder,
+} from '@potato-golem/ui'
 import { SetWorldActivation } from "../activations/SetWorldActivation";
 import { worldState } from "../model/worldState";
-import { DirectorPortraits, Gender } from "../registries/ImageRegistry";
 
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
@@ -19,9 +19,10 @@ const dronesImg = require("../../assets/img/drones.png");
 const communicationsImg = require("../../assets/img/communications.png");
 import BaseSound = Phaser.Sound.BaseSound;
 
-export class MainMenuScene extends Phaser.Scene {
-  private buttonSelector!: Phaser.GameObjects.Image;
+import { TextBox, RoundRectangle } from 'phaser3-rex-plugins/templates/ui/ui-components';
+import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 
+export class MainMenuScene extends PotatoScene {
   private buttons: Phaser.GameObjects.Image[] = [];
   private selectedButtonIndex = 0;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -212,14 +213,75 @@ export class MainMenuScene extends Phaser.Scene {
   }
 
   create() {
+    /*
     this.mainTheme = this.sound.add("mainTheme");
     this.mainTheme.play({
       loop: true,
     });
 
+     */
+
     const { width, height } = this.scale;
 
-    const buttonList = new ButtonListBuilder(this)
+
+    const title = new BackgroundBuilder(this)
+      .textureKey('violet')
+      .text('Colony Incorporated: \nSurvival is a vibe')
+      .displaySize(250, 50)
+      .position(width * 0.3, height * 0.4)
+      .build()
+
+
+
+
+    const subTitle = new TextBuilder(this)
+      .text('The fate of humanity is in the hands of the industry veterans with dental plan and stock options.')
+      .displaySize(250, 150)
+      .position(width * 0.3, height * 0.6)
+      .build()
+
+
+/*
+    const dialog = buildDialog(this, {
+      x: 200,
+      y: 200,
+      backgroundHeight: 200,
+      backgroundWidth: 200,
+      promptText: 'Shall we?',
+      actionOptions: [
+        {
+          text: 'Yes',
+          activation: () => {
+            console.log('yes')
+          }
+        },
+        {
+          text: 'No',
+          activation: () => {
+            console.log('no')
+          }
+        }
+      ],
+      choiceOptions: [
+        {
+          text: 'Yes',
+          activation: () => {
+            console.log('yes')
+          }
+        },
+        {
+          text: 'No',
+          activation: () => {
+            console.log('no')
+          }
+        }
+      ]
+    })
+
+ */
+
+
+    const buttonList = new ButtonListBuilder1(this)
       .textureKey("violet")
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
@@ -267,6 +329,9 @@ export class MainMenuScene extends Phaser.Scene {
       console.log("credits");
     });
 
+
+
+    /*
     const r1 = this.add.graphics();
 
     // draw rectangle
@@ -295,40 +360,7 @@ export class MainMenuScene extends Phaser.Scene {
       // ...
     });
 
-    this.buttonSelector = this.add.image(0, 0, "cursor-hand");
-    this.selectButton(0);
-  }
-
-  selectButton(index: number) {
-    const currentButton = this.buttons[this.selectedButtonIndex];
-
-    // set the current selected button to a white tint
-    currentButton.setTint(0xffffff);
-
-    const button = this.buttons[index];
-
-    // set the newly selected button to a green tint
-    button.setTint(0x66ff7f);
-
-    // move the hand cursor to the right edge
-    this.buttonSelector.x = button.x + button.displayWidth * 0.5;
-    this.buttonSelector.y = button.y + 10;
-
-    // store the new selected index
-    this.selectedButtonIndex = index;
-  }
-
-  selectNextButton(change = 1) {
-    let index = this.selectedButtonIndex + change;
-
-    // wrap the index to the front or end of array
-    if (index >= this.buttons.length) {
-      index = 0;
-    } else if (index < 0) {
-      index = this.buttons.length - 1;
-    }
-
-    this.selectButton(index);
+     */
   }
 
   confirmSelection() {
@@ -346,11 +378,7 @@ export class MainMenuScene extends Phaser.Scene {
       this.cursors.space!
     );
 
-    if (upJustPressed) {
-      this.selectNextButton(-1);
-    } else if (downJustPressed) {
-      this.selectNextButton(1);
-    } else if (spaceJustPressed) {
+    if (spaceJustPressed) {
       this.confirmSelection();
     }
   }

@@ -4,4 +4,5 @@ export enum Scenes {
 
   TURN_RESULTS = "turnResults",
   HIRE_DIRECTOR = "hireDirector",
+  EXECUTIVE_COUNCIL = 'executiveCouncil'
 }

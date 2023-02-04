@@ -68,8 +68,11 @@ export class BackgroundBuilder {
       )
 
     this.textChild = this.#scene.add
-      .text(newBackground.x, newBackground.y, this.#text ?? '')
-      .setOrigin(0.5)
+      .text(
+        validateNumber(this.#positionX, 'positionX must be a number'),
+        validateNumber(this.#positionY, 'positionY must be a number'),
+      this.#text ?? '')
+      .setOrigin(0.5, 0.5)
       .setWordWrapWidth(newBackground.displayWidth)
       .setAlign('left')
 
