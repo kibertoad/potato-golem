@@ -6,6 +6,8 @@ import { validateNumber } from 'validation-utils'
 export class GridButtonBuilder {
   private readonly scene: PotatoScene
   private choiceRowLength?: number
+  private headerText?: string
+  private title?: string
   private readonly choiceOptions: ChoiceOption[]
   private readonly actionOptions: ChoiceOption[]
 
@@ -25,6 +27,17 @@ export class GridButtonBuilder {
     this.choiceOptions.push(choiceOption)
     return this
   }
+
+  public setTitle(value: string) {
+    this.title = value
+    return this
+  }
+
+  public setHeaderText(value: string) {
+    this.headerText = value
+    return this
+  }
+
 
   public setChoiceRowLength(value: number) {
     this.choiceRowLength = value
@@ -47,22 +60,25 @@ export class GridButtonBuilder {
 
       background: this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 20, 0x3e2723),
 
-      title: this.scene.rexUI.add.label({
+      title: this.headerText ? this.scene.rexUI.add.label({
         background: this.scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0x1b0000),
-        text: this.scene.add.text(0, 0, 'Question 10', {
+
+
+        text: this.scene.add.text(0, 0, this.headerText, {
           fontSize: '24px'
         }),
+
         space: {
           left: 15,
           right: 15,
           top: 10,
           bottom: 10
         }
-      }),
+      }) : undefined,
 
-      content: this.scene.add.text(0, 0, 'When will you eat breakfast?', {
+      content: this.title ? this.scene.add.text(0, 0, this.title, {
         fontSize: '24px'
-      }),
+      }) : undefined,
 
       choicesType: 'grid-checkboxes',
       choicesHeight: 300,
