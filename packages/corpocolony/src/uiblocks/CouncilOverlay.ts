@@ -48,7 +48,7 @@ export class CouncilOverlay extends CommonUIGroup {
           text: 'Abstain'
         },
         {
-          text: 'Require changes'
+          text: 'Request changes'
         },
       ],
       actionOptions: [
