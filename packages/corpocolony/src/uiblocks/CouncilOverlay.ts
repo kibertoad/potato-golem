@@ -7,14 +7,14 @@ export class CouncilOverlay extends CommonUIGroup {
     const councilOverlay = new CouncilOverlay();
 
     const x = 200
-    const y = 500
+    const y = 520
 
     const proposalWindow = new TabPageBuilder(scene)
       .setWidth(400)
       .setHeight(300)
       .setPosition({
-        x: 600,
-        y: y - 30,
+        x: 250,
+        y: 170,
       })
       .addPage({
         pageName: 'Overview',
