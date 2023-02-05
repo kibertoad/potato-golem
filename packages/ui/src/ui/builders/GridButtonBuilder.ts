@@ -3,6 +3,7 @@ import { ChoiceOption } from '../common/CommonUITypes'
 import { chunk } from '@potato-golem/core/dist/src/core/utils/arrayUtils'
 import { validateNumber } from 'validation-utils'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
+import { LabelBuilder } from './LabelBuilder'
 
 export class GridButtonBuilder extends AbstractUIBuilder{
   private choiceRowLength?: number
@@ -153,24 +154,10 @@ export class GridButtonBuilder extends AbstractUIBuilder{
   }
 
   createLabel(text: string, name?: string) {
-    if (name === undefined) {
-      name = text;
-    }
-    return this.scene.rexUI.add.label({
-      background: this.scene.rexUI.add.roundRectangle(0, 0, 100, 40, 20, 0x6a4f4b),
-
-      text: this.scene.add.text(0, 0, text, {
-        fontSize: '24px'
-      }),
-
-      space: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      },
-
-      name: name
-    });
+    const labelBuilder = new LabelBuilder(this.scene)
+      .setText(text)
+      .setWidth(100)
+      .setHeight(40)
+    return labelBuilder.build()
   }
 }

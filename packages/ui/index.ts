@@ -6,6 +6,7 @@ export { TextBuilder } from './src/ui/builders/TextBuilder'
 export { GridButtonBuilder } from './src/ui/builders/GridButtonBuilder'
 export { NameValueLabelBuilder } from './src/ui/builders/NameValueLabelBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
+export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 

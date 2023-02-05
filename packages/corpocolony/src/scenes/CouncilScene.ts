@@ -10,8 +10,10 @@ import {
 } from "@potato-golem/ui";
 import { Director, generateDirectors } from "../generators/directorGenerator";
 import { buttonTemplate } from '../templates/UITemplates'
+import { CouncilOverlay } from '../uiblocks/CouncilOverlay'
+import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 
-export class CouncilScene extends Phaser.Scene {
+export class CouncilScene extends PotatoScene {
   private vps: Director[];
   private vpContainers: UIContainer[];
 
@@ -26,6 +28,10 @@ export class CouncilScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+
+    const councilOverlay = CouncilOverlay.build(this, { x: 0, y: 0 })
+
+    /*
     const buttonList = new ButtonListBuilder(this)
       .template(buttonTemplate)
       .displaySize(150, 150)
@@ -61,5 +67,7 @@ export class CouncilScene extends Phaser.Scene {
         ])
       )
       .build();
+
+     */
   }
 }

@@ -305,9 +305,7 @@ export class MainMenuScene extends PotatoScene {
     const creditsButton = buttonList
       .addButton()
       .text("Credits")
-      .onClick(() => {
-        console.log("clickety click ");
-      })
+      .onClick(ChangeSceneActivation.build(this, Scenes.EXECUTIVE_COUNCIL))
       .build();
 
     this.buttons.push(playButton);

@@ -2,6 +2,7 @@ import { PotatoScene } from '../common/PotatoScene'
 import { BLUE } from '../constants/Colours'
 import { ActivationCallback } from '../activations/ActivationTypes'
 import { ChoiceOption } from '../common/CommonUITypes'
+import { LabelBuilder } from './LabelBuilder'
 
 export type BuildDialogParams = {
   x: number
@@ -58,7 +59,7 @@ export function buildDialog(scene: PotatoScene, params: BuildDialogParams) {
   })
     .layout()
     // .drawBounds(this.add.graphics(), 0xff0000)
-    .popUp(1000);
+    //.popUp(1000);
 
   dialog
     .on('button.click', function (button, groupName, index) {
@@ -76,26 +77,13 @@ export function buildDialog(scene: PotatoScene, params: BuildDialogParams) {
 }
 
 function createLabel (scene: PotatoScene, text: string, activation?: ActivationCallback) {
-  const label = scene.rexUI.add.label({
-    // width: 40,
-    // height: 40,
+  const labelBuilder = new LabelBuilder(scene)
+  labelBuilder
+    .setText(text)
+    .setWidth(0)
+    .setHeight(0)
+    .setFillColour(0x5e92f3)
+    .setActivation(activation)
 
-    background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 20, 0x5e92f3),
-
-    text: scene.add.text(0, 0, text, {
-      fontSize: '24px'
-    }),
-
-    space: {
-      left: 10,
-      right: 10,
-      top: 10,
-      bottom: 10
-    }
-  });
-  if (activation) {
-    label.on('click', activation)
-  }
-
-  return label
+  return labelBuilder.build()
 }

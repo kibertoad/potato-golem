@@ -4,12 +4,22 @@ import { OverviewScene } from './scenes/OverviewScene'
 import { TurnResultsScene } from './scenes/TurnResultsScene'
 import { HireDirectorScene } from './scenes/HireDirectorScene'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+import { CouncilScene } from './scenes/CouncilScene'
+
+const GameResolutions = {
+  default: {
+    width: 1280,
+    height: 720,
+  }
+}
+
+const resolution = GameResolutions.default
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: undefined,
-  width: 1024,
-  height: 768,
+  width: resolution.width,
+  height: resolution.height,
   plugins: {
     scene: [{
       key: 'rexUI',
@@ -23,6 +33,7 @@ const config: Phaser.Types.Core.GameConfig = {
     new OverviewScene(),
     new TurnResultsScene(),
     new HireDirectorScene(),
+    new CouncilScene(),
   ],
 }
 
