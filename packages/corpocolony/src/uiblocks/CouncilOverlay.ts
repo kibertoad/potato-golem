@@ -2,6 +2,7 @@ import { buildDialog, CommonUIGroup, ImageBoxBuilder, Position, TabPageBuilder }
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { Director } from '../generators/directorGenerator'
 import { LabelBuilder } from '@potato-golem/ui/dist/src/ui/builders/LabelBuilder'
+import { VpPositionWindow } from './VpPositionWindow'
 
 export class CouncilOverlay extends CommonUIGroup {
 
@@ -60,16 +61,10 @@ export class CouncilOverlay extends CommonUIGroup {
     let counter = 0
     for (let vp of vps) {
       counter++
-      const portraitBuilder = new ImageBoxBuilder(scene)
-        .setPosition({
-          x: 360 + (180 * counter),
-          y: 100
-        })
-        .setTextureKey(vp.icon)
-        .setHeight(100)
-        .setWidth(100)
-        .build()
-
+      const vpWindow = VpPositionWindow.build(scene, {
+        x: 360 + (180 * counter),
+        y: 360
+      }, vp)
     }
 
     return councilOverlay

@@ -13,7 +13,7 @@ export class ImageBoxBuilder extends AbstractUIBuilder {
 
   build() {
     // @ts-ignore
-    this.scene.add.rexImageBox(this.getX(), this.getY(), validateString(this.textureKey))
+    return this.scene.add.rexImageBox(this.getX(), this.getY(), validateString(this.textureKey))
       .resize(this.getWidth(), this.getHeight())
   }
 

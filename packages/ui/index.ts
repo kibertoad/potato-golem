@@ -8,6 +8,7 @@ export { NameValueLabelBuilder } from './src/ui/builders/NameValueLabelBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
 export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
+export { SizerBuilder } from './src/ui/builders/SizerBuilder'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 
