@@ -18,7 +18,7 @@ export class VpPositionWindow {
         iconWidth: 100,
         iconHeight: 100,
         iconOffsetX: 20,
-        proportion: 3
+        proportion: 4
       })
       .addRow({
         text: 'They approve of the proposal',
@@ -26,28 +26,19 @@ export class VpPositionWindow {
       })
       .addRow({
         text: 'For',
-        proportion: 4
+        proportion: 5
       })
       .addRow({
         text: 'Against',
-        proportion: 4
+        proportion: 5
+      })
+      .addRow({
+        text: 'Consequences',
+        proportion: 3
       })
       .setWidth(170)
-      .setHeight(600)
+      .setHeight(700)
       .build()
-
-    /*
-    const portraitBuilder = new ImageBoxBuilder(scene)
-      .setPosition({
-        x: startingPosition.x,
-        y: startingPosition.y,
-      })
-      .setTextureKey(vp.icon)
-      .setHeight(100)
-      .setWidth(100)
-      .build()
-
-     */
 
     return window
   }
