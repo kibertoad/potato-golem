@@ -62,7 +62,7 @@ export class CouncilOverlay extends CommonUIGroup {
     for (let vp of vps) {
       counter++
       const vpWindow = VpPositionWindow.build(scene, {
-        x: 360 + (180 * counter),
+        x: 360 + (200 * counter),
         y: 360
       }, vp)
     }
