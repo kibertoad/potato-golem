@@ -22,11 +22,8 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "@potato-golem/core": "1.0.0",
-    "phaser3-rex-plugins": "^1.1.80",
+    "phaser3-rex-plugins": "rexrainbow/phaser3-rex-notes#master",
     "validation-utils": "^7.0.0"
-  },
-  "peerDependencies": {
-    "phaser3-rex-plugins": "^1.1.80"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
@@ -37,7 +34,6 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "mocha": "^10.2.0",
-    "phaser3-rex-plugins": "^1.1.80",
     "prettier": "^2.8.3",
     "ts-node": "^10.9.1"
   }

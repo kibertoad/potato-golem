@@ -1,13 +1,15 @@
-import { buildDialog, CommonUIGroup, Position, TabPageBuilder } from '@potato-golem/ui'
+import { buildDialog, CommonUIGroup, ImageBoxBuilder, Position, TabPageBuilder } from '@potato-golem/ui'
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
+import { Director } from '../generators/directorGenerator'
+import { LabelBuilder } from '@potato-golem/ui/dist/src/ui/builders/LabelBuilder'
 
 export class CouncilOverlay extends CommonUIGroup {
 
-  static build(scene: PotatoScene, startingPosition: Position) {
+  static build(scene: PotatoScene, startingPosition: Position, vps: readonly Director[]) {
     const councilOverlay = new CouncilOverlay();
 
-    const x = 200
-    const y = 520
+    const x = startingPosition.x + 200
+    const y = startingPosition.y + 520
 
     const proposalWindow = new TabPageBuilder(scene)
       .setWidth(400)
@@ -54,6 +56,21 @@ export class CouncilOverlay extends CommonUIGroup {
         }
       ]
     })
+
+    let counter = 0
+    for (let vp of vps) {
+      counter++
+      const portraitBuilder = new ImageBoxBuilder(scene)
+        .setPosition({
+          x: 360 + (180 * counter),
+          y: 100
+        })
+        .setTextureKey(vp.icon)
+        .setHeight(100)
+        .setWidth(100)
+        .build()
+
+    }
 
     return councilOverlay
   }

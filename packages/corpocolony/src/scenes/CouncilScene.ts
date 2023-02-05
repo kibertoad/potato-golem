@@ -23,13 +23,13 @@ export class CouncilScene extends PotatoScene {
   }
 
   init() {
-    this.vps = generateDirectors(3);
+    this.vps = generateDirectors(4);
   }
 
   create() {
     const { width, height } = this.scale;
 
-    const councilOverlay = CouncilOverlay.build(this, { x: 0, y: 0 })
+    const councilOverlay = CouncilOverlay.build(this, { x: 0, y: 0 }, this.vps)
 
     /*
     const buttonList = new ButtonListBuilder(this)

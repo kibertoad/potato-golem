@@ -4,6 +4,7 @@ import { OverviewScene } from './scenes/OverviewScene'
 import { TurnResultsScene } from './scenes/TurnResultsScene'
 import { HireDirectorScene } from './scenes/HireDirectorScene'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
+import RexImageBoxPlugin from 'phaser3-rex-plugins/plugins/imagebox-plugin.js'
 import { CouncilScene } from './scenes/CouncilScene'
 
 const GameResolutions = {
@@ -21,6 +22,12 @@ const config: Phaser.Types.Core.GameConfig = {
   width: resolution.width,
   height: resolution.height,
   plugins: {
+    global: [{
+      key: 'rexImageBoxPlugin',
+      plugin: RexImageBoxPlugin,
+      start: true
+    },
+      ],
     scene: [{
       key: 'rexUI',
       plugin: RexUIPlugin,
