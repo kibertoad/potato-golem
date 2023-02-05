@@ -6,6 +6,7 @@ import { validateNumber } from 'validation-utils'
 
 export type RowDefinition = {
   icon?: string
+  proportion?: number
   iconWidth?: number
   iconHeight?: number
   iconOffsetX?: number
@@ -40,7 +41,7 @@ export class SizerBuilder extends AbstractUIBuilder {
     for (let row of this.rowDefinitions) {
       sizer.add(
         this.createLabel(this.scene, row),
-        { proportion: 1, expand: true,
+        { proportion: row.proportion ?? 1, expand: true,
         //  align: row.icon ? 'center-center' : 'center-center'
         }
       )

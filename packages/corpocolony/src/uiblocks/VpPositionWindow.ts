@@ -17,16 +17,20 @@ export class VpPositionWindow {
         icon: vp.icon,
         iconWidth: 100,
         iconHeight: 100,
-        iconOffsetX: 20
+        iconOffsetX: 20,
+        proportion: 3
       })
       .addRow({
-        text: 'They approve of the proposal'
+        text: 'They approve of the proposal',
+        proportion: 1
       })
       .addRow({
-        text: 'For'
+        text: 'For',
+        proportion: 4
       })
       .addRow({
-        text: 'Against'
+        text: 'Against',
+        proportion: 4
       })
       .setWidth(170)
       .setHeight(600)
