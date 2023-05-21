@@ -1,7 +1,6 @@
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { Director } from '../generators/directorGenerator'
 import { ImageBoxBuilder, Position, SizerBuilder } from '@potato-golem/ui'
-import { s } from 'vitest/dist/env-afee91f0'
 
 export class VpPositionWindow {
 

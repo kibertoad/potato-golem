@@ -1,7 +1,6 @@
 import { genNames } from "generate-human-names";
 import { normalizedRandom, randomOneOf } from "@potato-golem/core";
 import { DirectorPortraits, Gender } from "../registries/ImageRegistry";
-import gaussian from "gaussian";
 
 export type Stats = {
   speed: number;

@@ -213,13 +213,10 @@ export class MainMenuScene extends PotatoScene {
   }
 
   create() {
-    /*
     this.mainTheme = this.sound.add("mainTheme");
     this.mainTheme.play({
       loop: true,
     });
-
-     */
 
     const { width, height } = this.scale;
 
