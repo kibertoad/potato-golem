@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "isolatedModules": true,
+    "types": ["vitest/globals"],
+    "target": "es2018",
+    "outDir": "./dist",
+    "paths": {
+      "@potato-golem/ui": ["../ui"],
+      "@potato-golem/core": ["../core"]
+    },
+    "skipLibCheck": true
+  },
+
+}
