@@ -129,7 +129,7 @@ export class MainMenuScene extends PotatoScene {
       .onClick(
         MultiplexActivation.build([
           // SetWorldActivation.build(worldState),
-          ChangeSceneActivation.build(this, Scenes.OVERVIEW_SCENE),
+          ChangeSceneActivation.build(this, Scenes.BOARD_SCENE),
         ])
       )
       .build();
