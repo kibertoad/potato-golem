@@ -3,6 +3,7 @@ import Pointer = Phaser.Input.Pointer
 import { TargettedActivation } from '../activations/ActivationTypes'
 import Shape = Phaser.GameObjects.Shape
 import { ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
+import { doShapesIntersect } from '../utils/shapeUtils'
 
 export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer: Pointer) => void) {
     item
@@ -19,17 +20,10 @@ export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer:
         }
         onDropCallback(pointer)
 
-        /*
-        item.moveTo({
-          x: item.getData('startX'), y: item.getData('startY'),
-          speed: 300
-        });
-         */
-
         console.log('dragend')
       })
       .on('drop', function (pointer, target) {
-        console.log('lol')
+        console.log('drop')
       })
 }
 
@@ -37,8 +31,8 @@ export function buildDragWithActivations<T extends AbstractUIElementLite> (item:
                                           potentialTargets: readonly Shape[],
                                           activations: Record<string, TargettedActivation<unknown>>) {
   buildDrag(item, (pointer: Pointer) => {
-      const overlappingObject = potentialTargets.find((entity) => {
-        return entity.getBounds().contains(pointer.x, pointer.y)
+    const overlappingObject = potentialTargets.find((potentialOverlap) => {
+      return doShapesIntersect(potentialOverlap, item)
       })
 
       if (overlappingObject) {
