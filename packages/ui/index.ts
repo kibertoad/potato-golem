@@ -10,6 +10,7 @@ export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
 export { SizerBuilder } from './src/ui/builders/SizerBuilder'
 export { buildDrag } from './src/ui/builders/DragBuilder'
+export { DragIcon } from './src/ui/elements/DragIcon'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 

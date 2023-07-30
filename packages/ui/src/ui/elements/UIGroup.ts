@@ -13,10 +13,12 @@ export class UIGroupSlot<T extends UIGroup> {
   }
 }
 
-export type AbstractUIElementLite = Phaser.GameObjects.GameObject &
+export type AbstractUIElementLite = Omit<Phaser.GameObjects.GameObject, 'setActive'> &
   Pick<Phaser.GameObjects.Components.Size, 'displayHeight' | 'displayWidth'> &
   Phaser.GameObjects.Components.Visible &
-  Phaser.GameObjects.Components.Transform
+  Phaser.GameObjects.Components.Transform & {
+  setActive(value: boolean): AbstractUIElementLite;
+}
 
 export type AbstractUIElement = Phaser.GameObjects.GameObject &
   Phaser.GameObjects.Components.Size &

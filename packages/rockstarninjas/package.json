@@ -6,7 +6,7 @@
   "scripts": {
     "build:ts": "tsc",
     "build:production": "del-cli dist && del-cli ../../.parcel-cache --force && parcel assets/html/index.html ./src/**/*.ts",
-    "build:dev": "parcel assets/html/index.html ./src/**/*.ts",
+    "build:dev": "cd .. && cd ui && npm run build && cd .. && cd rockstarninjas && parcel assets/html/index.html ./src/**/*.ts",
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
     "test": "vitest"
   },
