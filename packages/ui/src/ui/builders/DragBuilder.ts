@@ -1,15 +1,16 @@
 import { AbstractUIElementLite } from '../elements/UIGroup'
 import Pointer = Phaser.Input.Pointer
-import { TargettedActivation } from '../activations/ActivationTypes'
+import { TargettedActivation, TargettedActivationCallback } from '../activations/ActivationTypes'
 import Shape = Phaser.GameObjects.Shape
 import { ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
 import { doShapesIntersect } from '../utils/shapeUtils'
+import { DEFAULT_ENTITY_TYPE, getEntityType, storeStartPosition } from '../elements/ElementDataManipulator'
 
 export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer: Pointer) => void) {
     item
       .setInteractive({ draggable: true })
       .on('dragstart', function (pointer, dragX, dragY) {
-        item.setData({ startX: item.x, startY: item.y });
+        storeStartPosition(item)
       })
       .on('drag', function (pointer, dragX, dragY) {
         item.setPosition(dragX, dragY);
@@ -27,22 +28,24 @@ export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer:
       })
 }
 
-export function buildDragWithActivations<T extends AbstractUIElementLite> (item: T,
-                                          potentialTargets: readonly Shape[],
-                                          activations: Record<string, TargettedActivation<unknown>>) {
-  buildDrag(item, (pointer: Pointer) => {
+export function buildDragWithActivations<T extends AbstractUIElementLite> (draggedItem: T,
+                                          potentialTargets: readonly AbstractUIElementLite[],
+                                          activations: Record<string, TargettedActivation<any> | TargettedActivationCallback<any>>) {
+  buildDrag(draggedItem, (pointer: Pointer) => {
     const overlappingObject = potentialTargets.find((potentialOverlap) => {
-      return doShapesIntersect(potentialOverlap, item)
+      return doShapesIntersect(potentialOverlap, draggedItem)
       })
 
-      if (overlappingObject) {
-        const entityType = overlappingObject.getData(ENTITY_TYPE_DATA_KEY)
-        const activation: TargettedActivation<T> = activations[entityType]
+    const entityType = overlappingObject ? getEntityType(overlappingObject) : DEFAULT_ENTITY_TYPE
+        const activation = activations[entityType]
         if (!activation) {
           throw new Error(`Unsupported entity type ${entityType}`)
         }
 
-        activation(item)
-      }
+        if (typeof activation === 'function') {
+          activation(draggedItem)
+        } else {
+          activation.activate(draggedItem)
+        }
   })
 }

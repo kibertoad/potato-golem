@@ -1,7 +1,12 @@
 export type ActivationCallback = () => void
 
 export type Activation = {
-  activate: () => void
+  activate: ActivationCallback
 }
 
-export type TargettedActivation<Target> = (target: Target) => void
+export type TargettedActivationCallback<Target> = (target: Target) => void
+
+export type TargettedActivation<Target> = {
+  activate: TargettedActivationCallback<Target>
+}
+

@@ -2,15 +2,16 @@ import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { Scenes } from '../registries/SceneRegistry'
 import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
 import { ENTITY_TYPE_DATA_KEY } from '@potato-golem/ui/dist/src/ui/common/EntityDataKeys'
-import { RoundRectangle } from 'phaser3-rex-plugins/templates/ui/ui-components'
 import { Ticket, TicketStatus } from '../entities/Ticket'
-import { buildDrag, DragIcon, ImageBoxBuilder } from '@potato-golem/ui'
+import { buildDrag, DragIcon, ImageBoxBuilder, restoreStartPosition, setEntityType } from '@potato-golem/ui'
 import { canTransition } from '../stateMachines/ticketStateMachine'
+import { AssignEngineerActivation } from '../activations/AssignEngineerActivation'
+import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 
 export class BoardScene extends PotatoScene {
 
   constructor() {
-    super(Scenes.BOARD_SCENE);
+    super(Scenes.BOARD_SCENE)
   }
 
   addTicket() {
@@ -34,6 +35,8 @@ export class BoardScene extends PotatoScene {
       height: 50,
       width: 50,
     })
+    setEntityType(dragImage, EntityTypeRegistry.TICKET)
+
     console.log(dragIcon)
 
     buildDrag(dragIcon.image, (pointer) => {
@@ -41,12 +44,16 @@ export class BoardScene extends PotatoScene {
       const swimLane = Math.ceil(pointer.x / swimlaneSize)
       console.log(`Swimlane ${swimLane}`)
 
-      const ticketCanTransition = canTransition(ticket, Object.values(TicketStatus)[swimLane-1])
+      const newStatus = Object.values(TicketStatus)[swimLane - 1]
+
+      const ticketCanTransition = canTransition(ticket, newStatus)
 
       console.log(`Can transition: ${ticketCanTransition}`)
 
       if (!ticketCanTransition) {
-        dragIcon.image.setPosition(dragIcon.image.data.get('startX'), dragIcon.image.data.get('startY'))
+        restoreStartPosition(dragIcon.image)
+      } else {
+        ticket.status = newStatus
       }
     })
 
@@ -60,20 +67,27 @@ export class BoardScene extends PotatoScene {
       .setDepth(100)
       .setData(ENTITY_TYPE_DATA_KEY, 'engineer')
 
+    /*
     const ticket = this.add.rectangle(500, 500, 80, 80)
       .setFillStyle(0xa98270, 1)
       .setStrokeStyle(2, 0xa98274)
       .setDepth(10)
       .setData(ENTITY_TYPE_DATA_KEY, 'ticket')
 
+     */
+
     const realTicket = this.addTicket()
 
-    const tickets = [ticket]
+    const tickets = [realTicket.image]
 
     buildDragWithActivations(engineer, tickets, {
-      'ticket': (engineer: RoundRectangle) => {
-        console.log(engineer.data.get(ENTITY_TYPE_DATA_KEY))
-      }
+      [EntityTypeRegistry.DEFAULT]: () => {
+        restoreStartPosition(engineer)
+      },
+      [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(realTicket.model),
+      //(engineer: RoundRectangle) => {
+      //console.log(engineer.data.get(ENTITY_TYPE_DATA_KEY))
+      //}
     })
   }
 

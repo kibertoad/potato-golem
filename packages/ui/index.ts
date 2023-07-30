@@ -11,6 +11,7 @@ export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
 export { SizerBuilder } from './src/ui/builders/SizerBuilder'
 export { buildDrag } from './src/ui/builders/DragBuilder'
 export { DragIcon } from './src/ui/elements/DragIcon'
+export * from './src/ui/elements/ElementDataManipulator'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 
@@ -23,7 +24,7 @@ export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivatio
 export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
 export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
-export type { Activation, ActivationCallback } from './src/ui/activations/ActivationTypes'
+export type { Activation, ActivationCallback, TargettedActivation, TargettedActivationCallback } from './src/ui/activations/ActivationTypes'
 export type { Position } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'
