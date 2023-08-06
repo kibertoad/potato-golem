@@ -87,7 +87,7 @@ export class TabPageBuilder extends AbstractUIBuilder {
     //const content = `Phaser is a fast, free, and fun open source HTML5 game framework that offers WebGL and Canvas rendering across desktop and mobile web browsers. Games can be compiled to iOS, Android and native apps by using 3rd party tools. You can use JavaScript or TypeScript for development.`;
 
     return scene.rexUI.add.textArea({
-      text: scene.rexUI.add.BBCodeText(0, 0, '', { fontSize: '24px' }),
+      text: scene.rexUI.add.BBCodeText(0, 0, '', { fontSize: '24px', delimiters: [] }),
       slider: {
         track: scene.rexUI.add.roundRectangle(0, 0, 20, 0, 10, COLOR_PRIMARY),
         thumb: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 13, COLOR_LIGHT),

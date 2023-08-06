@@ -14,8 +14,9 @@ export { DragIcon } from './src/ui/elements/DragIcon'
 export * from './src/ui/elements/ElementDataManipulator'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
+export { buildOnHover } from './src/ui/builders/OnHoverBuilder'
 
-
+export { SpriteBuilder } from './src/ui/builders/SpriteBuilder'
 export { ButtonSquareBuilder } from './src/ui/builders/ButtonSquareBuilder'
 export { UIGroupSlot, CommonUIGroup } from './src/ui/elements/UIGroup'
 export type { UIGroup, AbstractUIElement } from './src/ui/elements/UIGroup'

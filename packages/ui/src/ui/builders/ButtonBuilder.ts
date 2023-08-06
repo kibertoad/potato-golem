@@ -145,18 +145,18 @@ export class ButtonBuilder {
     })
 
     if (this.#onClick) {
-      const callback = this.#onClick['execute']
+      const callback = this.#onClick['activate']
         ? () => {
-            this.#onClick!['execute']()
+            this.#onClick!['activate']()
           }
         : this.#onClick
       newButton.on(Phaser.Input.Events.POINTER_DOWN, validateFunction(callback))
     }
 
     if (this.#onHover) {
-      const callback = this.#onHover['execute']
+      const callback = this.#onHover['activate']
         ? () => {
-            this.#onHover!['execute']()
+            this.#onHover!['activate']()
           }
         : this.#onHover
       newButton.on(Phaser.Input.Events.POINTER_OVER, validateFunction(callback))

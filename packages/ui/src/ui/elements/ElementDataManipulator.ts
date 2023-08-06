@@ -1,5 +1,5 @@
 import { AbstractUIElementLite } from './UIGroup'
-import { ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
+import { ENTITY_MODEL, ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
 
 export const DEFAULT_ENTITY_TYPE = 'DEFAULT'
 
@@ -15,6 +15,14 @@ export function setEntityType(item: AbstractUIElementLite, entityType: string) {
   item.setData(ENTITY_TYPE_DATA_KEY, entityType)
 }
 
+export function setEntityModel(item: AbstractUIElementLite, entityModel: object) {
+  item.setData(ENTITY_MODEL, entityModel)
+}
+
 export function getEntityType(item: AbstractUIElementLite) {
   return item.getData(ENTITY_TYPE_DATA_KEY)
+}
+
+export function getEntityModel(item: AbstractUIElementLite) {
+  return item.getData(ENTITY_MODEL)
 }

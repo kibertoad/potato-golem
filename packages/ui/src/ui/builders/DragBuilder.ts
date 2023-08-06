@@ -1,14 +1,17 @@
 import { AbstractUIElementLite } from '../elements/UIGroup'
 import Pointer = Phaser.Input.Pointer
 import { TargettedActivation, TargettedActivationCallback } from '../activations/ActivationTypes'
-import Shape = Phaser.GameObjects.Shape
-import { ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
 import { doShapesIntersect } from '../utils/shapeUtils'
 import { DEFAULT_ENTITY_TYPE, getEntityType, storeStartPosition } from '../elements/ElementDataManipulator'
 
-export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer: Pointer) => void) {
+export type DragConfig = {
+  tolerance?: number
+}
+
+export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer: Pointer) => void, config: DragConfig) {
     item
-      .setInteractive({ draggable: true })
+      .setInteractive({ draggable: true, pixelPerfect: config.tolerance !== undefined, alphaTolerance: config.tolerance })
+
       .on('dragstart', function (pointer, dragX, dragY) {
         storeStartPosition(item)
       })
@@ -30,22 +33,27 @@ export function buildDrag(item: AbstractUIElementLite, onDropCallback: (pointer:
 
 export function buildDragWithActivations<T extends AbstractUIElementLite> (draggedItem: T,
                                           potentialTargets: readonly AbstractUIElementLite[],
-                                          activations: Record<string, TargettedActivation<any> | TargettedActivationCallback<any>>) {
+                                          activations: Record<string, TargettedActivation<any> | TargettedActivationCallback<any>>, config: DragConfig) {
   buildDrag(draggedItem, (pointer: Pointer) => {
+    console.log('potential targets')
+    console.log(potentialTargets)
+
     const overlappingObject = potentialTargets.find((potentialOverlap) => {
       return doShapesIntersect(potentialOverlap, draggedItem)
       })
 
     const entityType = overlappingObject ? getEntityType(overlappingObject) : DEFAULT_ENTITY_TYPE
-        const activation = activations[entityType]
+    console.log(`Entity type: ${entityType}`)
+
+    const activation = activations[entityType]
         if (!activation) {
           throw new Error(`Unsupported entity type ${entityType}`)
         }
 
         if (typeof activation === 'function') {
-          activation(draggedItem)
+          activation(overlappingObject)
         } else {
-          activation.activate(draggedItem)
+          activation.activate(overlappingObject)
         }
-  })
+  }, config)
 }

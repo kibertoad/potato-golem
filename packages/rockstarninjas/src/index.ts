@@ -2,7 +2,7 @@ import { Game } from 'phaser'
 import { MainMenuScene } from './scenes/MainMenuScene'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 import RexImageBoxPlugin from 'phaser3-rex-plugins/plugins/imagebox-plugin.js'
-import { BoardScene } from './scenes/BoardScene'
+import { BoardScene } from './scenes/board/BoardScene'
 
 const GameResolutions = {
   default: {

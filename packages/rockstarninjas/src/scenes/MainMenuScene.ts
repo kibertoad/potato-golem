@@ -1,19 +1,17 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  BackgroundBuilder, buildDialog,
-  ButtonListBuilder, ButtonListBuilder1,
+  BackgroundBuilder,
+  ButtonListBuilder1,
   ChangeSceneActivation,
   MultiplexActivation, TextBuilder,
 } from '@potato-golem/ui'
-import { SetWorldActivation } from "../activations/SetWorldActivation";
-import { world } from "../model/worldModel";
 
 const cursorHandImg = require("../../assets/img/cursor_hand.png");
 const glassPanelImg = require("../../assets/img/glassPanel.png");
 const violetImg = require("../../assets/img/violet.png");
+const logoImg = require("../../assets/img/logo.png");
 import BaseSound = Phaser.Sound.BaseSound;
 
-import { TextBox, RoundRectangle } from 'phaser3-rex-plugins/templates/ui/ui-components';
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 
 const isSoundEnabled = false
@@ -36,6 +34,7 @@ export class MainMenuScene extends PotatoScene {
   preload() {
     this.load.image("glass-panel", glassPanelImg);
     this.load.image("cursor-hand", cursorHandImg);
+    this.load.image("logo", logoImg);
     this.load.image("violet", violetImg);
     this.load.image(
       "violet-border",

@@ -1,5 +1,5 @@
 import { LimitedNumber } from '@potato-golem/core'
-import { EmployeeModel } from '../model/employeeModel'
+import { EmployeeModel } from '../../../model/employeeModel'
 
 export enum TicketStatus {
   open = 'open',
@@ -10,7 +10,7 @@ export enum TicketStatus {
 }
 
 export class Ticket {
-  assignees: EmployeeModel[]
+  assignees: EmployeeModel<any>[]
   complexity: number
   progress: {
     analysis: LimitedNumber
