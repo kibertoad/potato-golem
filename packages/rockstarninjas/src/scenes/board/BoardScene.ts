@@ -98,15 +98,12 @@ export class BoardScene extends PotatoScene {
     setEntityType(engineerImage, EntityTypeRegistry.ENGINEER)
     setEntityModel(engineerImage, developerModel)
 
-    /*
     buildOnHover(engineerImage, () => {
       console.log('hovered')
     }, () => {
       console.log('unhovered')
     }, {
     })
-
-     */
 
 
     buildDragWithActivations(engineerImage, this.ticketViews, {
