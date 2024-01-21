@@ -2,8 +2,22 @@
   "name": "@potato-golem/core",
   "version": "1.0.0",
   "description": "potato golem game lib core",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": [
+        "./index.ts"
+      ],
+      "import": [
+        "./index.ts"
+      ],
+      "require": [
+        "./dist/index.js"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsc",
     "test": "mocha **/*.spec.ts --require ts-node/register",
