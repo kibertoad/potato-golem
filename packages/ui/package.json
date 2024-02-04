@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "phaser3-rex-plugins": "^1.60.10",
-    "validation-utils": "^9.1.0"
+    "validation-utils": "^10.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",

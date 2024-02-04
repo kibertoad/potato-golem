@@ -1,5 +1,5 @@
-import { LimitedNumber } from './LimitedNumber'
 import { expect } from 'chai'
+import { LimitedNumber } from './LimitedNumber'
 
 describe('LimitedNumber', () => {
   it('sets to max', () => {

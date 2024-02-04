@@ -25,7 +25,7 @@
     "@potato-golem/ui": "1.0.0",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.60.0",
-    "validation-utils": "^7.0.0",
+    "validation-utils": "^10.0.0",
     "zoology": "^1.0.0"
   },
   "devDependencies": {
