@@ -1,11 +1,10 @@
-import { AbstractUIBuilder } from './AbstractUIBuilder'
-import { ActivationCallback } from '../activations/ActivationTypes'
+import { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
 import { validateString } from 'validation-utils'
+import { ActivationCallback } from '../activations/ActivationTypes'
 import { PotatoScene } from '../common/PotatoScene'
-import { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components';
+import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 export class ImageBoxBuilder extends AbstractUIBuilder {
-
   private textureKey?: string
 
   public setTextureKey(value: string) {
@@ -14,8 +13,9 @@ export class ImageBoxBuilder extends AbstractUIBuilder {
   }
 
   build(): ImageBox {
-    // @ts-ignore
-    return this.scene.add.rexImageBox(this.getX(), this.getY(), validateString(this.textureKey))
+    return this.scene.add
+      // @ts-ignore
+      .rexImageBox(this.getX(), this.getY(), validateString(this.textureKey))
       .resize(this.getWidth(), this.getHeight())
   }
 

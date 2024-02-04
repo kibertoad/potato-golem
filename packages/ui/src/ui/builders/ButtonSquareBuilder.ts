@@ -1,7 +1,7 @@
-import { ButtonListBuilder1 } from './ButtonListBuilder1'
 import { Scene } from 'phaser'
-import { ButtonBuilder } from './ButtonBuilder'
 import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import { ButtonBuilder } from './ButtonBuilder'
+import { ButtonListBuilder1 } from './ButtonListBuilder1'
 
 export class ButtonSquareBuilder extends ButtonListBuilder1 {
   #buttonListBuilder?: ButtonListBuilder1
@@ -46,10 +46,8 @@ export class ButtonSquareBuilder extends ButtonListBuilder1 {
   }
 
   build(): AbstractUIElement[] {
-    return this.#buttonLists
-      .map((list) => {
-        return list.getChildren()
-      })
-      .flat()
+    return this.#buttonLists.flatMap((list) => {
+      return list.getChildren()
+    })
   }
 }

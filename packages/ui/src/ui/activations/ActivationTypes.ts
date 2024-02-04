@@ -9,4 +9,3 @@ export type TargettedActivationCallback<Target> = (target: Target) => void
 export type TargettedActivation<Target> = {
   activate: TargettedActivationCallback<Target>
 }
-

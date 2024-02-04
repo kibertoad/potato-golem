@@ -15,18 +15,18 @@ export enum Profession {
 }
 
 export type AnalystSkills = {
-  impact: LimitedNumber, // strong sense of business value - increases impact of tasks
-  clarity: LimitedNumber, // reduces amount of bugs in implementation
+  impact: LimitedNumber // strong sense of business value - increases impact of tasks
+  clarity: LimitedNumber // reduces amount of bugs in implementation
 }
 
 export type QaSkills = {
-  automation: LimitedNumber, // reduces amount of bugs in future related tasks
-  attention: LimitedNumber, // reduces amount of escaped defects
+  automation: LimitedNumber // reduces amount of bugs in future related tasks
+  attention: LimitedNumber // reduces amount of escaped defects
 }
 
 export type DeveloperSkills = {
-  architecture: LimitedNumber, // reduces amount of technical debt generated
-  attention: LimitedNumber, // reduces amount of escaped defects
+  architecture: LimitedNumber // reduces amount of technical debt generated
+  attention: LimitedNumber // reduces amount of escaped defects
 }
 
 export type EmployeeModel<CoreSkills> = {
@@ -41,7 +41,7 @@ export type EmployeeSkills = {
   motivation: LimitedNumber
   knowledge: LimitedNumber
   health: LimitedNumber
-  speed: LimitedNumber, // speeds up analysis
+  speed: LimitedNumber // speeds up analysis
 }
 
 export type AnalystModel = EmployeeModel<AnalystSkills>

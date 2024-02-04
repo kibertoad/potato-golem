@@ -1,8 +1,8 @@
 import { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
 import { Activation } from '../activations/ActivationTypes'
-import { AbstractUIElement } from '../elements/UIGroup'
 import { UIElementTemplate } from '../elements/UIElementTemplate'
+import { AbstractUIElement } from '../elements/UIGroup'
 
 export type OnClickCallback = (button: any) => void
 

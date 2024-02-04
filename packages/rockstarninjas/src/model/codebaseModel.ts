@@ -11,7 +11,7 @@ export enum Severity {
   blocker = 0,
   major = 1,
   minor = 2,
-  trivial = 3
+  trivial = 3,
 }
 
 export type Defect = {

@@ -1,9 +1,8 @@
+import { normalizedRandom } from '@potato-golem/core'
 import { Activation } from '@potato-golem/ui'
 import { WorldModel } from '../../../model/worldModel'
-import { normalizedRandom } from '@potato-golem/core'
 
 export class NextTurnActivation implements Activation {
-
   private readonly worldModel: WorldModel
 
   constructor(worldModel: WorldModel) {
@@ -11,7 +10,7 @@ export class NextTurnActivation implements Activation {
   }
 
   processTickets() {
-    for (let ticket of this.worldModel.tickets) {
+    for (const ticket of this.worldModel.tickets) {
       if (ticket.assignees.length === 0) {
         continue
       }
@@ -21,7 +20,6 @@ export class NextTurnActivation implements Activation {
       // ToDo more complex logic based on seniority, taking into consideration potential blocking and assisting engineers
 
       const progress = normalizedRandom(leadAssignee.coreSkills.speed.value)
-
     }
   }
 
@@ -32,5 +30,4 @@ export class NextTurnActivation implements Activation {
 
     console.log(`Current turn: ${this.worldModel.turnCounter}`)
   }
-
 }

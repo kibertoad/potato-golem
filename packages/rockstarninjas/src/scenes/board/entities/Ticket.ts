@@ -27,5 +27,4 @@ export class Ticket {
       testing: new LimitedNumber(0, 10),
     }
   }
-
 }

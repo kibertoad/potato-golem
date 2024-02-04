@@ -8,7 +8,7 @@ export class MultiplexActivation implements Activation {
   }
 
   activate() {
-    for (let activation of this.activations) {
+    for (const activation of this.activations) {
       activation()
     }
   }

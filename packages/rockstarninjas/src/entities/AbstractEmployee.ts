@@ -1,10 +1,10 @@
-import { EmployeeModel, EmployeeSkills, Seniority } from '../model/employeeModel'
-import { generateDirector } from '../generators/directorGenerator'
-import { genNames } from 'generate-human-names'
 import { LimitedNumber, normalizedRandom, randomOneOf } from '@potato-golem/core'
+import { genNames } from 'generate-human-names'
+import { generateDirector } from '../generators/directorGenerator'
+import { EmployeeModel, EmployeeSkills, Seniority } from '../model/employeeModel'
 import { Gender } from '../registries/ImageRegistry'
 
-export abstract class AbstractEmployee<CoreSkills> implements EmployeeModel<CoreSkills>{
+export abstract class AbstractEmployee<CoreSkills> implements EmployeeModel<CoreSkills> {
   public commonSkills: EmployeeSkills
   public coreSkills: CoreSkills
   public name: string
@@ -12,12 +12,12 @@ export abstract class AbstractEmployee<CoreSkills> implements EmployeeModel<Core
   public seniority: Seniority
 
   constructor() {
-    const gender = randomOneOf(Object.values(Gender));
+    const gender = randomOneOf(Object.values(Gender))
     const [name] = genNames({
       gender,
       surname: true,
       count: 1,
-    });
+    })
 
     this.name = name.first
     this.alias = 'Drone'
@@ -30,5 +30,4 @@ export abstract class AbstractEmployee<CoreSkills> implements EmployeeModel<Core
       knowledge: new LimitedNumber(normalizedRandom(10), 10),
     }
   }
-
 }

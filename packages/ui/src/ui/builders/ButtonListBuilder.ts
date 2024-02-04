@@ -1,11 +1,11 @@
-import { ButtonBuilder } from './ButtonBuilder'
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
 import { ChoiceOption, Position } from '../common/CommonUITypes'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
-import { UIElementTemplate } from '../elements/UIElementTemplate'
 import { PotatoScene } from '../common/PotatoScene'
 import { GREENISH } from '../constants/Colours'
+import { UIElementTemplate } from '../elements/UIElementTemplate'
+import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import { ButtonBuilder } from './ButtonBuilder'
 
 export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]
@@ -86,24 +86,28 @@ export class ButtonListBuilder {
       .setExactPosition(source.positionX!, source.positionY!)
   }
 
-  private createButton (choiceOption: ChoiceOption) {
-    const background = this.scene.rexUI.add.roundRectangle(0, 0,
+  private createButton(choiceOption: ChoiceOption) {
+    const background = this.scene.rexUI.add.roundRectangle(
+      0,
+      0,
       validateNumber(this.displaySizeX),
       validateNumber(this.displaySizeY),
-      20, this.#defaultFillColour)
+      20,
+      this.#defaultFillColour,
+    )
     const label = this.scene.rexUI.add.label({
       width: this.displaySizeX,
       height: this.displaySizeY,
       background,
       text: this.scene.add.text(0, 0, choiceOption.text, {
-        fontSize: '18px'
+        fontSize: '18px',
       }),
       space: {
         left: this.#paddingHorizontal,
         right: this.#paddingHorizontal,
       },
-      align: 'center'
-    });
+      align: 'center',
+    })
 
     label.on(Phaser.Input.Events.POINTER_OVER, () => {
       background.setFillStyle(this.#highlightFillColour)
@@ -124,29 +128,32 @@ export class ButtonListBuilder {
   }
 
   public build() {
-    const expand = true;
-    const buttons = this.scene.rexUI.add.buttons({
-      x: this.positionX, y: this.positionY,
-      width: this.displaySizeX,
-      orientation: 'x',
+    const expand = true
+    const buttons = this.scene.rexUI.add
+      .buttons({
+        x: this.positionX,
+        y: this.positionY,
+        width: this.displaySizeX,
+        orientation: 'x',
 
-      buttons: this.choiceOptions.map((choiceOption) => {
-        return this.createButton(choiceOption)
-      }),
+        buttons: this.choiceOptions.map((choiceOption) => {
+          return this.createButton(choiceOption)
+        }),
 
-      space: {
-        left: 10, right: 10, top: 10, bottom: 10,
-        item: this.#spacingOffsetX
-      },
-      expand: expand
-    })
-      .layout()
-//      .drawBounds(this.scene.add.graphics(), 0xff0000)
-
-    buttons
-      .on('button.click', function (button, index, pointer, event) {
-        button.emit('click')
+        space: {
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10,
+          item: this.#spacingOffsetX,
+        },
+        expand: expand,
       })
+      .layout()
+    //      .drawBounds(this.scene.add.graphics(), 0xff0000)
 
+    buttons.on('button.click', (button, index, pointer, event) => {
+      button.emit('click')
+    })
   }
 }

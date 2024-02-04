@@ -1,7 +1,7 @@
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 import { UIContainer } from '../elements/UIContainer'
+import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 
 export class TextBuilder {
   #text?: string
@@ -17,10 +17,7 @@ export class TextBuilder {
   readonly #scene: Scene
   readonly #targetChildrenList?: AbstractUIElementLite[]
 
-  constructor(
-    scene: Scene,
-    childrenList?: AbstractUIElement[],
-  ) {
+  constructor(scene: Scene, childrenList?: AbstractUIElement[]) {
     this.#positionX = 0
     this.#positionY = 0
     this.#scene = scene

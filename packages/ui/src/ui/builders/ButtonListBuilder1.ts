@@ -1,9 +1,9 @@
-import { ButtonBuilder } from './ButtonBuilder'
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
 import { Position } from '../common/CommonUITypes'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
 import { UIElementTemplate } from '../elements/UIElementTemplate'
+import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import { ButtonBuilder } from './ButtonBuilder'
 
 export class ButtonListBuilder1 extends CommonUIGroup {
   public readonly buttons: Phaser.GameObjects.Image[]

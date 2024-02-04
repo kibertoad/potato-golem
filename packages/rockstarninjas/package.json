@@ -7,7 +7,8 @@
     "build:ts": "tsc",
     "build:production": "del-cli dist && del-cli ../../.parcel-cache --force && parcel assets/html/index.html ./src/**/*.ts",
     "build:dev": "cd .. && cd ui && npm run build && cd .. && cd rockstarninjas && parcel assets/html/index.html ./src/**/*.ts",
-    "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
+    "lint": "biome lint index.ts src biome.json",
+    "lint:fix": "biome check --apply src biome.json",
     "test": "vitest"
   },
   "repository": {
@@ -21,16 +22,16 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "@potato-golem/core": "1.0.0",
-    "@potato-golem/ui": "1.0.0",
+    "@potato-golem/core": "*",
+    "@potato-golem/ui": "*",
     "generate-human-names": "^1.2.2",
-    "phaser": "^3.60.0",
-    "validation-utils": "^9.0.0",
+    "phaser": "^3.70.0",
+    "validation-utils": "^9.1.0",
     "zoology": "^1.0.0"
   },
   "devDependencies": {
-    "del-cli": "^5.0.0",
-    "vitest": "^0.32.2",
-    "parcel": "^2.9.3"
+    "del-cli": "^5.1.0",
+    "vitest": "^1.2.2",
+    "parcel": "^2.11.0"
   }
 }

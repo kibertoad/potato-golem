@@ -1,5 +1,5 @@
-import { AbstractUIElement, AbstractUIElementLite } from './UIGroup'
 import { Position } from '../common/CommonUITypes'
+import { AbstractUIElement, AbstractUIElementLite } from './UIGroup'
 
 export type SiblingLink = {
   sibling: UIContainer<AbstractUIElementLite>
@@ -33,7 +33,7 @@ export class UIContainer<T extends AbstractUIElementLite = AbstractUIElement> {
     console.log(`New sibling position: ${sibling.sibling.value.x}/${sibling.sibling.value.y}`)
   }
   private updateSiblingPositions() {
-    for (let sibling of this.siblings) {
+    for (const sibling of this.siblings) {
       this.updateSiblingPosition(sibling)
     }
   }

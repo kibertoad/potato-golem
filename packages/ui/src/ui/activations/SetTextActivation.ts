@@ -1,6 +1,6 @@
-import { Activation, ActivationCallback } from './ActivationTypes'
 import { validateNotNil } from 'validation-utils'
 import { UIContainer } from '../elements/UIContainer'
+import { Activation, ActivationCallback } from './ActivationTypes'
 
 export class SetTextActivation implements Activation {
   private newText: string

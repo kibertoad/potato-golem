@@ -21,9 +21,9 @@
 
   "scripts": {
     "build": "tsc",
-    "test": "mocha **/*.spec.ts --require ts-node/register",
-    "lint": "eslint",
-    "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.ts"
+    "test": "vitest",
+    "lint": "biome lint index.ts src biome.json",
+    "lint:fix": "biome check --apply index.ts src biome.json"
   },
   "repository": {
     "type": "git",
@@ -36,24 +36,18 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "peerDependencies": {
-    "@potato-golem/core": "1.0.0"
+    "@potato-golem/core": "*"
   },
   "dependencies": {
-    "phaser3-rex-plugins": "^1.60.3",
-    "validation-utils": "^9.0.0"
+    "phaser3-rex-plugins": "^1.60.10",
+    "validation-utils": "^9.1.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
     "@potato-golem/core": "*",
-    "@types/chai": "^4.3.5",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^18.16.19",
-    "chai": "^4.3.7",
-    "eslint": "^8.44.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "mocha": "^10.2.0",
-    "prettier": "^2.8.8",
+    "@types/node": "^20.11.16",
+    "vitest": "^1.2.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   }
 }

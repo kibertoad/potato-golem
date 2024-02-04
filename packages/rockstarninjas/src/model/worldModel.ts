@@ -7,7 +7,6 @@ export type TeamModel = {
   developers: DeveloperModel[]
 }
 
-
 export class WorldModel {
   public turnCounter: number
   public readonly tickets: Ticket[]
@@ -20,7 +19,7 @@ export class WorldModel {
       qas: [],
       analysts: [],
       developers: [],
-  }
+    }
   }
 }
 

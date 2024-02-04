@@ -25,7 +25,12 @@ export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivatio
 export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
 export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
-export type { Activation, ActivationCallback, TargettedActivation, TargettedActivationCallback } from './src/ui/activations/ActivationTypes'
+export type {
+  Activation,
+  ActivationCallback,
+  TargettedActivation,
+  TargettedActivationCallback,
+} from './src/ui/activations/ActivationTypes'
 export type { Position } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'

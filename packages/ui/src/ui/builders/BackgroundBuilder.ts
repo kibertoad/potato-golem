@@ -1,7 +1,7 @@
 import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 import { UIContainer } from '../elements/UIContainer'
+import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 
 export class BackgroundBuilder {
   #text?: string
@@ -71,7 +71,8 @@ export class BackgroundBuilder {
       .text(
         validateNumber(this.#positionX, 'positionX must be a number'),
         validateNumber(this.#positionY, 'positionY must be a number'),
-      this.#text ?? '')
+        this.#text ?? '',
+      )
       .setOrigin(0.5, 0.5)
       .setWordWrapWidth(newBackground.displayWidth)
       .setAlign('left')

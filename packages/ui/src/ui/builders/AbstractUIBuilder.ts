@@ -1,6 +1,6 @@
-import { PotatoScene } from '../common/PotatoScene'
-import { Position } from '../common/CommonUITypes'
 import { validateNumber } from 'validation-utils'
+import { Position } from '../common/CommonUITypes'
+import { PotatoScene } from '../common/PotatoScene'
 
 export abstract class AbstractUIBuilder {
   protected readonly scene: PotatoScene
@@ -8,14 +8,13 @@ export abstract class AbstractUIBuilder {
   protected width?: number
   protected height?: number
 
-
   constructor(scene: PotatoScene) {
     this.scene = scene
   }
 
   public setPosition(position: Position) {
     this.position = {
-      ...position
+      ...position,
     }
     return this
   }
@@ -27,7 +26,6 @@ export abstract class AbstractUIBuilder {
   public getY() {
     return validateNumber(this.position?.y)
   }
-
 
   public getWidth() {
     return validateNumber(this.width)

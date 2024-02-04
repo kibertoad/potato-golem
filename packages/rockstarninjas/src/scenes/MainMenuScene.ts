@@ -1,66 +1,58 @@
-import { Scenes } from "../registries/SceneRegistry";
 import {
   BackgroundBuilder,
   ButtonListBuilder1,
   ChangeSceneActivation,
-  MultiplexActivation, TextBuilder,
+  MultiplexActivation,
+  TextBuilder,
 } from '@potato-golem/ui'
+import { Scenes } from '../registries/SceneRegistry'
 
-const cursorHandImg = require("../../assets/img/cursor_hand.png");
-const glassPanelImg = require("../../assets/img/glassPanel.png");
-const violetImg = require("../../assets/img/violet.png");
-const logoImg = require("../../assets/img/logo.png");
-import BaseSound = Phaser.Sound.BaseSound;
+const cursorHandImg = require('../../assets/img/cursor_hand.png')
+const glassPanelImg = require('../../assets/img/glassPanel.png')
+const violetImg = require('../../assets/img/violet.png')
+const logoImg = require('../../assets/img/logo.png')
+import BaseSound = Phaser.Sound.BaseSound
 
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 
 const isSoundEnabled = false
 
 export class MainMenuScene extends PotatoScene {
-  private buttons: Phaser.GameObjects.Image[] = [];
-  private selectedButtonIndex = 0;
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private buttons: Phaser.GameObjects.Image[] = []
+  private selectedButtonIndex = 0
+  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
 
-  private mainTheme: BaseSound;
+  private mainTheme: BaseSound
 
   constructor() {
-    super(Scenes.MAIN_MENU_SCENE);
+    super(Scenes.MAIN_MENU_SCENE)
   }
 
   init() {
-    this.cursors = this.input.keyboard.createCursorKeys();
+    this.cursors = this.input.keyboard.createCursorKeys()
   }
 
   preload() {
-    this.load.image("glass-panel", glassPanelImg);
-    this.load.image("cursor-hand", cursorHandImg);
-    this.load.image("logo", logoImg);
-    this.load.image("violet", violetImg);
-    this.load.image(
-      "violet-border",
-      require("../../assets/img/violet-border.png")
-    );
-    this.load.image(
-      "violet-border2",
-      require("../../assets/img/violet-border2.png")
-    );
+    this.load.image('glass-panel', glassPanelImg)
+    this.load.image('cursor-hand', cursorHandImg)
+    this.load.image('logo', logoImg)
+    this.load.image('violet', violetImg)
+    this.load.image('violet-border', require('../../assets/img/violet-border.png'))
+    this.load.image('violet-border2', require('../../assets/img/violet-border2.png'))
 
-    this.load.audio(
-      "mainTheme",
-      require("url:../../assets/music/roots_of_peace_01.ogg")
-    );
+    this.load.audio('mainTheme', require('url:../../assets/music/roots_of_peace_01.ogg'))
   }
 
   create() {
-    this.mainTheme = this.sound.add("mainTheme");
+    this.mainTheme = this.sound.add('mainTheme')
 
     if (isSoundEnabled) {
       this.mainTheme.play({
         loop: true,
-      });
+      })
     }
 
-    const { width, height } = this.scale;
+    const { width, height } = this.scale
 
     const title = new BackgroundBuilder(this)
       .textureKey('glass-panel')
@@ -75,8 +67,7 @@ export class MainMenuScene extends PotatoScene {
       .position(width * 0.3, height * 0.6)
       .build()
 
-
-/*
+    /*
     const dialog = buildDialog(this, {
       x: 200,
       y: 200,
@@ -115,54 +106,51 @@ export class MainMenuScene extends PotatoScene {
 
  */
 
-
     const buttonList = new ButtonListBuilder1(this)
-      .textureKey("violet")
+      .textureKey('violet')
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
-      .setSpacingOffset(0, 10);
+      .setSpacingOffset(0, 10)
 
     const playButton = buttonList
       .addButton()
-      .text("Play")
+      .text('Play')
       .onClick(
         MultiplexActivation.build([
           // SetWorldActivation.build(worldState),
           ChangeSceneActivation.build(this, Scenes.BOARD_SCENE),
-        ])
+        ]),
       )
-      .build();
+      .build()
 
     const settingsButton = buttonList
       .addButton()
-      .text("Settings")
+      .text('Settings')
       .onClick(ChangeSceneActivation.build(this, Scenes.HIRE_DIRECTOR))
-      .build();
+      .build()
 
     // Credits button
     const creditsButton = buttonList
       .addButton()
-      .text("Credits")
+      .text('Credits')
       .onClick(ChangeSceneActivation.build(this, Scenes.EXECUTIVE_COUNCIL))
-      .build();
+      .build()
 
-    this.buttons.push(playButton);
-    this.buttons.push(settingsButton);
-    this.buttons.push(creditsButton);
+    this.buttons.push(playButton)
+    this.buttons.push(settingsButton)
+    this.buttons.push(creditsButton)
 
-    playButton.on("selected", () => {
-      console.log("play");
-    });
+    playButton.on('selected', () => {
+      console.log('play')
+    })
 
-    settingsButton.on("selected", () => {
-      console.log("settings");
-    });
+    settingsButton.on('selected', () => {
+      console.log('settings')
+    })
 
-    creditsButton.on("selected", () => {
-      console.log("credits");
-    });
-
-
+    creditsButton.on('selected', () => {
+      console.log('credits')
+    })
 
     /*
     const r1 = this.add.graphics();
@@ -198,21 +186,19 @@ export class MainMenuScene extends PotatoScene {
 
   confirmSelection() {
     // get the currently selected button
-    const button = this.buttons[this.selectedButtonIndex];
+    const button = this.buttons[this.selectedButtonIndex]
 
     // emit the 'selected' event
-    button.emit("selected");
+    button.emit('selected')
   }
 
   update() {
-    const upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!);
-    const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!);
-    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(
-      this.cursors.space!
-    );
+    const upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!)
+    const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!)
+    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space!)
 
     if (spaceJustPressed) {
-      this.confirmSelection();
+      this.confirmSelection()
     }
   }
 }

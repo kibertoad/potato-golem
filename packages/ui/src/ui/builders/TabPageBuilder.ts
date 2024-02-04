@@ -1,18 +1,15 @@
-import { AbstractUIBuilder } from './AbstractUIBuilder'
+import RexPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import { PotatoScene } from '../common/PotatoScene'
 import { COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY } from '../constants/Colours'
-import RexPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
+import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 export type PageDefinition = {
   pageName: string
   content: string
-
 }
 
 export class TabPageBuilder extends AbstractUIBuilder {
-
   private pages: PageDefinition[]
-
 
   constructor(scene: PotatoScene) {
     super(scene)
@@ -26,45 +23,43 @@ export class TabPageBuilder extends AbstractUIBuilder {
 
   build() {
     // @ts-ignore
-    const tabPages: RexPlugin.TabPages = this.scene.rexUI.add.tabPages({
-      x: this.getX(), y: this.getY(),
-      width: this.getWidth(), height: this.getHeight(),
-      background: this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK),
+    const tabPages: RexPlugin.TabPages = this.scene.rexUI.add
+      .tabPages({
+        x: this.getX(),
+        y: this.getY(),
+        width: this.getWidth(),
+        height: this.getHeight(),
+        background: this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_DARK),
 
-      tabs: {
-        space: { item: 3 },
-      },
-      pages: {
-        fadeIn: 300,
-      },
+        tabs: {
+          space: { item: 3 },
+        },
+        pages: {
+          fadeIn: 300,
+        },
 
-      align: {
-        tabs: 'left',
-      },
+        align: {
+          tabs: 'left',
+        },
 
-      space: { left: 5, right: 5, top: 5, bottom: 5, item: 10 },
-
-    })
-      .on('tab.focus', function(tab, key) {
+        space: { left: 5, right: 5, top: 5, bottom: 5, item: 10 },
+      })
+      .on('tab.focus', (tab, key) => {
         tab.getElement('background').setStrokeStyle(2, COLOR_LIGHT)
       })
-      .on('tab.blur', function(tab, key) {
+      .on('tab.blur', (tab, key) => {
         tab.getElement('background').setStrokeStyle()
       })
 
-    for (let page of this.pages) {
-      tabPages.addPage(
-        {
-          key: page.pageName,
-          tab: this.createLabel(this.scene, page.pageName),
-          page: this.createPage(this.scene, page.content),
-        },
-      )
+    for (const page of this.pages) {
+      tabPages.addPage({
+        key: page.pageName,
+        tab: this.createLabel(this.scene, page.pageName),
+        page: this.createPage(this.scene, page.content),
+      })
     }
 
-    tabPages
-      .layout()
-      .swapFirstPage()
+    tabPages.layout().swapFirstPage()
 
     return tabPages
 
@@ -74,7 +69,8 @@ export class TabPageBuilder extends AbstractUIBuilder {
 
   createLabel(scene: PotatoScene, text: string) {
     return scene.rexUI.add.label({
-      width: 40, height: 40,
+      width: 40,
+      height: 40,
 
       background: scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, COLOR_PRIMARY),
       text: scene.add.text(0, 0, text, { fontSize: '24px' }),

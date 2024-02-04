@@ -1,10 +1,9 @@
-import { AbstractUIBuilder } from './AbstractUIBuilder'
 import { validateString } from 'validation-utils'
 import { PotatoScene } from '../common/PotatoScene'
+import { AbstractUIBuilder } from './AbstractUIBuilder'
 import Sprite = Phaser.GameObjects.Sprite
 
 export class SpriteBuilder extends AbstractUIBuilder {
-
   private textureKey?: string
   private interactiveConfig?: Phaser.Types.Input.InputConfiguration
 
@@ -19,13 +18,14 @@ export class SpriteBuilder extends AbstractUIBuilder {
   }
 
   build(): Sprite {
-    const sprite = this.scene.add.sprite(this.getX(), this.getY(), validateString(this.textureKey))
+    const sprite = this.scene.add
+      .sprite(this.getX(), this.getY(), validateString(this.textureKey))
       .setDisplaySize(this.getWidth(), this.getHeight())
-      if (this.interactiveConfig) {
-        sprite.setInteractive(this.interactiveConfig)
-      }
+    if (this.interactiveConfig) {
+      sprite.setInteractive(this.interactiveConfig)
+    }
 
-      return sprite
+    return sprite
   }
 
   static instance(scene: PotatoScene) {

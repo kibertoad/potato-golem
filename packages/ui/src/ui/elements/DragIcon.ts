@@ -1,6 +1,6 @@
 import { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
 
-export type DragIconOptions<ModelType> =  {
+export type DragIconOptions<ModelType> = {
   x: number
   y: number
   height: number
@@ -25,5 +25,4 @@ export class DragIcon<ModelType> {
     this.model = options.model
     this.image = options.image
   }
-
 }

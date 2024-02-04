@@ -17,8 +17,8 @@ export type AbstractUIElementLite = Omit<Phaser.GameObjects.GameObject, 'setActi
   Pick<Phaser.GameObjects.Components.Size, 'displayHeight' | 'displayWidth'> &
   Phaser.GameObjects.Components.Visible &
   Phaser.GameObjects.Components.Transform & {
-  setActive(value: boolean): AbstractUIElementLite;
-}
+    setActive(value: boolean): AbstractUIElementLite
+  }
 
 export type AbstractUIElement = Phaser.GameObjects.GameObject &
   Phaser.GameObjects.Components.Size &
@@ -50,21 +50,21 @@ export class CommonUIGroup implements UIGroup {
   }
 
   disable() {
-    for (let child of this.children) {
+    for (const child of this.children) {
       child.setVisible(false)
       child.disableInteractive()
     }
   }
 
   enable() {
-    for (let child of this.children) {
+    for (const child of this.children) {
       child.setVisible(true)
       child.setInteractive()
     }
   }
 
   destroy() {
-    for (let child of this.children) {
+    for (const child of this.children) {
       child.destroy(true)
     }
     this.children.splice(0, this.children.length)

@@ -1,26 +1,32 @@
-import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
-import { Scenes } from '../../registries/SceneRegistry'
-import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
-import { ENTITY_MODEL, ENTITY_TYPE_DATA_KEY } from '@potato-golem/ui/dist/src/ui/common/EntityDataKeys'
-import { Ticket, TicketStatus } from './entities/Ticket'
 import {
-  buildDrag, buildOnHover,
-  ButtonListBuilder1, ChangeSceneActivation,
+  ButtonListBuilder1,
+  ChangeSceneActivation,
   DragIcon,
   ImageBoxBuilder,
-  restoreStartPosition, setEntityModel,
-  setEntityType, SpriteBuilder,
+  SpriteBuilder,
+  buildDrag,
+  buildOnHover,
+  restoreStartPosition,
+  setEntityModel,
+  setEntityType,
 } from '@potato-golem/ui'
-import { canTransition } from './stateMachines/ticketStateMachine'
-import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
-import { EntityTypeRegistry } from '../../registries/entityTypeRegistry'
-import { NextTurnActivation } from './activations/NextTurnActivation'
-import { worldModel, WorldModel } from '../../model/worldModel'
+import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
+import {
+  ENTITY_MODEL,
+  ENTITY_TYPE_DATA_KEY,
+} from '@potato-golem/ui/dist/src/ui/common/EntityDataKeys'
+import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { DeveloperEmployee } from '../../entities/DeveloperEmployee'
+import { WorldModel, worldModel } from '../../model/worldModel'
+import { Scenes } from '../../registries/SceneRegistry'
+import { EntityTypeRegistry } from '../../registries/entityTypeRegistry'
+import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
+import { NextTurnActivation } from './activations/NextTurnActivation'
+import { Ticket, TicketStatus } from './entities/Ticket'
+import { canTransition } from './stateMachines/ticketStateMachine'
 import Sprite = Phaser.GameObjects.Sprite
 
 export class BoardScene extends PotatoScene {
-
   private readonly nextTurnActivation: NextTurnActivation
   private readonly worldModel: WorldModel
 
@@ -50,24 +56,27 @@ export class BoardScene extends PotatoScene {
     setEntityType(dragImage, EntityTypeRegistry.TICKET)
     setEntityModel(dragImage, ticketModel)
 
-    buildDrag(dragImage, (pointer) => {
-      const swimlaneSize = 1024 / 5
-      const swimLane = Math.ceil(pointer.x / swimlaneSize)
-      console.log(`Swimlane ${swimLane}`)
+    buildDrag(
+      dragImage,
+      (pointer) => {
+        const swimlaneSize = 1024 / 5
+        const swimLane = Math.ceil(pointer.x / swimlaneSize)
+        console.log(`Swimlane ${swimLane}`)
 
-      const newStatus = Object.values(TicketStatus)[swimLane - 1]
+        const newStatus = Object.values(TicketStatus)[swimLane - 1]
 
-      const ticketCanTransition = canTransition(ticketModel, newStatus)
+        const ticketCanTransition = canTransition(ticketModel, newStatus)
 
-      console.log(`Can transition: ${ticketCanTransition}`)
+        console.log(`Can transition: ${ticketCanTransition}`)
 
-      if (!ticketCanTransition) {
-        restoreStartPosition(dragImage)
-      } else {
-        ticketModel.status = newStatus
-      }
-    }, {
-    })
+        if (!ticketCanTransition) {
+          restoreStartPosition(dragImage)
+        } else {
+          ticketModel.status = newStatus
+        }
+      },
+      {},
+    )
 
     return dragImage
   }
@@ -98,25 +107,31 @@ export class BoardScene extends PotatoScene {
     setEntityType(engineerImage, EntityTypeRegistry.ENGINEER)
     setEntityModel(engineerImage, developerModel)
 
-    buildOnHover(engineerImage, () => {
-      console.log('hovered')
-    }, () => {
-      console.log('unhovered')
-    }, {
-    })
-
-
-    buildDragWithActivations(engineerImage, this.ticketViews, {
-      [EntityTypeRegistry.DEFAULT]: () => {
-        console.log('Revert to original position')
-        restoreStartPosition(engineerImage)
+    buildOnHover(
+      engineerImage,
+      () => {
+        console.log('hovered')
       },
-      [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(developerModel),
-    }, {
-      tolerance: 250
-    })
+      () => {
+        console.log('unhovered')
+      },
+      {},
+    )
 
-
+    buildDragWithActivations(
+      engineerImage,
+      this.ticketViews,
+      {
+        [EntityTypeRegistry.DEFAULT]: () => {
+          console.log('Revert to original position')
+          restoreStartPosition(engineerImage)
+        },
+        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(developerModel),
+      },
+      {
+        tolerance: 250,
+      },
+    )
 
     this.engineerViews.push(engineerImage)
   }
@@ -135,24 +150,20 @@ export class BoardScene extends PotatoScene {
      */
   }
 
-  preload() {
-
-  }
+  preload() {}
 
   create() {
-    const { width, height } = this.scale;
+    const { width, height } = this.scale
     const buttonList = new ButtonListBuilder1(this)
-      .textureKey("violet")
+      .textureKey('violet')
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
-      .setSpacingOffset(0, 10);
+      .setSpacingOffset(0, 10)
 
     const nextDayButton = buttonList
       .addButton()
-      .text("Confirm")
+      .text('Confirm')
       .onClick(this.nextTurnActivation)
-      .build();
+      .build()
   }
-
 }
-
