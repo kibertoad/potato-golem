@@ -1,5 +1,5 @@
-import { Ticket } from '../scenes/board/entities/Ticket'
 import { AnalystModel, DeveloperModel, QaModel } from './employeeModel'
+import { Ticket } from '../../scenes/board/model/entities/Ticket'
 
 export type TeamModel = {
   analysts: AnalystModel[]

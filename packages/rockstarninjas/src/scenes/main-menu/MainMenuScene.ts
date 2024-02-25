@@ -5,12 +5,12 @@ import {
   MultiplexActivation,
   TextBuilder,
 } from '@potato-golem/ui'
-import { Scenes } from '../registries/SceneRegistry'
+import { Scenes } from '../../model/registries/SceneRegistry'
 
-const cursorHandImg = require('../../assets/img/cursor_hand.png')
-const glassPanelImg = require('../../assets/img/glassPanel.png')
-const violetImg = require('../../assets/img/violet.png')
-const logoImg = require('../../assets/img/logo.png')
+const cursorHandImg = require('../../../assets/img/cursor_hand.png')
+const glassPanelImg = require('../../../assets/img/glassPanel.png')
+const violetImg = require('../../../assets/img/violet.png')
+const logoImg = require('../../../assets/img/logo.png')
 import BaseSound = Phaser.Sound.BaseSound
 
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
@@ -37,10 +37,10 @@ export class MainMenuScene extends PotatoScene {
     this.load.image('cursor-hand', cursorHandImg)
     this.load.image('logo', logoImg)
     this.load.image('violet', violetImg)
-    this.load.image('violet-border', require('../../assets/img/violet-border.png'))
-    this.load.image('violet-border2', require('../../assets/img/violet-border2.png'))
+    this.load.image('violet-border', require('../../../assets/img/violet-border.png'))
+    this.load.image('violet-border2', require('../../../assets/img/violet-border2.png'))
 
-    this.load.audio('mainTheme', require('url:../../assets/music/roots_of_peace_01.ogg'))
+    this.load.audio('mainTheme', require('url:../../../assets/music/roots_of_peace_01.ogg'))
   }
 
   create() {
@@ -126,14 +126,14 @@ export class MainMenuScene extends PotatoScene {
     const settingsButton = buttonList
       .addButton()
       .text('Settings')
-      .onClick(ChangeSceneActivation.build(this, Scenes.HIRE_DIRECTOR))
+      //.onClick(ChangeSceneActivation.build(this, Scenes.HIRE_DIRECTOR))
       .build()
 
     // Credits button
     const creditsButton = buttonList
       .addButton()
       .text('Credits')
-      .onClick(ChangeSceneActivation.build(this, Scenes.EXECUTIVE_COUNCIL))
+      //.onClick(ChangeSceneActivation.build(this, Scenes.EXECUTIVE_COUNCIL))
       .build()
 
     this.buttons.push(playButton)

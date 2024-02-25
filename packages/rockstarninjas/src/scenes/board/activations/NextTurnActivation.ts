@@ -1,6 +1,6 @@
 import { normalizedRandom } from '@potato-golem/core'
 import { Activation } from '@potato-golem/ui'
-import { WorldModel } from '../../../model/worldModel'
+import { WorldModel } from '../../../model/state/worldModel'
 
 export class NextTurnActivation implements Activation {
   private readonly worldModel: WorldModel

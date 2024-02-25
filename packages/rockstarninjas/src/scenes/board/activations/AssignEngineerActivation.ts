@@ -3,7 +3,7 @@ import {
   TargettedActivation,
 } from '@potato-golem/ui/dist/src/ui/activations/ActivationTypes'
 import { AbstractUIElementLite } from '@potato-golem/ui/dist/src/ui/elements/UIGroup'
-import { AbstractEmployee } from '../../../entities/AbstractEmployee'
+import { AbstractEmployee } from '../../../model/entities/AbstractEmployee'
 
 export class AssignEngineerActivation implements TargettedActivation<AbstractUIElementLite> {
   private readonly engineer: AbstractEmployee<any>

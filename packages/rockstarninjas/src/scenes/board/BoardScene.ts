@@ -1,8 +1,5 @@
 import {
   ButtonListBuilder1,
-  ChangeSceneActivation,
-  DragIcon,
-  ImageBoxBuilder,
   SpriteBuilder,
   buildDrag,
   buildOnHover,
@@ -16,15 +13,15 @@ import {
   ENTITY_TYPE_DATA_KEY,
 } from '@potato-golem/ui/dist/src/ui/common/EntityDataKeys'
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
-import { DeveloperEmployee } from '../../entities/DeveloperEmployee'
-import { WorldModel, worldModel } from '../../model/worldModel'
-import { Scenes } from '../../registries/SceneRegistry'
-import { EntityTypeRegistry } from '../../registries/entityTypeRegistry'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
 import { NextTurnActivation } from './activations/NextTurnActivation'
-import { Ticket, TicketStatus } from './entities/Ticket'
-import { canTransition } from './stateMachines/ticketStateMachine'
 import Sprite = Phaser.GameObjects.Sprite
+import { Scenes } from '../../model/registries/SceneRegistry'
+import { WorldModel, worldModel } from '../../model/state/worldModel'
+import { Ticket, TicketStatus } from './model/entities/Ticket'
+import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
+import { canTransition } from './model/stateMachines/ticketStateMachine'
+import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: NextTurnActivation

@@ -8,7 +8,7 @@ import {
 } from '@potato-golem/ui'
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { COLOR_DARK, COLOR_LIGHT } from '@potato-golem/ui/dist/src/ui/constants/Colours'
-import { Scenes } from '../registries/SceneRegistry'
+import { Scenes } from '../../model/registries/SceneRegistry'
 
 export class OverviewScene extends PotatoScene {
   constructor() {

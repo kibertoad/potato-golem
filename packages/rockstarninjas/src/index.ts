@@ -1,8 +1,8 @@
 import { Game } from 'phaser'
 import RexImageBoxPlugin from 'phaser3-rex-plugins/plugins/imagebox-plugin.js'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
-import { MainMenuScene } from './scenes/MainMenuScene'
 import { BoardScene } from './scenes/board/BoardScene'
+import { MainMenuScene } from './scenes/main-menu/MainMenuScene'
 
 const GameResolutions = {
   default: {
@@ -39,5 +39,3 @@ const config: Phaser.Types.Core.GameConfig = {
 
 // For some reason this must happen in root TS file
 new Game(config)
-
-console.log('End of TS file')

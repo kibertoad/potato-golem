@@ -1,6 +1,6 @@
 import { LimitedNumber, normalizedRandom } from '@potato-golem/core'
-import { DeveloperSkills } from '../model/employeeModel'
 import { AbstractEmployee } from './AbstractEmployee'
+import { DeveloperSkills } from '../state/employeeModel'
 
 export class DeveloperEmployee extends AbstractEmployee<DeveloperSkills> {
   constructor() {
