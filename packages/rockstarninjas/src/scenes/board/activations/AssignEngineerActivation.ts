@@ -1,7 +1,5 @@
 import { getEntityModel } from '@potato-golem/ui'
-import {
-  TargettedActivation,
-} from '@potato-golem/ui/dist/src/ui/activations/ActivationTypes'
+import { TargettedActivation } from '@potato-golem/ui/dist/src/ui/activations/ActivationTypes'
 import { AbstractUIElementLite } from '@potato-golem/ui/dist/src/ui/elements/UIGroup'
 import { AbstractEmployee } from '../../../model/entities/AbstractEmployee'
 import { TicketModel } from '../model/entities/TicketModel'

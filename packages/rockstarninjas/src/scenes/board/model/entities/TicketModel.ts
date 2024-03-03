@@ -12,16 +12,23 @@ export enum TicketStatus {
 export enum ProgressType {
   analysis = 'analysis',
   development = 'development',
-  testing = 'testing'
+  testing = 'testing',
+}
+
+export type TicketParams = {
+  name: string
+  complexity: number
 }
 
 export class TicketModel {
   assignees: EmployeeModel<any>[]
-  complexity: number
   progress: Record<ProgressType, LimitedNumber>
   status: TicketStatus = TicketStatus.open
+  params: TicketParams
 
-  constructor() {
+  constructor(params: TicketParams) {
+    this.params = params
+
     this.assignees = []
     this.progress = {
       analysis: new LimitedNumber(0, 10),

@@ -1,4 +1,5 @@
 import { LimitedNumber } from '@potato-golem/core'
+import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
 
 export enum Seniority {
   junior = 1,
@@ -35,6 +36,7 @@ export type EmployeeModel<CoreSkills> = {
   seniority: Seniority
   commonSkills: EmployeeSkills
   coreSkills: CoreSkills
+  area: ProgressType
 }
 
 export type EmployeeSkills = {

@@ -1,10 +1,13 @@
 import { LimitedNumber, normalizedRandom } from '@potato-golem/core'
-import { AbstractEmployee } from './AbstractEmployee'
+import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
 import { DeveloperSkills } from '../state/employeeModel'
+import { AbstractEmployee } from './AbstractEmployee'
 
 export class DeveloperEmployee extends AbstractEmployee<DeveloperSkills> {
   constructor() {
     super()
+
+    this.area = ProgressType.development
 
     this.coreSkills = {
       attention: new LimitedNumber(normalizedRandom(10), 10),

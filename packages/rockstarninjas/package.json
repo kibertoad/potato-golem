@@ -6,7 +6,7 @@
   "scripts": {
     "build:ts": "tsc",
     "build:production": "del-cli dist && del-cli ../../.parcel-cache --force && parcel assets/html/index.html ./src/**/*.ts",
-    "build:dev-full": "cd .. && cd ui && npm run build && cd .. && cd rockstarninjas && parcel assets/html/index.html ./src/**/*.ts",
+    "build:dev-full": "cd .. && cd ui && npm run build && cd .. && cd rockstarninjas && npm run build:ts && parcel assets/html/index.html ./src/**/*.ts",
     "build:dev": "parcel assets/html/index.html ./src/**/*.ts",
     "lint": "biome lint index.ts src biome.json",
     "lint:fix": "biome check --apply src biome.json",

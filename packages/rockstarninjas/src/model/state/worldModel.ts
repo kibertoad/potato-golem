@@ -1,5 +1,5 @@
-import { AnalystModel, DeveloperModel, QaModel } from './employeeModel'
 import { TicketModel } from '../../scenes/board/model/entities/TicketModel'
+import { AnalystModel, DeveloperModel, QaModel } from './employeeModel'
 
 export type TeamModel = {
   analysts: AnalystModel[]
@@ -21,6 +21,8 @@ export class WorldModel {
       developers: [],
     }
   }
-}
 
-export const worldModel = new WorldModel()
+  addTicket(ticket: TicketModel) {
+    this.tickets.push(ticket)
+  }
+}

@@ -11,15 +11,15 @@ import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
 import Sprite = Phaser.GameObjects.Sprite
-import { Scenes } from '../../model/registries/SceneRegistry'
-import { WorldModel, worldModel } from '../../model/state/worldModel'
-import { TicketModel, TicketStatus } from './model/entities/TicketModel'
-import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { canTransition } from './model/stateMachines/ticketStateMachine'
-import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
 import { ProcessorActivation } from '@potato-golem/core'
-import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
 import { Dependencies } from '../../model/diConfig'
+import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
+import { Scenes } from '../../model/registries/SceneRegistry'
+import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
+import { WorldModel } from '../../model/state/worldModel'
+import { TicketModel, TicketStatus } from './model/entities/TicketModel'
+import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
+import { canTransition } from './model/stateMachines/ticketStateMachine'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
@@ -28,7 +28,7 @@ export class BoardScene extends PotatoScene {
   private readonly ticketViews: Sprite[]
   private readonly engineerViews: Sprite[]
 
-  constructor({ nextTurnProcessor }: Dependencies) {
+  constructor({ nextTurnProcessor, worldModel }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
     this.worldModel = worldModel
@@ -77,8 +77,11 @@ export class BoardScene extends PotatoScene {
   }
 
   addTicket() {
-    const ticket = new TicketModel()
-    this.worldModel.tickets.push(ticket)
+    const ticket = new TicketModel({
+      name: 'Login',
+      complexity: 5,
+    })
+    this.worldModel.addTicket(ticket)
 
     const ticketView = this.addTicketView(ticket)
     this.ticketViews.push(ticketView)

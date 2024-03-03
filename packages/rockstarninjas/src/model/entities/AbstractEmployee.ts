@@ -1,5 +1,6 @@
 import { LimitedNumber, normalizedRandom, randomOneOf } from '@potato-golem/core'
 import { genNames } from 'generate-human-names'
+import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
 import { Gender } from '../registries/ImageRegistry'
 import { EmployeeModel, EmployeeSkills, Seniority } from '../state/employeeModel'
 
@@ -9,6 +10,7 @@ export abstract class AbstractEmployee<CoreSkills> implements EmployeeModel<Core
   public name: string
   public alias: string
   public seniority: Seniority
+  public area: ProgressType
 
   constructor() {
     const gender = randomOneOf(Object.values(Gender))
