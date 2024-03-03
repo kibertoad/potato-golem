@@ -20,6 +20,8 @@ import { WorldModel } from '../../model/state/worldModel'
 import { TicketModel, TicketStatus } from './model/entities/TicketModel'
 import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
 import { canTransition } from './model/stateMachines/ticketStateMachine'
+import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
+import { QaEmployee } from '../../model/entities/QaEmployee'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
@@ -87,12 +89,10 @@ export class BoardScene extends PotatoScene {
     this.ticketViews.push(ticketView)
   }
 
-  addDeveloper() {
-    const developerModel = new DeveloperEmployee()
+  addEmployee(employeeModel) {
+    this.worldModel.addEmployee(employeeModel)
 
-    this.worldModel.teamModel.developers.push(developerModel)
-
-    const engineerImage = SpriteBuilder.instance(this)
+    const employeeImage = SpriteBuilder.instance(this)
       .setTextureKey('logo')
       .setPosition({
         x: 250,
@@ -102,13 +102,13 @@ export class BoardScene extends PotatoScene {
       .setHeight(100)
       .build()
 
-    setEntityType(engineerImage, EntityTypeRegistry.ENGINEER)
-    setEntityModel(engineerImage, developerModel)
+    setEntityType(employeeImage, EntityTypeRegistry.ENGINEER)
+    setEntityModel(employeeImage, employeeModel)
 
     buildOnHover(
-      engineerImage,
+      employeeImage,
       () => {
-        console.log('hovered')
+        console.log(`hovered (${employeeModel.area})`)
       },
       () => {
         console.log('unhovered')
@@ -117,21 +117,27 @@ export class BoardScene extends PotatoScene {
     )
 
     buildDragWithActivations(
-      engineerImage,
+      employeeImage,
       this.ticketViews,
       {
         [EntityTypeRegistry.DEFAULT]: () => {
           console.log('Revert to original position')
-          restoreStartPosition(engineerImage)
+          restoreStartPosition(employeeImage)
         },
-        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(developerModel),
+        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
       },
       {
         tolerance: 250,
       },
     )
 
-    this.engineerViews.push(engineerImage)
+    this.engineerViews.push(employeeImage)
+  }
+
+  addDeveloper() {
+    this.addEmployee(new AnalystEmployee())
+    this.addEmployee(new DeveloperEmployee())
+    this.addEmployee(new QaEmployee())
   }
 
   init() {
