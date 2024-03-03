@@ -21,7 +21,7 @@ export type TicketParams = {
 }
 
 export class TicketModel {
-  assignees: EmployeeModel<any>[]
+  assignees: EmployeeModel<unknown>[]
   progress: Record<ProgressType, LimitedNumber>
   status: TicketStatus = TicketStatus.open
   params: TicketParams
