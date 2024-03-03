@@ -1,7 +1,7 @@
+import { expect } from 'chai'
 import { describe } from 'mocha'
 import { CommonDamageableComponent, DamageableComponent } from '../targets/DamageableComponent'
 import { DamageEffect } from './DamageEffect'
-import { expect } from 'chai'
 
 describe('DamageEffect', () => {
   it('correctly reduces hp', () => {

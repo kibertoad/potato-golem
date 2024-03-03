@@ -1,6 +1,6 @@
+import { Scene } from 'phaser'
 import { AbstractBlock } from '../../blocks/AbstractBlock'
 import { InputBlock } from '../../blocks/InputBlock'
-import { Scene } from 'phaser'
 
 export class CommonScene extends AbstractBlock {
   public readonly input: InputBlock

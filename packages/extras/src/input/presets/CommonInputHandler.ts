@@ -1,7 +1,7 @@
 import { InputBlock } from '../../blocks/InputBlock'
-import { InputEvent } from '../InputEvents'
 import { MovableEntity } from '../../movement/entities/MovableEntity'
 import { MovementProcessor } from '../../movement/processors/CommonMovementProcessor'
+import { InputEvent } from '../InputEvents'
 
 export type CommonInputHandlerOptions = {
   stepSize: number

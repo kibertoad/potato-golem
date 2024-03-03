@@ -36,6 +36,6 @@ export abstract class PotatoScene extends Phaser.Scene {
       this.load.image(image.key, image.file)
     }
 
-    console.log(`Preload complete.`)
+    console.log('Preload complete.')
   }
 }

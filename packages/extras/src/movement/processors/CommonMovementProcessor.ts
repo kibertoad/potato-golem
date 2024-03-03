@@ -1,5 +1,5 @@
-import { MovableEntity } from '../entities/MovableEntity'
 import { Entity } from '../entities/Entity'
+import { MovableEntity } from '../entities/MovableEntity'
 
 export type MovementProcessor = {
   moveEntity(entity: MovableEntity, deltaX: number, deltaY: number): void

@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "mocha **/*.spec.ts --require ts-node/register",
-    "lint": "eslint",
-    "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.ts"
+    "lint": "biome lint index.ts src biome.json",
+    "lint:fix": "biome check --apply src biome.json"
   },
   "repository": {
     "type": "git",
@@ -24,15 +24,12 @@
     "validation-utils": "^10.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "chai": "^4.3.7",
-    "eslint": "^8.33.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "mocha": "^10.2.0",
-    "prettier": "^2.8.3",
     "ts-node": "^10.9.1"
   }
 }

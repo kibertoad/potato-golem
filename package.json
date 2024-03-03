@@ -5,10 +5,10 @@
     "format": "npm run format --workspaces"
   },
   "peerDependencies": {
-    "phaser": "^3.70.0"
+    "phaser": "^3.80.1"
   },
   "devDependencies": {
-    "phaser": "^3.70.0"
+    "phaser": "^3.80.1"
   },
   "workspaces": [
     "packages/*"
