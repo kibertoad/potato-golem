@@ -30,4 +30,12 @@ export class LimitedNumber {
   getMissing() {
     return this.maxValue - this.value
   }
+
+  isAtMax() {
+    return this.maxValue === this.value
+  }
+
+  isAtZero() {
+    return this.value === 0
+  }
 }

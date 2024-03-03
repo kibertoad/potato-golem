@@ -13,7 +13,7 @@ import { AssignEngineerActivation } from './activations/AssignEngineerActivation
 import Sprite = Phaser.GameObjects.Sprite
 import { Scenes } from '../../model/registries/SceneRegistry'
 import { WorldModel, worldModel } from '../../model/state/worldModel'
-import { Ticket, TicketStatus } from './model/entities/Ticket'
+import { TicketModel, TicketStatus } from './model/entities/TicketModel'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { canTransition } from './model/stateMachines/ticketStateMachine'
 import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
@@ -37,7 +37,7 @@ export class BoardScene extends PotatoScene {
     this.engineerViews = []
   }
 
-  addTicketView(ticketModel: Ticket) {
+  addTicketView(ticketModel: TicketModel) {
     const dragImage = SpriteBuilder.instance(this)
       .setTextureKey('glass-panel')
       .setPosition({
@@ -77,7 +77,7 @@ export class BoardScene extends PotatoScene {
   }
 
   addTicket() {
-    const ticket = new Ticket()
+    const ticket = new TicketModel()
     this.worldModel.tickets.push(ticket)
 
     const ticketView = this.addTicketView(ticket)

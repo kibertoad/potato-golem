@@ -1,5 +1,6 @@
 import { Dependencies } from '../../../../model/diConfig'
 import { normalizedRandom, Processor } from '@potato-golem/core'
+import { ProgressType } from '../entities/TicketModel'
 
 export class NextTurnProcessor implements Processor{
   private readonly worldModel
@@ -19,6 +20,8 @@ export class NextTurnProcessor implements Processor{
       // ToDo more complex logic based on seniority, taking into consideration potential blocking and assisting engineers
 
       const progress = normalizedRandom(leadAssignee.coreSkills.speed.value)
+
+      ticket.addProgress(progress, ProgressType.development)
     }
   }
 

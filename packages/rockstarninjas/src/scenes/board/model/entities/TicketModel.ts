@@ -9,14 +9,16 @@ export enum TicketStatus {
   released = 'released',
 }
 
-export class Ticket {
+export enum ProgressType {
+  analysis = 'analysis',
+  development = 'development',
+  testing = 'testing'
+}
+
+export class TicketModel {
   assignees: EmployeeModel<any>[]
   complexity: number
-  progress: {
-    analysis: LimitedNumber
-    development: LimitedNumber
-    testing: LimitedNumber
-  }
+  progress: Record<ProgressType, LimitedNumber>
   status: TicketStatus = TicketStatus.open
 
   constructor() {
@@ -26,5 +28,21 @@ export class Ticket {
       development: new LimitedNumber(0, 10),
       testing: new LimitedNumber(0, 10),
     }
+  }
+
+  addProgress(progress: number, progressType: ProgressType) {
+    this.progress[progressType].increase(progress)
+  }
+
+  canBeAnalyzed() {
+    return !this.progress.analysis.isAtMax()
+  }
+
+  canBeDeveloped() {
+    return !this.progress.development.isAtMax()
+  }
+
+  canBeTested() {
+    return !this.progress.testing.isAtMax()
   }
 }

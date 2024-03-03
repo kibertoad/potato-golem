@@ -1,5 +1,5 @@
 import { AnalystModel, DeveloperModel, QaModel } from './employeeModel'
-import { Ticket } from '../../scenes/board/model/entities/Ticket'
+import { TicketModel } from '../../scenes/board/model/entities/TicketModel'
 
 export type TeamModel = {
   analysts: AnalystModel[]
@@ -9,7 +9,7 @@ export type TeamModel = {
 
 export class WorldModel {
   public turnCounter: number
-  public readonly tickets: Ticket[]
+  public readonly tickets: TicketModel[]
   public readonly teamModel: TeamModel
 
   constructor() {

@@ -1,6 +1,6 @@
-import { Ticket, TicketStatus } from '../entities/Ticket'
+import { TicketModel, TicketStatus } from '../entities/TicketModel'
 
-export function canTransition(ticket: Ticket, toStatus: TicketStatus) {
+export function canTransition(ticket: TicketModel, toStatus: TicketStatus) {
   switch (toStatus) {
     case TicketStatus.open: {
       return true
