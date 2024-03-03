@@ -1,6 +1,5 @@
 import { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
 import { validateString } from 'validation-utils'
-import { ActivationCallback } from '../activations/ActivationTypes'
 import { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 

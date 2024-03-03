@@ -4,18 +4,24 @@
   "description": "potato golem game lib core",
   "type": "commonjs",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./index.ts",
   "exports": {
     ".": {
-      "types": [
-        "./index.ts"
-      ],
-      "import": [
-        "./index.ts"
-      ],
-      "require": [
-        "./dist/index.js"
-      ]
+      "development": {
+        "types": "./index.ts",
+        "require": "./dist/index.js",
+        "import": "./index.ts"
+      },
+      "production": {
+        "types": "./dist/index.d.ts",
+        "require": "./dist/index.js",
+        "import": "./dist/index.js"
+      },
+      "default": {
+        "types": "./index.ts",
+        "require": "./dist/index.js",
+        "import": "./dist/index.js"
+      }
     }
   },
   "scripts": {

@@ -23,6 +23,6 @@ export function getEntityType(item: AbstractUIElementLite) {
   return item.getData(ENTITY_TYPE_DATA_KEY)
 }
 
-export function getEntityModel(item: AbstractUIElementLite) {
+export function getEntityModel<T = any>(item: AbstractUIElementLite): T {
   return item.getData(ENTITY_MODEL)
 }

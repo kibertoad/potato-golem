@@ -1,4 +1,4 @@
-import { Activation } from '../activations/ActivationTypes'
+import { Activation } from '@potato-golem/core'
 import { OnClickCallback } from '../builders/ButtonBuilder'
 
 export type UIElementTemplate = {

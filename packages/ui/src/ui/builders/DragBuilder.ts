@@ -1,12 +1,12 @@
 import { AbstractUIElementLite } from '../elements/UIGroup'
 import Pointer = Phaser.Input.Pointer
-import { TargettedActivation, TargettedActivationCallback } from '../activations/ActivationTypes'
 import {
   DEFAULT_ENTITY_TYPE,
   getEntityType,
   storeStartPosition,
 } from '../elements/ElementDataManipulator'
 import { doShapesIntersect } from '../utils/shapeUtils'
+import { TargettedActivation, TargettedActivationCallback } from '@potato-golem/core'
 
 export type DragConfig = {
   tolerance?: number

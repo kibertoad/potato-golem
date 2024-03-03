@@ -8,13 +8,8 @@ import {
   setEntityType,
 } from '@potato-golem/ui'
 import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
-import {
-  ENTITY_MODEL,
-  ENTITY_TYPE_DATA_KEY,
-} from '@potato-golem/ui/dist/src/ui/common/EntityDataKeys'
 import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
-import { NextTurnActivation } from './activations/NextTurnActivation'
 import Sprite = Phaser.GameObjects.Sprite
 import { Scenes } from '../../model/registries/SceneRegistry'
 import { WorldModel, worldModel } from '../../model/state/worldModel'
@@ -22,19 +17,22 @@ import { Ticket, TicketStatus } from './model/entities/Ticket'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { canTransition } from './model/stateMachines/ticketStateMachine'
 import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
+import { ProcessorActivation } from '@potato-golem/core'
+import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
+import { Dependencies } from '../../model/diConfig'
 
 export class BoardScene extends PotatoScene {
-  private readonly nextTurnActivation: NextTurnActivation
+  private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
   private readonly worldModel: WorldModel
 
   private readonly ticketViews: Sprite[]
   private readonly engineerViews: Sprite[]
 
-  constructor() {
+  constructor({ nextTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
     this.worldModel = worldModel
-    this.nextTurnActivation = new NextTurnActivation(this.worldModel)
+    this.nextTurnActivation = new ProcessorActivation<NextTurnProcessor>(nextTurnProcessor)
     this.ticketViews = []
     this.engineerViews = []
   }

@@ -1,4 +1,4 @@
-import { ActivationCallback } from '../activations/ActivationTypes'
+import { ActivationCallback } from "@potato-golem/core"
 
 export type Position = {
   x: number

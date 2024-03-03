@@ -3,6 +3,7 @@ import RexImageBoxPlugin from 'phaser3-rex-plugins/plugins/imagebox-plugin.js'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 import { BoardScene } from './scenes/board/BoardScene'
 import { MainMenuScene } from './scenes/main-menu/MainMenuScene'
+import { instantiateContainer } from './model/diConfig'
 
 const GameResolutions = {
   default: {
@@ -12,6 +13,8 @@ const GameResolutions = {
 }
 
 const resolution = GameResolutions.default
+
+const container = instantiateContainer()
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -34,7 +37,7 @@ const config: Phaser.Types.Core.GameConfig = {
       },
     ],
   },
-  scene: [new MainMenuScene(), new BoardScene()],
+  scene: [container.cradle.mainMenuScene, container.cradle.boardScene],
 }
 
 // For some reason this must happen in root TS file

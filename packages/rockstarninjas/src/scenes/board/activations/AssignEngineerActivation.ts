@@ -4,6 +4,7 @@ import {
 } from '@potato-golem/ui/dist/src/ui/activations/ActivationTypes'
 import { AbstractUIElementLite } from '@potato-golem/ui/dist/src/ui/elements/UIGroup'
 import { AbstractEmployee } from '../../../model/entities/AbstractEmployee'
+import { Ticket } from '../model/entities/Ticket'
 
 export class AssignEngineerActivation implements TargettedActivation<AbstractUIElementLite> {
   private readonly engineer: AbstractEmployee<any>
@@ -13,7 +14,7 @@ export class AssignEngineerActivation implements TargettedActivation<AbstractUIE
   }
 
   activate(targetTicketView: AbstractUIElementLite) {
-    const targetTicket = getEntityModel(targetTicketView)
+    const targetTicket = getEntityModel<Ticket>(targetTicketView)
     if (!targetTicket) {
       throw new Error('no entity model on view')
     }

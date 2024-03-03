@@ -25,6 +25,7 @@
   "dependencies": {
     "@potato-golem/core": "*",
     "@potato-golem/ui": "*",
+    "awilix": "^10.0.1",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.80.1",
     "validation-utils": "^10.0.0"

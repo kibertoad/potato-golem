@@ -1,11 +1,10 @@
-import { normalizedRandom } from '@potato-golem/core'
-import { Activation } from '@potato-golem/ui'
-import { WorldModel } from '../../../model/state/worldModel'
+import { Dependencies } from '../../../../model/diConfig'
+import { normalizedRandom, Processor } from '@potato-golem/core'
 
-export class NextTurnActivation implements Activation {
-  private readonly worldModel: WorldModel
+export class NextTurnProcessor implements Processor{
+  private readonly worldModel
 
-  constructor(worldModel: WorldModel) {
+  constructor({ worldModel }: Dependencies) {
     this.worldModel = worldModel
   }
 
@@ -23,7 +22,7 @@ export class NextTurnActivation implements Activation {
     }
   }
 
-  activate(): void {
+  process() {
     this.processTickets()
 
     this.worldModel.turnCounter++

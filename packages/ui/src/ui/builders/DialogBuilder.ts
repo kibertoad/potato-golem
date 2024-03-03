@@ -1,4 +1,4 @@
-import { ActivationCallback } from '../activations/ActivationTypes'
+import { ActivationCallback } from '@potato-golem/core'
 import { ChoiceOption } from '../common/CommonUITypes'
 import { PotatoScene } from '../common/PotatoScene'
 import { BLUE } from '../constants/Colours'

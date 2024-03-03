@@ -1,4 +1,4 @@
-import { ActivationCallback } from '../activations/ActivationTypes'
+import { ActivationCallback } from '@potato-golem/core'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 export class LabelBuilder extends AbstractUIBuilder {
