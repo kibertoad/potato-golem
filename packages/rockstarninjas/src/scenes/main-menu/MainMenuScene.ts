@@ -2,7 +2,7 @@ import {
   BackgroundBuilder,
   ButtonListBuilder1,
   ChangeSceneActivation,
-  MultiplexActivation,
+  MultiplexActivation, PotatoScene,
   TextBuilder,
 } from '@potato-golem/ui'
 import { Scenes } from '../../model/registries/SceneRegistry'
@@ -13,7 +13,7 @@ const violetImg = require('../../../assets/img/violet.png')
 const logoImg = require('../../../assets/img/logo.png')
 import BaseSound = Phaser.Sound.BaseSound
 
-import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
+import { UiImages } from '../../model/registries/ImageRegistry'
 
 const isSoundEnabled = false
 
@@ -33,6 +33,9 @@ export class MainMenuScene extends PotatoScene {
   }
 
   preload() {
+    this.load.image(UiImages.neonWindow9Patch, require('../../../assets/img/neon-window-9patch.png'))
+    this.load.image(UiImages.roseWindow9Patch, require('../../../assets/img/rose-window-9patch.png'))
+
     this.load.image('glass-panel', glassPanelImg)
     this.load.image('cursor-hand', cursorHandImg)
     this.load.image('logo', logoImg)

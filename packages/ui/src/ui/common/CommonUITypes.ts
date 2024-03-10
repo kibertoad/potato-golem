@@ -9,3 +9,7 @@ export type ChoiceOption = {
   text: string
   activation?: ActivationCallback
 }
+
+export type ViewParent = {
+  
+}

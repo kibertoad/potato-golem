@@ -6,9 +6,9 @@ import {
   restoreStartPosition,
   setEntityModel,
   setEntityType,
+  PotatoScene
 } from '@potato-golem/ui'
 import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
-import { PotatoScene } from '@potato-golem/ui/dist/src/ui/common/PotatoScene'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
 import Sprite = Phaser.GameObjects.Sprite
 import { ProcessorActivation } from '@potato-golem/core'
@@ -22,6 +22,7 @@ import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
 import { canTransition } from './model/stateMachines/ticketStateMachine'
 import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
 import { QaEmployee } from '../../model/entities/QaEmployee'
+import { BoardView } from './views/BoardView'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
@@ -37,6 +38,25 @@ export class BoardScene extends PotatoScene {
     this.nextTurnActivation = new ProcessorActivation<NextTurnProcessor>(nextTurnProcessor)
     this.ticketViews = []
     this.engineerViews = []
+  }
+
+  init() {
+    this.addBoardView()
+    this.addTicket()
+    this.addDeveloper()
+
+    /*
+    const ticket = this.add.rectangle(500, 500, 80, 80)
+      .setFillStyle(0xa98270, 1)
+      .setStrokeStyle(2, 0xa98274)
+      .setDepth(10)
+      .setData(ENTITY_TYPE_DATA_KEY, 'ticket')
+
+     */
+  }
+
+  addBoardView() {
+    this.viewParents.push(new BoardView(this))
   }
 
   addTicketView(ticketModel: TicketModel) {
@@ -138,20 +158,6 @@ export class BoardScene extends PotatoScene {
     this.addEmployee(new AnalystEmployee())
     this.addEmployee(new DeveloperEmployee())
     this.addEmployee(new QaEmployee())
-  }
-
-  init() {
-    this.addTicket()
-    this.addDeveloper()
-
-    /*
-    const ticket = this.add.rectangle(500, 500, 80, 80)
-      .setFillStyle(0xa98270, 1)
-      .setStrokeStyle(2, 0xa98274)
-      .setDepth(10)
-      .setData(ENTITY_TYPE_DATA_KEY, 'ticket')
-
-     */
   }
 
   preload() {}

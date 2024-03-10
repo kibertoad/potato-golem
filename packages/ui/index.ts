@@ -10,6 +10,7 @@ export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
 export { SizerBuilder } from './src/ui/builders/SizerBuilder'
 export { buildDrag } from './src/ui/builders/DragBuilder'
+export { NinePatchBuilder } from './src/ui/builders/NinePatchBuilder'
 export { DragIcon } from './src/ui/elements/DragIcon'
 export * from './src/ui/elements/ElementDataManipulator'
 
@@ -25,8 +26,11 @@ export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivatio
 export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
 export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
-export type { Position } from './src/ui/common/CommonUITypes'
+export type { Position, ViewParent, ChoiceOption } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'
 
 export type { UIElementTemplate } from './src/ui/elements/UIElementTemplate'
+export { COLOR_LIGHT, COLOR_DARK, COLOR_PRIMARY, BLUE, GREENISH } from './src/ui/constants/Colours'
+
+export { PotatoScene } from './src/ui/common/PotatoScene'

@@ -46,3 +46,8 @@ export const DirectorPortraits = {
     'female17',
   ],
 }
+
+export const UiImages = {
+  neonWindow9Patch: 'neon-window-9patch',
+  roseWindow9Patch: 'rose-window-9patch',
+}
