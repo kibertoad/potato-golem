@@ -13,11 +13,15 @@ export type DragConfig = {
 }
 
 export function buildDrag(
-  item: AbstractUIElementLite,
+  dragStartItem: AbstractUIElementLite,
+  draggedItem: AbstractUIElementLite,
   onDropCallback: (pointer: Pointer) => void,
   config: DragConfig,
 ) {
-  item
+  let dragDeltaX
+  let dragDeltaY
+
+  dragStartItem
     .setInteractive({
       draggable: true,
       pixelPerfect: config.tolerance !== undefined,
@@ -25,10 +29,17 @@ export function buildDrag(
     })
 
     .on('dragstart', (pointer, dragX, dragY) => {
-      storeStartPosition(item)
+      console.log(`dragstart ${draggedItem.x}/${draggedItem.y}`)
+      console.log(`dragstart pointer ${pointer.x}/${pointer.y}`)
+      dragDeltaX = pointer.x - draggedItem.x
+      dragDeltaY = pointer.y - draggedItem.y
+
+      storeStartPosition(draggedItem)
     })
     .on('drag', (pointer, dragX, dragY) => {
-      item.setPosition(dragX, dragY)
+      console.log(`Drag: ${dragX}/${dragY}`)
+      console.log(`Drag pointer: ${pointer.x}/${pointer.y}`)
+      draggedItem.setPosition(pointer.x - dragDeltaX, pointer.y - dragDeltaY)
     })
     .on('dragend', (pointer: Pointer, dragX, dragY, dropped) => {
       if (dropped) {
@@ -44,13 +55,15 @@ export function buildDrag(
     })
 }
 
-export function buildDragWithActivations<T extends AbstractUIElementLite>(
-  draggedItem: T,
+export function buildDragWithActivations<T extends AbstractUIElementLite, U extends AbstractUIElementLite>(
+  dragStartItem: T,
+  draggedItem: U,
   potentialTargets: readonly AbstractUIElementLite[],
   activations: Record<string, TargettedActivation<any> | TargettedActivationCallback<any>>,
   config: DragConfig,
 ) {
   buildDrag(
+    dragStartItem,
     draggedItem,
     (pointer: Pointer) => {
       console.log('potential targets')

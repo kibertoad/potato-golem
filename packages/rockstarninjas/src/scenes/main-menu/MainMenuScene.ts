@@ -65,9 +65,9 @@ export class MainMenuScene extends PotatoScene {
       .build()
 
     const subTitle = new TextBuilder(this)
-      .text('Move fast and break down')
-      .displaySize(250, 150)
-      .position(width * 0.3, height * 0.6)
+      .setText('Move fast and break down')
+      .setDisplaySize(250, 150)
+      .setPosition({ x: width * 0.3, y: height * 0.6})
       .build()
 
     /*

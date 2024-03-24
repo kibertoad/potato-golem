@@ -23,12 +23,13 @@ import { canTransition } from './model/stateMachines/ticketStateMachine'
 import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
 import { QaEmployee } from '../../model/entities/QaEmployee'
 import { BoardView } from './views/BoardView'
+import { TicketView } from './views/TicketView'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
   private readonly worldModel: WorldModel
 
-  private readonly ticketViews: Sprite[]
+  private readonly ticketViews: TicketView[]
   private readonly engineerViews: Sprite[]
 
   constructor({ nextTurnProcessor, worldModel }: Dependencies) {
@@ -59,45 +60,6 @@ export class BoardScene extends PotatoScene {
     this.viewParents.push(new BoardView(this))
   }
 
-  addTicketView(ticketModel: TicketModel) {
-    const dragImage = SpriteBuilder.instance(this)
-      .setTextureKey('glass-panel')
-      .setPosition({
-        x: 15,
-        y: 15,
-      })
-      .setWidth(100)
-      .setHeight(100)
-      .build()
-
-    setEntityType(dragImage, EntityTypeRegistry.TICKET)
-    setEntityModel(dragImage, ticketModel)
-
-    buildDrag(
-      dragImage,
-      (pointer) => {
-        const swimlaneSize = 1024 / 5
-        const swimLane = Math.ceil(pointer.x / swimlaneSize)
-        console.log(`Swimlane ${swimLane}`)
-
-        const newStatus = Object.values(TicketStatus)[swimLane - 1]
-
-        const ticketCanTransition = canTransition(ticketModel, newStatus)
-
-        console.log(`Can transition: ${ticketCanTransition}`)
-
-        if (!ticketCanTransition) {
-          restoreStartPosition(dragImage)
-        } else {
-          ticketModel.status = newStatus
-        }
-      },
-      {},
-    )
-
-    return dragImage
-  }
-
   addTicket() {
     const ticket = new TicketModel({
       name: 'Login',
@@ -105,7 +67,11 @@ export class BoardScene extends PotatoScene {
     })
     this.worldModel.addTicket(ticket)
 
-    const ticketView = this.addTicketView(ticket)
+    const ticketView = new TicketView(this, {
+      ticketModel: ticket,
+      x: 15,
+      y: 15
+    })
     this.ticketViews.push(ticketView)
   }
 
@@ -137,6 +103,7 @@ export class BoardScene extends PotatoScene {
     )
 
     buildDragWithActivations(
+      employeeImage,
       employeeImage,
       this.ticketViews,
       {

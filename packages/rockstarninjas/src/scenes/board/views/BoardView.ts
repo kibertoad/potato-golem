@@ -21,7 +21,7 @@ export class BoardView implements ViewParent{
       })
       .setSlices(
         {
-          width: 300,
+          width: 200,
           height: 600,
           bottomHeight: 10,
           leftWidth: 75,
