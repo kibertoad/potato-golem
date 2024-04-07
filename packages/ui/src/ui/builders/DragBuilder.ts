@@ -18,8 +18,8 @@ export function buildDrag(
   onDropCallback: (pointer: Pointer) => void,
   config: DragConfig,
 ) {
-  let dragDeltaX
-  let dragDeltaY
+  let dragDeltaX = 0
+  let dragDeltaY = 0
 
   dragStartItem
     .setInteractive({
@@ -29,16 +29,16 @@ export function buildDrag(
     })
 
     .on('dragstart', (pointer, dragX, dragY) => {
-      console.log(`dragstart ${draggedItem.x}/${draggedItem.y}`)
-      console.log(`dragstart pointer ${pointer.x}/${pointer.y}`)
+      //console.log(`dragstart ${draggedItem.x}/${draggedItem.y}`)
+      //console.log(`dragstart pointer ${pointer.x}/${pointer.y}`)
       dragDeltaX = pointer.x - draggedItem.x
       dragDeltaY = pointer.y - draggedItem.y
 
       storeStartPosition(draggedItem)
     })
     .on('drag', (pointer, dragX, dragY) => {
-      console.log(`Drag: ${dragX}/${dragY}`)
-      console.log(`Drag pointer: ${pointer.x}/${pointer.y}`)
+      //console.log(`Drag: ${dragX}/${dragY}`)
+      //console.log(`Drag pointer: ${pointer.x}/${pointer.y}`)
       draggedItem.setPosition(pointer.x - dragDeltaX, pointer.y - dragDeltaY)
     })
     .on('dragend', (pointer: Pointer, dragX, dragY, dropped) => {

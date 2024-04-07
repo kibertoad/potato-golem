@@ -22,6 +22,13 @@ export class LimitedNumber {
   setToMax() {
     this.value = this.maxValue
   }
+  setValue(value: number) {
+    this.value = Math.min(value, this.maxValue)
+  }
+  setMaxValue(maxValue: number) {
+    this.maxValue = maxValue
+    this.value = Math.min(this.value, this.maxValue)
+  }
 
   getPercentage() {
     return (this.value / this.maxValue) * 100

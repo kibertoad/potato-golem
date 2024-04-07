@@ -1,5 +1,6 @@
 import Container = Phaser.GameObjects.Container
 import {
+  BarsBarBuilder,
   buildDrag,
   Position,
   PotatoScene,
@@ -37,15 +38,36 @@ export class TicketView extends Container {
       .setDisplaySize(15,15)
       .build()
       .value
+
+    const ticketBackgroundWidth = 200
+    const ticketBackgroundHeight = 100
+
     this.ticketSprite = SpriteBuilder.instance(scene)
       .setTextureKey('glass-panel')
       .setPosition({
         x: params.x,
         y: params.y,
       })
-      .setWidth(100)
-      .setHeight(100)
+      .setWidth(ticketBackgroundWidth)
+      .setHeight(ticketBackgroundHeight)
       .build()
+
+    const barsContainer = BarsBarBuilder.instance(scene)
+      .setRelativePositionFromSprite(
+        this.ticketSprite,
+        20,
+        80
+      )
+      .setWidth(8)
+      .setHeight(14)
+      .setOffsetX(4)
+      .setMaxValue(10)
+      .setValue(2)
+      .setBorderWidth(2)
+      .build()
+
+    this.add(barsContainer)
+    // this.scene.add.existing(barsContainer)
 
     setEntityType(this.ticketSprite, EntityTypeRegistry.TICKET)
     setEntityModel(this.ticketSprite, this.ticketModel)

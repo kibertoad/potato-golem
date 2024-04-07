@@ -4,6 +4,7 @@ export { ButtonListBuilder } from './src/ui/builders/ButtonListBuilder'
 export { BackgroundBuilder } from './src/ui/builders/BackgroundBuilder'
 export { TextBuilder } from './src/ui/builders/TextBuilder'
 export { GridButtonBuilder } from './src/ui/builders/GridButtonBuilder'
+export { BarsBarBuilder } from './src/ui/builders/BarsBarBuilder'
 export { NameValueLabelBuilder } from './src/ui/builders/NameValueLabelBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
 export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
@@ -26,7 +27,7 @@ export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivatio
 export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
 export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
-export type { Position, ViewParent, ChoiceOption } from './src/ui/common/CommonUITypes'
+export type { Position, ViewParent, ChoiceOption, Dimensions } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'
 

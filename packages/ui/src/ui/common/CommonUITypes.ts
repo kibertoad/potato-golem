@@ -5,11 +5,16 @@ export type Position = {
   y: number
 }
 
+export type Dimensions = {
+  height: number
+  width: number
+}
+
 export type ChoiceOption = {
   text: string
   activation?: ActivationCallback
 }
 
 export type ViewParent = {
-  
+
 }
