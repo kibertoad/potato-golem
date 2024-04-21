@@ -1,13 +1,15 @@
 import { validateNumber, validateString } from 'validation-utils'
 import { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
-import Sprite = Phaser.GameObjects.Sprite
 import NineSlice = Phaser.GameObjects.NineSlice
 
 export type SliceConfig = {
   width?: number, height?: number, leftWidth?: number, rightWidth?: number, topHeight?: number, bottomHeight?: number, skipScale9?: boolean
 }
 
+/**
+ * Used for creating images that can stretch by scaling specified sections within specified parameters
+ */
 export class NinePatchBuilder extends AbstractUIBuilder {
   private textureKey?: string
   private interactiveConfig?: Phaser.Types.Input.InputConfiguration

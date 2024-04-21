@@ -1,6 +1,6 @@
 import { Scenes } from '../registries/SceneRegistry'
 import {
-  BackgroundBuilder,
+  TextWithBackgroundBuilder,
   ButtonListBuilder,
   ChangeSceneActivation,
   MultiplexActivation, NameValueLabelBuilder,
@@ -33,7 +33,7 @@ export class OverviewScene extends PotatoScene {
       .setHeight(40)
       .build()
 
-    const { text: infoBackgroundText } = new BackgroundBuilder(this)
+    const { text: infoBackgroundText } = new TextWithBackgroundBuilder(this)
       .position(0.8 * width, 0.45 * height)
       .textureKey('violet-border2')
       .displaySize(0.3 * width, 0.75 * height)

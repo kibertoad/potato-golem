@@ -1,6 +1,6 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  BackgroundBuilder, buildDialog,
+  TextWithBackgroundBuilder, buildDialog,
   ButtonListBuilder, ButtonListBuilder1,
   ChangeSceneActivation,
   MultiplexActivation, TextBuilder,
@@ -221,7 +221,7 @@ export class MainMenuScene extends PotatoScene {
     const { width, height } = this.scale;
 
 
-    const title = new BackgroundBuilder(this)
+    const title = new TextWithBackgroundBuilder(this)
       .textureKey('glass-panel')
       .text('Colony Incorporated: \nSurvival is a vibe')
       .displaySize(250, 50)

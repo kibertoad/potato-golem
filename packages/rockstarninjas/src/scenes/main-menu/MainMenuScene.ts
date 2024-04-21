@@ -1,5 +1,5 @@
 import {
-  BackgroundBuilder,
+  TextWithBackgroundBuilder,
   ButtonListBuilder1,
   ChangeSceneActivation,
   MultiplexActivation, PotatoScene,
@@ -57,9 +57,9 @@ export class MainMenuScene extends PotatoScene {
 
     const { width, height } = this.scale
 
-    const title = new BackgroundBuilder(this)
+    const title = new TextWithBackgroundBuilder(this)
       .textureKey('glass-panel')
-      .text('Rockstars and Ninjas: \nGoing corpo')
+      .text('There Are Deadlines In Hell')
       .displaySize(250, 50)
       .position(width * 0.3, height * 0.4)
       .build()

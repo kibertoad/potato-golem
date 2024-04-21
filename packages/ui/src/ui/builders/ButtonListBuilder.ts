@@ -1,11 +1,7 @@
-import { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
 import { ChoiceOption, Position } from '../common/CommonUITypes'
 import { PotatoScene } from '../common/PotatoScene'
-import { GREENISH } from '../constants/Colours'
 import { UIElementTemplate } from '../elements/UIElementTemplate'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
-import { ButtonBuilder } from './ButtonBuilder'
 
 export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]

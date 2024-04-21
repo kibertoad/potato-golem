@@ -3,6 +3,9 @@ import { AbstractUIBuilder } from './AbstractUIBuilder'
 import { LimitedNumber } from '@potato-golem/core'
 import Container = Phaser.GameObjects.Container
 
+/**
+ * Used for displaying small values as a row of filled/empty bars
+ */
 export class BarsBarBuilder extends AbstractUIBuilder {
   private text?: string
   private offsetX: number

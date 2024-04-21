@@ -6,6 +6,9 @@ import { Activation } from '@potato-golem/core'
 
 export type OnClickCallback = (button: any) => void
 
+/**
+ * Used for creating clickable images with text
+ */
 export class ButtonBuilder {
   #text?: string
   #textureKey?: string

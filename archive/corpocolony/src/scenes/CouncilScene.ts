@@ -1,6 +1,6 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  BackgroundBuilder,
+  TextWithBackgroundBuilder,
   ButtonBuilder,
   ButtonListBuilder,
   ChangeSceneActivation,
@@ -39,7 +39,7 @@ export class CouncilScene extends PotatoScene {
       .setSpacingOffset(40, 0);
 
     for (let vp of this.vps) {
-      const statsTableBuilder = new BackgroundBuilder(this);
+      const statsTableBuilder = new TextWithBackgroundBuilder(this);
       const { text } = statsTableBuilder
         .displaySize(150, 300)
         .textureKey("glass-panel")

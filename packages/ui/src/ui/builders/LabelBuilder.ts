@@ -1,6 +1,9 @@
 import { ActivationCallback } from '@potato-golem/core'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 
+/**
+ * Used for displaying text with a coloured background
+ */
 export class LabelBuilder extends AbstractUIBuilder {
   private fillColour?: number
   private text?: string

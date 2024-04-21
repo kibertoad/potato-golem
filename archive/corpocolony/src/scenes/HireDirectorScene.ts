@@ -1,6 +1,6 @@
 import { Scenes } from "../registries/SceneRegistry";
 import {
-  BackgroundBuilder,
+  TextWithBackgroundBuilder,
   ButtonBuilder,
   ButtonListBuilder,
   ChangeSceneActivation,
@@ -35,7 +35,7 @@ export class HireDirectorScene extends Phaser.Scene {
       .setSpacingOffset(40, 0);
 
     for (let director of this.directors) {
-      const statsTableBuilder = new BackgroundBuilder(this);
+      const statsTableBuilder = new TextWithBackgroundBuilder(this);
       const { text } = statsTableBuilder
         .displaySize(150, 300)
         .textureKey("glass-panel")

@@ -19,6 +19,9 @@ export type BuildDialogParams = {
   choiceOptions: readonly ChoiceOption[]
 }
 
+/**
+ * Used for creating a prompt with text and multiple action selection
+ */
 export function buildDialog(scene: PotatoScene, params: BuildDialogParams) {
   const dialog = scene.rexUI.add
     .dialog({
