@@ -48,9 +48,8 @@ export class MainMenuScene extends PotatoScene {
   }
 
   create() {
-    this.mainTheme = this.sound.add('mainTheme')
-
     if (isSoundEnabled) {
+      this.mainTheme = this.sound.add('mainTheme')
       this.mainTheme.play({
         loop: true,
       })
