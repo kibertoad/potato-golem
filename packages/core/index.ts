@@ -1,5 +1,6 @@
 export { LimitedNumber } from './src/core/primitives/LimitedNumber'
 export { randomOneOf, normalizedRandom } from './src/core/utils/randomUtils'
+export { chunk } from './src/core/utils/arrayUtils'
 export type { Processor } from './src/core/interfaces/Processor'
 export type { Activation, ActivationCallback, TargettedActivationCallback, TargettedActivation} from './src/core/activations/Activation'
 export { ProcessorActivation } from './src/core/activations/ProcessorActivation'

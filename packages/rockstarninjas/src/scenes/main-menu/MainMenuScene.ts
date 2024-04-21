@@ -43,7 +43,8 @@ export class MainMenuScene extends PotatoScene {
     this.load.image('violet-border', require('../../../assets/img/violet-border.png'))
     this.load.image('violet-border2', require('../../../assets/img/violet-border2.png'))
 
-    this.load.audio('mainTheme', require('url:../../../assets/music/roots_of_peace_01.ogg'))
+    // todo restore music
+    // this.load.audio('mainTheme', require('url:../../../assets/music/roots_of_peace_01.ogg'))
   }
 
   create() {

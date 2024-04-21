@@ -1,4 +1,4 @@
-import { chunk } from '@potato-golem/core/dist/src/core/utils/arrayUtils'
+import { chunk } from '@potato-golem/core'
 import { validateNumber } from 'validation-utils'
 import { ChoiceOption } from '../common/CommonUITypes'
 import { PotatoScene } from '../common/PotatoScene'
