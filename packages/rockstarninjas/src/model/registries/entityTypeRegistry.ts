@@ -4,4 +4,5 @@ export const EntityTypeRegistry = {
   DEFAULT: DEFAULT_ENTITY_TYPE,
   TICKET: 'ticket',
   ENGINEER: 'engineer',
+  SWIMLANE: 'swimlane',
 }

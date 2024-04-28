@@ -3,6 +3,9 @@ import { AbstractUIElementLite } from './UIGroup'
 
 export const DEFAULT_ENTITY_TYPE = 'DEFAULT'
 
+export const ANY_ENTITY_TYPE = 'ANY'
+export const NULL_ENTITY_TYPE = 'NULL'
+
 export function storeStartPosition(item: AbstractUIElementLite) {
   item.setData({ startX: item.x, startY: item.y })
 }
@@ -19,7 +22,10 @@ export function setEntityModel(item: AbstractUIElementLite, entityModel: object)
   item.setData(ENTITY_MODEL, entityModel)
 }
 
-export function getEntityType(item: AbstractUIElementLite) {
+export function getEntityType(item?: AbstractUIElementLite) {
+  if (!item) {
+    return 'NULL'
+  }
   return item.getData(ENTITY_TYPE_DATA_KEY)
 }
 

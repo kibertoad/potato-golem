@@ -1,5 +1,5 @@
-import { PotatoScene } from '../common/PotatoScene'
-import { AbstractUIBuilder } from './AbstractUIBuilder'
+import { PotatoScene } from '../../common/PotatoScene'
+import { AbstractUIBuilder } from '../AbstractUIBuilder'
 import { LimitedNumber } from '@potato-golem/core'
 import Container = Phaser.GameObjects.Container
 

@@ -1,7 +1,7 @@
 import Container = Phaser.GameObjects.Container
 import {
   BarsBarBuilder,
-  buildDrag,
+  buildDrag, buildDragWithActivations,
   Position,
   PotatoScene,
   restoreStartPosition,
@@ -12,6 +12,7 @@ import {
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { TicketModel, TicketStatus } from '../model/entities/TicketModel'
 import { canTransition } from '../model/stateMachines/ticketStateMachine'
+import Graphics = Phaser.GameObjects.Graphics
 
 export type TicketViewParams = {
   ticketModel: TicketModel
@@ -20,12 +21,20 @@ export type TicketViewParams = {
 const textOffsetX = 5
 const textOffsetY = 5
 
+export type TicketViewDependencies = {
+  swimlanes: Graphics[]
+}
+
 export class TicketView extends Container {
   private readonly ticketSprite: Phaser.GameObjects.Sprite
   private readonly ticketModel: TicketModel
   private readonly ticketTitle: Phaser.GameObjects.Text
 
-  constructor(scene: PotatoScene, params: TicketViewParams) {
+  constructor(
+    scene: PotatoScene,
+    params: TicketViewParams,
+    dependencies: TicketViewDependencies
+  ) {
     super(scene)
 
     this.ticketModel = params.ticketModel
@@ -76,27 +85,37 @@ export class TicketView extends Container {
     this.add(this.ticketTitle)
     scene.add.existing(this)
 
-    buildDrag(
-      this.ticketSprite,
-      this,
-      (pointer) => {
-        const swimlaneSize = 1024 / 5
-        const swimLane = Math.ceil(pointer.x / swimlaneSize)
-        console.log(`Swimlane ${swimLane}`)
-
-        const newStatus = Object.values(TicketStatus)[swimLane - 1]
-
-        const ticketCanTransition = canTransition(this.ticketModel, newStatus)
-
-        console.log(`Can transition: ${ticketCanTransition}`)
-
-        if (!ticketCanTransition) {
+    // Build ticket drag'n'drop
+    buildDragWithActivations({
+      dragStartItem: this.ticketSprite,
+      draggedItem: this,
+      dropActivations: {
+        [EntityTypeRegistry.DEFAULT]: () => {
           restoreStartPosition(this)
-        } else {
-          this.ticketModel.status = newStatus
-        }
+        },
+        [EntityTypeRegistry.SWIMLANE]: (pointer) => {
+          const swimlaneSize = 1024 / 5
+          const swimLane = Math.ceil(pointer.x / swimlaneSize)
+          console.log(`Swimlane ${swimLane}`)
+
+          const newStatus = Object.values(TicketStatus)[swimLane - 1]
+
+          const ticketCanTransition = canTransition(this.ticketModel, newStatus)
+
+          console.log(`Can transition: ${ticketCanTransition}`)
+
+          if (!ticketCanTransition) {
+            restoreStartPosition(this)
+          } else {
+            this.ticketModel.status = newStatus
+          }
+        },
       },
-      {},
-    )
+      config: {},
+      potentialHoverTargets: [
+        ...dependencies.swimlanes
+      ],
+      potentialDropTargets: [],
+    })
   }
 }

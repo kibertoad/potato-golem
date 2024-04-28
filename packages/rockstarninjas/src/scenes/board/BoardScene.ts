@@ -8,7 +8,7 @@ import {
   setEntityType,
   PotatoScene
 } from '@potato-golem/ui'
-import { buildDragWithActivations } from '@potato-golem/ui/dist/src/ui/builders/DragBuilder'
+import { buildDragWithActivations } from '@potato-golem/ui'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
 import Sprite = Phaser.GameObjects.Sprite
 import { ProcessorActivation } from '@potato-golem/core'
@@ -29,6 +29,7 @@ export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
   private readonly worldModel: WorldModel
 
+  private boardView!: BoardView
   private readonly ticketViews: TicketView[]
   private readonly engineerViews: Sprite[]
 
@@ -57,7 +58,8 @@ export class BoardScene extends PotatoScene {
   }
 
   addBoardView() {
-    this.viewParents.push(new BoardView(this))
+    this.boardView = new BoardView(this)
+    this.viewParents.push(this.boardView)
   }
 
   addTicket() {
@@ -71,6 +73,8 @@ export class BoardScene extends PotatoScene {
       ticketModel: ticket,
       x: 15,
       y: 15
+    }, {
+      swimlanes: this.boardView.swimlanes
     })
     this.ticketViews.push(ticketView)
   }
@@ -102,20 +106,24 @@ export class BoardScene extends PotatoScene {
       {},
     )
 
+    // drag'n'drop for engineer
     buildDragWithActivations(
-      employeeImage,
-      employeeImage,
-      this.ticketViews,
       {
-        [EntityTypeRegistry.DEFAULT]: () => {
-          console.log('Revert to original position')
-          restoreStartPosition(employeeImage)
+        draggedItem: employeeImage,
+        dragStartItem: employeeImage,
+        config: {
+          tolerance: 250,
         },
-        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
-      },
-      {
-        tolerance: 250,
-      },
+        potentialDropTargets: this.ticketViews,
+        potentialHoverTargets: [],
+        dropActivations: {
+          [EntityTypeRegistry.DEFAULT]: () => {
+            console.log('Revert to original position')
+            restoreStartPosition(employeeImage)
+          },
+          [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
+        }
+      }
     )
 
     this.engineerViews.push(employeeImage)
