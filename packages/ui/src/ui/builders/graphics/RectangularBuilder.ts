@@ -3,10 +3,12 @@ import { AbstractUIBuilder } from '../AbstractUIBuilder'
 import { DRAG_EVENTS } from '../DragBuilder'
 import Graphics = Phaser.GameObjects.Graphics
 import Rectangle = Phaser.Geom.Rectangle
+import Zone = Phaser.GameObjects.Zone
 
 export type RectangularGraphicsContainer = {
   graphics: Graphics,
   rectangle: Rectangle
+  zone?: Zone
 }
 
 /**
@@ -20,6 +22,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
   private hoverColour: number
 
   private alpha: number
+  private zone = false
 
   constructor(scene: PotatoScene) {
     super(scene)
@@ -35,6 +38,11 @@ export class RectangularBuilder extends AbstractUIBuilder {
     this.hoverColour = 0xff0000
 
     this.dragHoverColour = this.hoverColour
+  }
+
+  public addZone() {
+    this.zone = true
+    return this
   }
 
   public setBaseColour(colour: number) {
@@ -61,6 +69,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
     // Draw the rectangle border using the same coordinates and dimensions
     graphics.strokeRect(this.position.x, this.position.y, this.width, this.height);
 
+    /*
     graphics.addListener(DRAG_EVENTS.ENTER_HOVER, (draggedItem: unknown) => {
       graphics.fillStyle(this.hoverColour, this.alpha);
       //graphics.fillRect(this.position.x, this.position.y, this.width, this.height);
@@ -71,9 +80,25 @@ export class RectangularBuilder extends AbstractUIBuilder {
       //graphics.fillRect(this.position.x, this.position.y, this.width, this.height);
     })
 
+     */
+
+    let zone: Zone | undefined
+    const rectangle = new Phaser.Geom.Rectangle(this.position.x, this.position.y, this.width, this.height)
+    if (this.zone) {
+      zone = this.scene.add.zone(this.position.x, this.position.y, this.width, this.height)
+        .setOrigin(0, 0)
+        .setInteractive();
+      //zone.setRectangleDropZone(this.width, this.height)
+      //zone.setRectangleDropZone(1, 1)
+    }
+
+    console.log('zone')
+    console.log(JSON.stringify(this.zone))
+
     return {
       graphics,
-      rectangle: new Phaser.Geom.Rectangle(this.position.x, this.position.y, this.width, this.height)
+      rectangle,
+      zone,
     }
 
     // ToDo future optimization

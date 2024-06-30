@@ -24,8 +24,14 @@ export type DragConfig = {
 type DragOptions = {
   dragStartItem: AbstractUIElementLite,
   draggedItem: AbstractUIElementLite,
+
+  /**
+   * Callback executed on hovered item after dragged item is dropped
+   */
   onDropCallback: (pointer: Pointer) => void,
-  onHoverCallback?: (pointer: Pointer) => void,
+
+  onHoverCallback?: (hoveredObject: any) => void,
+
   potentialHoverTargets: readonly (GameObject|Rectangle)[],
   config: DragConfig,
 }
@@ -53,12 +59,19 @@ function calculateContainerBounds(container: Container) {
   };
 }
 
-function resolveDraggedObjectBoundaries(draggedItem: AbstractUIElementLite, dragX: number, dragY: number): Rectangle {
+function isContainer(object: unknown): object is Container {
+  return (object as Container).type === 'Container'
+}
+
+function resolveDraggedObjectBoundaries(
+  draggedItem: AbstractUIElementLite,
+  dragX: number,
+  dragY: number): Rectangle {
   let width = 0
   let height = 0
   let x = dragX
   let y = dragY
-  if (draggedItem.type === 'Container') {
+  if (isContainer(draggedItem)) {
     const bounds = calculateContainerBounds(draggedItem as Container)
 
     width = bounds.width
@@ -66,6 +79,7 @@ function resolveDraggedObjectBoundaries(draggedItem: AbstractUIElementLite, drag
 
     x = x - (width / 2)
     y = y - (height / 2)
+
   } else {
     width = draggedItem.displayWidth
     height = draggedItem.displayHeight
@@ -104,7 +118,7 @@ export function buildDrag(
       console.log('potential hover targets')
       console.log(options.potentialHoverTargets)
 
-      if (options.potentialHoverTargets) {
+      if (options.onHoverCallback && options.potentialHoverTargets) {
         const draggedObjectBoundaries = resolveDraggedObjectBoundaries(options.draggedItem, dragX, dragY)
 
         const overlappingObject = options.potentialHoverTargets.find((potentialOverlap) => {
@@ -114,11 +128,12 @@ export function buildDrag(
         if (overlappingObject) {
           // @ts-ignore
           console.log(`Graphics hover overlap found: ${overlappingObject.x}/${overlappingObject.y}`)
+          options.onHoverCallback(overlappingObject)
         } else {
           console.log('No overlap :-/')
+          options.onHoverCallback(undefined)
         }
       }
-
 
       options.draggedItem.setPosition(pointer.x - dragDeltaX, pointer.y - dragDeltaY)
     })
@@ -163,8 +178,10 @@ export function buildDragWithActivations<T extends AbstractUIElementLite, U exte
       console.log('potential drop targets:')
       console.log(options.potentialDropTargets)
 
+      const draggedObjectBoundaries = resolveDraggedObjectBoundaries(options.draggedItem, pointer.x, pointer.y)
+
       const overlappingObject = options.potentialDropTargets.find((potentialOverlap) => {
-        return doShapesIntersect(potentialOverlap, options.draggedItem)
+        return doShapesIntersect(potentialOverlap, draggedObjectBoundaries)
       })
 
       const entityType = overlappingObject ? getEntityType(overlappingObject) : DEFAULT_ENTITY_TYPE
@@ -181,13 +198,8 @@ export function buildDragWithActivations<T extends AbstractUIElementLite, U exte
         activation.activate(overlappingObject)
       }
     },
-    /*
-    onHoverCallback: (pointer: Pointer) => {
-      return undefined
-      const overlappingObject = options.potentialDropTargets.find((potentialOverlap) => {
-        return doShapesIntersect(potentialOverlap, options.draggedItem)
-      })
 
+    onHoverCallback: (overlappingObject: any) => {
       if (overlappingObject === currentlyHoveredObject) {
         return
       }
@@ -197,16 +209,17 @@ export function buildDragWithActivations<T extends AbstractUIElementLite, U exte
       }
 
       if (!overlappingObject) {
+        console.log('EMIT LEAVE HOVER')
         currentlyHoveredObject!.emit(DRAG_EVENTS.LEAVE_HOVER, options.draggedItem)
         currentlyHoveredObject = undefined
         return
       }
 
       currentlyHoveredObject = overlappingObject
+      console.log('EMIT ENTER HOVER')
       currentlyHoveredObject?.emit(DRAG_EVENTS.ENTER_HOVER, options.draggedItem)
     }
 
-     */
     }
   )
 }

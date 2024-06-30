@@ -1,7 +1,8 @@
 import Container = Phaser.GameObjects.Container
 import {
+  AbstractUIElementLite,
   BarsBarBuilder,
-  buildDrag, buildDragWithActivations,
+  buildDrag, buildDragWithActivations, getEntityModel,
   Position,
   PotatoScene, RectangularGraphicsContainer,
   restoreStartPosition,
@@ -13,6 +14,8 @@ import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry
 import { TicketModel, TicketStatus } from '../model/entities/TicketModel'
 import { canTransition } from '../model/stateMachines/ticketStateMachine'
 import Graphics = Phaser.GameObjects.Graphics
+import GameObject = Phaser.GameObjects.GameObject
+import { SwimlaneModel } from '../model/entities/SwimlaneModel'
 
 export type TicketViewParams = {
   ticketModel: TicketModel
@@ -93,10 +96,9 @@ export class TicketView extends Container {
         [EntityTypeRegistry.DEFAULT]: () => {
           restoreStartPosition(this)
         },
-        [EntityTypeRegistry.SWIMLANE]: (pointer) => {
-          const swimlaneSize = 1024 / 5
-          const swimLane = Math.ceil(pointer.x / swimlaneSize)
-          console.log(`Swimlane ${swimLane}`)
+        [EntityTypeRegistry.SWIMLANE]: (swimlaneZone: AbstractUIElementLite) => {
+          const swimLane = getEntityModel<SwimlaneModel>(swimlaneZone)
+          console.log(`Swimlane ${swimLane.label}`)
 
           const newStatus = Object.values(TicketStatus)[swimLane - 1]
 
@@ -113,9 +115,11 @@ export class TicketView extends Container {
       },
       config: {},
       potentialHoverTargets: [
-        ...dependencies.swimlanes.map((entry) => entry.rectangle)
+        ...dependencies.swimlanes.map((entry) => entry.zone)
       ],
-      potentialDropTargets: [],
+      potentialDropTargets: [
+        ...dependencies.swimlanes.map((entry) => entry.zone)
+      ],
     })
   }
 }

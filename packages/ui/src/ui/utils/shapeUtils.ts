@@ -4,6 +4,7 @@ import Arc = Phaser.GameObjects.Arc
 import Sprite = Phaser.GameObjects.Sprite
 import Container = Phaser.GameObjects.Container
 import Graphics = Phaser.GameObjects.Graphics
+import Zone = Phaser.GameObjects.Zone
 
 function createUpscaledRectangle(originalRectangle: Rectangle, arcToCompare: Arc) {
   return new Rectangle(
@@ -18,6 +19,16 @@ function resolveType(shape: any) {
  return typeof shape.type !== 'number' ? shape.type : shape.constructor.name
 }
 
+function hasInput(object: unknown): object is { input: Phaser.Types.Input.InteractiveObject } {
+  // @ts-ignore
+  return (!!object.input)
+}
+
+function hasCoords(object: unknown): object is { x: number, y: number } {
+  // @ts-ignore
+  return ('x' in object && 'y' in object)
+}
+
 export function doShapesIntersect(shape1: any, shape2: any): boolean {
   console.log(shape1)
   console.log(shape2)
@@ -30,6 +41,29 @@ export function doShapesIntersect(shape1: any, shape2: any): boolean {
 
   console.log('SHAPE 2 type')
   console.log(type2)
+
+  if (hasCoords(shape1) && hasCoords(shape2)) {
+    console.log(`Let's compare rectangles`)
+    /*
+    // @ts-ignore
+    console.log(`zone: x: ${shape1.x}, y: ${shape1.y}, width: ${shape1.width}, height: ${shape1.height}`)
+
+    console.log('draggedItem:')
+    // @ts-ignore
+    console.log(`draggedItem: x: ${shape2.x}, y: ${shape2.y}, width: ${shape2.width}, height: ${shape2.height}`)
+     */
+
+    // @ts-ignore
+    const rect1 = new Rectangle(shape1.x, shape1.y, shape1.width, shape1.height)
+    // @ts-ignore
+    const rect2 = new Rectangle(shape2.x, shape2.y, shape2.width, shape2.height)
+
+    console.log(`rect1: x: ${rect1.x}, y: ${rect1.y}, width: ${rect1.width}, height: ${rect1.height}`)
+    console.log(`rect21: x: ${rect2.x}, y: ${rect2.y}, width: ${rect2.width}, height: ${rect2.height}`)
+
+    // @ts-ignore
+    return Phaser.Geom.Intersects.RectangleToRectangle(rect1, rect2)
+  }
 
   if (type1 === 'Sprite' && type2 === 'Sprite') {
     const boundsA = shape1.getBounds()

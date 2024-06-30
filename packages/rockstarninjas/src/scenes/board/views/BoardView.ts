@@ -4,12 +4,14 @@ import {
   ViewParent,
   SpriteBuilder,
   RectangularBuilder,
-  buildOnHover,
+  buildOnHover, DRAG_EVENTS, buildOnDragHover, setEntityType, setEntityModel,
 } from '@potato-golem/ui'
 import { UiImages } from '../../../model/registries/ImageRegistry'
 import Sprite = Phaser.GameObjects.Sprite
 import NineSlice = Phaser.GameObjects.NineSlice
 import type { RectangularGraphicsContainer } from '@potato-golem/ui'
+import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
+import { SwimlaneModel } from '../model/entities/SwimlaneModel'
 
 export class BoardView implements ViewParent{
 
@@ -48,6 +50,7 @@ export class BoardView implements ViewParent{
     this.ninePatches.push(boardNinePatch)
 
     const swimLane = RectangularBuilder.instance(this.scene)
+      .addZone()
       .setPosition({
         x: 100,
         y: 200,
@@ -57,40 +60,30 @@ export class BoardView implements ViewParent{
       //.setBaseColour(0x8C5E58)
       .build()
 
-    // ToDo Graphics object need manual onPointer check, they don't get hovered events automatically
+    swimLane.zone.addListener(DRAG_EVENTS.ENTER_HOVER, () => {
+      console.log('swimlane was hovered')
+      swimLane.graphics.clear();
+      swimLane.graphics.fillStyle(0x593D3B, swimLane.graphics.alpha);
+      swimLane.graphics.fillRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+      swimLane.graphics.strokeRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+    })
 
-    /*
-    buildOnDragHover(swimLane, EntityTypeRegistry.TICKET,
-      () => {
-        console.log('hhh')
-        swimLane.fillStyle(0xff0000, 1.0)
-      },
-      () => {
-      console.log('unh')
-        swimLane.fillStyle(0xD3D3D3, 1.0)
-      },
-    {
-      tolerance: 10,
+    swimLane.zone.addListener(DRAG_EVENTS.LEAVE_HOVER, () => {
+      console.log('swimlane was unhovered')
+      swimLane.graphics.clear();
+      swimLane.graphics.fillStyle(0x8C5E58, swimLane.graphics.alpha);
+      swimLane.graphics.fillRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+      swimLane.graphics.strokeRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+    })
+
+    const swimlaneModel: SwimlaneModel = {
+      label: 'To Do'
     }
-    )
 
-    buildOnHover(swimLane,
-      () => {
-        console.log('hhh')
-        swimLane.fillStyle(0xff0000, 1.0)
-      },
-      () => {
-        console.log('unh')
-        swimLane.fillStyle(0xD3D3D3, 1.0)
-      },
-      {
-        tolerance: 10,
-      }
-    )
+    setEntityType(swimLane.zone, EntityTypeRegistry.SWIMLANE)
+    setEntityModel(swimLane.zone, swimlaneModel)
 
-     */
-
-    console.log(JSON.stringify(swimLane))
+    // console.log(JSON.stringify(swimLane))
     this.swimlanes.push(swimLane)
   }
 
