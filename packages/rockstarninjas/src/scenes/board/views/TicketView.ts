@@ -3,7 +3,7 @@ import {
   BarsBarBuilder,
   buildDrag, buildDragWithActivations,
   Position,
-  PotatoScene,
+  PotatoScene, RectangularGraphicsContainer,
   restoreStartPosition,
   setEntityModel,
   setEntityType,
@@ -22,7 +22,7 @@ const textOffsetX = 5
 const textOffsetY = 5
 
 export type TicketViewDependencies = {
-  swimlanes: Graphics[]
+  swimlanes: RectangularGraphicsContainer[]
 }
 
 export class TicketView extends Container {
@@ -113,7 +113,7 @@ export class TicketView extends Container {
       },
       config: {},
       potentialHoverTargets: [
-        ...dependencies.swimlanes
+        ...dependencies.swimlanes.map((entry) => entry.rectangle)
       ],
       potentialDropTargets: [],
     })

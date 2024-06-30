@@ -9,7 +9,9 @@ import { doShapesIntersect } from '../utils/shapeUtils'
 import { TargettedActivation, TargettedActivationCallback } from '@potato-golem/core'
 import GameObject = Phaser.GameObjects.GameObject
 import { setActiveDraggedItem } from '../globals/globalState'
-
+import Graphics = Phaser.GameObjects.Graphics
+import Rectangle = Phaser.Geom.Rectangle
+import Container = Phaser.GameObjects.Container
 export enum DRAG_EVENTS {
   'ENTER_HOVER' = 'ENTER_HOVER',
   'LEAVE_HOVER' = 'LEAVE_HOVER'
@@ -24,7 +26,52 @@ type DragOptions = {
   draggedItem: AbstractUIElementLite,
   onDropCallback: (pointer: Pointer) => void,
   onHoverCallback?: (pointer: Pointer) => void,
+  potentialHoverTargets: readonly (GameObject|Rectangle)[],
   config: DragConfig,
+}
+
+function calculateContainerBounds(container: Container) {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+  container.list.forEach(childx => {
+    const child: any = childx
+
+    // Ensure the child has dimensions and position
+    if (child.x !== undefined && child.y !== undefined && child.displayWidth !== undefined && child.displayHeight !== undefined) {
+      minX = Math.min(minX, child.x - child.displayOriginX);
+      maxX = Math.max(maxX, child.x - child.displayOriginX + child.displayWidth);
+      minY = Math.min(minY, child.y - child.displayOriginY);
+      maxY = Math.max(maxY, child.y - child.displayOriginY + child.displayHeight);
+    }
+  });
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY
+  };
+}
+
+function resolveDraggedObjectBoundaries(draggedItem: AbstractUIElementLite, dragX: number, dragY: number): Rectangle {
+  let width = 0
+  let height = 0
+  let x = dragX
+  let y = dragY
+  if (draggedItem.type === 'Container') {
+    const bounds = calculateContainerBounds(draggedItem as Container)
+
+    width = bounds.width
+    height = bounds.height
+
+    x = x - (width / 2)
+    y = y - (height / 2)
+  } else {
+    width = draggedItem.displayWidth
+    height = draggedItem.displayHeight
+  }
+
+  return new Rectangle(x, y, width, height)
 }
 
 export function buildDrag(
@@ -54,6 +101,25 @@ export function buildDrag(
       //console.log(`Drag: ${dragX}/${dragY}`)
       //console.log(`Drag pointer: ${pointer.x}/${pointer.y}`)
 
+      console.log('potential hover targets')
+      console.log(options.potentialHoverTargets)
+
+      if (options.potentialHoverTargets) {
+        const draggedObjectBoundaries = resolveDraggedObjectBoundaries(options.draggedItem, dragX, dragY)
+
+        const overlappingObject = options.potentialHoverTargets.find((potentialOverlap) => {
+          return doShapesIntersect(potentialOverlap, draggedObjectBoundaries)
+        })
+
+        if (overlappingObject) {
+          // @ts-ignore
+          console.log(`Graphics hover overlap found: ${overlappingObject.x}/${overlappingObject.y}`)
+        } else {
+          console.log('No overlap :-/')
+        }
+      }
+
+
       options.draggedItem.setPosition(pointer.x - dragDeltaX, pointer.y - dragDeltaY)
     })
     .on('dragend', (pointer: Pointer, dragX, dragY, dropped) => {
@@ -80,7 +146,7 @@ export type DragActivationOptions<T, U> = {
   potentialDropTargets: readonly AbstractUIElementLite[],
   dropActivations: Record<string, TargettedActivation<any> | TargettedActivationCallback<any>>,
 
-  potentialHoverTargets: readonly GameObject[],
+  potentialHoverTargets: readonly (GameObject|Rectangle)[],
 }
 
 export function buildDragWithActivations<T extends AbstractUIElementLite, U extends AbstractUIElementLite>(
@@ -89,11 +155,12 @@ export function buildDragWithActivations<T extends AbstractUIElementLite, U exte
   let currentlyHoveredObject: AbstractUIElementLite | undefined
 
   buildDrag({
+    potentialHoverTargets: options.potentialHoverTargets ?? [],
     dragStartItem: options.dragStartItem,
     draggedItem: options.draggedItem,
     config: options.config,
     onDropCallback: (pointer: Pointer) => {
-      console.log('potential targets')
+      console.log('potential drop targets:')
       console.log(options.potentialDropTargets)
 
       const overlappingObject = options.potentialDropTargets.find((potentialOverlap) => {

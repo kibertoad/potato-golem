@@ -13,7 +13,7 @@ export { SizerBuilder } from './src/ui/builders/SizerBuilder'
 export { buildDrag, buildDragWithActivations, DRAG_EVENTS, type DragActivationOptions } from './src/ui/builders/DragBuilder'
 export { getActiveDraggedItem, setActiveDraggedItem } from './src/ui/globals/globalState'
 export { NinePatchBuilder } from './src/ui/builders/NinePatchBuilder'
-export { RectangularBuilder } from './src/ui/builders/graphics/RectangularBuilder'
+export { RectangularBuilder, type RectangularGraphicsContainer } from './src/ui/builders/graphics/RectangularBuilder'
 
 export { DragIcon } from './src/ui/elements/DragIcon'
 export * from './src/ui/elements/ElementDataManipulator'

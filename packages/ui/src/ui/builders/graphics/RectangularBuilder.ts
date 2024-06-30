@@ -1,7 +1,13 @@
-import { PotatoScene } from '../../common/PotatoScene'
+import type { PotatoScene } from '../../common/PotatoScene'
 import { AbstractUIBuilder } from '../AbstractUIBuilder'
-import Container = Phaser.GameObjects.Container
 import { DRAG_EVENTS } from '../DragBuilder'
+import Graphics = Phaser.GameObjects.Graphics
+import Rectangle = Phaser.Geom.Rectangle
+
+export type RectangularGraphicsContainer = {
+  graphics: Graphics,
+  rectangle: Rectangle
+}
 
 /**
  * Used for displaying a single-colour rectangular
@@ -36,11 +42,11 @@ export class RectangularBuilder extends AbstractUIBuilder {
     return this
   }
 
-  build() {
+  build(): RectangularGraphicsContainer {
     return this.addRectangular()
   }
 
-  private addRectangular() {
+  private addRectangular(): RectangularGraphicsContainer {
     const graphics = this.scene.add.graphics();
 
     // Set the fill style for the rectangle
@@ -65,7 +71,10 @@ export class RectangularBuilder extends AbstractUIBuilder {
       //graphics.fillRect(this.position.x, this.position.y, this.width, this.height);
     })
 
-    return graphics
+    return {
+      graphics,
+      rectangle: new Phaser.Geom.Rectangle(this.position.x, this.position.y, this.width, this.height)
+    }
 
     // ToDo future optimization
     // this.texture = this.graphics.generateTexture()

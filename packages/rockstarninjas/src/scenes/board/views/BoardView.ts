@@ -9,17 +9,14 @@ import {
 import { UiImages } from '../../../model/registries/ImageRegistry'
 import Sprite = Phaser.GameObjects.Sprite
 import NineSlice = Phaser.GameObjects.NineSlice
-import ColorMatrix = Phaser.Display.ColorMatrix
-import Graphics = Phaser.GameObjects.Graphics
-import { buildOnDragHover } from '@potato-golem/ui'
-import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
+import type { RectangularGraphicsContainer } from '@potato-golem/ui'
 
 export class BoardView implements ViewParent{
 
   private readonly scene: PotatoScene
   private readonly sprites: Sprite[]
   private readonly ninePatches: NineSlice[]
-  public readonly swimlanes: Graphics[]
+  public readonly swimlanes: RectangularGraphicsContainer[]
 
   constructor(scene: PotatoScene) {
     this.scene = scene
