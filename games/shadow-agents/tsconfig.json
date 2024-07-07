@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "module": "ES2020",
+    "isolatedModules": true,
+    "types": ["vitest/globals"],
+    "target": "es2020",
+    "outDir": "./dist",
+    "paths": {
+      "@potato-golem/ui": ["../ui"],
+      "@potato-golem/core": ["../core"]
+    },
+    "skipLibCheck": true
+  },
+
+}

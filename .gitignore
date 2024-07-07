@@ -108,3 +108,5 @@ dist
 /packages/extras/package-lock.json
 /.parcel-cache/
 *.js
+
+!games/shadow-agents/parcel/rewrite-relativepath.js
