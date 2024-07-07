@@ -1,12 +1,12 @@
 {
-  "name": "@potato-golem/rockstar-ninjas",
+  "name": "@potato-golem/deadlines-in-hell",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "build:ts": "tsc",
-    "build:production": "del-cli dist && del-cli ../../.parcel-cache --force && parcel assets/html/index.html ./src/**/*.ts",
-    "build:dev-full": "cd .. && cd core && npm run build && cd .. && cd ui && npm run build && cd .. && cd rockstarninjas && npm run build:ts && parcel assets/html/index.html ./src/**/*.ts",
+    "build:production": "del-cli dist && del-cli ../../.parcel-cache --force && npm run build:deps && parcel build assets/html/index.html ./src/**/*.ts",
+    "build:deps": "cd ../../packages && cd core && npm run build && cd .. && cd ui && npm run build && cd ../../games && cd deadlines-in-hell && npm run build:ts",
+    "build:dev-full": "npm run build:deps && parcel assets/html/index.html ./src/**/*.ts",
     "build:dev": "parcel assets/html/index.html ./src/**/*.ts",
     "lint": "biome lint index.ts src biome.json",
     "lint:fix": "biome check --apply src biome.json",
@@ -28,6 +28,7 @@
     "awilix": "^10.0.2",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.80.1",
+    "phaser3-rex-plugins": "^1.80.5",
     "validation-utils": "^10.0.0"
   },
   "devDependencies": {

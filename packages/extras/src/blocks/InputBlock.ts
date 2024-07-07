@@ -5,6 +5,6 @@ export type InputHandler = (event: InputEvent) => void
 
 export class InputBlock extends AbstractBlock {
   registerHandler(event: InputEvent, inputHandler: InputHandler) {
-    this.scene.input.keyboard.on(event, inputHandler)
+    this.scene.input.keyboard!.on(event, inputHandler)
   }
 }

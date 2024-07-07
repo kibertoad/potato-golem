@@ -7,7 +7,10 @@
     "build": "tsc",
     "test": "mocha **/*.spec.ts --require ts-node/register",
     "lint": "biome lint index.ts src biome.json",
-    "lint:fix": "biome check --apply src biome.json"
+    "lint:fix": "biome check --apply src biome.json",
+    "publish-current": "npm publish --access public",
+    "publish-minor": "npm version minor && npm run publish-current",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

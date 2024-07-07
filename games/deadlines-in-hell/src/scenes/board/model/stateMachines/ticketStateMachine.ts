@@ -1,4 +1,4 @@
-import { TicketModel, TicketStatus } from '../entities/TicketModel'
+import { type TicketModel, TicketStatus } from '../entities/TicketModel'
 
 export function canTransition(ticket: TicketModel, toStatus: TicketStatus) {
   switch (toStatus) {

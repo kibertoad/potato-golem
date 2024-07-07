@@ -2,7 +2,8 @@
   "name": "@potato-golem/parent",
   "version": "1.0.0",
   "scripts": {
-    "format": "npm run format --workspaces"
+    "format": "npm run format --workspaces",
+    "build:deadlines-in-hell": "cd games/deadlines-in-hell && npm run build:production"
   },
   "peerDependencies": {
     "phaser": "^3.80.1"
@@ -11,6 +12,7 @@
     "phaser": "^3.80.1"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "games/*"
   ]
 }

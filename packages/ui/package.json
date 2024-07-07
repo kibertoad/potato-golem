@@ -28,7 +28,10 @@
     "build": "tsc",
     "test": "vitest",
     "lint": "biome lint index.ts src biome.json",
-    "lint:fix": "biome check --apply index.ts src biome.json"
+    "lint:fix": "biome check --apply index.ts src biome.json",
+    "publish-current": "npm publish --access public",
+    "publish-minor": "npm version minor && npm run publish-current",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

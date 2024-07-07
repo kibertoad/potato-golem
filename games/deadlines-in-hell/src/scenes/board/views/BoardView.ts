@@ -1,17 +1,19 @@
+import type { RectangularGraphicsContainer } from '@potato-golem/ui'
 import {
+  DRAG_EVENTS,
   NinePatchBuilder,
   PotatoScene,
-  ViewParent,
-  SpriteBuilder,
   RectangularBuilder,
-  buildOnHover, DRAG_EVENTS, buildOnDragHover, setEntityType, setEntityModel,
+  setEntityModel,
+  setEntityType,
+  ViewParent,
 } from '@potato-golem/ui'
 import { UiImages } from '../../../model/registries/ImageRegistry'
-import Sprite = Phaser.GameObjects.Sprite
-import NineSlice = Phaser.GameObjects.NineSlice
-import type { RectangularGraphicsContainer } from '@potato-golem/ui'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { SwimlaneModel } from '../model/entities/SwimlaneModel'
+import { TicketStatus } from '../model/entities/TicketModel'
+import Sprite = Phaser.GameObjects.Sprite
+import NineSlice = Phaser.GameObjects.NineSlice
 
 export class BoardView implements ViewParent{
 
@@ -77,7 +79,8 @@ export class BoardView implements ViewParent{
     })
 
     const swimlaneModel: SwimlaneModel = {
-      label: 'To Do'
+      label: 'To Do',
+      ticketStatus: TicketStatus.open
     }
 
     setEntityType(swimLane.zone, EntityTypeRegistry.SWIMLANE)

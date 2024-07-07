@@ -100,7 +100,7 @@ export class TicketView extends Container {
           const swimLane = getEntityModel<SwimlaneModel>(swimlaneZone)
           console.log(`Swimlane ${swimLane.label}`)
 
-          const newStatus = Object.values(TicketStatus)[swimLane - 1]
+          const newStatus = swimLane.ticketStatus
 
           const ticketCanTransition = canTransition(this.ticketModel, newStatus)
 

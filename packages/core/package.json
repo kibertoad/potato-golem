@@ -4,7 +4,7 @@
   "description": "potato golem game lib core",
   "type": "commonjs",
   "main": "./dist/index.js",
-  "types": "./index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "development": {
@@ -24,11 +24,15 @@
       }
     }
   },
+  "files": ["dist", "LICENSE"],
   "scripts": {
     "build": "tsc",
     "lint": "biome lint index.ts src biome.json",
     "lint:fix": "biome check --apply src biome.json",
-    "test": "vitest"
+    "test": "vitest",
+    "publish-current": "npm publish --access public",
+    "publish-minor": "npm version minor && npm run publish-current",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
