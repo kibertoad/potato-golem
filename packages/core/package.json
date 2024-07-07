@@ -1,6 +1,6 @@
 {
   "name": "@potato-golem/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "potato golem game lib core",
   "type": "commonjs",
   "main": "./dist/index.js",
@@ -27,8 +27,8 @@
   "files": ["dist", "LICENSE"],
   "scripts": {
     "build": "tsc",
-    "lint": "biome lint index.ts src biome.json",
-    "lint:fix": "biome check --apply src biome.json",
+    "lint": "biome check src biome.json",
+    "lint:fix": "biome check --write src biome.json",
     "test": "vitest",
     "publish-current": "npm publish --access public",
     "publish-minor": "npm version minor && npm run publish-current",
@@ -45,12 +45,13 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "validation-utils": "^10.0.0"
+    "validation-utils": "^11.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.2",
-    "@types/node": "^20.11.30",
+    "@biomejs/biome": "^1.8.3",
+    "@kibertoad/biome-config": "^1.2.0",
+    "@types/node": "^20.14.10",
     "ts-node": "^10.9.2",
-    "vitest": "^1.4.0"
+    "vitest": "^1.6.0"
   }
 }

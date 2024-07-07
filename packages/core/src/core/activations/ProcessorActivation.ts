@@ -1,11 +1,16 @@
-import { Activation, ActivationCallback, Processor } from '../../../index'
 import { validateNotNil } from 'validation-utils'
+import type { Activation, ActivationCallback, Processor } from '../../../index'
 
-export class ProcessorActivation<ProcessorType extends Processor<InputType>, InputType = undefined> implements Activation {
+export class ProcessorActivation<ProcessorType extends Processor<InputType>, InputType = undefined>
+  implements Activation
+{
   private readonly processor: Processor<InputType, unknown>
   private readonly params: InputType
 
-  public constructor(processor: ProcessorType, ...params: InputType extends undefined ? [] : [InputType]) {
+  public constructor(
+    processor: ProcessorType,
+    ...params: InputType extends undefined ? [] : [InputType]
+  ) {
     this.processor = processor
     // @ts-ignore
     this.params = params
@@ -16,7 +21,8 @@ export class ProcessorActivation<ProcessorType extends Processor<InputType>, Inp
   }
 
   public static build<InputType>(
-    processor: Processor<InputType, unknown>, params: InputType
+    processor: Processor<InputType, unknown>,
+    params: InputType,
   ): ActivationCallback {
     validateNotNil(processor, 'processor cannot be null')
     // @ts-ignore
