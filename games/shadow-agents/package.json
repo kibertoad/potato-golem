@@ -27,7 +27,8 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "awilix": "^10.0.2",
-    "phaser": "^3.80.1"
+    "phaser": "^3.80.1",
+    "process": "^0.11.10"
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.12.0",
