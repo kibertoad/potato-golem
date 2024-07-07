@@ -3,7 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "source": "./assets/html/index.html",
-  "browserslist": "> 0.25%, last 2 versions, not dead",
+  "targets": {
+    "default": {
+      "engines": {
+        "browsers": ">= 50%"
+      },
+      "context": "browser",
+      "isLibrary": false
+    }
+  },
   "scripts": {
     "build:ts": "tsc",
     "build:production:full": "del-cli dist && del-cli ../../.parcel-cache --force && npm run build:deps && npm run build:production",
