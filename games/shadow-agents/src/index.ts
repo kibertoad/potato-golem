@@ -1,4 +1,9 @@
 import { Game } from 'phaser'
+import { normalizedRandom } from '@potato-golem/core'
+
+const randomNumber = normalizedRandom(100)
+// biome-ignore lint/suspicious/noConsoleLog: <explanation>
+console.log(randomNumber)
 
 const GameResolutions = {
   default: {

@@ -1,3 +1,6 @@
+/**
+ * The Box–Muller transform is a random number sampling method for generating pairs of independent, standard, normally distributed random numbers
+ */
 function randomBoxMuller() {
   let u = 0
   let v = 0
@@ -13,6 +16,10 @@ export function normalizedRandom(maxValue: number) {
   return Math.floor(randomBoxMuller() * maxValue)
 }
 
+/**
+ * Return a random element from the array
+ * @param items
+ */
 export function randomOneOf<T>(items: T[]): T {
   return items[(items.length * Math.random()) | 0]
 }
