@@ -15,8 +15,5 @@
   "workspaces": [
     "packages/*",
     "games/*"
-  ],
-  "alias": {
-    "buffer": false
-  }
+  ]
 }
