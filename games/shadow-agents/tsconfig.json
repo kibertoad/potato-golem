@@ -7,10 +7,8 @@
     "target": "es2020",
     "outDir": "./dist",
     "paths": {
-      "@potato-golem/ui": ["../ui"],
-      "@potato-golem/core": ["../core"]
     },
     "skipLibCheck": true
   },
-
+  "exclude": ["vitest.config.mts"]
 }
