@@ -3,7 +3,7 @@ import { normalizedRandom } from '@potato-golem/core'
 
 const randomNumber = normalizedRandom(100)
 // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-console.log(randomNumber)
+console.log(`this is my random: ${randomNumber}`)
 
 const GameResolutions = {
   default: {
