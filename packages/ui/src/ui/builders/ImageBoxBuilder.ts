@@ -1,6 +1,6 @@
 import type { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
 import { validateString } from 'validation-utils'
-import { PotatoScene } from '../common/PotatoScene'
+import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 export class ImageBoxBuilder extends AbstractUIBuilder {
@@ -16,8 +16,8 @@ export class ImageBoxBuilder extends AbstractUIBuilder {
       // @ts-ignore
       .rexImageBox(this.getX(), this.getY(), validateString(this.textureKey))
 
-      imageBox.width = this.getWidth()
-      imageBox.height = this.getHeight()
+    imageBox.width = this.getWidth()
+    imageBox.height = this.getHeight()
 
     return imageBox
   }

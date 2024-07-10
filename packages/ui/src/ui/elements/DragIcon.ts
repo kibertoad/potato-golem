@@ -1,4 +1,4 @@
-import { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
+import type { ImageBox } from 'phaser3-rex-plugins/templates/ui/ui-components'
 
 export type DragIconOptions<ModelType> = {
   x: number

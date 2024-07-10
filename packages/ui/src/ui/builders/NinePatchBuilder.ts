@@ -1,10 +1,16 @@
 import { validateNumber, validateString } from 'validation-utils'
-import { PotatoScene } from '../common/PotatoScene'
+import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import NineSlice = Phaser.GameObjects.NineSlice
 
 export type SliceConfig = {
-  width?: number, height?: number, leftWidth?: number, rightWidth?: number, topHeight?: number, bottomHeight?: number, skipScale9?: boolean
+  width?: number
+  height?: number
+  leftWidth?: number
+  rightWidth?: number
+  topHeight?: number
+  bottomHeight?: number
+  skipScale9?: boolean
 }
 
 /**
@@ -25,8 +31,7 @@ export class NinePatchBuilder extends AbstractUIBuilder {
     return this
   }
 
-  public setSlices(value: SliceConfig): this
-  {
+  public setSlices(value: SliceConfig): this {
     this.sliceConfig = value
     return this
   }
@@ -44,19 +49,22 @@ export class NinePatchBuilder extends AbstractUIBuilder {
     validateNumber(this.sliceConfig.topHeight)
     validateNumber(this.sliceConfig.bottomHeight)
 
-    const nineSlice = this.scene.add
-      .nineslice(this.getX(), this.getY(), validateString(this.textureKey), undefined,
-        this.sliceConfig.width,
-        this.sliceConfig.height,
-        this.sliceConfig.leftWidth,
-        this.sliceConfig.rightWidth,
-        this.sliceConfig.topHeight,
-        this.sliceConfig.bottomHeight,
-        )
+    const nineSlice = this.scene.add.nineslice(
+      this.getX(),
+      this.getY(),
+      validateString(this.textureKey),
+      undefined,
+      this.sliceConfig.width,
+      this.sliceConfig.height,
+      this.sliceConfig.leftWidth,
+      this.sliceConfig.rightWidth,
+      this.sliceConfig.topHeight,
+      this.sliceConfig.bottomHeight,
+    )
 
-      if (this.width) {
-        nineSlice.setDisplaySize(this.getWidth(), this.getHeight())
-      }
+    if (this.width) {
+      nineSlice.setDisplaySize(this.getWidth(), this.getHeight())
+    }
 
     if (this.interactiveConfig) {
       nineSlice.setInteractive(this.interactiveConfig)

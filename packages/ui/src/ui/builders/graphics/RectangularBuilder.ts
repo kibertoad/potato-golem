@@ -6,7 +6,7 @@ import Rectangle = Phaser.Geom.Rectangle
 import Zone = Phaser.GameObjects.Zone
 
 export type RectangularGraphicsContainer = {
-  graphics: Graphics,
+  graphics: Graphics
   rectangle: Rectangle
   zone?: Zone
 }
@@ -32,7 +32,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
 
     // Gray color
     this.alpha = 1.0
-    this.baseColour = 0xD3D3D3
+    this.baseColour = 0xd3d3d3
 
     // Red color
     this.hoverColour = 0xff0000
@@ -55,19 +55,19 @@ export class RectangularBuilder extends AbstractUIBuilder {
   }
 
   private addRectangular(): RectangularGraphicsContainer {
-    const graphics = this.scene.add.graphics();
+    const graphics = this.scene.add.graphics()
 
     // Set the fill style for the rectangle
-    graphics.fillStyle(this.baseColour, this.alpha);
+    graphics.fillStyle(this.baseColour, this.alpha)
 
     // Set the line style for the border (red color, 5 pixels thick)
-    graphics.lineStyle(10, this.baseColour, this.alpha); // Red color, fully opaque, 5 pixels thick
+    graphics.lineStyle(10, this.baseColour, this.alpha) // Red color, fully opaque, 5 pixels thick
 
     // Draw the filled rectangle
-    graphics.fillRect(this.position.x, this.position.y, this.width, this.height);
+    graphics.fillRect(this.position.x, this.position.y, this.width, this.height)
 
     // Draw the rectangle border using the same coordinates and dimensions
-    graphics.strokeRect(this.position.x, this.position.y, this.width, this.height);
+    graphics.strokeRect(this.position.x, this.position.y, this.width, this.height)
 
     /*
     graphics.addListener(DRAG_EVENTS.ENTER_HOVER, (draggedItem: unknown) => {
@@ -83,11 +83,17 @@ export class RectangularBuilder extends AbstractUIBuilder {
      */
 
     let zone: Zone | undefined
-    const rectangle = new Phaser.Geom.Rectangle(this.position.x, this.position.y, this.width, this.height)
+    const rectangle = new Phaser.Geom.Rectangle(
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height,
+    )
     if (this.zone) {
-      zone = this.scene.add.zone(this.position.x, this.position.y, this.width, this.height)
+      zone = this.scene.add
+        .zone(this.position.x, this.position.y, this.width, this.height)
         .setOrigin(0, 0)
-        .setInteractive();
+        .setInteractive()
       //zone.setRectangleDropZone(this.width, this.height)
       //zone.setRectangleDropZone(1, 1)
     }

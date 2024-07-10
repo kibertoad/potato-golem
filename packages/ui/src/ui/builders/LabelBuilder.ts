@@ -1,4 +1,4 @@
-import { ActivationCallback } from '@potato-golem/core'
+import type { ActivationCallback } from '@potato-golem/core'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 /**

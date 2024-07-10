@@ -27,8 +27,8 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest",
-    "lint": "biome lint index.ts src biome.json",
-    "lint:fix": "biome check --apply index.ts src biome.json",
+    "lint": "biome check index.ts src biome.json",
+    "lint:fix": "biome check --write index.ts src biome.json",
     "publish-current": "npm publish --access public",
     "publish-minor": "npm version minor && npm run publish-current",
     "prepublishOnly": "npm run build"
@@ -47,15 +47,14 @@
     "@potato-golem/core": "*"
   },
   "dependencies": {
-    "phaser3-rex-plugins": "^1.80.1",
-    "validation-utils": "^10.0.0"
+    "phaser3-rex-plugins": "^1.80.5",
+    "validation-utils": "^11.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.2",
+    "@biomejs/biome": "^1.8.3",
     "@potato-golem/core": "*",
-    "@types/node": "^20.11.30",
-    "vitest": "^1.4.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "@types/node": "^20.14.10",
+    "vitest": "^2.0.2",
+    "typescript": "^5.5.3"
   }
 }

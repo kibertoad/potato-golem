@@ -1,8 +1,8 @@
-import { Scene } from 'phaser'
+import type { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
 import { UIContainer } from '../elements/UIContainer'
-import { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
-import Container = Phaser.GameObjects.Container;
+import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
+import Container = Phaser.GameObjects.Container
 
 export class TextWithBackgroundBuilder {
   #text?: string
@@ -57,7 +57,8 @@ export class TextWithBackgroundBuilder {
   }
 
   public build() {
-    const newBackground = this.#scene.add.image(
+    const newBackground = this.#scene.add
+      .image(
         validateNumber(this.#positionX, 'positionX must be a number'),
         validateNumber(this.#positionY, 'positionY must be a number'),
         validateString(this.#textureKey),

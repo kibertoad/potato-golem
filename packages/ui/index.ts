@@ -10,16 +10,28 @@ export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
 export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
 export { SizerBuilder } from './src/ui/builders/SizerBuilder'
-export { buildDrag, buildDragWithActivations, DRAG_EVENTS, type DragActivationOptions } from './src/ui/builders/DragBuilder'
+export {
+  buildDrag,
+  buildDragWithActivations,
+  DRAG_EVENTS,
+  type DragActivationOptions,
+} from './src/ui/builders/DragBuilder'
 export { getActiveDraggedItem, setActiveDraggedItem } from './src/ui/globals/globalState'
 export { NinePatchBuilder } from './src/ui/builders/NinePatchBuilder'
-export { RectangularBuilder, type RectangularGraphicsContainer } from './src/ui/builders/graphics/RectangularBuilder'
+export {
+  RectangularBuilder,
+  type RectangularGraphicsContainer,
+} from './src/ui/builders/graphics/RectangularBuilder'
 
 export { DragIcon } from './src/ui/elements/DragIcon'
 export * from './src/ui/elements/ElementDataManipulator'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
-export { buildOnHover, buildOnDragHover, type OnHoverConfig } from './src/ui/builders/OnHoverBuilder'
+export {
+  buildOnHover,
+  buildOnDragHover,
+  type OnHoverConfig,
+} from './src/ui/builders/OnHoverBuilder'
 
 export { SpriteBuilder } from './src/ui/builders/SpriteBuilder'
 export { ButtonSquareBuilder } from './src/ui/builders/ButtonSquareBuilder'
@@ -27,7 +39,7 @@ export { UIGroupSlot, CommonUIGroup, type AbstractUIElementLite } from './src/ui
 export type { UIGroup, AbstractUIElement } from './src/ui/elements/UIGroup'
 
 export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'
-export { MultiplexActivation } from './src/ui/activations/MultiplexActivation'
+export { MultiplexActivation } from '../core/src/core/activations/MultiplexActivation'
 export { SetTextActivation } from './src/ui/activations/SetTextActivation'
 
 export type { Position, ViewParent, ChoiceOption, Dimensions } from './src/ui/common/CommonUITypes'

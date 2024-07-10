@@ -1,12 +1,12 @@
 import { AbstractUIElementLite } from '../elements/UIGroup'
 import Pointer = Phaser.Input.Pointer
-import { activeDraggedItem, getActiveDraggedItem } from '../globals/globalState'
 import { getEntityType } from '../elements/ElementDataManipulator'
+import { activeDraggedItem, getActiveDraggedItem } from '../globals/globalState'
 import GameObject = Phaser.GameObjects.GameObject
 
 export type OnHoverConfig = {
-  onHoverCallback?: (draggedItem: any) => void,
-  onUnhoverCallback?: (draggedItem: any) => void,
+  onHoverCallback?: (draggedItem: any) => void
+  onUnhoverCallback?: (draggedItem: any) => void
   tolerance?: number
 }
 
@@ -28,11 +28,7 @@ export function buildOnHover(
  * @param draggedItemType
  * @param config
  */
-export function buildOnDragHover(
-  item: GameObject,
-  draggedItemType: string,
-  config: OnHoverConfig,
-) {
+export function buildOnDragHover(item: GameObject, draggedItemType: string, config: OnHoverConfig) {
   //  item.setInteractive({ pixelPerfect: config.tolerance !== undefined, alphaTolerance: config.tolerance })
 
   if (config.onHoverCallback) {

@@ -1,5 +1,5 @@
-import RexPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
-import { PotatoScene } from '../common/PotatoScene'
+import type RexPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
+import type { PotatoScene } from '../common/PotatoScene'
 import { COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY } from '../constants/Colours'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 

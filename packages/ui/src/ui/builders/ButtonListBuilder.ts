@@ -1,7 +1,7 @@
 import { validateNumber, validateString } from 'validation-utils'
-import { ChoiceOption, Position } from '../common/CommonUITypes'
-import { PotatoScene } from '../common/PotatoScene'
-import { UIElementTemplate } from '../elements/UIElementTemplate'
+import { type ChoiceOption, Position } from '../common/CommonUITypes'
+import type { PotatoScene } from '../common/PotatoScene'
+import type { UIElementTemplate } from '../elements/UIElementTemplate'
 
 export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]

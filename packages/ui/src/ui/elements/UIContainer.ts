@@ -1,5 +1,5 @@
-import { Position } from '../common/CommonUITypes'
-import { AbstractUIElement, AbstractUIElementLite } from './UIGroup'
+import type { Position } from '../common/CommonUITypes'
+import type { AbstractUIElement, AbstractUIElementLite } from './UIGroup'
 
 export type SiblingLink = {
   sibling: UIContainer<AbstractUIElementLite>

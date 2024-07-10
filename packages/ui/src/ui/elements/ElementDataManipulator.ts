@@ -1,5 +1,5 @@
 import { ENTITY_MODEL, ENTITY_TYPE_DATA_KEY } from '../common/EntityDataKeys'
-import { AbstractUIElementLite } from './UIGroup'
+import type { AbstractUIElementLite } from './UIGroup'
 
 export const DEFAULT_ENTITY_TYPE = 'DEFAULT'
 

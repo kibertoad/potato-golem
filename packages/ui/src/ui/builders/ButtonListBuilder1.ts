@@ -1,8 +1,8 @@
-import { Scene } from 'phaser'
+import type { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { Position } from '../common/CommonUITypes'
-import { UIElementTemplate } from '../elements/UIElementTemplate'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import type { Position } from '../common/CommonUITypes'
+import type { UIElementTemplate } from '../elements/UIElementTemplate'
+import { type AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
 import { ButtonBuilder } from './ButtonBuilder'
 
 export class ButtonListBuilder1 extends CommonUIGroup {

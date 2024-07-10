@@ -1,5 +1,5 @@
 import { validateNumber } from 'validation-utils'
-import { PotatoScene } from '../common/PotatoScene'
+import type { PotatoScene } from '../common/PotatoScene'
 import { COLOR_DARK, COLOR_LIGHT } from '../constants/Colours'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import { ImageBoxBuilder } from './ImageBoxBuilder'

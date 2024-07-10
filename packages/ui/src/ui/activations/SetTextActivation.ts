@@ -1,6 +1,6 @@
+import type { Activation, ActivationCallback } from '@potato-golem/core'
 import { validateNotNil } from 'validation-utils'
-import { UIContainer } from '../elements/UIContainer'
-import { Activation, ActivationCallback } from '@potato-golem/core'
+import type { UIContainer } from '../elements/UIContainer'
 
 export class SetTextActivation implements Activation {
   private newText: string

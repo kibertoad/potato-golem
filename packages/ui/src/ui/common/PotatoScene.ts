@@ -1,6 +1,6 @@
 import { Scene } from 'phaser'
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
-import { ViewParent } from './CommonUITypes'
+import type UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
+import type { ViewParent } from './CommonUITypes'
 
 export class PotatoScene extends Scene {
   rexUI!: UIPlugin
@@ -11,5 +11,4 @@ export class PotatoScene extends Scene {
 
     this.viewParents = []
   }
-
 }

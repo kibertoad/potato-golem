@@ -5,7 +5,7 @@
 			"arrowParentheses": "always",
 			"indentStyle": "space",
 			"semicolons": "asNeeded",
-			"trailingComma": "all",
+			"trailingCommas": "all",
 			"lineWidth": 100,
 			"quoteStyle": "single"
 		}
@@ -14,7 +14,8 @@
 		"rules": {
 			"style": {
 				"noNonNullAssertion": "off",
-				"noParameterAssign": "off"
+				"noParameterAssign": "off",
+				"useSingleVarDeclarator": "off"
 			},
 			"correctness": {},
 			"suspicious": {
@@ -23,6 +24,7 @@
 				"noImplicitAnyLet": "off"
 			},
 			"complexity": {
+				"noBannedTypes": "off",
 				"noUselessConstructor": "off",
 				"useLiteralKeys": "off"
 			}

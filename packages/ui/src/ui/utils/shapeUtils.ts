@@ -16,17 +16,17 @@ function createUpscaledRectangle(originalRectangle: Rectangle, arcToCompare: Arc
 }
 
 function resolveType(shape: any) {
- return typeof shape.type !== 'number' ? shape.type : shape.constructor.name
+  return typeof shape.type !== 'number' ? shape.type : shape.constructor.name
 }
 
 function hasInput(object: unknown): object is { input: Phaser.Types.Input.InteractiveObject } {
   // @ts-ignore
-  return (!!object.input)
+  return !!object.input
 }
 
-function hasCoords(object: unknown): object is { x: number, y: number } {
+function hasCoords(object: unknown): object is { x: number; y: number } {
   // @ts-ignore
-  return ('x' in object && 'y' in object)
+  return 'x' in object && 'y' in object
 }
 
 export function doShapesIntersect(shape1: any, shape2: any): boolean {
@@ -58,8 +58,12 @@ export function doShapesIntersect(shape1: any, shape2: any): boolean {
     // @ts-ignore
     const rect2 = new Rectangle(shape2.x, shape2.y, shape2.width, shape2.height)
 
-    console.log(`rect1: x: ${rect1.x}, y: ${rect1.y}, width: ${rect1.width}, height: ${rect1.height}`)
-    console.log(`rect21: x: ${rect2.x}, y: ${rect2.y}, width: ${rect2.width}, height: ${rect2.height}`)
+    console.log(
+      `rect1: x: ${rect1.x}, y: ${rect1.y}, width: ${rect1.width}, height: ${rect1.height}`,
+    )
+    console.log(
+      `rect21: x: ${rect2.x}, y: ${rect2.y}, width: ${rect2.width}, height: ${rect2.height}`,
+    )
 
     // @ts-ignore
     return Phaser.Geom.Intersects.RectangleToRectangle(rect1, rect2)
@@ -80,10 +84,7 @@ export function doShapesIntersect(shape1: any, shape2: any): boolean {
     return Phaser.Geom.Intersects.RectangleToRectangle(shape1 as any, shape2 as any)
   }
 
-  if (
-    (type1 === 'Circle' || type1 === 'Arc') &&
-    (type2 === 'Circle' || type2 === 'Arc')
-  ) {
+  if ((type1 === 'Circle' || type1 === 'Arc') && (type2 === 'Circle' || type2 === 'Arc')) {
     return Phaser.Geom.Intersects.CircleToCircle(shape1 as any, shape2 as any)
   }
 
@@ -102,10 +103,7 @@ export function doShapesIntersect(shape1: any, shape2: any): boolean {
   console.log(shape2)
 
   // this doesn't really work, container has zero x and y
-  if (
-    (type1 === 'Rectangle') &&
-    (type2 === 'Container')
-  ) {
+  if (type1 === 'Rectangle' && type2 === 'Container') {
     const draggedContainer: Container = shape2
     const onScreenGraphics: Rectangle = shape1
 

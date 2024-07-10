@@ -1,4 +1,4 @@
-import { ActivationCallback } from "@potato-golem/core"
+import type { ActivationCallback } from '@potato-golem/core'
 
 export type Position = {
   x: number
@@ -15,6 +15,4 @@ export type ChoiceOption = {
   activation?: ActivationCallback
 }
 
-export type ViewParent = {
-
-}
+export type ViewParent = {}

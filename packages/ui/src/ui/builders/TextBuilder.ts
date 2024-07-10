@@ -1,70 +1,66 @@
-import { Scene } from "phaser";
-import { validateNumber, validateString } from "validation-utils";
-import { UIContainer } from "../elements/UIContainer";
-import { AbstractUIElement, AbstractUIElementLite } from "../elements/UIGroup";
-import { PotatoScene } from "../common/PotatoScene";
+import type { Scene } from 'phaser'
+import { validateNumber, validateString } from 'validation-utils'
+import type { PotatoScene } from '../common/PotatoScene'
+import { UIContainer } from '../elements/UIContainer'
+import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 
 export class TextBuilder {
-  #text?: string;
+  #text?: string
 
-  #displaySizeX?: number;
-  #displaySizeY?: number;
+  #displaySizeX?: number
+  #displaySizeY?: number
 
-  #positionX: number;
-  #positionY: number;
+  #positionX: number
+  #positionY: number
 
-  textChild?: Phaser.GameObjects.Text;
+  textChild?: Phaser.GameObjects.Text
 
-  readonly #scene: Scene;
-  readonly #targetChildrenList?: AbstractUIElementLite[];
+  readonly #scene: Scene
+  readonly #targetChildrenList?: AbstractUIElementLite[]
 
   constructor(scene: Scene, childrenList?: AbstractUIElement[]) {
-    this.#positionX = 0;
-    this.#positionY = 0;
-    this.#scene = scene;
-    this.#targetChildrenList = childrenList;
+    this.#positionX = 0
+    this.#positionY = 0
+    this.#scene = scene
+    this.#targetChildrenList = childrenList
   }
 
   public setText(value: string) {
-    validateString(value, "Text must be a string");
+    validateString(value, 'Text must be a string')
 
-    this.#text = value;
-    return this;
+    this.#text = value
+    return this
   }
 
   public setDisplaySize(x: number, y: number) {
-    this.#displaySizeX = x;
-    this.#displaySizeY = y;
-    return this;
+    this.#displaySizeX = x
+    this.#displaySizeY = y
+    return this
   }
 
   public setPosition({ x, y }: { x: number; y: number }) {
-    this.#positionX = x;
-    this.#positionY = y;
-    return this;
+    this.#positionX = x
+    this.#positionY = y
+    return this
   }
 
   public build() {
     this.textChild = this.#scene.add
-      .text(
-        validateNumber(this.#positionX),
-        validateNumber(this.#positionY),
-        this.#text ?? ""
-      )
+      .text(validateNumber(this.#positionX), validateNumber(this.#positionY), this.#text ?? '')
       .setOrigin(0.5, 0.5)
       .setWordWrapWidth(validateNumber(this.#displaySizeX))
-      .setAlign("left");
+      .setAlign('left')
 
     if (this.#targetChildrenList) {
-      this.#targetChildrenList.push(this.textChild);
+      this.#targetChildrenList.push(this.textChild)
     }
 
-    const textContainer = new UIContainer(this.textChild);
+    const textContainer = new UIContainer(this.textChild)
 
-    return textContainer;
+    return textContainer
   }
 
   static instance(scene: PotatoScene) {
-    return new TextBuilder(scene);
+    return new TextBuilder(scene)
   }
 }

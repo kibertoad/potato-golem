@@ -1,6 +1,6 @@
 import { validateNumber } from 'validation-utils'
-import { Dimensions, Position } from '../common/CommonUITypes'
-import { PotatoScene } from '../common/PotatoScene'
+import type { Dimensions, Position } from '../common/CommonUITypes'
+import type { PotatoScene } from '../common/PotatoScene'
 import Sprite = Phaser.GameObjects.Sprite
 
 export abstract class AbstractUIBuilder {
@@ -13,7 +13,7 @@ export abstract class AbstractUIBuilder {
     this.scene = scene
     this.position = {
       x: 0,
-      y: 0
+      y: 0,
     }
     this.height = 20
     this.width = 20
@@ -26,18 +26,23 @@ export abstract class AbstractUIBuilder {
     return this
   }
 
-  public setRelativePosition(backgroundCenter: Position, backgroundDimenstion: Dimensions, deltaX: number, deltaY: number) {
+  public setRelativePosition(
+    backgroundCenter: Position,
+    backgroundDimenstion: Dimensions,
+    deltaX: number,
+    deltaY: number,
+  ) {
     this.position = {
-      x: backgroundCenter.x - (backgroundDimenstion.width / 2) + deltaX,
-      y: backgroundCenter.y - (backgroundDimenstion.height / 2) + deltaY
+      x: backgroundCenter.x - backgroundDimenstion.width / 2 + deltaX,
+      y: backgroundCenter.y - backgroundDimenstion.height / 2 + deltaY,
     }
     return this
   }
 
   public setRelativePositionFromSprite(background: Sprite, deltaX: number, deltaY: number) {
     this.position = {
-      x: background.x - (background.width) + deltaX,
-      y: background.y - (background.height / 2) + deltaY
+      x: background.x - background.width + deltaX,
+      y: background.y - background.height / 2 + deltaY,
     }
     return this
   }
@@ -61,7 +66,7 @@ export abstract class AbstractUIBuilder {
   public getDimensions(): Dimensions {
     return {
       height: this.height,
-      width: this.width
+      width: this.width,
     }
   }
 

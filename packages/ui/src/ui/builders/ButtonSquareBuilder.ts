@@ -1,6 +1,6 @@
-import { Scene } from 'phaser'
-import { AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
-import { ButtonBuilder } from './ButtonBuilder'
+import type { Scene } from 'phaser'
+import { type AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
+import type { ButtonBuilder } from './ButtonBuilder'
 import { ButtonListBuilder1 } from './ButtonListBuilder1'
 
 export class ButtonSquareBuilder extends ButtonListBuilder1 {

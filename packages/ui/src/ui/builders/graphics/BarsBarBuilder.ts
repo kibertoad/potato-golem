@@ -1,6 +1,6 @@
-import { PotatoScene } from '../../common/PotatoScene'
-import { AbstractUIBuilder } from '../AbstractUIBuilder'
 import { LimitedNumber } from '@potato-golem/core'
+import type { PotatoScene } from '../../common/PotatoScene'
+import { AbstractUIBuilder } from '../AbstractUIBuilder'
 import Container = Phaser.GameObjects.Container
 
 /**
@@ -75,22 +75,26 @@ export class BarsBarBuilder extends AbstractUIBuilder {
   }
 
   private addEmptyBar(count: number, container: Container) {
-    const graphics = this.scene.add.graphics();
+    const graphics = this.scene.add.graphics()
 
-    const x = this.offsetX ? this.position.x + (count * (this.offsetX + this.width + this.borderWidth * 2)) : this.position.x
-    const y = this.offsetY ? this.position.y + (count * (this.offsetY + this.height + this.borderWidth * 2)) : this.position.y
+    const x = this.offsetX
+      ? this.position.x + count * (this.offsetX + this.width + this.borderWidth * 2)
+      : this.position.x
+    const y = this.offsetY
+      ? this.position.y + count * (this.offsetY + this.height + this.borderWidth * 2)
+      : this.position.y
 
     // Set the fill style for the rectangle (black color)
-    graphics.fillStyle(this.emptyColour, this.alpha); // Black color, fully opaque
+    graphics.fillStyle(this.emptyColour, this.alpha) // Black color, fully opaque
 
     // Set the line style for the border (red color, 5 pixels thick)
-    graphics.lineStyle(this.borderWidth, this.fullColour, this.alpha); // Red color, fully opaque, 5 pixels thick
+    graphics.lineStyle(this.borderWidth, this.fullColour, this.alpha) // Red color, fully opaque, 5 pixels thick
 
     // Draw the filled rectangle (x, y, width, height)
-    graphics.fillRect(x, y, this.width, this.height);
+    graphics.fillRect(x, y, this.width, this.height)
 
     // Draw the rectangle border using the same coordinates and dimensions
-    graphics.strokeRect(x, y, this.width, this.height);
+    graphics.strokeRect(x, y, this.width, this.height)
 
     container.add(graphics)
 
@@ -99,22 +103,26 @@ export class BarsBarBuilder extends AbstractUIBuilder {
   }
 
   private addFilledBar(count: number, container: Container) {
-    const graphics = this.scene.add.graphics();
+    const graphics = this.scene.add.graphics()
 
-    const x = this.offsetX ? this.position.x + (count * (this.offsetX + this.width + this.borderWidth * 2)) : this.position.x
-    const y = this.offsetY ? this.position.y + (count * (this.offsetY + this.height + this.borderWidth * 2)) : this.position.y
+    const x = this.offsetX
+      ? this.position.x + count * (this.offsetX + this.width + this.borderWidth * 2)
+      : this.position.x
+    const y = this.offsetY
+      ? this.position.y + count * (this.offsetY + this.height + this.borderWidth * 2)
+      : this.position.y
 
     // Set the fill style for the rectangle (black color)
-    graphics.fillStyle(this.fullColour, this.alpha); // Black color, fully opaque
+    graphics.fillStyle(this.fullColour, this.alpha) // Black color, fully opaque
 
     // Set the line style for the border (red color, 5 pixels thick)
-    graphics.lineStyle(this.borderWidth, this.fullColour, this.alpha); // Red color, fully opaque, 5 pixels thick
+    graphics.lineStyle(this.borderWidth, this.fullColour, this.alpha) // Red color, fully opaque, 5 pixels thick
 
     // Draw the filled rectangle (x, y, width, height)
-    graphics.fillRect(x, y, this.width, this.height);
+    graphics.fillRect(x, y, this.width, this.height)
 
     // Draw the rectangle border using the same coordinates and dimensions
-    graphics.strokeRect(x, y, this.width, this.height);
+    graphics.strokeRect(x, y, this.width, this.height)
 
     container.add(graphics)
 

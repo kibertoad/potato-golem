@@ -1,7 +1,7 @@
 import { chunk } from '@potato-golem/core'
 import { validateNumber } from 'validation-utils'
-import { ChoiceOption } from '../common/CommonUITypes'
-import { PotatoScene } from '../common/PotatoScene'
+import type { ChoiceOption } from '../common/CommonUITypes'
+import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import { LabelBuilder } from './LabelBuilder'
 

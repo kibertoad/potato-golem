@@ -1,6 +1,6 @@
-import { ActivationCallback } from '@potato-golem/core'
-import { ChoiceOption } from '../common/CommonUITypes'
-import { PotatoScene } from '../common/PotatoScene'
+import type { ActivationCallback } from '@potato-golem/core'
+import type { ChoiceOption } from '../common/CommonUITypes'
+import type { PotatoScene } from '../common/PotatoScene'
 import { BLUE } from '../constants/Colours'
 import { LabelBuilder } from './LabelBuilder'
 

@@ -1,5 +1,8 @@
-import { Activation, ActivationCallback } from "@potato-golem/core"
+import { Activation, ActivationCallback } from './Activation'
 
+/**
+ * Activation which invokes other activations in bulk
+ */
 export class MultiplexActivation implements Activation {
   private readonly activations: ActivationCallback[]
 

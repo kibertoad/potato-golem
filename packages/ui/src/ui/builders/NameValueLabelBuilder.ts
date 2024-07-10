@@ -1,5 +1,5 @@
 import { validateNumber } from 'validation-utils'
-import { PotatoScene } from '../common/PotatoScene'
+import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 
 export class NameValueLabelBuilder extends AbstractUIBuilder {

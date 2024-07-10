@@ -1,5 +1,5 @@
 import { validateString } from 'validation-utils'
-import { PotatoScene } from '../common/PotatoScene'
+import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import Sprite = Phaser.GameObjects.Sprite
 

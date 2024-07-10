@@ -1,8 +1,8 @@
-import { Scene } from 'phaser'
+import type { Activation } from '@potato-golem/core'
+import type { Scene } from 'phaser'
 import { validateFunction, validateNumber, validateString } from 'validation-utils'
-import { UIElementTemplate } from '../elements/UIElementTemplate'
-import { AbstractUIElement } from '../elements/UIGroup'
-import { Activation } from '@potato-golem/core'
+import type { UIElementTemplate } from '../elements/UIElementTemplate'
+import type { AbstractUIElement } from '../elements/UIGroup'
 
 export type OnClickCallback = (button: any) => void
 
