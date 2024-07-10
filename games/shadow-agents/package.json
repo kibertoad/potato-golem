@@ -16,7 +16,7 @@
     "build:ts": "tsc",
     "build:production:full": "del-cli dist && del-cli ../../.parcel-cache --force && npm run build:deps && npm run build:production",
     "build:production": "parcel build assets/html/index.html --public-url _relativeroute_ --config ./parcel/.parcel.prod",
-    "build:deps": "cd ../../packages && cd core && npm run build && cd .. && cd ui && npm run build && cd ../../games && cd deadlines-in-hell && npm run build:ts",
+    "build:deps": "cd ../../packages && cd core && npm run build && cd .. && cd ui && npm run build && cd ../../games && cd shadow-agents && npm run build:ts",
     "build:dev-full": "npm run build:deps && parcel assets/html/index.html ./src/**/*.ts",
     "build:dev": "parcel assets/html/index.html ./src/**/*.ts",
     "lint": "biome check",
@@ -35,6 +35,7 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "@potato-golem/core": "^1.0.1",
+    "@potato-golem/ui": "^1.0.0",
     "awilix": "^10.0.2",
     "phaser": "^3.80.1",
     "process": "^0.11.10"
@@ -44,7 +45,7 @@
     "@biomejs/biome": "^1.8.3",
     "@kibertoad/biome-config": "^1.2.1",
     "del-cli": "^5.1.0",
-    "vitest": "^1.6.0",
+    "vitest": "^2.0.2",
     "parcel": "^2.12.0",
     "parcel-reporter-clean-dist": "^1.0.4"
   }

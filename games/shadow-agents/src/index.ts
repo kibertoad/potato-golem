@@ -1,9 +1,5 @@
-import { Game } from 'phaser'
-import { normalizedRandom } from '@potato-golem/core'
-
-const randomNumber = normalizedRandom(100)
-// biome-ignore lint/suspicious/noConsoleLog: <explanation>
-console.log(`this is my random: ${randomNumber}`)
+import Phaser, { Game } from 'phaser'
+import { MainMenuScene } from '../scenes/MainMenuScene'
 
 const GameResolutions = {
   default: {
@@ -19,9 +15,8 @@ const config: Phaser.Types.Core.GameConfig = {
   parent: undefined,
   width: resolution.width,
   height: resolution.height,
-  plugins: {
-  },
-  scene: [],
+  plugins: {},
+  scene: [new MainMenuScene()],
 }
 
 // For some reason this must happen in root TS file
