@@ -1,4 +1,4 @@
-import { InputBlock } from '../blocks/InputBlock'
+import type { InputBlock } from '../blocks/InputBlock'
 
 export type ImageDefinition = {
   key: string

@@ -1,6 +1,6 @@
 import Phaser = require('phaser')
 import { CommonMovableEntity } from '../movement/entities/CommonMovableEntity'
-import { Entity } from '../movement/entities/Entity'
+import type { Entity } from '../movement/entities/Entity'
 
 export type CommonEntityInstanceContext = {
   scene: Phaser.Scene

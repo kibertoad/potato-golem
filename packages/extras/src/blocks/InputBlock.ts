@@ -1,4 +1,4 @@
-import { InputEvent } from '../input/InputEvents'
+import type { InputEvent } from '../input/InputEvents'
 import { AbstractBlock } from './AbstractBlock'
 
 export type InputHandler = (event: InputEvent) => void

@@ -1,5 +1,7 @@
 # potato-golem/core
 
+Framework-agnostic reusable functionality
+
 ## Catalogue of functionality
 
 * Activation - a triggered effect

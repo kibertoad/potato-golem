@@ -1,6 +1,6 @@
-import { InputBlock } from '../../blocks/InputBlock'
-import { MovableEntity } from '../../movement/entities/MovableEntity'
-import { MovementProcessor } from '../../movement/processors/CommonMovementProcessor'
+import type { InputBlock } from '../../blocks/InputBlock'
+import type { MovableEntity } from '../../movement/entities/MovableEntity'
+import type { MovementProcessor } from '../../movement/processors/CommonMovementProcessor'
 import { InputEvent } from '../InputEvents'
 
 export type CommonInputHandlerOptions = {

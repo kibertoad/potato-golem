@@ -1,5 +1,5 @@
-import { Effect } from '../Effect'
-import { DamageableComponent } from '../targets/DamageableComponent'
+import type { Effect } from '../Effect'
+import type { DamageableComponent } from '../targets/DamageableComponent'
 
 export const GENERIC_DAMAGE_TYPE = 'generic'
 

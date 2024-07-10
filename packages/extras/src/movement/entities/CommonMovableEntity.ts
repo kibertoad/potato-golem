@@ -1,8 +1,8 @@
 import { validateNotNil } from 'validation-utils'
-import { CommonEntityDescriptor } from '../../spawners/Spawner'
-import { DrawnEntity } from './DrawnEntity'
-import { Entity } from './Entity'
-import { MovableEntity } from './MovableEntity'
+import type { CommonEntityDescriptor } from '../../spawners/Spawner'
+import type { DrawnEntity } from './DrawnEntity'
+import type { Entity } from './Entity'
+import type { MovableEntity } from './MovableEntity'
 
 export let idCounter = 0
 

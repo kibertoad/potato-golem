@@ -1,8 +1,8 @@
 import { CommonMovableEntity } from '../../movement/entities/CommonMovableEntity'
-import { DrawnEntity } from '../../movement/entities/DrawnEntity'
-import { Entity } from '../../movement/entities/Entity'
-import { MovableEntity } from '../../movement/entities/MovableEntity'
-import { CommonEntityDescriptor, CommonEntityInstanceContext } from '../../spawners/Spawner'
+import type { DrawnEntity } from '../../movement/entities/DrawnEntity'
+import type { Entity } from '../../movement/entities/Entity'
+import type { MovableEntity } from '../../movement/entities/MovableEntity'
+import type { CommonEntityDescriptor, CommonEntityInstanceContext } from '../../spawners/Spawner'
 
 export type BulletEntityContext = {
   direction: number

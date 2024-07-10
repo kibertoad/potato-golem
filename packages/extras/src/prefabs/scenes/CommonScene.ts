@@ -1,4 +1,4 @@
-import { Scene } from 'phaser'
+import type { Scene } from 'phaser'
 import { AbstractBlock } from '../../blocks/AbstractBlock'
 import { InputBlock } from '../../blocks/InputBlock'
 
