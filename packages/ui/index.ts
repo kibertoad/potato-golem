@@ -24,7 +24,7 @@ export {
 } from './src/ui/builders/graphics/RectangularBuilder'
 
 export { DragIcon } from './src/ui/elements/DragIcon'
-export * from './src/ui/elements/ElementDataManipulator'
+export * from './src/ui/data/ElementDataManipulator'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 export {
@@ -38,9 +38,9 @@ export { ButtonSquareBuilder } from './src/ui/builders/ButtonSquareBuilder'
 export { UIGroupSlot, CommonUIGroup, type AbstractUIElementLite } from './src/ui/elements/UIGroup'
 export type { UIGroup, AbstractUIElement } from './src/ui/elements/UIGroup'
 
-export { ChangeSceneActivation } from './src/ui/activations/ChangeSceneActivation'
+export { ChangeSceneActivation } from './src/activations/ChangeSceneActivation'
 export { MultiplexActivation } from '../core/src/core/activations/MultiplexActivation'
-export { SetTextActivation } from './src/ui/activations/SetTextActivation'
+export { SetTextActivation } from './src/activations/SetTextActivation'
 
 export type { Position, ViewParent, ChoiceOption, Dimensions } from './src/ui/common/CommonUITypes'
 export { UIContainer } from './src/ui/elements/UIContainer'

@@ -1,6 +1,5 @@
 import type { PotatoScene } from '../../common/PotatoScene'
 import { AbstractUIBuilder } from '../AbstractUIBuilder'
-import { DRAG_EVENTS } from '../DragBuilder'
 import Graphics = Phaser.GameObjects.Graphics
 import Rectangle = Phaser.Geom.Rectangle
 import Zone = Phaser.GameObjects.Zone

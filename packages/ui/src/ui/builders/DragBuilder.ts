@@ -5,8 +5,8 @@ import {
   DEFAULT_ENTITY_TYPE,
   getEntityType,
   storeStartPosition,
-} from '../elements/ElementDataManipulator'
-import { doShapesIntersect } from '../utils/shapeUtils'
+} from '../data/ElementDataManipulator'
+import { doShapesIntersect } from '../utils/shapeIntersectionUtils'
 import GameObject = Phaser.GameObjects.GameObject
 import { setActiveDraggedItem } from '../globals/globalState'
 import Graphics = Phaser.GameObjects.Graphics

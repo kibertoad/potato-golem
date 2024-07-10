@@ -1,10 +1,6 @@
-import Shape = Phaser.GameObjects.Shape
 import Rectangle = Phaser.Geom.Rectangle
 import Arc = Phaser.GameObjects.Arc
-import Sprite = Phaser.GameObjects.Sprite
 import Container = Phaser.GameObjects.Container
-import Graphics = Phaser.GameObjects.Graphics
-import Zone = Phaser.GameObjects.Zone
 
 function createUpscaledRectangle(originalRectangle: Rectangle, arcToCompare: Arc) {
   return new Rectangle(

@@ -4,6 +4,9 @@ import type { PotatoScene } from '../common/PotatoScene'
 import { UIContainer } from '../elements/UIContainer'
 import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 
+/**
+ * Create a text label
+ */
 export class TextBuilder {
   #text?: string
 

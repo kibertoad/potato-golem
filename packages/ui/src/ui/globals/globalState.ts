@@ -1,4 +1,3 @@
-import GameObject = Phaser.GameObjects.GameObject
 import type { AbstractUIElementLite } from '../elements/UIGroup'
 
 export let activeDraggedItem: AbstractUIElementLite | undefined = undefined

@@ -3,6 +3,9 @@ import type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import Sprite = Phaser.GameObjects.Sprite
 
+/**
+ * Create a static image
+ */
 export class SpriteBuilder extends AbstractUIBuilder {
   private textureKey?: string
   private interactiveConfig?: Phaser.Types.Input.InputConfiguration

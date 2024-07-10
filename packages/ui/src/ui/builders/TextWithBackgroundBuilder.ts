@@ -1,9 +1,11 @@
 import type { Scene } from 'phaser'
 import { validateNumber, validateString } from 'validation-utils'
-import { UIContainer } from '../elements/UIContainer'
 import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
 import Container = Phaser.GameObjects.Container
 
+/**
+ * Create a text label with an image behind it
+ */
 export class TextWithBackgroundBuilder {
   #text?: string
   #textureKey?: string

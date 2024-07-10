@@ -1,6 +1,6 @@
 import type { Activation, ActivationCallback } from '@potato-golem/core'
 import { validateNotNil } from 'validation-utils'
-import type { UIContainer } from '../elements/UIContainer'
+import type { UIContainer } from '../ui/elements/UIContainer'
 
 export class SetTextActivation implements Activation {
   private newText: string
@@ -12,7 +12,6 @@ export class SetTextActivation implements Activation {
   }
 
   activate() {
-    console.log('booyah')
     this.targetObject.value.text = this.newText
   }
 

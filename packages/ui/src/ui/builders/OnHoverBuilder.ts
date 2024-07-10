@@ -1,6 +1,6 @@
 import { AbstractUIElementLite } from '../elements/UIGroup'
 import Pointer = Phaser.Input.Pointer
-import { getEntityType } from '../elements/ElementDataManipulator'
+import { getEntityType } from '../data/ElementDataManipulator'
 import { activeDraggedItem, getActiveDraggedItem } from '../globals/globalState'
 import GameObject = Phaser.GameObjects.GameObject
 

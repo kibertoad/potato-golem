@@ -3,6 +3,9 @@ import { type ChoiceOption, Position } from '../common/CommonUITypes'
 import type { PotatoScene } from '../common/PotatoScene'
 import type { UIElementTemplate } from '../elements/UIElementTemplate'
 
+/**
+ * Used for building a column or row of buttons, with possibility to add new buttons dynamically
+ */
 export class ButtonListBuilder {
   public readonly buttons: Phaser.GameObjects.Image[]
   private readonly choiceOptions: ChoiceOption[]
