@@ -1,6 +1,6 @@
 {
   "name": "@potato-golem/ui",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "potato golem game lib UI module",
   "type": "commonjs",
   "main": "./dist/index.js",

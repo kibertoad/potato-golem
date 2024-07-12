@@ -50,3 +50,5 @@ export type { UIElementTemplate } from './src/ui/elements/UIElementTemplate'
 export { COLOR_LIGHT, COLOR_DARK, COLOR_PRIMARY, BLUE, GREENISH } from './src/ui/constants/Colours'
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
+
+export * from './src/ui/globals/globalPositionLabel'
