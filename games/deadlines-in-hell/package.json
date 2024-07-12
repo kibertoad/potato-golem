@@ -24,13 +24,13 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "@potato-golem/core": "latest",
-    "@potato-golem/ui": "latest",
+    "@potato-golem/core": "^1.0.1",
+    "@potato-golem/ui": "^1.0.0",
     "awilix": "^10.0.2",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.80.1",
     "phaser3-rex-plugins": "^1.80.5",
-    "validation-utils": "^10.0.0"
+    "validation-utils": "^11.0.0"
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.12.0",
@@ -38,7 +38,6 @@
     "del-cli": "^5.1.0",
     "vitest": "^1.6.0",
     "parcel": "^2.12.0",
-    "parcel-reporter-clean-dist": "^1.0.4",
-    "parcel-reporter-static-files-copy": "^1.5.3"
+    "parcel-reporter-clean-dist": "^1.0.4"
   }
 }

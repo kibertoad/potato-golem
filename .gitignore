@@ -109,4 +109,4 @@ dist
 /.parcel-cache/
 *.js
 
-!games/shadow-agents/parcel/rewrite-relativepath.js
+!games/**/parcel/rewrite-relativepath.js
