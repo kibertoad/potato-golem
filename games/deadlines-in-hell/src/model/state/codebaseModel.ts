@@ -1,4 +1,4 @@
-import { LimitedNumber } from '@potato-golem/core'
+import type { LimitedNumber } from '@potato-golem/core'
 
 export type Module = {
   name: string

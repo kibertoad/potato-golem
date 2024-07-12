@@ -1,6 +1,6 @@
 import { LimitedNumber, normalizedRandom } from '@potato-golem/core'
 import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
-import { AnalystSkills, DeveloperSkills } from '../state/employeeModel'
+import type { AnalystSkills } from '../state/employeeModel'
 import { AbstractEmployee } from './AbstractEmployee'
 
 export class AnalystEmployee extends AbstractEmployee<AnalystSkills> {

@@ -1,8 +1,8 @@
+import type { TargettedActivation } from '@potato-golem/core'
 import { getEntityModel } from '@potato-golem/ui'
-import { TargettedActivation } from '@potato-golem/core'
-import { AbstractUIElementLite } from '@potato-golem/ui'
-import { AbstractEmployee } from '../../../model/entities/AbstractEmployee'
-import { TicketModel } from '../model/entities/TicketModel'
+import type { AbstractUIElementLite } from '@potato-golem/ui'
+import type { AbstractEmployee } from '../../../model/entities/AbstractEmployee'
+import type { TicketModel } from '../model/entities/TicketModel'
 
 export class AssignEngineerActivation implements TargettedActivation<AbstractUIElementLite> {
   private readonly engineer: AbstractEmployee<any>

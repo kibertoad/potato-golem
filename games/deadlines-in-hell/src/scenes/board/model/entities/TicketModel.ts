@@ -1,5 +1,5 @@
 import { LimitedNumber } from '@potato-golem/core'
-import { EmployeeModel } from '../../../../model/state/employeeModel'
+import type { EmployeeModel } from '../../../../model/state/employeeModel'
 
 export enum TicketStatus {
   open = 'open',

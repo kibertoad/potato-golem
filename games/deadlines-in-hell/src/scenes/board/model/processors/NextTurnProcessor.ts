@@ -1,7 +1,6 @@
-import { Processor, normalizedRandom } from '@potato-golem/core'
-import { Dependencies } from '../../../../model/diConfig'
-import { WorldModel } from '../../../../model/state/worldModel'
-import { ProgressType } from '../entities/TicketModel'
+import { type Processor, normalizedRandom } from '@potato-golem/core'
+import type { Dependencies } from '../../../../model/diConfig'
+import type { WorldModel } from '../../../../model/state/worldModel'
 
 export class NextTurnProcessor implements Processor {
   private readonly worldModel: WorldModel

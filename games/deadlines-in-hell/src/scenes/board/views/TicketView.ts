@@ -1,21 +1,23 @@
+import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import {
-  AbstractUIElementLite,
+  type AbstractUIElementLite,
   BarsBarBuilder,
-  buildDrag, buildDragWithActivations, getEntityModel,
-  Position,
-  PotatoScene, RectangularGraphicsContainer,
+  type Position,
+  type PotatoScene,
+  type RectangularGraphicsContainer,
+  SpriteBuilder,
+  TextBuilder,
+  buildDragWithActivations,
+  getEntityModel,
   restoreStartPosition,
   setEntityModel,
   setEntityType,
-  SpriteBuilder, TextBuilder,
 } from '@potato-golem/ui'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
-import { TicketModel, TicketStatus } from '../model/entities/TicketModel'
+import type { SwimlaneModel } from '../model/entities/SwimlaneModel'
+import type { TicketModel } from '../model/entities/TicketModel'
 import { canTransition } from '../model/stateMachines/ticketStateMachine'
-import Graphics = Phaser.GameObjects.Graphics
-import GameObject = Phaser.GameObjects.GameObject
-import { SwimlaneModel } from '../model/entities/SwimlaneModel'
 
 export type TicketViewParams = {
   ticketModel: TicketModel
@@ -33,11 +35,7 @@ export class TicketView extends Container {
   private readonly ticketModel: TicketModel
   private readonly ticketTitle: Phaser.GameObjects.Text
 
-  constructor(
-    scene: PotatoScene,
-    params: TicketViewParams,
-    dependencies: TicketViewDependencies
-  ) {
+  constructor(scene: PotatoScene, params: TicketViewParams, dependencies: TicketViewDependencies) {
     super(scene)
 
     this.ticketModel = params.ticketModel
@@ -47,9 +45,8 @@ export class TicketView extends Container {
         y: params.y + textOffsetY,
       })
       .setText(params.ticketModel.params.name)
-      .setDisplaySize(15,15)
-      .build()
-      .value
+      .setDisplaySize(15, 15)
+      .build().value
 
     const ticketBackgroundWidth = 200
     const ticketBackgroundHeight = 100
@@ -65,11 +62,7 @@ export class TicketView extends Container {
       .build()
 
     const barsContainer = BarsBarBuilder.instance(scene)
-      .setRelativePositionFromSprite(
-        this.ticketSprite,
-        20,
-        80
-      )
+      .setRelativePositionFromSprite(this.ticketSprite, 20, 80)
       .setWidth(8)
       .setHeight(14)
       .setOffsetX(4)
@@ -114,12 +107,8 @@ export class TicketView extends Container {
         },
       },
       config: {},
-      potentialHoverTargets: [
-        ...dependencies.swimlanes.map((entry) => entry.zone)
-      ],
-      potentialDropTargets: [
-        ...dependencies.swimlanes.map((entry) => entry.zone)
-      ],
+      potentialHoverTargets: [...dependencies.swimlanes.map((entry) => entry.zone)],
+      potentialDropTargets: [...dependencies.swimlanes.map((entry) => entry.zone)],
     })
   }
 }

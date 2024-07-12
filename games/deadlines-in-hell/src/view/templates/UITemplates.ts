@@ -1,4 +1,4 @@
-import { UIElementTemplate } from '@potato-golem/ui'
+import type { UIElementTemplate } from '@potato-golem/ui'
 
 export const buttonTemplate: UIElementTemplate = {
   textureKey: 'glass-panel',

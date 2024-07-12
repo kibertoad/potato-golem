@@ -1,10 +1,12 @@
 import {
-  TextWithBackgroundBuilder,
   ButtonListBuilder,
-  ChangeSceneActivation, COLOR_DARK, COLOR_LIGHT,
+  COLOR_DARK,
+  COLOR_LIGHT,
+  ChangeSceneActivation,
   MultiplexActivation,
-  NameValueLabelBuilder, PotatoScene,
-  UIGroupSlot,
+  NameValueLabelBuilder,
+  PotatoScene,
+  TextWithBackgroundBuilder,
 } from '@potato-golem/ui'
 import { Scenes } from '../../model/registries/SceneRegistry'
 
@@ -16,7 +18,7 @@ export class OverviewScene extends PotatoScene {
   create() {
     const { width, height } = this.scale
 
-    const resourceBarBuilder = new NameValueLabelBuilder(this)
+    const _resourceBarBuilder = new NameValueLabelBuilder(this)
       .setText('ORG')
       .setPosition({
         x: 400,
@@ -26,13 +28,13 @@ export class OverviewScene extends PotatoScene {
       .setHeight(40)
       .build()
 
-    const { text: infoBackgroundText } = new TextWithBackgroundBuilder(this)
+    const { text: _infoBackgroundText } = new TextWithBackgroundBuilder(this)
       .position(0.8 * width, 0.45 * height)
       .textureKey('violet-border2')
       .displaySize(0.3 * width, 0.75 * height)
       .build()
 
-    const buttonList = new ButtonListBuilder(this)
+    const _buttonList = new ButtonListBuilder(this)
       .setExactPosition(width * 0.3, height * 0.9)
       .displaySize(150, 50)
       .setSpacingOffset(10, 0)

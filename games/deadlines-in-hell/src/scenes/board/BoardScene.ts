@@ -1,27 +1,27 @@
 import {
   ButtonListBuilder1,
+  PotatoScene,
   SpriteBuilder,
-  buildDrag,
   buildOnHover,
   restoreStartPosition,
   setEntityModel,
   setEntityType,
-  PotatoScene
 } from '@potato-golem/ui'
 import { buildDragWithActivations } from '@potato-golem/ui'
+import Phaser from 'phaser'
 import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
+
 import Sprite = Phaser.GameObjects.Sprite
 import { ProcessorActivation } from '@potato-golem/core'
-import { Dependencies } from '../../model/diConfig'
+import type { Dependencies } from '../../model/diConfig'
+import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
 import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
+import { QaEmployee } from '../../model/entities/QaEmployee'
 import { Scenes } from '../../model/registries/SceneRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { WorldModel } from '../../model/state/worldModel'
-import { TicketModel, TicketStatus } from './model/entities/TicketModel'
-import { NextTurnProcessor } from './model/processors/NextTurnProcessor'
-import { canTransition } from './model/stateMachines/ticketStateMachine'
-import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
-import { QaEmployee } from '../../model/entities/QaEmployee'
+import type { WorldModel } from '../../model/state/worldModel'
+import { TicketModel } from './model/entities/TicketModel'
+import type { NextTurnProcessor } from './model/processors/NextTurnProcessor'
 import { BoardView } from './views/BoardView'
 import { TicketView } from './views/TicketView'
 
@@ -69,13 +69,17 @@ export class BoardScene extends PotatoScene {
     })
     this.worldModel.addTicket(ticket)
 
-    const ticketView = new TicketView(this, {
-      ticketModel: ticket,
-      x: 15,
-      y: 15
-    }, {
-      swimlanes: this.boardView.swimlanes
-    })
+    const ticketView = new TicketView(
+      this,
+      {
+        ticketModel: ticket,
+        x: 15,
+        y: 15,
+      },
+      {
+        swimlanes: this.boardView.swimlanes,
+      },
+    )
     this.ticketViews.push(ticketView)
   }
 
@@ -107,24 +111,22 @@ export class BoardScene extends PotatoScene {
     )
 
     // drag'n'drop for engineer
-    buildDragWithActivations(
-      {
-        draggedItem: employeeImage,
-        dragStartItem: employeeImage,
-        config: {
-          tolerance: 250,
+    buildDragWithActivations({
+      draggedItem: employeeImage,
+      dragStartItem: employeeImage,
+      config: {
+        tolerance: 250,
+      },
+      potentialDropTargets: this.ticketViews,
+      potentialHoverTargets: [],
+      dropActivations: {
+        [EntityTypeRegistry.DEFAULT]: () => {
+          console.log('Revert to original position')
+          restoreStartPosition(employeeImage)
         },
-        potentialDropTargets: this.ticketViews,
-        potentialHoverTargets: [],
-        dropActivations: {
-          [EntityTypeRegistry.DEFAULT]: () => {
-            console.log('Revert to original position')
-            restoreStartPosition(employeeImage)
-          },
-          [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
-        }
-      }
-    )
+        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
+      },
+    })
 
     this.engineerViews.push(employeeImage)
   }
@@ -145,7 +147,7 @@ export class BoardScene extends PotatoScene {
       .setExactPosition(width * 0.5, height * 0.6)
       .setSpacingOffset(0, 10)
 
-    const nextDayButton = buttonList
+    const _nextDayButton = buttonList
       .addButton()
       .text('Confirm')
       .onClick(this.nextTurnActivation)

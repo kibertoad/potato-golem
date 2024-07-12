@@ -1,4 +1,4 @@
-import { Director, generateDirector } from './directorGenerator'
+import { type Director, generateDirector } from './directorGenerator'
 
 export function generateVps(count: number) {
   const directors: Director[] = []

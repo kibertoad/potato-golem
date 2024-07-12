@@ -13,6 +13,7 @@
             "useOptionalChain": "off"
           },
           "suspicious": {
+            "noConsoleLog": "off",
             "noDoubleEquals": "off",
             "noExplicitAny": "off"
           }

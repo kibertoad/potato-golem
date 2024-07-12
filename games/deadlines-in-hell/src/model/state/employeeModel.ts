@@ -1,5 +1,5 @@
-import { LimitedNumber } from '@potato-golem/core'
-import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
+import type { LimitedNumber } from '@potato-golem/core'
+import type { ProgressType } from '../../scenes/board/model/entities/TicketModel'
 
 export enum Seniority {
   junior = 1,

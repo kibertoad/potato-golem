@@ -1,22 +1,23 @@
+import Phaser from 'phaser'
+
 import type { RectangularGraphicsContainer } from '@potato-golem/ui'
 import {
   DRAG_EVENTS,
   NinePatchBuilder,
-  PotatoScene,
+  type PotatoScene,
   RectangularBuilder,
+  type ViewParent,
   setEntityModel,
   setEntityType,
-  ViewParent,
 } from '@potato-golem/ui'
 import { UiImages } from '../../../model/registries/ImageRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
-import { SwimlaneModel } from '../model/entities/SwimlaneModel'
+import type { SwimlaneModel } from '../model/entities/SwimlaneModel'
 import { TicketStatus } from '../model/entities/TicketModel'
 import Sprite = Phaser.GameObjects.Sprite
 import NineSlice = Phaser.GameObjects.NineSlice
 
-export class BoardView implements ViewParent{
-
+export class BoardView implements ViewParent {
   private readonly scene: PotatoScene
   private readonly sprites: Sprite[]
   private readonly ninePatches: NineSlice[]
@@ -34,16 +35,14 @@ export class BoardView implements ViewParent{
         x: 600,
         y: 400,
       })
-      .setSlices(
-        {
-          width: 200,
-          height: 600,
-          bottomHeight: 10,
-          leftWidth: 75,
-          rightWidth: 30,
-          topHeight: 100
-        }
-        )
+      .setSlices({
+        width: 200,
+        height: 600,
+        bottomHeight: 10,
+        leftWidth: 75,
+        rightWidth: 30,
+        topHeight: 100,
+      })
       .build()
 
     console.log('9patch')
@@ -64,23 +63,43 @@ export class BoardView implements ViewParent{
 
     swimLane.zone.addListener(DRAG_EVENTS.ENTER_HOVER, () => {
       console.log('swimlane was hovered')
-      swimLane.graphics.clear();
-      swimLane.graphics.fillStyle(0x593D3B, swimLane.graphics.alpha);
-      swimLane.graphics.fillRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
-      swimLane.graphics.strokeRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+      swimLane.graphics.clear()
+      swimLane.graphics.fillStyle(0x593d3b, swimLane.graphics.alpha)
+      swimLane.graphics.fillRect(
+        swimLane.rectangle.x,
+        swimLane.rectangle.y,
+        swimLane.rectangle.width,
+        swimLane.rectangle.height,
+      )
+      swimLane.graphics.strokeRect(
+        swimLane.rectangle.x,
+        swimLane.rectangle.y,
+        swimLane.rectangle.width,
+        swimLane.rectangle.height,
+      )
     })
 
     swimLane.zone.addListener(DRAG_EVENTS.LEAVE_HOVER, () => {
       console.log('swimlane was unhovered')
-      swimLane.graphics.clear();
-      swimLane.graphics.fillStyle(0x8C5E58, swimLane.graphics.alpha);
-      swimLane.graphics.fillRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
-      swimLane.graphics.strokeRect(swimLane.rectangle.x, swimLane.rectangle.y, swimLane.rectangle.width, swimLane.rectangle.height);
+      swimLane.graphics.clear()
+      swimLane.graphics.fillStyle(0x8c5e58, swimLane.graphics.alpha)
+      swimLane.graphics.fillRect(
+        swimLane.rectangle.x,
+        swimLane.rectangle.y,
+        swimLane.rectangle.width,
+        swimLane.rectangle.height,
+      )
+      swimLane.graphics.strokeRect(
+        swimLane.rectangle.x,
+        swimLane.rectangle.y,
+        swimLane.rectangle.width,
+        swimLane.rectangle.height,
+      )
     })
 
     const swimlaneModel: SwimlaneModel = {
       label: 'To Do',
-      ticketStatus: TicketStatus.open
+      ticketStatus: TicketStatus.open,
     }
 
     setEntityType(swimLane.zone, EntityTypeRegistry.SWIMLANE)
@@ -89,5 +108,4 @@ export class BoardView implements ViewParent{
     // console.log(JSON.stringify(swimLane))
     this.swimlanes.push(swimLane)
   }
-
 }

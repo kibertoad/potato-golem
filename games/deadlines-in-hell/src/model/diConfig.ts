@@ -1,4 +1,4 @@
-import { AwilixContainer, Lifetime, Resolver, asClass, asValue, createContainer } from 'awilix'
+import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awilix'
 import { BoardScene } from '../scenes/board/BoardScene'
 import { NextTurnProcessor } from '../scenes/board/model/processors/NextTurnProcessor'
 import { MainMenuScene } from '../scenes/main-menu/MainMenuScene'

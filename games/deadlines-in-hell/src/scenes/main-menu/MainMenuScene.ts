@@ -1,10 +1,12 @@
 import {
-  TextWithBackgroundBuilder,
   ButtonListBuilder1,
   ChangeSceneActivation,
-  MultiplexActivation, PotatoScene,
+  MultiplexActivation,
+  PotatoScene,
   TextBuilder,
+  TextWithBackgroundBuilder,
 } from '@potato-golem/ui'
+import Phaser from 'phaser'
 import { Scenes } from '../../model/registries/SceneRegistry'
 
 const cursorHandImg = require('../../../assets/img/cursor_hand.png')
@@ -33,8 +35,14 @@ export class MainMenuScene extends PotatoScene {
   }
 
   preload() {
-    this.load.image(UiImages.neonWindow9Patch, require('../../../assets/img/neon-window-9patch.png'))
-    this.load.image(UiImages.roseWindow9Patch, require('../../../assets/img/rose-window-9patch.png'))
+    this.load.image(
+      UiImages.neonWindow9Patch,
+      require('../../../assets/img/neon-window-9patch.png'),
+    )
+    this.load.image(
+      UiImages.roseWindow9Patch,
+      require('../../../assets/img/rose-window-9patch.png'),
+    )
 
     this.load.image('glass-panel', glassPanelImg)
     this.load.image('cursor-hand', cursorHandImg)
@@ -57,17 +65,17 @@ export class MainMenuScene extends PotatoScene {
 
     const { width, height } = this.scale
 
-    const title = new TextWithBackgroundBuilder(this)
+    const _title = new TextWithBackgroundBuilder(this)
       .textureKey('glass-panel')
       .text('There Are Deadlines In Hell')
       .displaySize(250, 50)
       .position(width * 0.3, height * 0.4)
       .build()
 
-    const subTitle = new TextBuilder(this)
+    const _subTitle = new TextBuilder(this)
       .setText('Move fast and break down')
       .setDisplaySize(250, 150)
-      .setPosition({ x: width * 0.3, y: height * 0.6})
+      .setPosition({ x: width * 0.3, y: height * 0.6 })
       .build()
 
     /*
@@ -196,8 +204,8 @@ export class MainMenuScene extends PotatoScene {
   }
 
   update() {
-    const upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!)
-    const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!)
+    const _upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!)
+    const _downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!)
     const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space!)
 
     if (spaceJustPressed) {

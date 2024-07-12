@@ -1,10 +1,8 @@
 import { Game } from 'phaser'
+import Phaser from 'phaser'
 import RexImageBoxPlugin from 'phaser3-rex-plugins/plugins/imagebox-plugin.js'
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
 import { instantiateContainer } from './model/diConfig'
-import { BoardScene } from './scenes/board/BoardScene'
-import { MainMenuScene } from './scenes/main-menu/MainMenuScene'
-
 const GameResolutions = {
   default: {
     width: 1280,

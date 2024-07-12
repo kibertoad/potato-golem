@@ -1,8 +1,8 @@
 import { LimitedNumber, normalizedRandom, randomOneOf } from '@potato-golem/core'
 import { genNames } from 'generate-human-names'
-import { ProgressType } from '../../scenes/board/model/entities/TicketModel'
+import type { ProgressType } from '../../scenes/board/model/entities/TicketModel'
 import { Gender } from '../registries/ImageRegistry'
-import { EmployeeModel, EmployeeSkills, Seniority } from '../state/employeeModel'
+import { type EmployeeModel, type EmployeeSkills, Seniority } from '../state/employeeModel'
 
 export abstract class AbstractEmployee<CoreSkills = unknown> implements EmployeeModel<CoreSkills> {
   public commonSkills: EmployeeSkills
