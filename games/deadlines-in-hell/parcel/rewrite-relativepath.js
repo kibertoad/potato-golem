@@ -15,7 +15,7 @@ module.exports = new Reporter({
                 }
             }
             const line = "---------------------------------------------------------";
-            const msg = `Shadow Agents (Production build)`;
+            const msg = `There Are Deadlines in Hell (Production build)`;
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
             process.stdout.write(`✨ Built ${bundles.length} bundles in ${event.buildTime}ms!\n`);
         }
