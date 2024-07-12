@@ -10,13 +10,15 @@
     "phaser": "^3.80.1"
   },
   "devDependencies": {
-    "phaser": "^3.80.1"
+    "phaser": "^3.80.1",
+    "util": "^0.12.5"
   },
   "workspaces": [
     "packages/*",
     "games/*"
   ],
   "alias": {
-    "buffer": false
+    "buffer": false,
+    "util": false
   }
 }
