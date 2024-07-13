@@ -1,16 +1,16 @@
 {
   "name": "@potato-golem/ui",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "potato golem game lib UI module",
   "type": "commonjs",
   "main": "./dist/index.js",
-  "types": "./index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "development": {
-        "types": "./index.ts",
+        "types": "./dist/index.d.ts",
         "require": "./dist/index.js",
-        "import": "./index.ts"
+        "import": "./dist/index.js"
       },
       "production": {
         "types": "./dist/index.d.ts",
@@ -18,14 +18,14 @@
         "import": "./dist/index.js"
       },
       "default": {
-        "types": "./index.ts",
+        "types": "./dist/index.d.ts",
         "require": "./dist/index.js",
         "import": "./dist/index.js"
       }
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json",
     "test": "vitest",
     "lint": "biome check index.ts src biome.json",
     "lint:fix": "biome check --write index.ts src biome.json",

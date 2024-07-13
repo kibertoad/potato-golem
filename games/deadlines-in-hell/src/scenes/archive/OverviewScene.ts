@@ -3,12 +3,12 @@ import {
   COLOR_DARK,
   COLOR_LIGHT,
   ChangeSceneActivation,
-  MultiplexActivation,
   NameValueLabelBuilder,
   PotatoScene,
   TextWithBackgroundBuilder,
 } from '@potato-golem/ui'
 import { Scenes } from '../../model/registries/SceneRegistry'
+import { MultiplexActivation } from '@potato-golem/core'
 
 export class OverviewScene extends PotatoScene {
   constructor() {

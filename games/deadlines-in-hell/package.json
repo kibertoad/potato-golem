@@ -2,13 +2,19 @@
   "name": "@potato-golem/deadlines-in-hell",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "build:ts": "tsc",
     "build:production:full": "del-cli dist && del-cli ../../.parcel-cache --force && npm run build:deps && npm run build:production",
     "build:production": "parcel build assets/html/index.html --public-url _relativeroute_ --config ./parcel/.parcel.prod",
     "build:deps": "cd ../../packages && cd core && npm run build && cd .. && cd ui && npm run build && cd ../../games && cd deadlines-in-hell && npm run build:ts",
     "build:dev-full": "npm run build:deps && parcel assets/html/index.html src/index.ts",
-    "build:dev": "parcel assets/html/index.html src/index.ts",
+    "build:dev": "parcel assets/html/index.html",
+
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+
     "lint": "biome check index.ts src",
     "lint:fix": "biome check --write src",
     "test": "vitest"
@@ -24,8 +30,8 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "@potato-golem/core": "^1.0.1",
-    "@potato-golem/ui": "^1.0.0",
+    "@potato-golem/core": "*",
+    "@potato-golem/ui": "*",
     "awilix": "^10.0.2",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.80.1",
@@ -36,6 +42,7 @@
     "@parcel/transformer-glsl": "^2.12.0",
     "@biomejs/biome": "^1.7.3",
     "del-cli": "^5.1.0",
+    "vite": "^5.3.3",
     "vitest": "^1.6.0",
     "parcel": "^2.12.0",
     "parcel-reporter-clean-dist": "^1.0.4"

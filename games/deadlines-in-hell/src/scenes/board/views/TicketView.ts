@@ -9,10 +9,9 @@ import {
   SpriteBuilder,
   TextBuilder,
   buildDragWithActivations,
-  getEntityModel,
   restoreStartPosition,
   setEntityModel,
-  setEntityType,
+  setEntityType, getEntityModel,
 } from '@potato-golem/ui'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import type { SwimlaneModel } from '../model/entities/SwimlaneModel'
