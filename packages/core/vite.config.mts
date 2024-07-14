@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 
+// @ts-ignore
 import packageJson from './package.json'
 import { builtinModules } from 'module'
 

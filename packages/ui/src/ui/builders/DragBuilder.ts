@@ -8,8 +8,7 @@ import {
 } from '../data/ElementDataManipulator'
 import { doShapesIntersect } from '../utils/shapeIntersectionUtils'
 import GameObject = Phaser.GameObjects.GameObject
-import { setActiveDraggedItem } from '../globals/globalState'
-import Graphics = Phaser.GameObjects.Graphics
+import { dragCoords, setActiveDraggedItem } from '../globals/globalState'
 import Rectangle = Phaser.Geom.Rectangle
 import Container = Phaser.GameObjects.Container
 export enum DRAG_EVENTS {
@@ -121,6 +120,9 @@ export function buildDrag(options: DragOptions) {
     .on('drag', (pointer, dragX, dragY) => {
       //console.log(`Drag: ${dragX}/${dragY}`)
       //console.log(`Drag pointer: ${pointer.x}/${pointer.y}`)
+
+      dragCoords.x = dragX
+      dragCoords.y = dragY
 
       console.log('potential hover targets')
       console.log(options.potentialHoverTargets)
