@@ -1,25 +1,26 @@
 {
   "name": "@potato-golem/core",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "potato golem game lib core",
-  "type": "commonjs",
-  "main": "./dist/index.js",
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "development": {
         "types": "./index.ts",
-        "require": "./dist/index.js",
+        "require": "./dist/index.cjs",
         "import": "./index.ts"
       },
       "production": {
         "types": "./dist/index.d.ts",
-        "require": "./dist/index.js",
+        "require": "./dist/index.cjs",
         "import": "./dist/index.js"
       },
       "default": {
         "types": "./index.ts",
-        "require": "./dist/index.js",
+        "require": "./dist/index.cjs",
         "import": "./dist/index.js"
       }
     }
@@ -27,6 +28,7 @@
   "files": ["dist", "LICENSE"],
   "scripts": {
     "build": "tsc",
+    "build:vite": "vite build",
     "lint": "biome check src biome.json",
     "lint:fix": "biome check --write src biome.json",
     "test": "vitest",
@@ -51,7 +53,8 @@
     "@biomejs/biome": "^1.8.3",
     "@kibertoad/biome-config": "^1.2.0",
     "@types/node": "^20.14.10",
-    "ts-node": "^10.9.2",
+    "vite": "^5.3.3",
+    "vite-plugin-dts": "3.9.1",
     "vitest": "^1.6.0"
   }
 }

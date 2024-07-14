@@ -2,24 +2,25 @@
   "name": "@potato-golem/ui",
   "version": "1.2.0",
   "description": "potato golem game lib UI module",
-  "type": "commonjs",
-  "main": "./dist/index.js",
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "development": {
-        "types": "./dist/index.d.ts",
-        "require": "./dist/index.js",
-        "import": "./dist/index.js"
+        "types": "./index.ts",
+        "require": "./dist/index.cjs",
+        "import": "./index.ts"
       },
       "production": {
         "types": "./dist/index.d.ts",
-        "require": "./dist/index.js",
+        "require": "./dist/index.cjs",
         "import": "./dist/index.js"
       },
       "default": {
-        "types": "./dist/index.d.ts",
-        "require": "./dist/index.js",
+        "types": "./index.ts",
+        "require": "./dist/index.cjs",
         "import": "./dist/index.js"
       }
     }
@@ -27,6 +28,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest",
+    "build:vite": "vite build",
     "lint": "biome check index.ts src biome.json",
     "lint:fix": "biome check --write index.ts src biome.json",
     "publish-current": "npm publish --access public",
@@ -54,6 +56,8 @@
     "@biomejs/biome": "^1.8.3",
     "@potato-golem/core": "*",
     "@types/node": "^20.14.10",
+    "vite": "^5.3.3",
+    "vite-plugin-dts": "3.9.1",
     "vitest": "^2.0.2",
     "typescript": "^5.5.3"
   }
