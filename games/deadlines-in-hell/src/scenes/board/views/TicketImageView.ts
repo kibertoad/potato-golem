@@ -17,6 +17,7 @@ import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry
 import type { SwimlaneModel } from '../model/entities/SwimlaneModel'
 import type { TicketModel } from '../model/entities/TicketModel'
 import { canTransition } from '../model/stateMachines/ticketStateMachine'
+import { copyCoords } from '@potato-golem/core'
 
 export type TicketViewParams = {
   ticketModel: TicketModel
@@ -29,7 +30,7 @@ export type TicketViewDependencies = {
   swimlanes: RectangularGraphicsContainer[]
 }
 
-export class TicketView extends Container {
+export class TicketImageView extends Container {
   private readonly ticketSprite: Phaser.GameObjects.Sprite
   private readonly ticketModel: TicketModel
   private readonly ticketTitle: Phaser.GameObjects.Text
@@ -101,6 +102,7 @@ export class TicketView extends Container {
           if (!ticketCanTransition) {
             restoreStartPosition(this)
           } else {
+            // copyCoords(this, this.ticketSprite)
             this.ticketModel.status = newStatus
           }
         },

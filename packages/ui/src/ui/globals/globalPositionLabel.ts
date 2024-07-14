@@ -1,6 +1,6 @@
 import type Phaser from 'phaser'
 import type { Scene } from 'phaser'
-import { activeDraggedItem } from './globalState'
+import { activeDraggedItem, dragCoords } from './globalState'
 
 export function updateGlobalPositionLabel(label: Phaser.GameObjects.Text) {
   if (!activeDraggedItem) {
@@ -8,7 +8,7 @@ export function updateGlobalPositionLabel(label: Phaser.GameObjects.Text) {
     return
   }
 
-  label.setText(`X: ${activeDraggedItem.x}, Y: ${activeDraggedItem.y}`)
+  label.setText(`X: ${activeDraggedItem.x}, Y: ${activeDraggedItem.y}; DragX: ${dragCoords.x}, DragY: ${dragCoords.y}`)
 }
 
 export function createGlobalPositionLabel(scene: Scene) {

@@ -1,37 +1,31 @@
 import {
   ButtonListBuilder1,
   PotatoScene,
-  SpriteBuilder,
-  buildOnHover,
-  restoreStartPosition,
-  setEntityModel,
-  setEntityType, createGlobalPositionLabel, updateGlobalPositionLabel,
+  createGlobalPositionLabel, updateGlobalPositionLabel,
 } from '@potato-golem/ui'
-import { buildDragWithActivations } from '@potato-golem/ui'
-import Phaser from 'phaser'
-import { AssignEngineerActivation } from './activations/AssignEngineerActivation'
+import type Phaser from 'phaser'
 
-import Sprite = Phaser.GameObjects.Sprite
 import { ProcessorActivation } from '@potato-golem/core'
 import type { Dependencies } from '../../model/diConfig'
 import { AnalystEmployee } from '../../model/entities/AnalystEmployee'
 import { DeveloperEmployee } from '../../model/entities/DeveloperEmployee'
 import { QaEmployee } from '../../model/entities/QaEmployee'
 import { Scenes } from '../../model/registries/SceneRegistry'
-import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import type { WorldModel } from '../../model/state/worldModel'
 import { TicketModel } from './model/entities/TicketModel'
 import type { NextTurnProcessor } from './model/processors/NextTurnProcessor'
 import { BoardView } from './views/BoardView'
-import { TicketView } from './views/TicketView'
+import { TicketImageView } from './views/TicketImageView'
+import { EmployeeImageView } from './views/EmployeeImageView'
+import type { EmployeeModel } from '../../model/state/employeeModel'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
   private readonly worldModel: WorldModel
 
   private boardView!: BoardView
-  private readonly ticketViews: TicketView[]
-  private readonly engineerViews: Sprite[]
+  private readonly ticketViews: TicketImageView[]
+  private readonly engineerViews: EmployeeImageView[]
   private globalPositionLabel: Phaser.GameObjects.Text
 
   constructor({ nextTurnProcessor, worldModel }: Dependencies) {
@@ -70,7 +64,7 @@ export class BoardScene extends PotatoScene {
     })
     this.worldModel.addTicket(ticket)
 
-    const ticketView = new TicketView(
+    const ticketView = new TicketImageView(
       this,
       {
         ticketModel: ticket,
@@ -84,52 +78,17 @@ export class BoardScene extends PotatoScene {
     this.ticketViews.push(ticketView)
   }
 
-  addEmployee(employeeModel) {
-    this.worldModel.addEmployee(employeeModel)
-
-    const employeeImage = SpriteBuilder.instance(this)
-      .setTextureKey('logo')
-      .setPosition({
-        x: 250,
-        y: 200,
-      })
-      .setWidth(100)
-      .setHeight(100)
-      .build()
-
-    setEntityType(employeeImage, EntityTypeRegistry.ENGINEER)
-    setEntityModel(employeeImage, employeeModel)
-
-    buildOnHover(
-      employeeImage,
-      () => {
-        console.log(`hovered (${employeeModel.area})`)
-      },
-      () => {
-        console.log('unhovered')
-      },
-      {},
-    )
-
-    // drag'n'drop for engineer
-    buildDragWithActivations({
-      draggedItem: employeeImage,
-      dragStartItem: employeeImage,
-      config: {
-        tolerance: 250,
-      },
-      potentialDropTargets: this.ticketViews,
-      potentialHoverTargets: [],
-      dropActivations: {
-        [EntityTypeRegistry.DEFAULT]: () => {
-          console.log('Revert to original position')
-          restoreStartPosition(employeeImage)
-        },
-        [EntityTypeRegistry.TICKET]: new AssignEngineerActivation(employeeModel),
-      },
+  addEmployee(employeeModel: EmployeeModel<unknown>) {
+    const employeeView = new EmployeeImageView(this, {
+      model: employeeModel,
+      x: 250,
+      y: 200
+    }, {
+      worldModel: this.worldModel,
+      tickets: this.ticketViews
     })
 
-    this.engineerViews.push(employeeImage)
+    this.engineerViews.push(employeeView)
   }
 
   addDeveloper() {
