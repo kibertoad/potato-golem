@@ -24,7 +24,7 @@ export {
 } from './src/ui/builders/graphics/RectangularBuilder'
 
 export { DragIcon } from './src/ui/elements/DragIcon'
-export * from './src/ui/data/ElementDataManipulator'
+export { getEntityType, getEntityModel, restoreStartPosition, setEntityModel, storeStartPosition, setEntityType, ANY_ENTITY_TYPE, DEFAULT_ENTITY_TYPE, NULL_ENTITY_TYPE} from './src/ui/data/ElementDataManipulator'
 
 export { buildDialog } from './src/ui/builders/DialogBuilder'
 export {
@@ -39,7 +39,6 @@ export { UIGroupSlot, CommonUIGroup, type AbstractUIElementLite } from './src/ui
 export type { UIGroup, AbstractUIElement } from './src/ui/elements/UIGroup'
 
 export { ChangeSceneActivation } from './src/activations/ChangeSceneActivation'
-export { MultiplexActivation } from '../core/src/core/activations/MultiplexActivation'
 export { SetTextActivation } from './src/activations/SetTextActivation'
 
 export type { Position, ViewParent, ChoiceOption, Dimensions } from './src/ui/common/CommonUITypes'
@@ -51,4 +50,4 @@ export { COLOR_LIGHT, COLOR_DARK, COLOR_PRIMARY, BLUE, GREENISH } from './src/ui
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
 
-export * from './src/ui/globals/globalPositionLabel'
+export { createGlobalPositionLabel, updateGlobalPositionLabel } from './src/ui/globals/globalPositionLabel'

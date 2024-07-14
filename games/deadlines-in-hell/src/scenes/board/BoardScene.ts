@@ -5,7 +5,7 @@ import {
   buildOnHover,
   restoreStartPosition,
   setEntityModel,
-  setEntityType,
+  setEntityType, createGlobalPositionLabel, updateGlobalPositionLabel,
 } from '@potato-golem/ui'
 import { buildDragWithActivations } from '@potato-golem/ui'
 import Phaser from 'phaser'
@@ -32,6 +32,7 @@ export class BoardScene extends PotatoScene {
   private boardView!: BoardView
   private readonly ticketViews: TicketView[]
   private readonly engineerViews: Sprite[]
+  private globalPositionLabel: Phaser.GameObjects.Text
 
   constructor({ nextTurnProcessor, worldModel }: Dependencies) {
     super(Scenes.BOARD_SCENE)
@@ -139,7 +140,13 @@ export class BoardScene extends PotatoScene {
 
   preload() {}
 
+  update() {
+    updateGlobalPositionLabel(this.globalPositionLabel)
+  }
+
   create() {
+    this.globalPositionLabel = createGlobalPositionLabel(this)
+
     const { width, height } = this.scale
     const buttonList = new ButtonListBuilder1(this)
       .textureKey('violet')

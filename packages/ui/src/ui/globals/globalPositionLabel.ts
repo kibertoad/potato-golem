@@ -1,4 +1,5 @@
-import Phaser, { Scene } from 'phaser'
+import type Phaser from 'phaser'
+import type { Scene } from 'phaser'
 import { activeDraggedItem } from './globalState'
 
 export function updateGlobalPositionLabel(label: Phaser.GameObjects.Text) {

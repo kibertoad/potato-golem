@@ -1,7 +1,6 @@
 import {
   ButtonListBuilder1,
   ChangeSceneActivation,
-  MultiplexActivation,
   PotatoScene,
   TextBuilder,
   TextWithBackgroundBuilder,
@@ -16,6 +15,7 @@ const logoImg = require('../../../assets/img/logo.png')
 import BaseSound = Phaser.Sound.BaseSound
 
 import { UiImages } from '../../model/registries/ImageRegistry'
+import { MultiplexActivation } from '@potato-golem/core'
 
 const isSoundEnabled = false
 
