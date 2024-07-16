@@ -16,7 +16,7 @@ export {
   DRAG_EVENTS,
   type DragActivationOptions,
 } from './src/ui/builders/DragBuilder'
-export { getActiveDraggedItem, setActiveDraggedItem } from './src/ui/globals/globalState'
+export { getActiveDraggedItem, setActiveDraggedItem, addGlobalTracker, resetGlobalTrackers } from './src/ui/globals/globalState'
 export { NinePatchBuilder } from './src/ui/builders/NinePatchBuilder'
 export {
   RectangularBuilder,
@@ -50,4 +50,4 @@ export { COLOR_LIGHT, COLOR_DARK, COLOR_PRIMARY, BLUE, GREENISH } from './src/ui
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
 
-export { createGlobalPositionLabel, updateGlobalPositionLabel } from './src/ui/globals/globalPositionLabel'
+export { createGlobalPositionLabel, updateGlobalPositionLabel, createGlobalTrackerLabel, updateGlobalTrackerLabel } from './src/ui/globals/globalPositionLabel'
