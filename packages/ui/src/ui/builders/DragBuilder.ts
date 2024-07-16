@@ -166,8 +166,12 @@ export function buildDrag(options: DragOptions) {
 }
 
 export type DragActivationOptions<T, U> = {
-  dragStartItem: T
-  draggedItem: U
+  dragStartItem: T // this interactive element starts drag when clicked and dragged
+  draggedItem: U // this item changes position during drag
+
+  // rule of a thumb - background image is a `dragStartItem`, but container which combines together
+  // background with other elements on it is `draggedItem`
+
   config: DragConfig
 
   potentialDropTargets: readonly AbstractUIElementLite[]
