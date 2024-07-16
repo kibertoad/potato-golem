@@ -25,5 +25,12 @@ export function createGlobalPositionLabel(scene: Scene) {
 }
 
 export function createGlobalTrackerLabel(scene: Scene) {
-  return scene.add.text(400, 200, '');
+  const textObject = scene.add.text(400, 200, '')
+
+  // Optionally, you can define a custom wordWrapCallback
+  textObject.style.wordWrapCallback = (text, textObject) => {
+    return textObject.advancedWordWrap(text, textObject.context, 200);
+  };
+
+  return textObject
 }
