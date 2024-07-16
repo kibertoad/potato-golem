@@ -18,6 +18,10 @@ import { BoardView } from './views/BoardView'
 import { TicketImageView } from './views/TicketImageView'
 import { EmployeeImageView } from './views/EmployeeImageView'
 import type { EmployeeModel } from '../../model/state/employeeModel'
+import {
+  createGlobalTrackerLabel,
+  updateGlobalTrackerLabel,
+} from '@potato-golem/ui'
 
 export class BoardScene extends PotatoScene {
   private readonly nextTurnActivation: ProcessorActivation<NextTurnProcessor>
@@ -27,6 +31,7 @@ export class BoardScene extends PotatoScene {
   private readonly ticketViews: TicketImageView[]
   private readonly engineerViews: EmployeeImageView[]
   private globalPositionLabel: Phaser.GameObjects.Text
+  private globalTrackerLabel: Phaser.GameObjects.Text
 
   constructor({ nextTurnProcessor, worldModel }: Dependencies) {
     super(Scenes.BOARD_SCENE)
@@ -64,12 +69,15 @@ export class BoardScene extends PotatoScene {
     })
     this.worldModel.addTicket(ticket)
 
+    const workingX = 15
+    const workingY = 15
+
     const ticketView = new TicketImageView(
       this,
       {
         ticketModel: ticket,
-        x: 15,
-        y: 15,
+        x: 0,
+        y: 0,
       },
       {
         swimlanes: this.boardView.swimlanes,
@@ -101,10 +109,12 @@ export class BoardScene extends PotatoScene {
 
   update() {
     updateGlobalPositionLabel(this.globalPositionLabel)
+    updateGlobalTrackerLabel(this.globalTrackerLabel)
   }
 
   create() {
     this.globalPositionLabel = createGlobalPositionLabel(this)
+    this.globalTrackerLabel = createGlobalTrackerLabel(this)
 
     const { width, height } = this.scale
     const buttonList = new ButtonListBuilder1(this)

@@ -3,6 +3,8 @@ import { validateNumber, validateString } from 'validation-utils'
 import type { PotatoScene } from '../common/PotatoScene'
 import { UIContainer } from '../elements/UIContainer'
 import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
+import { Coords } from '@potato-golem/core/dist/src/core/primitives/Coords'
+import type { Dimensions } from '../common/CommonUITypes'
 
 /**
  * Create a text label
@@ -20,6 +22,8 @@ export class TextBuilder {
 
   readonly #scene: Scene
   readonly #targetChildrenList?: AbstractUIElementLite[]
+  protected originX?: number
+  protected originY?: number
 
   constructor(scene: Scene, childrenList?: AbstractUIElement[]) {
     this.#positionX = 0
@@ -47,10 +51,25 @@ export class TextBuilder {
     return this
   }
 
+  public setRelativePositionFromBackground(background: Coords & Dimensions, deltaX: number, deltaY: number) {
+    this.#positionX = background.x + deltaX
+    this.#positionY = background.y + deltaY
+
+    return this
+  }
+
+  public setOrigin(originX: number, originY: number) {
+    this.originX = originX
+    this.originY = originY
+
+    return this
+  }
+
+
   public build() {
     this.textChild = this.#scene.add
       .text(validateNumber(this.#positionX), validateNumber(this.#positionY), this.#text ?? '')
-      .setOrigin(0.5, 0.5)
+      .setOrigin(this.originX ?? 0.5, this.originY ?? 0.5)
       .setWordWrapWidth(validateNumber(this.#displaySizeX))
       .setAlign('left')
 

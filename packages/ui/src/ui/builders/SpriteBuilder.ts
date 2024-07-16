@@ -23,6 +23,7 @@ export class SpriteBuilder extends AbstractUIBuilder {
   build(): Sprite {
     const sprite = this.scene.add
       .sprite(this.getX(), this.getY(), validateString(this.textureKey))
+      .setOrigin(this.originX, this.originY)
       .setDisplaySize(this.getWidth(), this.getHeight())
     if (this.interactiveConfig) {
       sprite.setInteractive(this.interactiveConfig)

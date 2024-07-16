@@ -7,8 +7,8 @@
     "build:ts": "tsc",
     "build:production:full": "del-cli dist && del-cli ../../.parcel-cache --force && npm run build:deps && npm run build:production",
     "build:production": "parcel build assets/html/index.html --public-url _relativeroute_ --config ./parcel/.parcel.prod",
-    "build:deps": "cd ../../packages && cd core && npm run build:vite && cd .. && cd ui && npm run build:vite && cd ../../games && cd deadlines-in-hell && npm run build:ts",
-    "build:dev-full": "npm run build:deps && parcel assets/html/index.html src/index.ts",
+    "build:deps": "cd ../../packages && cd core && npm run build:vite && cd .. && cd ui && npm run build:vite",
+    "build:dev-full": "npm run build:deps && parcel assets/html/index.html",
     "build:dev": "parcel assets/html/index.html",
 
     "dev": "vite",
@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "@potato-golem/core": "*",
-    "@potato-golem/ui": "*",
+    "@potato-golem/core": "1.2.0",
+    "@potato-golem/ui": "1.3.0",
     "awilix": "^10.0.2",
     "generate-human-names": "^1.2.2",
     "phaser": "^3.80.1",

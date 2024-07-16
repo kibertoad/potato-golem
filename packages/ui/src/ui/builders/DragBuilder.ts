@@ -71,29 +71,23 @@ function isContainer(object: unknown): object is Container {
   return (object as Container).type === 'Container'
 }
 
+// ToDo Some of these things don't need to be recalculated constantly
 function resolveDraggedObjectBoundaries(
   draggedItem: AbstractUIElementLite,
-  dragX: number,
-  dragY: number,
 ): Rectangle {
   let width = 0
   let height = 0
-  let x = dragX
-  let y = dragY
   if (isContainer(draggedItem)) {
+    // ToDo this could be cached within container
     const bounds = calculateContainerBounds(draggedItem as Container)
-
     width = bounds.width
     height = bounds.height
-
-    x = x - width / 2
-    y = y - height / 2
   } else {
     width = draggedItem.displayWidth
     height = draggedItem.displayHeight
   }
 
-  return new Rectangle(x, y, width, height)
+  return new Rectangle(draggedItem.x, draggedItem.y, width, height)
 }
 
 export function buildDrag(options: DragOptions) {
@@ -115,6 +109,7 @@ export function buildDrag(options: DragOptions) {
       dragDeltaX = pointer.x - options.draggedItem.x
       dragDeltaY = pointer.y - options.draggedItem.y
 
+      // this is used to have a spot to jump back if drag is cancelled
       storeStartPosition(options.draggedItem)
     })
     .on('drag', (pointer, dragX, dragY) => {
@@ -130,8 +125,6 @@ export function buildDrag(options: DragOptions) {
       if (options.onHoverCallback && options.potentialHoverTargets) {
         const draggedObjectBoundaries = resolveDraggedObjectBoundaries(
           options.draggedItem,
-          dragX,
-          dragY,
         )
 
         const overlappingObject = options.potentialHoverTargets.find((potentialOverlap) => {
@@ -197,8 +190,6 @@ export function buildDragWithActivations<
 
       const draggedObjectBoundaries = resolveDraggedObjectBoundaries(
         options.draggedItem,
-        pointer.x,
-        pointer.y,
       )
 
       const overlappingObject = options.potentialDropTargets.find((potentialOverlap) => {

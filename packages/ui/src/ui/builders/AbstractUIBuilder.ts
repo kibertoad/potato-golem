@@ -2,12 +2,15 @@ import { validateNumber } from 'validation-utils'
 import type { Dimensions, Position } from '../common/CommonUITypes'
 import type { PotatoScene } from '../common/PotatoScene'
 import Sprite = Phaser.GameObjects.Sprite
+import { Coords } from '@potato-golem/core/dist/src/core/primitives/Coords'
 
 export abstract class AbstractUIBuilder {
   protected readonly scene: PotatoScene
   protected position: Position
   protected width: number
   protected height: number
+  protected originX?: number
+  protected originY?: number
 
   constructor(scene: PotatoScene) {
     this.scene = scene
@@ -17,6 +20,13 @@ export abstract class AbstractUIBuilder {
     }
     this.height = 20
     this.width = 20
+  }
+
+  public setOrigin(originX: number, originY: number) {
+    this.originX = originX
+    this.originY = originY
+
+    return this
   }
 
   public setPosition(position: Position) {
@@ -39,7 +49,7 @@ export abstract class AbstractUIBuilder {
     return this
   }
 
-  public setRelativePositionFromSprite(background: Sprite, deltaX: number, deltaY: number) {
+  public setRelativePositionFromSprite(background: Coords & Dimensions, deltaX: number, deltaY: number) {
     this.position = {
       x: background.x - background.width + deltaX,
       y: background.y - background.height / 2 + deltaY,

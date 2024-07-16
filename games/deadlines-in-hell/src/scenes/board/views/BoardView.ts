@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-import type { RectangularGraphicsContainer } from '@potato-golem/ui'
+import { addGlobalTracker, RectangularGraphicsContainer } from '@potato-golem/ui'
 import {
   DRAG_EVENTS,
   NinePatchBuilder,
@@ -50,11 +50,14 @@ export class BoardView implements ViewParent {
 
     this.ninePatches.push(boardNinePatch)
 
+    const workingX = 100
+    const workingY = 200
+
     const swimLane = RectangularBuilder.instance(this.scene)
       .addZone()
       .setPosition({
-        x: 100,
-        y: 200,
+        x: 400,
+        y: 100,
       })
       .setWidth(220)
       .setHeight(400)
@@ -104,6 +107,9 @@ export class BoardView implements ViewParent {
 
     setEntityType(swimLane.zone, EntityTypeRegistry.SWIMLANE)
     setEntityModel(swimLane.zone, swimlaneModel)
+
+    addGlobalTracker(() => `SwimLaneX:${swimLane.rectangle.x};SwimLaneY:${swimLane.rectangle.y}`)
+    addGlobalTracker(() => `SwimLaneWidth:${swimLane.rectangle.width};SwimLaneHeight:${swimLane.rectangle.height}`)
 
     // console.log(JSON.stringify(swimLane))
     this.swimlanes.push(swimLane)
