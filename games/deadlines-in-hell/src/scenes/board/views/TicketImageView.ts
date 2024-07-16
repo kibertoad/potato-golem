@@ -17,7 +17,6 @@ import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry
 import type { SwimlaneModel } from '../model/entities/SwimlaneModel'
 import type { TicketModel } from '../model/entities/TicketModel'
 import { canTransition } from '../model/stateMachines/ticketStateMachine'
-import { copyCoords } from '@potato-golem/core'
 
 export type TicketViewParams = {
   ticketModel: TicketModel
@@ -31,9 +30,26 @@ export type TicketViewDependencies = {
 }
 
 export class TicketImageView extends Container {
+
+  /**
+   * Static image background for the ticket
+   */
   private readonly ticketSprite: Phaser.GameObjects.Sprite
-  private readonly ticketModel: TicketModel
+
+  /**
+   * Text element with the name of the ticket
+   */
   private readonly ticketTitle: Phaser.GameObjects.Text
+
+  /**
+   * Domain model of the ticket
+   */
+  private readonly ticketModel: TicketModel
+
+  /**
+   * Container for the ticket completion bars
+   */
+  private readonly barsContainer: Container
 
   constructor(scene: PotatoScene, params: TicketViewParams, dependencies: TicketViewDependencies) {
     super(scene)
@@ -48,17 +64,14 @@ export class TicketImageView extends Container {
       .setDisplaySize(15, 15)
       .build().value
 
-    const ticketBackgroundWidth = 200
-    const ticketBackgroundHeight = 100
-
     this.ticketSprite = SpriteBuilder.instance(scene)
       .setTextureKey('glass-panel')
       .setPosition({
         x: params.x,
         y: params.y,
       })
-      .setWidth(ticketBackgroundWidth)
-      .setHeight(ticketBackgroundHeight)
+      .setWidth(200)
+      .setHeight(100)
       .build()
 
     const barsContainer = BarsBarBuilder.instance(scene)
@@ -72,7 +85,7 @@ export class TicketImageView extends Container {
       .build()
 
     this.add(barsContainer)
-    // this.scene.add.existing(barsContainer)
+    this.barsContainer = barsContainer
 
     setEntityType(this.ticketSprite, EntityTypeRegistry.TICKET)
     setEntityModel(this.ticketSprite, this.ticketModel)

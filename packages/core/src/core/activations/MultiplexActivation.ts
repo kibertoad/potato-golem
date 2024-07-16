@@ -1,4 +1,4 @@
-import { Activation, ActivationCallback } from './Activation'
+import type { Activation, ActivationCallback } from './Activation'
 
 /**
  * Activation which invokes other activations in bulk
