@@ -3,8 +3,8 @@ import { validateNumber, validateString } from 'validation-utils'
 import type { PotatoScene } from '../common/PotatoScene'
 import { UIContainer } from '../elements/UIContainer'
 import type { AbstractUIElement, AbstractUIElementLite } from '../elements/UIGroup'
-import { Coords } from '@potato-golem/core/dist/src/core/primitives/Coords'
-import type { Dimensions } from '../common/CommonUITypes'
+import type { Dimensions, Position } from '../common/CommonUITypes'
+import type Phaser from 'phaser'
 
 /**
  * Create a text label
@@ -51,7 +51,7 @@ export class TextBuilder {
     return this
   }
 
-  public setRelativePositionFromBackground(background: Coords & Dimensions, deltaX: number, deltaY: number) {
+  public setRelativePositionFromBackground(background: Position & Dimensions, deltaX: number, deltaY: number) {
     this.#positionX = background.x + deltaX
     this.#positionY = background.y + deltaY
 
