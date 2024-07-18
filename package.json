@@ -4,7 +4,8 @@
   "scripts": {
     "format": "npm run format --workspaces",
     "build:deadlines-in-hell": "cd games/deadlines-in-hell && npm run build:production",
-    "build:shadow-agents": "cd games/shadow-agents && npm run build:production"
+    "build:shadow-agents": "cd games/shadow-agents && npm run build:production",
+    "build:pirate-jam-2024": "cd games/pirate-jam-2024 && npm run build:production"
   },
   "peerDependencies": {
     "phaser": "^3.80.1"
