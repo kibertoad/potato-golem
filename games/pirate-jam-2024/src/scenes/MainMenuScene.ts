@@ -7,11 +7,16 @@ import {
 import Phaser from 'phaser'
 
 import { Scenes } from './SceneRegistry'
+import { MusicRegistry } from '../model/registries/musicRegistry'
+import { ImageRegistry } from '../model/registries/imageRegistry'
+
+const isMusicEnabled = false
 
 export class MainMenuScene extends PotatoScene {
   private buttons: Phaser.GameObjects.Image[] = []
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
+  private mainTheme: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound
 
   constructor() {
     super(Scenes.MAIN_MENU_SCENE)
@@ -22,10 +27,27 @@ export class MainMenuScene extends PotatoScene {
   }
 
   preload() {
-    this.load.image('favicon', require('../../assets/img/favicon.png'))
+    this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
+    this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
+
+    if (isMusicEnabled) {
+      /*
+      this.load.audio(
+        MusicRegistry.MAIN_THEME,
+        require("url:../../assets/music/bg_draft.mp3")
+      );
+       */
+    }
   }
 
   create() {
+    if (isMusicEnabled) {
+      this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME);
+      this.mainTheme.play({
+        loop: true,
+      });
+    }
+
     const { width, height } = this.scale
 
     const subTitle = new TextBuilder(this)
@@ -35,7 +57,7 @@ export class MainMenuScene extends PotatoScene {
       .build()
 
     const buttonList = new ButtonListBuilder1(this)
-      .textureKey('favicon')
+      .textureKey(ImageRegistry.ROCKET)
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
       .setSpacingOffset(0, 10)

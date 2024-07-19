@@ -9,6 +9,7 @@ import {
   TextBuilder,
 } from '@potato-golem/ui'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
+import { ImageRegistry } from '../../../model/registries/imageRegistry'
 
 export type CardViewParams = {
   model: CardModel
@@ -45,7 +46,7 @@ export class CardView extends Container {
     this.model = params.model
 
     this.sprite = SpriteBuilder.instance(scene)
-      .setTextureKey('favicon')
+      .setTextureKey(ImageRegistry.ROCKET)
       .setPosition({
         x: 0,
         y: 0,

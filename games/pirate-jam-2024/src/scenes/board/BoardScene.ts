@@ -1,8 +1,8 @@
 import {
   PotatoScene,
-  createGlobalPositionLabel, updateGlobalPositionLabel,
+  createGlobalPositionLabel, updateGlobalPositionLabel, SpriteBuilder,
 } from '@potato-golem/ui'
-import type Phaser from 'phaser'
+import Phaser from 'phaser'
 
 import {
   createGlobalTrackerLabel,
@@ -13,12 +13,16 @@ import { CardModel } from '../../model/CardModel'
 import { CardView } from './views/CardView'
 import type { WorldModel } from '../../model/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
+import Sprite = Phaser.GameObjects.Sprite
+import { ImageRegistry } from '../../model/registries/imageRegistry'
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
 
   private globalPositionLabel: Phaser.GameObjects.Text
   private globalTrackerLabel: Phaser.GameObjects.Text
+
+  private backgroundImage: Sprite
   private readonly cardViews: CardView[] = []
 
   constructor({ worldModel }: Dependencies) {
@@ -60,6 +64,18 @@ export class BoardScene extends PotatoScene {
   }
 
   create() {
+    this.backgroundImage = SpriteBuilder.instance(this)
+      .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setDimensions({
+        width: 1280,
+        height: 720,
+      })
+      .build()
+
     this.globalPositionLabel = createGlobalPositionLabel(this)
     this.globalTrackerLabel = createGlobalTrackerLabel(this)
   }
