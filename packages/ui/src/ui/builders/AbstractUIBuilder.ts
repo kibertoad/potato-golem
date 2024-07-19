@@ -83,6 +83,7 @@ export abstract class AbstractUIBuilder {
   public setDimensions(dimensions: Dimensions) {
     this.height = dimensions.height
     this.width = dimensions.width
+    return this
   }
 
   public setWidth(width: number) {

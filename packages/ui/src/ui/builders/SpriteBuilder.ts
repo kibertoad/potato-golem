@@ -1,7 +1,8 @@
 import { validateString } from 'validation-utils'
-import type { PotatoScene } from '../common/PotatoScene'
+import  { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import Sprite = Phaser.GameObjects.Sprite
+import Phaser from 'phaser'
 
 /**
  * Create a static image
@@ -9,6 +10,13 @@ import Sprite = Phaser.GameObjects.Sprite
 export class SpriteBuilder extends AbstractUIBuilder {
   private textureKey?: string
   private interactiveConfig?: Phaser.Types.Input.InputConfiguration
+
+
+  constructor(scene: PotatoScene) {
+    super(scene)
+
+    this.setOrigin(0, 0)
+  }
 
   public setTextureKey(value: string) {
     this.textureKey = value
