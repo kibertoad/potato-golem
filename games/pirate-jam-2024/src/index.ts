@@ -5,8 +5,8 @@ import { instantiateContainer } from './model/diConfig'
 
 const GameResolutions = {
   default: {
-    width: 1280,
-    height: 720,
+    width: 1900,
+    height: 900,
   },
 }
 

@@ -1,5 +1,5 @@
 import { validateString } from 'validation-utils'
-import  { PotatoScene } from '../common/PotatoScene'
+import  type { PotatoScene } from '../common/PotatoScene'
 import { AbstractUIBuilder } from './AbstractUIBuilder'
 import Sprite = Phaser.GameObjects.Sprite
 import Phaser from 'phaser'
@@ -31,6 +31,7 @@ export class SpriteBuilder extends AbstractUIBuilder {
   build(): Sprite {
     const sprite = this.scene.add
       .sprite(this.getX(), this.getY(), validateString(this.textureKey))
+      .setDepth(this.depth ?? 0)
       .setOrigin(this.originX, this.originY)
       .setDisplaySize(this.getWidth(), this.getHeight())
     if (this.interactiveConfig) {

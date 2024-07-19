@@ -23,9 +23,14 @@ const textOffsetY = 5
 
 export class CardView extends Container {
   /**
-   * Static image background for the card
+   * Generic frame for the card
    */
-  private readonly sprite: Phaser.GameObjects.Sprite
+  private readonly cardFrameSprite: Phaser.GameObjects.Sprite
+
+  /**
+   * Card-specific image for the card
+   */
+  private readonly cardPictureSprite: Phaser.GameObjects.Sprite
 
   /**
    * Text element with the name of the card
@@ -42,18 +47,30 @@ export class CardView extends Container {
 
     this.x = params.x
     this.y = params.y
+    this.setDepth(100)
 
     this.model = params.model
 
-    this.sprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.ROCKET)
+    this.cardFrameSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.CARD_FRAME)
       .setPosition({
         x: 0,
         y: 0,
       })
       .setOrigin(0, 0)
-      .setWidth(200)
-      .setHeight(100)
+      .setWidth(120)
+      .setHeight(180)
+      .build()
+
+    this.cardPictureSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.HEALTH_CARD)
+      .setPosition({
+        x: 0,
+        y: 30,
+      })
+      .setOrigin(0, 0)
+      .setWidth(120)
+      .setHeight(140)
       .build()
 
     this.title = TextBuilder.instance(scene)
@@ -66,21 +83,22 @@ export class CardView extends Container {
       .setDisplaySize(15, 15)
       .build().value
 
-    setEntityType(this.sprite, EntityTypeRegistry.CARD)
-    setEntityModel(this.sprite, this.model)
+    setEntityType(this.cardFrameSprite, EntityTypeRegistry.CARD)
+    setEntityModel(this.cardFrameSprite, this.model)
 
-    this.add(this.sprite)
+    this.add(this.cardFrameSprite)
+    this.add(this.cardPictureSprite)
     this.add(this.title)
 
     scene.add.existing(this)
 
     // Build ticket drag'n'drop
     buildDragWithActivations({
-      dragStartItem: this.sprite,
+      dragStartItem: this.cardFrameSprite,
       draggedItem: this,
       dropActivations: {
         [EntityTypeRegistry.DEFAULT]: () => {
-          restoreStartPosition(this)
+          // restoreStartPosition(this)
         },
       },
       config: {},

@@ -11,6 +11,7 @@ export abstract class AbstractUIBuilder {
   protected height: number
   protected originX?: number
   protected originY?: number
+  protected depth?: number
 
   constructor(scene: PotatoScene) {
     this.scene = scene
@@ -33,6 +34,14 @@ export abstract class AbstractUIBuilder {
     this.position = {
       ...position,
     }
+    return this
+  }
+
+  /**
+   * Higher depth means being drawn on top
+   */
+  public setDepth(depth: number) {
+    this.depth = depth
     return this
   }
 
