@@ -13,11 +13,11 @@ import type { Dependencies } from '../../model/diConfig'
 import { Scenes } from '../SceneRegistry'
 import { CardView } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import { type CommonEntity, removeFromArrayById } from '@potato-golem/core'
+import type { CommonEntity } from '@potato-golem/core'
 import { cardDefinitions } from '../../model/definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
-import { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
+import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -26,7 +26,6 @@ export class BoardScene extends PotatoScene {
   private globalTrackerLabel: Phaser.GameObjects.Text
 
   private backgroundImage: Sprite
-  private readonly cardViews: CardView[] = []
   private readonly endTurnProcessor: EndTurnProcessor
 
   constructor({ worldModel, endTurnProcessor }: Dependencies) {
@@ -41,16 +40,10 @@ export class BoardScene extends PotatoScene {
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
-        this.removeCard(entity.id)
+        this.worldModel.removeCard(entity.id)
+        this.destroyChildByModelId(entity.id)
       }
     })
-  }
-
-  removeCard(cardModelId: string) {
-    this.worldModel.removeCard(cardModelId)
-
-    const cardView = removeFromArrayById(this.cardViews, cardModelId)
-    cardView.destroy()
   }
 
   addCard() {
@@ -72,7 +65,7 @@ export class BoardScene extends PotatoScene {
         endTurnProcessor: this.endTurnProcessor,
       },
     )
-    this.cardViews.push(cardView)
+    this.addChildViewObject(cardView)
   }
 
   preload() {}
