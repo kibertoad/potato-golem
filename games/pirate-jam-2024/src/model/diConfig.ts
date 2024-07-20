@@ -1,16 +1,17 @@
 import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awilix'
-import { WorldModel } from './WorldModel'
-import { BoardScene } from '../scenes/board/BoardScene'
 import { MainMenuScene } from '../scenes/MainMenuScene'
+import { BoardScene } from '../scenes/board/BoardScene'
+import { WorldModel } from './WorldModel'
+import { EndTurnProcessor } from './processors/EndTurnProcessor'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type DiConfig = Record<keyof Dependencies, Resolver<any>>
 
 export interface Dependencies {
   worldModel: WorldModel
   boardScene: BoardScene
   mainMenuScene: MainMenuScene
+  endTurnProcessor: EndTurnProcessor
 }
 
 export function instantiateContainer() {
@@ -22,6 +23,7 @@ export function instantiateContainer() {
     worldModel: asValue(new WorldModel()),
     boardScene: asClass(BoardScene, SINGLETON_CONFIG),
     mainMenuScene: asClass(MainMenuScene, SINGLETON_CONFIG),
+    endTurnProcessor: asClass(EndTurnProcessor, SINGLETON_CONFIG),
   }
 
   diContainer.register(diConfig)

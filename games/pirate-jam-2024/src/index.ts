@@ -1,6 +1,4 @@
 import Phaser, { Game } from 'phaser'
-import { MainMenuScene } from './scenes/MainMenuScene'
-import { BoardScene } from './scenes/board/BoardScene'
 import { instantiateContainer } from './model/diConfig'
 
 const GameResolutions = {

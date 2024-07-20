@@ -119,8 +119,8 @@ export function buildDrag(options: DragOptions) {
       dragCoords.x = dragX
       dragCoords.y = dragY
 
-      console.log('potential hover targets')
-      console.log(options.potentialHoverTargets)
+      //console.log('potential hover targets')
+      //console.log(options.potentialHoverTargets)
 
       if (options.onHoverCallback && options.potentialHoverTargets) {
         const draggedObjectBoundaries = resolveDraggedObjectBoundaries(
@@ -133,10 +133,10 @@ export function buildDrag(options: DragOptions) {
 
         if (overlappingObject) {
           // @ts-ignore
-          console.log(`Graphics hover overlap found: ${overlappingObject.x}/${overlappingObject.y}`)
+          //console.log(`Graphics hover overlap found: ${overlappingObject.x}/${overlappingObject.y}`)
           options.onHoverCallback(overlappingObject)
         } else {
-          console.log('No overlap :-/')
+          //console.log('No overlap :-/')
           options.onHoverCallback(undefined)
         }
       }

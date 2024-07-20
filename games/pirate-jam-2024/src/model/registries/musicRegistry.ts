@@ -1,3 +1,3 @@
 export const MusicRegistry = {
-  MAIN_THEME: 'main-theme'
+  MAIN_THEME: 'main-theme',
 }

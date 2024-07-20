@@ -1,3 +1,5 @@
+import type { IdHolder } from '../interfaces/Entities'
+
 export function chunk<T>(array: readonly T[], chunkSize: number): T[][] {
   const length = array.length
   if (!length || chunkSize < 1) {
@@ -14,4 +16,34 @@ export function chunk<T>(array: readonly T[], chunkSize: number): T[][] {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result
+}
+
+export function removeFromArrayById<T extends IdHolder>(
+  targetArray: T[],
+  idToRemove: string,
+): T | null {
+  // Find the index of the element with the given id
+  const index = targetArray.findIndex((element) => element.id === idToRemove)
+
+  // If the element is found, remove it from the array
+  if (index !== -1) {
+    return targetArray.splice(index, 1)[0]
+  }
+  return null
+}
+
+/**
+ * Return a copy of the given array without null or undefined values
+ */
+export function removeNullish<const T>(array: readonly (T | null | undefined)[]): T[] {
+  return array.filter((e) => e !== undefined && e !== null) as T[]
+}
+
+/**
+ * Return a copy of the given array without falsy values (eg: false, 0, '', null, undefined)
+ */
+export function removeFalsy<const T>(
+  array: readonly (T | null | undefined | 0 | '' | false)[],
+): T[] {
+  return array.filter((e) => e) as T[]
 }

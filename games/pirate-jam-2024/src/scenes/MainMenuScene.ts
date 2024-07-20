@@ -6,9 +6,9 @@ import {
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
-import { Scenes } from './SceneRegistry'
-import { MusicRegistry } from '../model/registries/musicRegistry'
 import { ImageRegistry } from '../model/registries/imageRegistry'
+import { MusicRegistry } from '../model/registries/musicRegistry'
+import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = false
 
@@ -16,7 +16,10 @@ export class MainMenuScene extends PotatoScene {
   private buttons: Phaser.GameObjects.Image[] = []
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-  private mainTheme: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound
+  private mainTheme:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound
 
   constructor() {
     super(Scenes.MAIN_MENU_SCENE)
@@ -44,10 +47,10 @@ export class MainMenuScene extends PotatoScene {
 
   create() {
     if (isMusicEnabled) {
-      this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME);
+      this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME)
       this.mainTheme.play({
         loop: true,
-      });
+      })
     }
 
     const { width, height } = this.scale
@@ -55,7 +58,7 @@ export class MainMenuScene extends PotatoScene {
     const subTitle = new TextBuilder(this)
       .setText('Discount Store Alchemist')
       .setDisplaySize(250, 150)
-      .setPosition({ x: width * 0.3, y: height * 0.6})
+      .setPosition({ x: width * 0.3, y: height * 0.6 })
       .build()
 
     const buttonList = new ButtonListBuilder1(this)
@@ -67,21 +70,13 @@ export class MainMenuScene extends PotatoScene {
     const playButton = buttonList
       .addButton()
       .text('Play')
-      .onClick(
-          ChangeSceneActivation.build(this, Scenes.BOARD_SCENE),
-      )
+      .onClick(ChangeSceneActivation.build(this, Scenes.BOARD_SCENE))
       .build()
 
-    const settingsButton = buttonList
-      .addButton()
-      .text('Settings')
-      .build()
+    const settingsButton = buttonList.addButton().text('Settings').build()
 
     // Credits button
-    const creditsButton = buttonList
-      .addButton()
-      .text('Credits')
-      .build()
+    const creditsButton = buttonList.addButton().text('Credits').build()
 
     this.buttons.push(playButton)
     this.buttons.push(settingsButton)
@@ -98,7 +93,6 @@ export class MainMenuScene extends PotatoScene {
     creditsButton.on('selected', () => {
       console.log('credits')
     })
-
   }
 
   confirmSelection() {

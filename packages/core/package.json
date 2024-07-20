@@ -47,6 +47,8 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "nanoid": "^5.0.7",
     "validation-utils": "^11.0.0"
   },
   "devDependencies": {

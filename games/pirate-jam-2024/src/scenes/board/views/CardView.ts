@@ -1,13 +1,17 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
-import { CardModel } from '../../../model/CardModel'
+import type { IdHolder } from '@potato-golem/core'
 import {
-  buildDragWithActivations, type Position,
-  PotatoScene, restoreStartPosition, setEntityModel,
-  setEntityType,
+  type Position,
+  type PotatoScene,
   SpriteBuilder,
   TextBuilder,
+  buildDragWithActivations,
+  setEntityModel,
+  setEntityType,
 } from '@potato-golem/ui'
+import type { CardModel } from '../../../model/CardModel'
+import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 
@@ -16,12 +20,13 @@ export type CardViewParams = {
 } & Position
 
 export type CardViewDependencies = {
+  endTurnProcessor: EndTurnProcessor
 }
 
 const textOffsetX = 35
 const textOffsetY = 5
 
-export class CardView extends Container {
+export class CardView extends Container implements IdHolder {
   /**
    * Generic frame for the card
    */
@@ -37,19 +42,24 @@ export class CardView extends Container {
    */
   private readonly title: Phaser.GameObjects.Text
 
+  id: string
+
   /**
    * Domain model of the card
    */
   private readonly model: CardModel
+  private readonly endTurnProcessor: EndTurnProcessor
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
 
+    this.id = params.model.id
     this.x = params.x
     this.y = params.y
     this.setDepth(100)
 
     this.model = params.model
+    this.endTurnProcessor = dependencies.endTurnProcessor
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
@@ -74,10 +84,7 @@ export class CardView extends Container {
       .build()
 
     this.title = TextBuilder.instance(scene)
-      .setRelativePositionFromBackground(this,
-        textOffsetX,
-        textOffsetY
-      )
+      .setRelativePositionFromBackground(this, textOffsetX, textOffsetY)
       .setOrigin(0, 0)
       .setText(params.model.name)
       .setDisplaySize(15, 15)
@@ -99,6 +106,7 @@ export class CardView extends Container {
       dropActivations: {
         [EntityTypeRegistry.DEFAULT]: () => {
           // restoreStartPosition(this)
+          this.endTurnProcessor.processTurn()
         },
       },
       config: {},

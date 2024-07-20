@@ -1,8 +1,10 @@
 import { Scene } from 'phaser'
 import type UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import type { ViewParent } from './CommonUITypes'
+import EventEmitter = Phaser.Events.EventEmitter
+import type { COMMON_EVENT_TYPES, EventSink, EventSource } from '@potato-golem/core'
 
-export class PotatoScene extends Scene {
+export class PotatoScene<SupportedEvents extends string = COMMON_EVENT_TYPES> extends Scene {
   rexUI!: UIPlugin
 
   /**
@@ -10,8 +12,12 @@ export class PotatoScene extends Scene {
    */
   protected readonly viewParents: ViewParent[]
 
+  protected readonly eventBus: EventSink<SupportedEvents> & EventSource<SupportedEvents>
+
   constructor(config?: string | Phaser.Types.Scenes.SettingsConfig) {
     super(config)
+
+    this.eventBus = new EventEmitter()
 
     this.viewParents = []
   }

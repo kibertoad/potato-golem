@@ -12,6 +12,10 @@ function randomBoxMuller() {
   return num
 }
 
+export function generateUuid() {
+  return crypto.randomUUID()
+}
+
 export function normalizedRandom(maxValue: number) {
   return Math.floor(randomBoxMuller() * maxValue)
 }
