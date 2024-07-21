@@ -1,5 +1,6 @@
 import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awilix'
 import { MainMenuScene } from '../scenes/MainMenuScene'
+import { MusicScene } from '../scenes/MusicScene'
 import { BoardScene } from '../scenes/board/BoardScene'
 import { WorldModel } from './WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
@@ -9,6 +10,7 @@ type DiConfig = Record<keyof Dependencies, Resolver<any>>
 
 export interface Dependencies {
   worldModel: WorldModel
+  musicScene: MusicScene
   boardScene: BoardScene
   mainMenuScene: MainMenuScene
   endTurnProcessor: EndTurnProcessor
@@ -21,6 +23,7 @@ export function instantiateContainer() {
 
   const diConfig: DiConfig = {
     worldModel: asValue(new WorldModel()),
+    musicScene: asClass(MusicScene, SINGLETON_CONFIG),
     boardScene: asClass(BoardScene, SINGLETON_CONFIG),
     mainMenuScene: asClass(MainMenuScene, SINGLETON_CONFIG),
     endTurnProcessor: asClass(EndTurnProcessor, SINGLETON_CONFIG),

@@ -7,22 +7,18 @@ import {
 import Phaser from 'phaser'
 
 import { ImageRegistry } from '../model/registries/imageRegistry'
-import { MusicRegistry } from '../model/registries/musicRegistry'
+import type { MusicScene } from './MusicScene'
 import { Scenes } from './SceneRegistry'
-
-const isMusicEnabled = false
 
 export class MainMenuScene extends PotatoScene {
   private buttons: Phaser.GameObjects.Image[] = []
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-  private mainTheme:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
+  private musicScene: MusicScene
 
-  constructor() {
+  constructor({ musicScene }) {
     super(Scenes.MAIN_MENU_SCENE)
+    this.musicScene = musicScene
   }
 
   init() {
@@ -34,25 +30,9 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
     this.load.image(ImageRegistry.HEALTH_CARD, require('../../assets/img/card_image.png'))
     this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
-
-    if (isMusicEnabled) {
-      /*
-      this.load.audio(
-        MusicRegistry.MAIN_THEME,
-        require("url:../../assets/music/bg_draft.mp3")
-      );
-       */
-    }
   }
 
   create() {
-    if (isMusicEnabled) {
-      this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME)
-      this.mainTheme.play({
-        loop: true,
-      })
-    }
-
     const { width, height } = this.scale
 
     const subTitle = new TextBuilder(this)
@@ -64,7 +44,7 @@ export class MainMenuScene extends PotatoScene {
     const buttonList = new ButtonListBuilder1(this)
       .textureKey(ImageRegistry.ROCKET)
       .displaySize(300, 50)
-      .setExactPosition(width / 2 , height / 2)
+      .setExactPosition(width / 2, height / 2)
       .setSpacingOffset(0, 50)
 
     this.centerButtonList(buttonList, 3, 50)
@@ -72,7 +52,10 @@ export class MainMenuScene extends PotatoScene {
     const playButton = buttonList
       .addButton()
       .text('Play')
-      .onClick(ChangeSceneActivation.build(this, Scenes.BOARD_SCENE))
+      .onClick(() => {
+        ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
+        this.musicScene.fadeOutMainTheme()
+      })
       .build()
 
     const settingsButton = buttonList.addButton().text('Settings').build()
@@ -97,12 +80,11 @@ export class MainMenuScene extends PotatoScene {
     })
   }
 
-  centerButtonList(buttonList: ButtonListBuilder1, buttonCount: number, spacingOffsetY: number = 0) {
+  centerButtonList(buttonList: ButtonListBuilder1, buttonCount: number, spacingOffsetY = 0) {
     buttonList.setExactPosition(
-      this.scale.width / 2, 
-      this.scale.height / 2 - (
-        (buttonCount * (buttonList.displaySizeY) + (buttonCount - 1) * spacingOffsetY) / 2
-      )
+      this.scale.width / 2,
+      this.scale.height / 2 -
+        (buttonCount * buttonList.displaySizeY + (buttonCount - 1) * spacingOffsetY) / 2,
     )
   }
 

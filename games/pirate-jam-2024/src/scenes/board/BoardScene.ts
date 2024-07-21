@@ -18,8 +18,10 @@ import { cardDefinitions } from '../../model/definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
+import { MusicScene } from '../MusicScene'
 
 export class BoardScene extends PotatoScene {
+  private readonly musicScene: MusicScene
   private readonly worldModel: WorldModel
 
   private globalPositionLabel: Phaser.GameObjects.Text
@@ -28,9 +30,10 @@ export class BoardScene extends PotatoScene {
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
 
-  constructor({ worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ musicScene, worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
+    this.musicScene = musicScene
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
   }
@@ -76,6 +79,7 @@ export class BoardScene extends PotatoScene {
   }
 
   create() {
+    this.musicScene.playBoardTheme()
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
       .setPosition({
