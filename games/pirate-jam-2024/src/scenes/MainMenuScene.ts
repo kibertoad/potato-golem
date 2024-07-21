@@ -63,9 +63,11 @@ export class MainMenuScene extends PotatoScene {
 
     const buttonList = new ButtonListBuilder1(this)
       .textureKey(ImageRegistry.ROCKET)
-      .displaySize(150, 50)
-      .setExactPosition(width * 0.5, height * 0.6)
-      .setSpacingOffset(0, 10)
+      .displaySize(300, 50)
+      .setExactPosition(width / 2 , height / 2)
+      .setSpacingOffset(0, 50)
+
+    this.centerButtonList(buttonList, 3, 50)
 
     const playButton = buttonList
       .addButton()
@@ -93,6 +95,15 @@ export class MainMenuScene extends PotatoScene {
     creditsButton.on('selected', () => {
       console.log('credits')
     })
+  }
+
+  centerButtonList(buttonList: ButtonListBuilder1, buttonCount: number, spacingOffsetY: number = 0) {
+    buttonList.setExactPosition(
+      this.scale.width / 2, 
+      this.scale.height / 2 - (
+        (buttonCount * (buttonList.displaySizeY) + (buttonCount - 1) * spacingOffsetY) / 2
+      )
+    )
   }
 
   confirmSelection() {
