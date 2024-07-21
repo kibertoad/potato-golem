@@ -1,5 +1,8 @@
 import type { Prioritized } from './Activation'
 
+/**
+ * Sort possible activations by priority and apply exclusivity filter
+ */
 export function sortAndFilterActivations<T extends Prioritized>(activations: readonly T[]): T[] {
   // Step 0: Check if the array is empty
   if (activations.length === 0) {

@@ -1,5 +1,3 @@
-export type ActivationCallback = () => void
-
 export const LOW_PRIORITY = 10
 export const AVERAGE_PRIORITY = 50
 export const HIGH_PRIORITY = 100
@@ -11,12 +9,26 @@ export type Prioritized = {
 
 export type PrioritizedActivation = Prioritized & Activation
 
+/**
+ * Abstraction over any kind of effect/trigger
+ */
+export type ActivationCallback = () => void
+
+/**
+ * Class wrapper for ActivationCallback
+ */
 export type Activation = {
   activate: ActivationCallback
 }
 
+/**
+ * Effect that targets one specific entity
+ */
 export type TargettedActivationCallback<Target> = (target: Target) => void
 
+/**
+ * Class wrapper for TargettedActivationCallback
+ */
 export type TargettedActivation<Target> = {
   activate: TargettedActivationCallback<Target>
 }

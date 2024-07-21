@@ -1,5 +1,8 @@
 import type { IdHolder } from '../interfaces/Entities'
 
+/**
+ * Split array into smaller arrays that are up to "chunkSize" large
+ */
 export function chunk<T>(array: readonly T[], chunkSize: number): T[][] {
   const length = array.length
   if (!length || chunkSize < 1) {
@@ -18,6 +21,9 @@ export function chunk<T>(array: readonly T[], chunkSize: number): T[][] {
   return result
 }
 
+/**
+ * Modifies an array by removing an entry with a given id. Returns removed entry
+ */
 export function removeFromArrayById<T extends IdHolder>(
   targetArray: T[],
   idToRemove: string,
