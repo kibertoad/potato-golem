@@ -2,7 +2,7 @@ import {
   PotatoScene,
   SpriteBuilder,
   createGlobalPositionLabel,
-  updateGlobalPositionLabel,
+  updateGlobalPositionLabel, addGlobalTracker,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
@@ -20,6 +20,7 @@ import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { MusicScene } from '../MusicScene'
 import { CardDefinitionGenerator, CardDefinitions, CardId } from '../../model/definitions/cardDefinitions'
 import { Zone } from '../../model/registries/zoneRegistry'
+import { ZoneView } from './views/ZoneView'
 
 export class BoardScene extends PotatoScene {
   private readonly musicScene: MusicScene
@@ -50,6 +51,27 @@ export class BoardScene extends PotatoScene {
 
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
+
+    const zone = new ZoneView({
+      scene: this,
+      id: 'one',
+      name: 'one',
+      vertices: [{
+        x: 0,
+        y: 0,
+      },
+        {
+          x: 500,
+          y: 0,
+        },
+        {
+          x: 500,
+          y: 500,
+        },
+      ]
+    })
+
+    this.addChildViewObject(zone)
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
@@ -90,6 +112,7 @@ export class BoardScene extends PotatoScene {
 
   create() {
     this.musicScene.playBoardTheme()
+
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
       .setPosition({
