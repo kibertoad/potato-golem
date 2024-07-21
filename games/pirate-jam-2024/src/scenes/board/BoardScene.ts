@@ -15,10 +15,10 @@ import { CardView } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
 import { cardDefinitions } from '../../model/definitions/cardDefinitions'
+import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
-import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
-import { MusicScene } from '../MusicScene'
+import type { MusicScene } from '../MusicScene'
 
 export class BoardScene extends PotatoScene {
   private readonly musicScene: MusicScene
