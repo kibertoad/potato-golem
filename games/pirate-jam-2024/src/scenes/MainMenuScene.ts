@@ -28,8 +28,13 @@ export class MainMenuScene extends PotatoScene {
   preload() {
     this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
-    this.load.image(ImageRegistry.HEALTH_CARD, require('../../assets/img/card_image.png'))
     this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
+
+    // cards
+    this.load.image(ImageRegistry.HEALTH_CARD, require('../../assets/img/card_image.png'))
+    this.load.image(ImageRegistry.GOLD_CARD, require('../../assets/img/card_gold.png'))
+    this.load.image(ImageRegistry.MEDICINE_CARD, require('../../assets/img/card_medicine.png'))
+    this.load.image(ImageRegistry.CORPSE_CARD, require('../../assets/img/card_corpse.png'))
   }
 
   create() {

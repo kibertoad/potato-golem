@@ -1,4 +1,4 @@
-import { AVERAGE_PRIORITY, EventReceiver, HPHolder, LOW_PRIORITY } from '@potato-golem/core'
+import { Activation, AVERAGE_PRIORITY, EventReceiver, HPHolder, LOW_PRIORITY } from '@potato-golem/core'
 import type { CardModel } from '../entities/CardModel'
 import type { CardActivation } from './CardActivation'
 import { HomunculusModel } from '../state/HomunculusModel'
@@ -14,15 +14,16 @@ export class DecomposeCardActivation implements CardActivation {
   }
 }
 
-export class GainHealthActivation implements EntityActivation {
-  priority = AVERAGE_PRIORITY
+export class GainHealthActivation implements Activation {
   private readonly amount: number
+  private readonly target: EventReceiver
 
-  constructor(amount: number) {
+  constructor(target: EventReceiver, amount: number) {
     this.amount = amount
+    this.target = target
   }
 
-  activate(target: EventReceiver) {
-    target.eventSink.emit('HEAL', availableMemory)
+  activate() {
+    this.target.eventSink.emit('HEAL', availableMemory)
   }
 }

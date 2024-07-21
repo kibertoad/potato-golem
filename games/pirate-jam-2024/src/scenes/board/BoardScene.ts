@@ -14,11 +14,12 @@ import { Scenes } from '../SceneRegistry'
 import { CardView } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
-import { cardDefinitions } from '../../model/definitions/cardDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { MusicScene } from '../MusicScene'
+import { CardDefinitionGenerator, CardDefinitions, CardId } from '../../model/definitions/cardDefinitions'
+import { Zone } from '../../model/registries/zoneRegistry'
 
 export class BoardScene extends PotatoScene {
   private readonly musicScene: MusicScene
@@ -29,17 +30,26 @@ export class BoardScene extends PotatoScene {
 
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
+  private readonly cardDefinitionGenerator: CardDefinitionGenerator
+  private cardDefinitions: CardDefinitions
 
-  constructor({ musicScene, worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ musicScene, cardDefinitionGenerator, worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
     this.musicScene = musicScene
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
+
+    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions()
   }
 
   init() {
-    this.addCard()
+    this.addCard('HEALTH', 'home')
+    this.addCard('HEALTH', 'home')
+    this.addCard('HEALTH', 'home')
+
+    this.addCard('MEDICINE', 'lab')
+    this.addCard('MEDICINE', 'lab')
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
@@ -49,11 +59,11 @@ export class BoardScene extends PotatoScene {
     })
   }
 
-  addCard() {
+  addCard(cardId: CardId, zone: Zone) {
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
-      zone: 'homunculus',
-      definition: cardDefinitions.MOLDY_SAUSAGE,
+      zone: zone,
+      definition: this.cardDefinitions[cardId],
     })
     this.worldModel.addCard(cardModel)
 
