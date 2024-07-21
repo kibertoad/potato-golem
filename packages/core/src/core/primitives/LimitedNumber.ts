@@ -1,3 +1,6 @@
+/**
+ * Numeric value that can have a max limit and optionally negativity constraint
+ */
 export class LimitedNumber {
   public value: number
   public maxValue: number

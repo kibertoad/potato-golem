@@ -1,6 +1,9 @@
 import { validateNotNil } from 'validation-utils'
 import type { Activation, ActivationCallback, Processor } from '../../../index'
 
+/**
+ * Activation which triggers specified processor
+ */
 export class ProcessorActivation<ProcessorType extends Processor<InputType>, InputType = undefined>
   implements Activation
 {
