@@ -84,8 +84,8 @@ export class BoardScene extends PotatoScene {
       })
       .setDepth(50)
       .setDimensions({
-        width: 1900,
-        height: 900,
+        width: 2560,
+        height: 1440,
       })
       .build()
 
