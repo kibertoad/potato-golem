@@ -7,8 +7,8 @@ import {
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import { CardModel } from '../../model/CardModel'
-import type { WorldModel } from '../../model/WorldModel'
+import { CardModel } from '../../model/entities/CardModel'
+import type { WorldModel } from '../../model/state/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
 import { Scenes } from '../SceneRegistry'
 import { CardView } from './views/CardView'

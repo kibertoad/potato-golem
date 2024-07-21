@@ -1,7 +1,7 @@
 import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awilix'
 import { MainMenuScene } from '../scenes/MainMenuScene'
 import { BoardScene } from '../scenes/board/BoardScene'
-import { WorldModel } from './WorldModel'
+import { WorldModel } from './state/WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }

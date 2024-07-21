@@ -10,7 +10,7 @@ import {
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
-import type { CardModel } from '../../../model/CardModel'
+import type { CardModel } from '../../../model/entities/CardModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'

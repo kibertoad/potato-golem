@@ -5,10 +5,10 @@ import {
   sortAndFilterActivations,
 } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
-import type { CardActivation } from './activations/CardActivation'
-import type { CardDefinition } from './definitions/cardDefinitions'
-import { EntityTypeRegistry } from './registries/entityTypeRegistry'
-import type { Zone } from './registries/zoneRegistry'
+import type { CardActivation } from '../activations/CardActivation'
+import type { CardDefinition } from '../definitions/cardDefinitions'
+import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
+import type { Zone } from '../registries/zoneRegistry'
 
 export type CardModelParams = {
   definition: CardDefinition

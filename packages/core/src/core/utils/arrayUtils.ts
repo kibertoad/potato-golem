@@ -17,7 +17,6 @@ export function chunk<T>(array: readonly T[], chunkSize: number): T[][] {
     result[resIndex++] = array.slice(index, (index += chunkSize))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result
 }
 
