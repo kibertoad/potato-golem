@@ -2,24 +2,28 @@ import {
   PotatoScene,
   SpriteBuilder,
   createGlobalPositionLabel,
-  updateGlobalPositionLabel, addGlobalTracker,
+  updateGlobalPositionLabel,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
+import type { Dependencies } from '../../model/diConfig'
 import { CardModel } from '../../model/entities/CardModel'
 import type { WorldModel } from '../../model/state/WorldModel'
-import type { Dependencies } from '../../model/diConfig'
 import { Scenes } from '../SceneRegistry'
 import { CardView } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
+import type {
+  CardDefinitionGenerator,
+  CardDefinitions,
+  CardId,
+} from '../../model/definitions/cardDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
+import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
-import { CardDefinitionGenerator, CardDefinitions, CardId } from '../../model/definitions/cardDefinitions'
-import { Zone } from '../../model/registries/zoneRegistry'
 import { ZoneView } from './views/ZoneView'
 
 export class BoardScene extends PotatoScene {
@@ -56,10 +60,12 @@ export class BoardScene extends PotatoScene {
       scene: this,
       id: 'one',
       name: 'one',
-      vertices: [{
-        x: 0,
-        y: 0,
-      },
+      debug: true,
+      vertices: [
+        {
+          x: 0,
+          y: 0,
+        },
         {
           x: 500,
           y: 0,
@@ -68,7 +74,7 @@ export class BoardScene extends PotatoScene {
           x: 500,
           y: 500,
         },
-      ]
+      ],
     })
 
     this.addChildViewObject(zone)
