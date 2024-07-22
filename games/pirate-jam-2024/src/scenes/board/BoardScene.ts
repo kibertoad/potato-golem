@@ -13,7 +13,7 @@ import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
 import { CardView } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CommonEntity } from '@potato-golem/core'
+import type { CommonEntity, EventSink, EventSource } from '@potato-golem/core'
 import type {
   CardDefinitionGenerator,
   CardDefinitions,
@@ -26,6 +26,10 @@ import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
 import { EventView } from './views/EventView'
+import EventEmitter = Phaser.Events.EventEmitter
+import type { EVENT_EVENTS, SpawnCardMessage } from '../../model/activations/event/eventActivations'
+
+export type BoardSupportedEvents = typeof EVENT_EVENTS.SPAWN_CARD
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 
 const debug = true
@@ -45,6 +49,7 @@ export class BoardScene extends PotatoScene {
   private zones: { string?: ZoneView } = {}
   private eventView: EventView
   private readonly eventDefinitionGenerator: EventDefinitionGenerator
+  private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
   constructor({
     musicScene,
@@ -61,12 +66,22 @@ export class BoardScene extends PotatoScene {
 
     this.eventDefinitionGenerator = eventDefinitionGenerator
     this.cardDefinitions = cardDefinitionGenerator.generateDefinitions()
+    this.eventSink = new EventEmitter()
+
+    this.registerListeners()
+  }
+
+  private registerListeners() {
+    this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
+      this.addCard(event.cardId, event.zone)
+    })
   }
 
   init() {
     this.eventView = new EventView(this, {
       worldModel: this.worldModel,
       eventDefinitionGenerator: this.eventDefinitionGenerator,
+      boardEventSink: this.eventSink,
     })
 
     this.initZones()
@@ -91,7 +106,7 @@ export class BoardScene extends PotatoScene {
   initZones() {
     this.createZone({
       scene: this,
-      id: 'alchemy',
+      id: 'lab',
       name: 'alchemy',
       debug: debug,
       spawnPoints: [
@@ -235,7 +250,7 @@ export class BoardScene extends PotatoScene {
   }
 
   create() {
-    this.musicScene.playBoardTheme()
+    // this.musicScene.playBoardTheme()
 
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)

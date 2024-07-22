@@ -24,10 +24,10 @@ export type EventDefinitions = ReturnType<
 export type EventId = keyof EventDefinitions
 
 export class EventDefinitionGenerator {
-  private readonly worldModel: WorldModel
+  private readonly _worldModel: WorldModel
 
   constructor({ worldModel }: Dependencies) {
-    this.worldModel = worldModel
+    this._worldModel = worldModel
   }
 
   generateDefinitions(eventSink: EventSink<EventEventId>) {

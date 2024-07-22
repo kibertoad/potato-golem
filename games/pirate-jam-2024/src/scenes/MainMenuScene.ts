@@ -12,7 +12,7 @@ export class MainMenuScene extends PotatoScene {
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   private musicScene: MusicScene
-  private readonly subTitle: UIContainer<Phaser.GameObjects.Text>
+  private subTitle!: UIContainer<Phaser.GameObjects.Text>
 
   constructor({ musicScene }) {
     super(Scenes.MAIN_MENU_SCENE)
@@ -26,6 +26,10 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
     this.load.image(ImageRegistry.GLASS_PANEL, require('../../assets/img/glass_panel.png'))
     this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
+    this.load.image(
+      ImageRegistry.EVENTS_BACKGROUND,
+      require('../../assets/img/event_background.png'),
+    )
 
     // cards
     this.load.image(ImageRegistry.HEALTH_CARD, require('../../assets/img/card_image.png'))

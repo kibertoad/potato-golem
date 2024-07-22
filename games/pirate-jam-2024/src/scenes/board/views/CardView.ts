@@ -107,7 +107,7 @@ export class CardView extends Container implements IdHolder {
         alphaTolerance: undefined,
         useHandCursor: true,
       })
-      .on('dragstart', (pointer, dragX, dragY) => {
+      .on('dragstart', (pointer, _dragX, _dragY) => {
         console.log('dragstart')
 
         this.dragDeltaX = pointer.x - this.x
@@ -118,7 +118,7 @@ export class CardView extends Container implements IdHolder {
           scale: 1.1,
           duration: 200,
           ease: 'Cubic',
-         })
+        })
       })
       .on('drag', (pointer, dragX, dragY) => {
         //Disable input events on the card so that it does not block pointer events for zones
@@ -137,7 +137,7 @@ export class CardView extends Container implements IdHolder {
           scale: 1,
           duration: 200,
           ease: 'Cubic',
-         })
+        })
       })
 
     // Build ticket drag'n'drop
