@@ -4,14 +4,18 @@ import type Phaser from 'phaser'
 import { MusicRegistry } from '../model/registries/musicRegistry'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = false
+const isMusicEnabled = true
 
 export class MusicScene extends PotatoScene {
   private mainTheme:
     | Phaser.Sound.NoAudioSound
     | Phaser.Sound.HTML5AudioSound
     | Phaser.Sound.WebAudioSound
-  private boardTheme:
+  private boardThemeIntro:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound
+  private boardThemeLoop:
     | Phaser.Sound.NoAudioSound
     | Phaser.Sound.HTML5AudioSound
     | Phaser.Sound.WebAudioSound
@@ -26,7 +30,8 @@ export class MusicScene extends PotatoScene {
   preload() {
     if (isMusicEnabled) {
       this.load.audio(MusicRegistry.MAIN_THEME, require('url:../../assets/music/bg_draft.mp3'))
-      this.load.audio(MusicRegistry.BOARD_THEME, require('url:../../assets/music/board_draft.mp3'))
+      this.load.audio(MusicRegistry.BOARD_THEME_INTRO, require('url:../../assets/music/board_theme_intro.ogg'))
+      this.load.audio(MusicRegistry.BOARD_THEME_LOOP, require('url:../../assets/music/board_theme_loop.ogg'))
     }
   }
 
@@ -36,8 +41,10 @@ export class MusicScene extends PotatoScene {
     }
     this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME)
     this.mainTheme.volume = 0.4
-    this.boardTheme = this.sound.add(MusicRegistry.BOARD_THEME)
-    this.boardTheme.volume = 0.4
+    this.boardThemeIntro = this.sound.add(MusicRegistry.BOARD_THEME_INTRO)
+    this.boardThemeIntro.volume = 0.4
+    this.boardThemeLoop = this.sound.add(MusicRegistry.BOARD_THEME_LOOP)
+    this.boardThemeLoop.volume = 0.4
 
     this.mainTheme.play({
       loop: true,
@@ -63,8 +70,11 @@ export class MusicScene extends PotatoScene {
       return
     }
 
-    this.boardTheme.play({
-      loop: true,
+    this.boardThemeIntro.play()
+    this.boardThemeIntro.once('complete', () => {
+      this.boardThemeLoop.play({
+        loop: true,
+      })
     })
   }
 }
