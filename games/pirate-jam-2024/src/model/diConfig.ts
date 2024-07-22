@@ -5,6 +5,7 @@ import { BoardScene } from '../scenes/board/BoardScene'
 import { CardDefinitionGenerator } from './definitions/cardDefinitions'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
 import { WorldModel } from './state/WorldModel'
+import { EventDefinitionGenerator } from './definitions/eventDefinitions'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = Record<keyof Dependencies, Resolver<any>>
@@ -16,6 +17,7 @@ export interface Dependencies {
   mainMenuScene: MainMenuScene
   endTurnProcessor: EndTurnProcessor
   cardDefinitionGenerator: CardDefinitionGenerator
+  eventDefinitionGenerator: EventDefinitionGenerator
 }
 
 export function instantiateContainer() {
@@ -26,6 +28,7 @@ export function instantiateContainer() {
   const diConfig: DiConfig = {
     worldModel: asValue(new WorldModel()),
     cardDefinitionGenerator: asClass(CardDefinitionGenerator, SINGLETON_CONFIG),
+    eventDefinitionGenerator: asClass(EventDefinitionGenerator, SINGLETON_CONFIG),
 
     musicScene: asClass(MusicScene, SINGLETON_CONFIG),
     boardScene: asClass(BoardScene, SINGLETON_CONFIG),

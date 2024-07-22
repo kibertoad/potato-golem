@@ -1,5 +1,5 @@
 import {
-  ButtonListBuilder1,
+  ButtonListBuilder,
   ChangeSceneActivation,
   PotatoScene,
   TextBuilder,

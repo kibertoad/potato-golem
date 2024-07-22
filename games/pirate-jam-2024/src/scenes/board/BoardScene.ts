@@ -1,8 +1,7 @@
 import {
   PotatoScene,
-  SpriteBuilder,
   createGlobalPositionLabel,
-  updateGlobalPositionLabel,
+  updateGlobalPositionLabel, SpriteBuilder,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
@@ -21,10 +20,12 @@ import type {
 } from '../../model/definitions/cardDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
+import { EventView } from './views/EventView'
+import type { EventDefinitionGenerator } from '../../model/definitions/eventDefinitions'
+import { ImageRegistry } from '../../model/registries/imageRegistry'
 
 const debug = true
 
@@ -41,18 +42,26 @@ export class BoardScene extends PotatoScene {
   private cardDefinitions: CardDefinitions
 
   private zones: ZoneView[] = []
+  private eventView: EventView
+  private readonly eventDefinitionGenerator: EventDefinitionGenerator
 
-  constructor({ musicScene, cardDefinitionGenerator, worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ musicScene, eventDefinitionGenerator, cardDefinitionGenerator, worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
     this.musicScene = musicScene
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
 
+    this.eventDefinitionGenerator = eventDefinitionGenerator
     this.cardDefinitions = cardDefinitionGenerator.generateDefinitions()
   }
 
   init() {
+    this.eventView = new EventView(this, {
+      worldModel: this.worldModel,
+      eventDefinitionGenerator: this.eventDefinitionGenerator
+    })
+
     this.addCard('HEALTH', 'home')
     this.addCard('HEALTH', 'home')
     this.addCard('HEALTH', 'home')
@@ -133,6 +142,8 @@ export class BoardScene extends PotatoScene {
         this.destroyChildByModelId(entity.id)
       }
     })
+
+    this.eventView.setToEvent(this.eventView.eventDefinitions.INTRO)
   }
 
   createZone(zoneParams: ZoneViewParams) {
@@ -186,7 +197,7 @@ export class BoardScene extends PotatoScene {
         x: 0,
         y: 0,
       })
-      .setDepth(50)
+      .setDepth(30)
       .setDimensions({
         width: 2560,
         height: 1440,

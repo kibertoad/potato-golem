@@ -3,6 +3,7 @@ export { randomOneOf, normalizedRandom, generateUuid } from './src/core/utils/ra
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor } from './src/core/interfaces/Processor'
 export type { Prioritized, PrioritizedActivation, Activation, ActivationCallback, TargettedActivationCallback, TargettedActivation} from './src/core/activations/Activation'
+export { Precondition, TargettedPrecondition } from './src/core/preconditions/Precondition'
 export { HIGH_PRIORITY, AVERAGE_PRIORITY, LOW_PRIORITY } from './src/core/activations/Activation'
 export { sortAndFilterActivations } from './src/core/activations/activationFilter'
 export { ProcessorActivation } from './src/core/activations/ProcessorActivation'

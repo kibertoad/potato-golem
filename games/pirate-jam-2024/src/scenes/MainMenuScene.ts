@@ -1,20 +1,22 @@
 import {
-  ButtonListBuilder1,
   ChangeSceneActivation,
   PotatoScene,
-  TextBuilder,
+  TextBuilder, type UIContainer,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import { ImageRegistry } from '../model/registries/imageRegistry'
 import type { MusicScene } from './MusicScene'
 import { Scenes } from './SceneRegistry'
+import Container = Phaser.GameObjects.Container
+import { ButtonListBuilder } from '../builders/ButtonListBuilder'
 
 export class MainMenuScene extends PotatoScene {
-  private buttons: Phaser.GameObjects.Image[] = []
+  private buttons: Container[] = []
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   private musicScene: MusicScene
+  private readonly subTitle: UIContainer<Phaser.GameObjects.Text>
 
   constructor({ musicScene }) {
     super(Scenes.MAIN_MENU_SCENE)
@@ -22,12 +24,12 @@ export class MainMenuScene extends PotatoScene {
   }
 
   init() {
-    this.cursors = this.input.keyboard.createCursorKeys()
   }
 
   preload() {
     this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
+    this.load.image(ImageRegistry.GLASS_PANEL, require('../../assets/img/glass_panel.png'))
     this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
 
     // cards
@@ -40,74 +42,47 @@ export class MainMenuScene extends PotatoScene {
   create() {
     const { width, height } = this.scale
 
-    const subTitle = new TextBuilder(this)
+    this.subTitle = new TextBuilder(this)
       .setText('Discount Store Alchemist')
       .setDisplaySize(250, 150)
-      .setPosition({ x: width * 0.3, y: height * 0.6 })
+      .setPosition({ x: width * 0.3, y: height * 0.2 })
       .build()
 
-    const buttonList = new ButtonListBuilder1(this)
-      .textureKey(ImageRegistry.ROCKET)
-      .displaySize(300, 50)
-      .setExactPosition(width / 2, height / 2)
-      .setSpacingOffset(0, 50)
+    const buttonList = new ButtonListBuilder(this, {
+      depth: 100,
+      distance: 20,
+      height: 50,
+      width: 300,
+      orientation: 'vertical',
+      hoverTint: 0x66ff7f,
+      position: {
+        x: width / 2,
+        y: height / 2,
+      },
+      textureKey: ImageRegistry.GLASS_PANEL
+    })
 
-    this.centerButtonList(buttonList, 3, 50)
+    // this.centerButtonList(buttonList, 3, 50)
 
-    const playButton = buttonList
-      .addButton()
-      .text('Play')
-      .onClick(() => {
+    buttonList.addButton('Play', () => {
         ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
         this.musicScene.fadeOutMainTheme()
       })
-      .build()
-
-    const settingsButton = buttonList.addButton().text('Settings').build()
-
-    // Credits button
-    const creditsButton = buttonList.addButton().text('Credits').build()
-
-    this.buttons.push(playButton)
-    this.buttons.push(settingsButton)
-    this.buttons.push(creditsButton)
-
-    playButton.on('selected', () => {
-      console.log('play')
-    })
-
-    settingsButton.on('selected', () => {
-      console.log('settings')
-    })
-
-    creditsButton.on('selected', () => {
-      console.log('credits')
-    })
+    buttonList.addButton('Settings')
+    buttonList.addButton('Credits')
   }
 
-  centerButtonList(buttonList: ButtonListBuilder1, buttonCount: number, spacingOffsetY = 0) {
+  centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
+    /*
     buttonList.setExactPosition(
       this.scale.width / 2,
       this.scale.height / 2 -
         (buttonCount * buttonList.displaySizeY + (buttonCount - 1) * spacingOffsetY) / 2,
     )
-  }
 
-  confirmSelection() {
-    // get the currently selected button
-    const button = this.buttons[this.selectedButtonIndex]
-
-    // emit the 'selected' event
-    button.emit('selected')
+     */
   }
 
   update() {
-    const upJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up!)
-    const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down!)
-    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space!)
-
-    if (spaceJustPressed) {
-      this.confirmSelection()
-    }
   }
 }
