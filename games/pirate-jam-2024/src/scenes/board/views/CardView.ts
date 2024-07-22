@@ -117,7 +117,7 @@ export class CardView extends Container implements IdHolder {
 
         scene.tweens.add({
           targets: this,
-          scale: 1.15,
+          scale: 1.1,
           duration: 200,
           ease: 'Cubic',
          })
