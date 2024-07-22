@@ -1,8 +1,4 @@
-import {
-  ChangeSceneActivation,
-  PotatoScene,
-  TextBuilder, type UIContainer,
-} from '@potato-golem/ui'
+import { ChangeSceneActivation, PotatoScene, TextBuilder, type UIContainer } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import { ImageRegistry } from '../model/registries/imageRegistry'
@@ -23,8 +19,7 @@ export class MainMenuScene extends PotatoScene {
     this.musicScene = musicScene
   }
 
-  init() {
-  }
+  init() {}
 
   preload() {
     this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
@@ -59,15 +54,15 @@ export class MainMenuScene extends PotatoScene {
         x: width / 2,
         y: height / 2,
       },
-      textureKey: ImageRegistry.GLASS_PANEL
+      textureKey: ImageRegistry.GLASS_PANEL,
     })
 
     // this.centerButtonList(buttonList, 3, 50)
 
     buttonList.addButton('Play', () => {
-        ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
-        this.musicScene.fadeOutMainTheme()
-      })
+      ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
+      this.musicScene.fadeOutMainTheme()
+    })
     buttonList.addButton('Settings')
     buttonList.addButton('Credits')
   }
@@ -83,6 +78,5 @@ export class MainMenuScene extends PotatoScene {
      */
   }
 
-  update() {
-  }
+  update() {}
 }

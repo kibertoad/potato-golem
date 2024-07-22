@@ -1,19 +1,17 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
+import type { EventSink, EventSource } from '@potato-golem/core'
+import type { EventEventId } from '../../../model/activations/event/eventActivations'
 import type {
   EventDefinition,
   EventDefinitionGenerator,
   EventDefinitions,
 } from '../../../model/definitions/eventDefinitions'
 import type { WorldModel } from '../../../model/state/WorldModel'
-import type { EventEventId } from '../../../model/activations/event/eventActivations'
-import type { EventSink, EventSource } from '@potato-golem/core'
 import EventEmitter = Phaser.Events.EventEmitter
-import GameObject = Phaser.GameObjects.GameObject
-import { ImageRegistry } from '../../../model/registries/imageRegistry'
-import { Scenes } from '../../SceneRegistry'
+import type { PotatoScene } from '@potato-golem/ui'
 import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
-import { PotatoScene } from '@potato-golem/ui'
+import { ImageRegistry } from '../../../model/registries/imageRegistry'
 
 export type EventViewDependencies = {
   worldModel: WorldModel
@@ -21,7 +19,6 @@ export type EventViewDependencies = {
 }
 
 export class EventView extends Container {
-
   private readonly potatoScene: PotatoScene
   private readonly worldModel: WorldModel
   private readonly eventSink: EventSink<EventEventId> & EventSource<EventEventId>
@@ -36,7 +33,9 @@ export class EventView extends Container {
     this.worldModel = dependencies.worldModel
     this.eventSink = new EventEmitter()
 
-    this.eventDefinitions = dependencies.eventDefinitionGenerator.generateDefinitions(this.eventSink)
+    this.eventDefinitions = dependencies.eventDefinitionGenerator.generateDefinitions(
+      this.eventSink,
+    )
 
     this.registerListeners()
   }
@@ -71,15 +70,14 @@ export class EventView extends Container {
         x: width / 2,
         y: height / 2,
       },
-      textureKey: ImageRegistry.GLASS_PANEL
+      textureKey: ImageRegistry.GLASS_PANEL,
     })
 
     for (const option of this.currentEvent.options) {
-      const optionButton = this.buttonList
-        .addButton(option.text, () => {
-          console.log('clickety click')
-          option.effect.activate(this.currentEvent)
-        })
+      const optionButton = this.buttonList.addButton(option.text, () => {
+        console.log('clickety click')
+        option.effect.activate(this.currentEvent)
+      })
     }
   }
 }

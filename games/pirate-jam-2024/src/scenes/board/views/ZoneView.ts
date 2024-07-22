@@ -1,23 +1,27 @@
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
+import type { Zone } from '../../../model/registries/zoneRegistry'
 
 export type ZoneViewParams = {
   scene: PotatoScene
-  id: string
+  id: Zone
   name: string
   vertices: Position[]
+  spawnPoints: Position[]
   debug?: boolean
   debugColor?: number
 }
 
 export class ZoneView {
   public readonly zone: Phaser.GameObjects.Zone
+  public readonly spawnPoints: Position[]
 
   private readonly debugGraphics?: Phaser.GameObjects.Graphics
 
   constructor(params: ZoneViewParams, pointerOverCallback?: (pointedZoneView: ZoneView) => void) {
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)
+    this.spawnPoints = params.spawnPoints
 
     if (params.debug) {
       // Draw the Polygon

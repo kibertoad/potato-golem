@@ -1,8 +1,8 @@
-import type { ImageId } from '../registries/imageRegistry'
 import type { EventSink, Precondition, TargettedActivation } from '@potato-golem/core'
-import type { WorldModel } from '../state/WorldModel'
-import type { Dependencies } from '../diConfig'
 import { ConcludeEventActivation, type EventEventId } from '../activations/event/eventActivations'
+import type { Dependencies } from '../diConfig'
+import type { ImageId } from '../registries/imageRegistry'
+import type { WorldModel } from '../state/WorldModel'
 
 export type EventOption = {
   text: string
@@ -36,11 +36,13 @@ export class EventDefinitionGenerator {
         name: 'And so it begins',
         description: '[insert description of how homunculus began],',
         image: 'corpse_card',
-        options: [{
-          text: 'Just great',
-          effect: new ConcludeEventActivation(eventSink)
-        }]
-      }
+        options: [
+          {
+            text: 'Just great',
+            effect: new ConcludeEventActivation(eventSink),
+          },
+        ],
+      },
     } as const satisfies Record<string, EventDefinition>
   }
 }

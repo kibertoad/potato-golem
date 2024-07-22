@@ -1,6 +1,9 @@
 import { TargettedMultiplexActivation } from '@potato-golem/core'
 import type { CardActivation } from '../activations/card/CardActivation'
-import { DecomposeCardActivation, GainHealthActivation } from '../activations/card/commonActivations'
+import {
+  DecomposeCardActivation,
+  GainHealthActivation,
+} from '../activations/card/commonActivations'
 import type { Dependencies } from '../diConfig'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'

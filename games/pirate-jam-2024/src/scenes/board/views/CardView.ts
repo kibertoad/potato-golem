@@ -5,7 +5,6 @@ import {
   type Position,
   type PotatoScene,
   SpriteBuilder,
-  TextBuilder,
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
@@ -52,11 +51,11 @@ export class CardView extends Container implements IdHolder {
   private readonly model: CardModel
   private readonly endTurnProcessor: EndTurnProcessor
 
-  private readonly cardWidth: number = 230
-  private readonly cardHeight: number = 277
+  public static readonly cardWidth: number = 230
+  public static readonly cardHeight: number = 277
 
-  private readonly cardImageWidth: number = 480
-  private readonly cardImageHeight: number = 640
+  public static readonly cardImageWidth: number = 480
+  public static readonly cardImageHeight: number = 640
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
@@ -76,11 +75,11 @@ export class CardView extends Container implements IdHolder {
         y: 0,
       })
       .setOrigin(0, 0)
-      .setWidth(this.cardWidth)
-      .setHeight(this.cardHeight)
+      .setWidth(CardView.cardWidth)
+      .setHeight(CardView.cardHeight)
       .build()
 
-    const cardImageRatio = this.cardImageWidth / this.cardImageHeight
+    const cardImageRatio = CardView.cardImageWidth / CardView.cardImageHeight
 
     this.cardPictureSprite = SpriteBuilder.instance(scene)
       .setTextureKey(params.model.definition.image)

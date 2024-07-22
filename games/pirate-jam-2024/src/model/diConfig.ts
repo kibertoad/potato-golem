@@ -3,9 +3,9 @@ import { MainMenuScene } from '../scenes/MainMenuScene'
 import { MusicScene } from '../scenes/MusicScene'
 import { BoardScene } from '../scenes/board/BoardScene'
 import { CardDefinitionGenerator } from './definitions/cardDefinitions'
+import { EventDefinitionGenerator } from './definitions/eventDefinitions'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
 import { WorldModel } from './state/WorldModel'
-import { EventDefinitionGenerator } from './definitions/eventDefinitions'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = Record<keyof Dependencies, Resolver<any>>
