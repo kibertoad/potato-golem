@@ -108,12 +108,10 @@ export class CardView extends Container implements IdHolder {
         useHandCursor: true,
       })
       .on('dragstart', (pointer, dragX, dragY) => {
+        console.log('dragstart')
+
         this.dragDeltaX = pointer.x - this.x
         this.dragDeltaY = pointer.y - this.y
-
-        //Disable input events on the card so that it does not block pointer events for zones
-        this.cardFrameSprite.input.enabled = false
-        console.log('dragstart')
 
         scene.tweens.add({
           targets: this,
@@ -123,12 +121,17 @@ export class CardView extends Container implements IdHolder {
          })
       })
       .on('drag', (pointer, dragX, dragY) => {
+        //Disable input events on the card so that it does not block pointer events for zones
+        this.cardFrameSprite.input.enabled = false
         this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
       })
       .on('drop', (pointer, target) => {
+        console.log('drop')
         //Re-enable input events to not break drag and drop
         this.cardFrameSprite.input.enabled = true
-        console.log('drop')
+      })
+      .on('dragend', (pointer, dragX, dragY, dropped) => {
+        console.log('dragend')
         scene.tweens.add({
           targets: this,
           scale: 1,
