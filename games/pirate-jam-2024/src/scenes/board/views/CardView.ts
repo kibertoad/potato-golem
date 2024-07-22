@@ -71,8 +71,8 @@ export class CardView extends Container implements IdHolder {
     this.cardFrameSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
       .setPosition({
-        x: 0,
-        y: 0,
+        x: -CardView.cardWidth / 2,
+        y: -CardView.cardHeight / 2,
       })
       .setOrigin(0, 0)
       .setWidth(CardView.cardWidth)
@@ -84,8 +84,8 @@ export class CardView extends Container implements IdHolder {
     this.cardPictureSprite = SpriteBuilder.instance(scene)
       .setTextureKey(params.model.definition.image)
       .setPosition({
-        x: 22,
-        y: 11,
+        x: 22 - CardView.cardWidth / 2,
+        y: 11 - CardView.cardHeight / 2,
       })
       .setOrigin(0, 0)
       .setWidth(250 * cardImageRatio)
@@ -114,6 +114,13 @@ export class CardView extends Container implements IdHolder {
         //Disable input events on the card so that it does not block pointer events for zones
         this.cardFrameSprite.input.enabled = false
         console.log('dragstart')
+
+        scene.tweens.add({
+          targets: this,
+          scale: 1.15,
+          duration: 200,
+          ease: 'Cubic',
+         })
       })
       .on('drag', (pointer, dragX, dragY) => {
         this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
@@ -122,6 +129,12 @@ export class CardView extends Container implements IdHolder {
         //Re-enable input events to not break drag and drop
         this.cardFrameSprite.input.enabled = true
         console.log('drop')
+        scene.tweens.add({
+          targets: this,
+          scale: 1,
+          duration: 200,
+          ease: 'Cubic',
+         })
       })
 
     // Build ticket drag'n'drop

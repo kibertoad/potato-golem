@@ -217,8 +217,8 @@ export class BoardScene extends PotatoScene {
       this,
       {
         model: cardModel,
-        x: spawnPoint.x - CardView.cardWidth / 2,
-        y: spawnPoint.y - CardView.cardHeight / 2,
+        x: spawnPoint.x,
+        y: spawnPoint.y,
       },
       {
         endTurnProcessor: this.endTurnProcessor,
