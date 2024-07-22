@@ -1,13 +1,11 @@
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
-export type TriangleVertices = [Position, Position, Position]
-
 export type ZoneViewParams = {
   scene: PotatoScene
   id: string
   name: string
-  vertices: TriangleVertices
+  vertices: Position[]
   debug?: boolean
   debugColor?: number
 }

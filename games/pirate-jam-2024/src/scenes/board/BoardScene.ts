@@ -149,6 +149,41 @@ export class BoardScene extends PotatoScene {
     })
     this.addChildViewObject(zoneLab)
 
+    const zoneHomunkulus = new ZoneView({
+      scene: this,
+      id: 'homunkulus',
+      name: 'homunkulus',
+      debug: debug,
+      debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
+      vertices: [
+        {
+          x: 1088,
+          y: 835,
+        },
+        {
+          x: 1088,
+          y: 602,
+        },
+        {
+          x: 1285,
+          y: 500,
+        },
+        {
+          x: 1472,
+          y: 612,
+        },
+        {
+          x: 1472,
+          y: 855,
+        },
+        {
+          x: 1282,
+          y: 940,
+        },
+      ],
+    })
+    this.addChildViewObject(zoneHomunkulus)
+
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
         this.worldModel.removeCard(entity.id)
