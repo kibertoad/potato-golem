@@ -93,19 +93,11 @@ export class CardView extends Container implements IdHolder {
       .setHeight(250)
       .build()
 
-    this.title = TextBuilder.instance(scene)
-      .setRelativePositionFromBackground(this, textOffsetX, textOffsetY)
-      .setOrigin(0, 0)
-      .setText(params.model.name)
-      .setDisplaySize(15, 15)
-      .build().value
-
     setEntityType(this.cardFrameSprite, EntityTypeRegistry.CARD)
     setEntityModel(this.cardFrameSprite, this.model)
 
     this.add(this.cardFrameSprite)
     this.add(this.cardPictureSprite)
-    this.add(this.title)
 
     scene.add.existing(this)
 
