@@ -6,7 +6,6 @@ import {
   type PotatoScene,
   SpriteBuilder,
   TextBuilder,
-  buildDragWithActivations,
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
@@ -44,14 +43,20 @@ export class CardView extends Container implements IdHolder {
 
   id: string
 
-  private dragDeltaX: number = 0
-  private dragDeltaY: number = 0
+  private dragDeltaX = 0
+  private dragDeltaY = 0
 
   /**
    * Domain model of the card
    */
   private readonly model: CardModel
   private readonly endTurnProcessor: EndTurnProcessor
+
+  private readonly cardWidth: number = 230
+  private readonly cardHeight: number = 277
+
+  private readonly cardImageWidth: number = 480
+  private readonly cardImageHeight: number = 640
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
@@ -71,19 +76,21 @@ export class CardView extends Container implements IdHolder {
         y: 0,
       })
       .setOrigin(0, 0)
-      .setWidth(120)
-      .setHeight(180)
+      .setWidth(this.cardWidth)
+      .setHeight(this.cardHeight)
       .build()
+
+    const cardImageRatio = this.cardImageWidth / this.cardImageHeight
 
     this.cardPictureSprite = SpriteBuilder.instance(scene)
       .setTextureKey(params.model.definition.image)
       .setPosition({
-        x: 0,
-        y: 30,
+        x: 22,
+        y: 11,
       })
       .setOrigin(0, 0)
-      .setWidth(120)
-      .setHeight(140)
+      .setWidth(250 * cardImageRatio)
+      .setHeight(250)
       .build()
 
     this.title = TextBuilder.instance(scene)
@@ -102,27 +109,29 @@ export class CardView extends Container implements IdHolder {
 
     scene.add.existing(this)
 
-    this.cardFrameSprite.setInteractive({
-      draggable: true,
-      pixelPerfect: false,
-      alphaTolerance: undefined,
-      useHandCursor: true,
-    }).on('dragstart', (pointer, dragX, dragY) => {
-      this.dragDeltaX = pointer.x - this.x
-      this.dragDeltaY = pointer.y - this.y
+    this.cardFrameSprite
+      .setInteractive({
+        draggable: true,
+        pixelPerfect: false,
+        alphaTolerance: undefined,
+        useHandCursor: true,
+      })
+      .on('dragstart', (pointer, dragX, dragY) => {
+        this.dragDeltaX = pointer.x - this.x
+        this.dragDeltaY = pointer.y - this.y
 
-      //Disable input events on the card so that it does not block pointer events for zones
-      this.cardFrameSprite.input.enabled = false
-      console.log('dragstart')
-    })
-    .on('drag', (pointer, dragX, dragY) => {
-      this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
-    })
-    .on('drop', (pointer, target) => {
-      //Re-enable input events to not break drag and drop
-      this.cardFrameSprite.input.enabled = true
-      console.log('drop')
-    })
+        //Disable input events on the card so that it does not block pointer events for zones
+        this.cardFrameSprite.input.enabled = false
+        console.log('dragstart')
+      })
+      .on('drag', (pointer, dragX, dragY) => {
+        this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
+      })
+      .on('drop', (pointer, target) => {
+        //Re-enable input events to not break drag and drop
+        this.cardFrameSprite.input.enabled = true
+        console.log('drop')
+      })
 
     // Build ticket drag'n'drop
     // buildDragWithActivations({
