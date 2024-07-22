@@ -132,7 +132,7 @@ export class CardView extends Container implements IdHolder {
         alphaTolerance: undefined,
         useHandCursor: true,
       })
-      .on('dragstart', (pointer, dragX, dragY) => {
+      .on('dragstart', (pointer, _dragX, _dragY) => {
         this.dragDeltaX = pointer.x - this.x
         this.dragDeltaY = pointer.y - this.y
 

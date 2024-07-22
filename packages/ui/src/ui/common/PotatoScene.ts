@@ -3,7 +3,7 @@ import type UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js'
 import type { ViewParent } from './CommonUITypes'
 import EventEmitter = Phaser.Events.EventEmitter
 import { type COMMON_EVENT_TYPES, type EventSink, type EventSource, removeFromArrayById } from '@potato-golem/core'
-import type { Destroyable, IdHolder } from '@potato-golem/core/dist/src/core/interfaces/Entities'
+import type { Destroyable, IdHolder } from '@potato-golem/core'
 
 export class PotatoScene<SupportedEvents extends string = COMMON_EVENT_TYPES> extends Scene {
   rexUI!: UIPlugin

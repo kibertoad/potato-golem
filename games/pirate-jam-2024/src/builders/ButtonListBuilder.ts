@@ -1,3 +1,5 @@
+import type Phaser from 'phaser'
+
 interface ButtonListBuilderConfig {
   textureKey: string
   position?: { x: number; y: number }

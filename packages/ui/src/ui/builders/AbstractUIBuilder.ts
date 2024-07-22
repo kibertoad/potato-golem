@@ -2,7 +2,7 @@ import { validateNumber } from 'validation-utils'
 import type { Dimensions, Position } from '../common/CommonUITypes'
 import type { PotatoScene } from '../common/PotatoScene'
 import Sprite = Phaser.GameObjects.Sprite
-import { Coords } from '@potato-golem/core/dist/src/core/primitives/Coords'
+import type { Coords } from '@potato-golem/core'
 
 export abstract class AbstractUIBuilder {
   protected readonly scene: PotatoScene
