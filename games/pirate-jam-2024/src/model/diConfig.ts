@@ -2,9 +2,9 @@ import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awil
 import { MainMenuScene } from '../scenes/MainMenuScene'
 import { MusicScene } from '../scenes/MusicScene'
 import { BoardScene } from '../scenes/board/BoardScene'
-import { WorldModel } from './state/WorldModel'
-import { EndTurnProcessor } from './processors/EndTurnProcessor'
 import { CardDefinitionGenerator } from './definitions/cardDefinitions'
+import { EndTurnProcessor } from './processors/EndTurnProcessor'
+import { WorldModel } from './state/WorldModel'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = Record<keyof Dependencies, Resolver<any>>

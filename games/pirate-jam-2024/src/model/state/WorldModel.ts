@@ -1,7 +1,7 @@
 import { removeFromArrayById } from '@potato-golem/core'
-import  type { CardModel } from '../entities/CardModel'
-import { HomunculusModel } from '../entities/HomunculusModel'
 import { AlchemistModel } from '../entities/AlchemistModel'
+import type { CardModel } from '../entities/CardModel'
+import { HomunculusModel } from '../entities/HomunculusModel'
 
 export class WorldModel {
   public readonly cards: CardModel[] = []

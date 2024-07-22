@@ -1,9 +1,7 @@
-import { Activation, AVERAGE_PRIORITY, EventReceiver, HPHolder, LOW_PRIORITY } from '@potato-golem/core'
+import { type Activation, type EventReceiver, LOW_PRIORITY } from '@potato-golem/core'
+import { availableMemory } from 'process'
 import type { CardModel } from '../entities/CardModel'
 import type { CardActivation } from './CardActivation'
-import { HomunculusModel } from '../state/HomunculusModel'
-import { availableMemory } from 'process'
-import { EntityActivation } from './EntityActivation'
 
 export class DecomposeCardActivation implements CardActivation {
   isExclusive = true

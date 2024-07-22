@@ -1,6 +1,6 @@
 import type { TurnProcessor } from '@potato-golem/core'
-import type { WorldModel } from '../state/WorldModel'
 import type { Dependencies } from '../diConfig'
+import type { WorldModel } from '../state/WorldModel'
 
 export class EndTurnProcessor implements TurnProcessor {
   private readonly worldModel: WorldModel

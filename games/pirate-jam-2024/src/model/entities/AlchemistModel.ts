@@ -1,8 +1,14 @@
-import { EventReceiver, type EventSink, EventSource, HPHolder, LimitedNumber } from '@potato-golem/core'
+import {
+  type EventReceiver,
+  type EventSink,
+  type EventSource,
+  type HPHolder,
+  LimitedNumber,
+} from '@potato-golem/core'
 import Phaser from 'phaser'
 import EventEmitter = Phaser.Events.EventEmitter
 
-export class AlchemistModel implements EventReceiver, HPHolder{
+export class AlchemistModel implements EventReceiver, HPHolder {
   readonly eventSink: EventSource<'HEAL'> & EventSink<'HEAL'>
   readonly hp: LimitedNumber
 
