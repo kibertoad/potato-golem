@@ -9,6 +9,7 @@ export type ZoneViewParams = {
   name: string
   vertices: TriangleVertices
   debug?: boolean
+  debugColor?: number
 }
 
 export class ZoneView {
@@ -21,9 +22,10 @@ export class ZoneView {
     if (params.debug) {
       // Draw the Polygon
       console.log('Drawing debug polygon')
+      const color = params.debugColor || Phaser.Display.Color.GetColor(255, 0, 0)
       const graphics = params.scene.add.graphics()
-      graphics.lineStyle(3, Phaser.Display.Color.GetColor(255, 0, 0))
-      graphics.fillStyle(Phaser.Display.Color.GetColor(255, 0, 0), 0.4)
+      graphics.lineStyle(0, color)
+      graphics.fillStyle(color, 0.3)
       graphics.fillPoints(polygon.points, true)
       graphics.strokePoints(polygon.points, true)
       graphics.depth = 51

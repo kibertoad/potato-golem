@@ -26,6 +26,8 @@ import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
 import { ZoneView } from './views/ZoneView'
 
+const debug = true
+
 export class BoardScene extends PotatoScene {
   private readonly musicScene: MusicScene
   private readonly worldModel: WorldModel
@@ -56,28 +58,96 @@ export class BoardScene extends PotatoScene {
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
 
-    const zone = new ZoneView({
+    const zoneAlchemy = new ZoneView({
       scene: this,
-      id: 'one',
-      name: 'one',
-      debug: true,
+      id: 'alchemy',
+      name: 'alchemy',
+      debug: debug,
       vertices: [
         {
           x: 0,
-          y: 0,
+          y: 12,
         },
         {
-          x: 500,
-          y: 0,
+          x: 1282,
+          y: 720,
         },
         {
-          x: 500,
-          y: 500,
+          x: 0,
+          y: 1440,
         },
       ],
     })
+    this.addChildViewObject(zoneAlchemy)
 
-    this.addChildViewObject(zone)
+    const zonePersonal = new ZoneView({
+      scene: this,
+      id: 'personal',
+      name: 'personal',
+      debug: debug,
+      debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
+      vertices: [
+        {
+          x: -18,
+          y: 0,
+        },
+        {
+          x: 1282,
+          y: 720,
+        },
+        {
+          x: 2560,
+          y: 0,
+        },
+      ],
+    })
+    this.addChildViewObject(zonePersonal)
+
+    const zoneOutside = new ZoneView({
+      scene: this,
+      id: 'outside',
+      name: 'outside',
+      debug: debug,
+      debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
+      vertices: [
+        {
+          x: 2560,
+          y: 0,
+        },
+        {
+          x: 1282,
+          y: 720,
+        },
+        {
+          x: 2560,
+          y: 1440,
+        },
+      ],
+    })
+    this.addChildViewObject(zoneOutside)
+
+    const zoneLab = new ZoneView({
+      scene: this,
+      id: 'lab',
+      name: 'lab',
+      debug: debug,
+      debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
+      vertices: [
+        {
+          x: 0,
+          y: 1440,
+        },
+        {
+          x: 1282,
+          y: 720,
+        },
+        {
+          x: 2560,
+          y: 1440,
+        },
+      ],
+    })
+    this.addChildViewObject(zoneLab)
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
