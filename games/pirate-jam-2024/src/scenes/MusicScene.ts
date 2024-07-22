@@ -11,6 +11,10 @@ export class MusicScene extends PotatoScene {
     | Phaser.Sound.NoAudioSound
     | Phaser.Sound.HTML5AudioSound
     | Phaser.Sound.WebAudioSound
+  private boardTheme:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound
   private boardThemeIntro:
     | Phaser.Sound.NoAudioSound
     | Phaser.Sound.HTML5AudioSound
@@ -30,8 +34,14 @@ export class MusicScene extends PotatoScene {
   preload() {
     if (isMusicEnabled) {
       this.load.audio(MusicRegistry.MAIN_THEME, require('url:../../assets/music/bg_draft.mp3'))
-      this.load.audio(MusicRegistry.BOARD_THEME_INTRO, require('url:../../assets/music/board_theme_intro.ogg'))
-      this.load.audio(MusicRegistry.BOARD_THEME_LOOP, require('url:../../assets/music/board_theme_loop.ogg'))
+      this.load.audio(
+        MusicRegistry.BOARD_THEME_INTRO,
+        require('url:../../assets/music/board_theme_intro.ogg'),
+      )
+      this.load.audio(
+        MusicRegistry.BOARD_THEME_LOOP,
+        require('url:../../assets/music/board_theme_loop.ogg'),
+      )
     }
   }
 
