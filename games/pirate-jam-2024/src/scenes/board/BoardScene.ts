@@ -42,7 +42,10 @@ export class BoardScene extends PotatoScene {
   private readonly cardDefinitionGenerator: CardDefinitionGenerator
   private cardDefinitions: CardDefinitions
 
+  private draggedCardView?: CardView = null
+
   private zones: { string?: ZoneView } = {}
+  private pointedZoneView?: ZoneView = null
   private eventView: EventView
   private readonly eventDefinitionGenerator: EventDefinitionGenerator
 
@@ -189,10 +192,14 @@ export class BoardScene extends PotatoScene {
 
   createZone(zoneParams: ZoneViewParams) {
     const zoneView = new ZoneView(zoneParams, (pointedZoneView: ZoneView) => {
+      this.pointedZoneView = pointedZoneView
       for (const zone in this.zones) {
         this.zones[zone].unhighlight()
       }
-      pointedZoneView.highlight()
+
+      if (this.draggedCardView) {
+        pointedZoneView.highlight()
+      }
     })
     this.addChildViewObject(zoneView)
     this.zones[zoneParams.id] = zoneView
@@ -219,12 +226,27 @@ export class BoardScene extends PotatoScene {
         model: cardModel,
         x: spawnPoint.x,
         y: spawnPoint.y,
+        onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
+        onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
       },
       {
         endTurnProcessor: this.endTurnProcessor,
       },
     )
     this.addChildViewObject(cardView)
+  }
+
+  onCardDragStart(cardView: CardView) {
+    this.draggedCardView = cardView
+    if (this.pointedZoneView) {
+      this.pointedZoneView.highlight()
+    }
+  }
+  onCardDragEnd(cardView: CardView) {
+    this.draggedCardView = null
+    if (this.pointedZoneView) {
+      this.pointedZoneView.unhighlight()
+    }
   }
 
   preload() {}

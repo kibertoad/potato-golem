@@ -29,7 +29,7 @@ export class ZoneView {
       const color = params.debugColor || Phaser.Display.Color.GetColor(255, 0, 0)
       this.debugGraphics = params.scene.add.graphics()
       this.debugGraphics.lineStyle(0, color)
-      this.debugGraphics.fillStyle(color, 0.3)
+      this.debugGraphics.fillStyle(color, 0.2)
       this.debugGraphics.fillPoints(polygon.points, true)
       this.debugGraphics.strokePoints(polygon.points, true)
       this.debugGraphics.depth = 40

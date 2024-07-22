@@ -15,6 +15,8 @@ import { ImageRegistry } from '../../../model/registries/imageRegistry'
 
 export type CardViewParams = {
   model: CardModel
+  onDragStart?: (card: CardView) => void
+  onDragEnd?: (card: CardView) => void
 } & Position
 
 export type CardViewDependencies = {
@@ -48,6 +50,8 @@ export class CardView extends Container implements IdHolder {
 
   private dragDeltaX = 0
   private dragDeltaY = 0
+
+  private dragDistanceFromCenter: Position = { x: 0, y: 0 }
 
   /**
    * Domain model of the card
@@ -129,65 +133,83 @@ export class CardView extends Container implements IdHolder {
         useHandCursor: true,
       })
       .on('dragstart', (pointer, dragX, dragY) => {
-        console.log('dragstart')
-
         this.dragDeltaX = pointer.x - this.x
         this.dragDeltaY = pointer.y - this.y
+
+        this.dragDistanceFromCenter.x = (this.x - 1280) / 1280
+        this.dragDistanceFromCenter.y = (this.y - 720) / 720
 
         scene.tweens.add({
           targets: this.cardMainSpriteContainer,
           scale: 1.1,
           duration: 200,
           ease: 'Cubic',
-         })
+        })
         scene.tweens.add({
           targets: this.cardShadowSprite,
-          x: 20,
-          y: 30,
+          x: 30 * this.dragDistanceFromCenter.x,
+          y: 50 * this.dragDistanceFromCenter.y,
+          scaleX: 1.05 + Math.abs(this.dragDistanceFromCenter.x / 3),
+          scaleY: 1.05 + Math.abs(this.dragDistanceFromCenter.y / 3),
+          alpha:
+            0.6 *
+            (1 -
+              Math.max(
+                Math.abs(this.dragDistanceFromCenter.x),
+                Math.abs(this.dragDistanceFromCenter.y),
+              )),
           duration: 200,
           ease: 'Cubic',
-         })
+        })
+        if (params.onDragStart) {
+          params.onDragStart(this)
+        }
       })
       .on('drag', (pointer, dragX, dragY) => {
         //Disable input events on the card so that it does not block pointer events for zones
         this.cardFrameSprite.input.enabled = false
         this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
+        this.dragDistanceFromCenter.x = (this.x - 1280) / 1280
+        this.dragDistanceFromCenter.y = (this.y - 720) / 720
+        this.cardShadowSprite.setPosition(
+          30 * this.dragDistanceFromCenter.x,
+          50 * this.dragDistanceFromCenter.y,
+        )
+        this.cardShadowSprite.alpha =
+          0.6 *
+          (1 -
+            Math.max(
+              Math.abs(this.dragDistanceFromCenter.x),
+              Math.abs(this.dragDistanceFromCenter.y),
+            ))
+        this.cardShadowSprite.setScale(
+          1.05 + Math.abs(this.dragDistanceFromCenter.x / 3),
+          1.05 + Math.abs(this.dragDistanceFromCenter.y / 3),
+        )
       })
       .on('drop', (pointer, target) => {
-        console.log('drop')
         //Re-enable input events to not break drag and drop
         this.cardFrameSprite.input.enabled = true
       })
       .on('dragend', (pointer, dragX, dragY, dropped) => {
-        console.log('dragend')
         scene.tweens.add({
           targets: this.cardMainSpriteContainer,
           scale: 1,
           duration: 200,
           ease: 'Cubic',
-         })
-         scene.tweens.add({
+        })
+        scene.tweens.add({
           targets: this.cardShadowSprite,
           x: 1,
           y: 2,
+          scale: 1.01,
+          alpha: 0.5,
           duration: 200,
           ease: 'Cubic',
-         })
+        })
+        if (params.onDragEnd) {
+          params.onDragEnd(this)
+        }
       })
-
-    // Build ticket drag'n'drop
-    // buildDragWithActivations({
-    //   dragStartItem: this.cardFrameSprite,
-    //   draggedItem: this,
-    //   dropActivations: {
-    //     [EntityTypeRegistry.DEFAULT]: () => {
-    //       // restoreStartPosition(this)
-    //       this.endTurnProcessor.processTurn()
-    //     },
-    //   },
-    //   config: {},
-    //   potentialHoverTargets: [],
-    //   potentialDropTargets: [],
-    // })
   }
 }
