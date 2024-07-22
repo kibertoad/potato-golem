@@ -62,7 +62,7 @@ export class CardView extends Container implements IdHolder {
     this.endTurnProcessor = dependencies.endTurnProcessor
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(params.model.definition.image)
+      .setTextureKey(ImageRegistry.CARD_FRAME)
       .setPosition({
         x: 0,
         y: 0,
@@ -73,7 +73,7 @@ export class CardView extends Container implements IdHolder {
       .build()
 
     this.cardPictureSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.HEALTH_CARD)
+      .setTextureKey(params.model.definition.image)
       .setPosition({
         x: 0,
         y: 30,

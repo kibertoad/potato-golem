@@ -4,7 +4,7 @@ import type Phaser from 'phaser'
 import { MusicRegistry } from '../model/registries/musicRegistry'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = true
+const isMusicEnabled = false
 
 export class MusicScene extends PotatoScene {
   private mainTheme:
