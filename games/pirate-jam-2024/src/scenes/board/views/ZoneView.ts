@@ -13,7 +13,9 @@ export type ZoneViewParams = {
 export class ZoneView {
   public readonly zone: Phaser.GameObjects.Zone
 
-  constructor(params: ZoneViewParams) {
+  private readonly debugGraphics?: Phaser.GameObjects.Graphics
+
+  constructor(params: ZoneViewParams, pointerOverCallback?: (pointedZoneView: ZoneView) => void) {
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)
 
@@ -21,12 +23,13 @@ export class ZoneView {
       // Draw the Polygon
       console.log('Drawing debug polygon')
       const color = params.debugColor || Phaser.Display.Color.GetColor(255, 0, 0)
-      const graphics = params.scene.add.graphics()
-      graphics.lineStyle(0, color)
-      graphics.fillStyle(color, 0.3)
-      graphics.fillPoints(polygon.points, true)
-      graphics.strokePoints(polygon.points, true)
-      graphics.depth = 51
+      this.debugGraphics = params.scene.add.graphics()
+      this.debugGraphics.lineStyle(0, color)
+      this.debugGraphics.fillStyle(color, 0.3)
+      this.debugGraphics.fillPoints(polygon.points, true)
+      this.debugGraphics.strokePoints(polygon.points, true)
+      this.debugGraphics.depth = 51
+      this.debugGraphics.visible = false
     }
 
     const vertices = params.vertices
@@ -53,8 +56,25 @@ export class ZoneView {
     zone.setOrigin(0, 0)
     zone.input.dropZone = true
 
-    zone.on('pointerover', () => console.log(params.id, 'zone was dragger over'))
+    zone.on('pointerover', () => {
+      console.log(params.id, 'zone was dragger over')
+      if (pointerOverCallback) {
+        pointerOverCallback(this)
+      }
+    })
 
     this.zone = zone
+  }
+
+  public highlight() {
+    if (this.debugGraphics) {
+      this.debugGraphics.visible = true
+    }
+  }
+
+  public unhighlight() {
+    if (this.debugGraphics) {
+      this.debugGraphics.visible = false
+    }
   }
 }

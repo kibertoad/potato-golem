@@ -24,7 +24,7 @@ import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
-import { ZoneView } from './views/ZoneView'
+import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 
 const debug = true
 
@@ -39,6 +39,8 @@ export class BoardScene extends PotatoScene {
   private readonly endTurnProcessor: EndTurnProcessor
   private readonly cardDefinitionGenerator: CardDefinitionGenerator
   private cardDefinitions: CardDefinitions
+
+  private zones: ZoneView[] = []
 
   constructor({ musicScene, cardDefinitionGenerator, worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
@@ -58,131 +60,72 @@ export class BoardScene extends PotatoScene {
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
 
-    const zoneAlchemy = new ZoneView({
+    this.createZone({
       scene: this,
       id: 'alchemy',
       name: 'alchemy',
       debug: debug,
       vertices: [
-        {
-          x: 0,
-          y: 12,
-        },
-        {
-          x: 1282,
-          y: 720,
-        },
-        {
-          x: 0,
-          y: 1440,
-        },
+        { x: 0, y: 12 },
+        { x: 1282, y: 720 },
+        { x: 0, y: 1440 },
       ],
     })
-    this.addChildViewObject(zoneAlchemy)
 
-    const zonePersonal = new ZoneView({
+    this.createZone({
       scene: this,
       id: 'personal',
       name: 'personal',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
       vertices: [
-        {
-          x: -18,
-          y: 0,
-        },
-        {
-          x: 1282,
-          y: 720,
-        },
-        {
-          x: 2560,
-          y: 0,
-        },
+        { x: -18, y: 0 },
+        { x: 1282, y: 720 },
+        { x: 2560, y: 0 },
       ],
     })
-    this.addChildViewObject(zonePersonal)
 
-    const zoneOutside = new ZoneView({
+    this.createZone({
       scene: this,
       id: 'outside',
       name: 'outside',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
       vertices: [
-        {
-          x: 2560,
-          y: 0,
-        },
-        {
-          x: 1282,
-          y: 720,
-        },
-        {
-          x: 2560,
-          y: 1440,
-        },
+        { x: 2560, y: 0 },
+        { x: 1282, y: 720 },
+        { x: 2560, y: 1440 },
       ],
     })
-    this.addChildViewObject(zoneOutside)
 
-    const zoneLab = new ZoneView({
+    this.createZone({
       scene: this,
       id: 'lab',
       name: 'lab',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
       vertices: [
-        {
-          x: 0,
-          y: 1440,
-        },
-        {
-          x: 1282,
-          y: 720,
-        },
-        {
-          x: 2560,
-          y: 1440,
-        },
+        { x: 0, y: 1440 },
+        { x: 1282, y: 720 },
+        { x: 2560, y: 1440 },
       ],
     })
-    this.addChildViewObject(zoneLab)
 
-    const zoneHomunkulus = new ZoneView({
+    this.createZone({
       scene: this,
       id: 'homunkulus',
       name: 'homunkulus',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
       vertices: [
-        {
-          x: 1088,
-          y: 835,
-        },
-        {
-          x: 1088,
-          y: 602,
-        },
-        {
-          x: 1285,
-          y: 500,
-        },
-        {
-          x: 1472,
-          y: 612,
-        },
-        {
-          x: 1472,
-          y: 855,
-        },
-        {
-          x: 1282,
-          y: 940,
-        },
+        { x: 1088, y: 835 },
+        { x: 1088, y: 602 },
+        { x: 1285, y: 500 },
+        { x: 1472, y: 612 },
+        { x: 1472, y: 855 },
+        { x: 1282, y: 940 },
       ],
     })
-    this.addChildViewObject(zoneHomunkulus)
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
@@ -190,6 +133,19 @@ export class BoardScene extends PotatoScene {
         this.destroyChildByModelId(entity.id)
       }
     })
+  }
+
+  createZone(zoneParams: ZoneViewParams) {
+    const zoneView = new ZoneView(zoneParams, (pointedZoneView: ZoneView) => {
+      for (const zone of this.zones) {
+        zone.unhighlight()
+      }
+      pointedZoneView.highlight()
+    })
+    this.addChildViewObject(zoneView)
+    this.zones.push(zoneView)
+
+    return zoneView
   }
 
   addCard(cardId: CardId, zone: Zone) {
