@@ -53,7 +53,7 @@ export class ZoneView {
     zone.setOrigin(0, 0)
     zone.input.dropZone = true
 
-    zone.on('pointerover', () => console.log('zone was dragger over'))
+    zone.on('pointerover', () => console.log(params.id, 'zone was dragger over'))
 
     this.zone = zone
   }
