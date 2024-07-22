@@ -28,7 +28,7 @@ export class ZoneView {
       this.debugGraphics.fillStyle(color, 0.3)
       this.debugGraphics.fillPoints(polygon.points, true)
       this.debugGraphics.strokePoints(polygon.points, true)
-      this.debugGraphics.depth = 51
+      this.debugGraphics.depth = 40
       this.debugGraphics.visible = false
     }
 

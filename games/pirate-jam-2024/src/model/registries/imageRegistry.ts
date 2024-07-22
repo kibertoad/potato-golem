@@ -1,7 +1,10 @@
+export type ImageId = (typeof ImageRegistry)[keyof typeof ImageRegistry]
+
 export const ImageRegistry = {
   ROCKET: 'rocket',
   BOARD_BACKGROUND: 'board_background',
   CARD_FRAME: 'card_frame',
+  GLASS_PANEL: 'glass_panel',
 
   // cards
   HEALTH_CARD: 'health_card',

@@ -1,8 +1,8 @@
 import { TargettedMultiplexActivation } from '@potato-golem/core'
-import type { CardActivation } from '../activations/CardActivation'
-import { DecomposeCardActivation, GainHealthActivation } from '../activations/commonActivations'
+import type { CardActivation } from '../activations/card/CardActivation'
+import { DecomposeCardActivation, GainHealthActivation } from '../activations/card/commonActivations'
 import type { Dependencies } from '../diConfig'
-import type { ImageRegistry } from '../registries/imageRegistry'
+import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import type { WorldModel } from '../state/WorldModel'
 
@@ -14,7 +14,7 @@ export type IdleZoneEffect = {
 export type CardDefinition = {
   id: string
   name: string
-  image: (typeof ImageRegistry)[keyof typeof ImageRegistry]
+  image: ImageId
 
   // Effect that is triggered after card staying within a zone for a while
   idleZoneEffect?: Partial<Record<Zone, IdleZoneEffect>>
