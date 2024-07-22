@@ -44,6 +44,9 @@ export class CardView extends Container implements IdHolder {
 
   id: string
 
+  private dragDeltaX: number = 0
+  private dragDeltaY: number = 0
+
   /**
    * Domain model of the card
    */
@@ -99,19 +102,41 @@ export class CardView extends Container implements IdHolder {
 
     scene.add.existing(this)
 
-    // Build ticket drag'n'drop
-    buildDragWithActivations({
-      dragStartItem: this.cardFrameSprite,
-      draggedItem: this,
-      dropActivations: {
-        [EntityTypeRegistry.DEFAULT]: () => {
-          // restoreStartPosition(this)
-          this.endTurnProcessor.processTurn()
-        },
-      },
-      config: {},
-      potentialHoverTargets: [],
-      potentialDropTargets: [],
+    this.cardFrameSprite.setInteractive({
+      draggable: true,
+      pixelPerfect: false,
+      alphaTolerance: undefined,
+      useHandCursor: true,
+    }).on('dragstart', (pointer, dragX, dragY) => {
+      this.dragDeltaX = pointer.x - this.x
+      this.dragDeltaY = pointer.y - this.y
+
+      //Disable input events on the card so that it does not block pointer events for zones
+      this.cardFrameSprite.input.enabled = false
+      console.log('dragstart')
     })
+    .on('drag', (pointer, dragX, dragY) => {
+      this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
+    })
+    .on('drop', (pointer, target) => {
+      //Re-enable input events to not break drag and drop
+      this.cardFrameSprite.input.enabled = true
+      console.log('drop')
+    })
+
+    // Build ticket drag'n'drop
+    // buildDragWithActivations({
+    //   dragStartItem: this.cardFrameSprite,
+    //   draggedItem: this,
+    //   dropActivations: {
+    //     [EntityTypeRegistry.DEFAULT]: () => {
+    //       // restoreStartPosition(this)
+    //       this.endTurnProcessor.processTurn()
+    //     },
+    //   },
+    //   config: {},
+    //   potentialHoverTargets: [],
+    //   potentialDropTargets: [],
+    // })
   }
 }
