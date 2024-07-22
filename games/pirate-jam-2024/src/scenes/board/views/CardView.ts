@@ -25,6 +25,8 @@ const textOffsetX = 35
 const textOffsetY = 5
 
 export class CardView extends Container implements IdHolder {
+  private readonly cardShadowSprite: Phaser.GameObjects.Sprite
+
   /**
    * Generic frame for the card
    */
@@ -34,6 +36,8 @@ export class CardView extends Container implements IdHolder {
    * Card-specific image for the card
    */
   private readonly cardPictureSprite: Phaser.GameObjects.Sprite
+
+  private readonly cardMainSpriteContainer: Container
 
   /**
    * Text element with the name of the card
@@ -68,35 +72,52 @@ export class CardView extends Container implements IdHolder {
     this.model = params.model
     this.endTurnProcessor = dependencies.endTurnProcessor
 
+    this.cardShadowSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.CARD_FRAME)
+      .setPosition({
+        x: 1,
+        y: 2,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardWidth)
+      .setHeight(CardView.cardHeight)
+      .build()
+    this.cardShadowSprite.setTint(0x000000)
+    this.cardShadowSprite.setAlpha(0.5)
+    this.cardShadowSprite.setScale(1.01)
+    this.add(this.cardShadowSprite)
+
     this.cardFrameSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
       .setPosition({
-        x: -CardView.cardWidth / 2,
-        y: -CardView.cardHeight / 2,
+        x: 0,
+        y: 0,
       })
-      .setOrigin(0, 0)
+      .setOrigin(0.5, 0.5)
       .setWidth(CardView.cardWidth)
       .setHeight(CardView.cardHeight)
       .build()
 
-    const cardImageRatio = CardView.cardImageWidth / CardView.cardImageHeight
-
     this.cardPictureSprite = SpriteBuilder.instance(scene)
       .setTextureKey(params.model.definition.image)
       .setPosition({
-        x: 22 - CardView.cardWidth / 2,
-        y: 11 - CardView.cardHeight / 2,
+        x: 0,
+        y: 0,
       })
-      .setOrigin(0, 0)
-      .setWidth(250 * cardImageRatio)
-      .setHeight(250)
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardImageWidth)
+      .setHeight(CardView.cardImageHeight)
       .build()
+    this.cardPictureSprite.setScale((CardView.cardHeight - 20) / CardView.cardImageHeight)
+
+    this.cardMainSpriteContainer = new Container(scene)
+    this.cardMainSpriteContainer.add(this.cardFrameSprite)
+    this.cardMainSpriteContainer.add(this.cardPictureSprite)
+
+    this.add(this.cardMainSpriteContainer)
 
     setEntityType(this.cardFrameSprite, EntityTypeRegistry.CARD)
     setEntityModel(this.cardFrameSprite, this.model)
-
-    this.add(this.cardFrameSprite)
-    this.add(this.cardPictureSprite)
 
     scene.add.existing(this)
 
@@ -114,8 +135,15 @@ export class CardView extends Container implements IdHolder {
         this.dragDeltaY = pointer.y - this.y
 
         scene.tweens.add({
-          targets: this,
+          targets: this.cardMainSpriteContainer,
           scale: 1.1,
+          duration: 200,
+          ease: 'Cubic',
+         })
+        scene.tweens.add({
+          targets: this.cardShadowSprite,
+          x: 20,
+          y: 30,
           duration: 200,
           ease: 'Cubic',
          })
@@ -133,8 +161,15 @@ export class CardView extends Container implements IdHolder {
       .on('dragend', (pointer, dragX, dragY, dropped) => {
         console.log('dragend')
         scene.tweens.add({
-          targets: this,
+          targets: this.cardMainSpriteContainer,
           scale: 1,
+          duration: 200,
+          ease: 'Cubic',
+         })
+         scene.tweens.add({
+          targets: this.cardShadowSprite,
+          x: 1,
+          y: 2,
           duration: 200,
           ease: 'Cubic',
          })

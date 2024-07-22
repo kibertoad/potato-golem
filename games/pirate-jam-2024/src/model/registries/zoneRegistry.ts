@@ -6,5 +6,5 @@ export const zoneRegistry = {
   laboratory: 'lab',
   home: 'home',
   streets: 'streets',
-  crosses: 'crosses',
+  alchemy: 'alchemy',
 } as const
