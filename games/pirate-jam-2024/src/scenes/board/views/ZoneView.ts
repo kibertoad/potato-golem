@@ -1,4 +1,4 @@
-import { type Destroyable, type IdHolder, generateUuid } from '@potato-golem/core'
+import type { Destroyable, IdHolder } from '@potato-golem/core'
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
@@ -15,14 +15,14 @@ export type ZoneViewParams = {
 }
 
 export class ZoneView implements IdHolder, Destroyable {
-  id: string
+  id: Zone
   public readonly zone: Phaser.GameObjects.Zone
   public readonly spawnPoints: Position[]
 
   private readonly debugGraphics?: Phaser.GameObjects.Graphics
 
   constructor(params: ZoneViewParams, pointerOverCallback?: (pointedZoneView: ZoneView) => void) {
-    this.id = generateUuid()
+    this.id = params.id
 
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)

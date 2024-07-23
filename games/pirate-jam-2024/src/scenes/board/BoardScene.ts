@@ -31,6 +31,7 @@ import type { EVENT_EVENTS, SpawnCardMessage } from '../../model/activations/eve
 
 export type BoardSupportedEvents = typeof EVENT_EVENTS.SPAWN_CARD
 import { DepthRegistry } from '../../model/registries/depthRegistry'
+import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 
 const debug = true
@@ -49,6 +50,7 @@ export class BoardScene extends PotatoScene {
 
   private draggedCardView?: CardView = null
   private cards: CardView[] = []
+  private homunculus: HomunculusView
 
   private zones: { string?: ZoneView } = {}
   private pointedZoneView?: ZoneView = null
@@ -88,6 +90,7 @@ export class BoardScene extends PotatoScene {
       eventDefinitionGenerator: this.eventDefinitionGenerator,
       boardEventSink: this.eventSink,
     })
+    this.homunculus = new HomunculusView(this, { model: this.worldModel.homunculusModel })
 
     this.initZones()
 
@@ -214,6 +217,7 @@ export class BoardScene extends PotatoScene {
         this.zones[zone].unhighlight()
       }
 
+      // we get here in case we dragged card over a zone
       if (this.draggedCardView) {
         pointedZoneView.highlight()
       }
@@ -278,7 +282,16 @@ export class BoardScene extends PotatoScene {
   }
   onCardDragEnd(cardView: CardView) {
     this.draggedCardView = null
+
+    // we get here if we dropped card into a zone
     if (this.pointedZoneView) {
+      cardView.model.changeZone(this.pointedZoneView.id)
+
+      // Every time we feed a homunculus, a day passes
+      if (this.pointedZoneView.id === 'homunculus') {
+        this.endTurnProcessor.processTurn()
+      }
+
       this.pointedZoneView.unhighlight()
     }
   }

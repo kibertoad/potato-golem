@@ -58,7 +58,7 @@ export class CardView extends Container implements IdHolder {
   /**
    * Domain model of the card
    */
-  private readonly model: CardModel
+  readonly model: CardModel
   private readonly endTurnProcessor: EndTurnProcessor
 
   public static readonly cardWidth: number = 230
