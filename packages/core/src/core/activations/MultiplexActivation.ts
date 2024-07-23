@@ -4,22 +4,23 @@ import type { Activation, ActivationCallback } from './Activation'
  * Activation which invokes other activations in bulk
  */
 export class MultiplexActivation implements Activation {
-  private readonly activations: ActivationCallback[]
+  private readonly activations: Activation[]
 
-  private constructor(activations: ActivationCallback[]) {
+  constructor(activations: Activation[]) {
     this.activations = activations
   }
 
   activate() {
     for (const activation of this.activations) {
-      activation()
+      activation.activate()
     }
   }
 
-  public static build(activations: ActivationCallback[]): ActivationCallback {
-    const activation = new MultiplexActivation(activations)
+  public static buildCallback(activations: ActivationCallback[]): ActivationCallback {
     return () => {
-      activation.activate()
+      for (const activation of activations) {
+        activation()
+      }
     }
   }
 }

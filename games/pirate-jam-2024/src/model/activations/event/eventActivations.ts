@@ -1,6 +1,5 @@
-import type { EventSink, TargettedActivation } from '@potato-golem/core'
+import type { Activation, EventSink } from '@potato-golem/core'
 import type { CardId } from '../../definitions/cardDefinitions'
-import type { EventDefinition } from '../../definitions/eventDefinitions'
 import type { Zone } from '../../registries/zoneRegistry'
 
 export type EventEventId = (typeof EVENT_EVENTS)[keyof typeof EVENT_EVENTS]
@@ -15,17 +14,17 @@ export const EVENT_EVENTS = {
   SPAWN_CARD: 'spawn_card',
 } as const
 
-export abstract class EventActivation implements TargettedActivation<EventDefinition> {
+export abstract class EventActivation implements Activation {
   protected readonly eventSink: EventSink<EventEventId>
   constructor(worldEventSink: EventSink<EventEventId>) {
     this.eventSink = worldEventSink
   }
 
-  abstract activate(event: EventDefinition)
+  abstract activate()
 }
 
 export class ConcludeEventActivation extends EventActivation {
-  activate(_event: EventDefinition) {
+  override activate() {
     this.eventSink.emit('conclude_event', null)
   }
 }

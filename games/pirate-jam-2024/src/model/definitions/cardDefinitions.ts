@@ -2,8 +2,11 @@ import { TargettedMultiplexActivation } from '@potato-golem/core'
 import type { CardActivation } from '../activations/card/CardActivation'
 import {
   DecomposeCardActivation,
+  FeedActivation,
+  GainConscienceActivation,
+  GainHatredActivation,
   GainHealthActivation,
-} from '../activations/card/commonActivations'
+} from '../activations/card/cardActivations'
 import type { Dependencies } from '../diConfig'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
@@ -38,6 +41,38 @@ export class CardDefinitionGenerator {
 
   generateDefinitions() {
     return {
+      HUMILITY: {
+        id: 'HUMILITY',
+        name: 'Humility',
+        image: 'health_card',
+        idleZoneEffect: {
+          homunculus: {
+            timeTillTrigger: 1,
+            effect: new TargettedMultiplexActivation([
+              new GainConscienceActivation(this.worldModel.homunculusModel, 1),
+              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new DecomposeCardActivation(),
+            ]),
+          },
+        },
+      },
+
+      ANGER: {
+        id: 'ANGER',
+        name: 'Anger',
+        image: 'health_card',
+        idleZoneEffect: {
+          homunculus: {
+            timeTillTrigger: 1,
+            effect: new TargettedMultiplexActivation([
+              new GainHatredActivation(this.worldModel.homunculusModel, 1),
+              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new DecomposeCardActivation(),
+            ]),
+          },
+        },
+      },
+
       HEALTH: {
         id: 'HEALTH',
         name: 'Health',
@@ -47,6 +82,7 @@ export class CardDefinitionGenerator {
             timeTillTrigger: 1,
             effect: new TargettedMultiplexActivation([
               new GainHealthActivation(this.worldModel.homunculusModel, 1),
+              new FeedActivation(this.worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
             ]),
           },

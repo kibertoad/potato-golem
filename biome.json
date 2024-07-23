@@ -9,6 +9,9 @@
           "performance": {
             "noBarrelFile": "off"
           },
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
           "complexity": {
             "useOptionalChain": "off"
           },

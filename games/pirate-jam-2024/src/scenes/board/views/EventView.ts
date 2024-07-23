@@ -151,7 +151,7 @@ export class EventView extends Container {
     for (const option of this.currentEvent.options) {
       const optionButton = this.buttonList.addButton(option.text, () => {
         console.log('clickety click')
-        option.effect.activate(this.currentEvent)
+        option.effect.activate()
       })
     }
   }
