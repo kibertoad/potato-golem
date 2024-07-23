@@ -5,11 +5,13 @@ import {
   type Position,
   type PotatoScene,
   SpriteBuilder,
+  TextBuilder,
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
 import type { CardModel } from '../../../model/entities/CardModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
+import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 
@@ -75,6 +77,17 @@ export class CardView extends Container implements IdHolder {
     this.model = params.model
     this.endTurnProcessor = dependencies.endTurnProcessor
 
+    this.title = TextBuilder.instance(scene)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setOrigin(0, 0)
+      .setText(params.model.name)
+      .setDisplaySize(15, 15)
+      .build()
+      .value.setDepth(DepthRegistry.CARD_MIN)
+
     this.cardShadowSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
       .setPosition({
@@ -116,6 +129,7 @@ export class CardView extends Container implements IdHolder {
     this.cardMainSpriteContainer = new Container(scene)
     this.cardMainSpriteContainer.add(this.cardFrameSprite)
     this.cardMainSpriteContainer.add(this.cardPictureSprite)
+    this.cardMainSpriteContainer.add(this.title)
 
     this.add(this.cardMainSpriteContainer)
 
