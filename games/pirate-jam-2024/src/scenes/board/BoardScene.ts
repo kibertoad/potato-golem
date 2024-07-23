@@ -29,7 +29,11 @@ import { EventView } from './views/EventView'
 import EventEmitter = Phaser.Events.EventEmitter
 import type { EVENT_EVENTS, SpawnCardMessage } from '../../model/activations/event/eventActivations'
 
-export type BoardSupportedEvents = typeof EVENT_EVENTS.SPAWN_CARD
+export type BoardSupportedEvents =
+  | typeof EVENT_EVENTS.SPAWN_CARD
+  | 'CARD_HOVERED'
+  | 'CARD_DRAGGED_OVER_CARD'
+  | 'ZONE_HOVERED_OVER'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
@@ -53,7 +57,10 @@ export class BoardScene extends PotatoScene {
   private homunculus: HomunculusView
 
   private zones: { string?: ZoneView } = {}
-  private pointedZoneView?: ZoneView = null
+
+  private pointedZoneView?: ZoneView
+  private pointedCardView?: CardView
+
   private eventView: EventView
   private readonly eventDefinitionGenerator: EventDefinitionGenerator
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
@@ -81,6 +88,23 @@ export class BoardScene extends PotatoScene {
   private registerListeners() {
     this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
       this.addCard(event.cardId, event.zone)
+    })
+
+    this.eventSink.on('CARD_HOVERED', (card: CardView) => {
+      this.pointedCardView = card
+    })
+
+    this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
+      this.pointedZoneView = zone
+
+      for (const zone in this.zones) {
+        this.zones[zone].unhighlight()
+      }
+
+      // we get here in case we dragged card over a zone
+      if (this.draggedCardView) {
+        this.pointedZoneView.highlight()
+      }
     })
   }
 
@@ -211,17 +235,7 @@ export class BoardScene extends PotatoScene {
   }
 
   createZone(zoneParams: ZoneViewParams) {
-    const zoneView = new ZoneView(zoneParams, (pointedZoneView: ZoneView) => {
-      this.pointedZoneView = pointedZoneView
-      for (const zone in this.zones) {
-        this.zones[zone].unhighlight()
-      }
-
-      // we get here in case we dragged card over a zone
-      if (this.draggedCardView) {
-        pointedZoneView.highlight()
-      }
-    })
+    const zoneView = new ZoneView(zoneParams, { boardEventSink: this.eventSink })
     this.addChildViewObject(zoneView)
     this.zones[zoneParams.id] = zoneView
 
@@ -266,6 +280,7 @@ export class BoardScene extends PotatoScene {
       },
       {
         endTurnProcessor: this.endTurnProcessor,
+        boardEventSink: this.eventSink,
       },
     )
     cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length)
@@ -293,6 +308,12 @@ export class BoardScene extends PotatoScene {
       }
 
       this.pointedZoneView.unhighlight()
+    }
+
+    if (this.pointedCardView) {
+      console.log(
+        `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
+      )
     }
   }
 

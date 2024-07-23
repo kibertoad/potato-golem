@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
-import type { IdHolder } from '@potato-golem/core'
+import type { EventSink, IdHolder } from '@potato-golem/core'
 import {
   type Position,
   type PotatoScene,
@@ -14,6 +14,7 @@ import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcesso
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import type { BoardSupportedEvents } from '../BoardScene'
 
 export type CardViewParams = {
   model: CardModel
@@ -23,6 +24,7 @@ export type CardViewParams = {
 
 export type CardViewDependencies = {
   endTurnProcessor: EndTurnProcessor
+  boardEventSink: EventSink<BoardSupportedEvents>
 }
 
 const textOffsetX = 35
@@ -66,6 +68,7 @@ export class CardView extends Container implements IdHolder {
 
   public static readonly cardImageWidth: number = 480
   public static readonly cardImageHeight: number = 640
+  private readonly boardEventSink: EventSink<BoardSupportedEvents>
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
@@ -76,6 +79,7 @@ export class CardView extends Container implements IdHolder {
 
     this.model = params.model
     this.endTurnProcessor = dependencies.endTurnProcessor
+    this.boardEventSink = dependencies.boardEventSink
 
     this.title = TextBuilder.instance(scene)
       .setPosition({
@@ -223,6 +227,10 @@ export class CardView extends Container implements IdHolder {
         if (params.onDragEnd) {
           params.onDragEnd(this)
         }
+      })
+      .on('pointerover', () => {
+        console.log(this.model.id, 'card was hovered over')
+        this.boardEventSink.emit('CARD_HOVERED', this)
       })
   }
 }

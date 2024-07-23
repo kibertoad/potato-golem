@@ -1,8 +1,9 @@
-import type { Destroyable, IdHolder } from '@potato-golem/core'
+import type { Destroyable, EventSink, IdHolder } from '@potato-golem/core'
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import type { Zone } from '../../../model/registries/zoneRegistry'
+import type { BoardSupportedEvents } from '../BoardScene'
 
 export type ZoneViewParams = {
   scene: PotatoScene
@@ -14,15 +15,21 @@ export type ZoneViewParams = {
   debugColor?: number
 }
 
+export type ZoneDependencies = {
+  boardEventSink: EventSink<BoardSupportedEvents>
+}
+
 export class ZoneView implements IdHolder, Destroyable {
   id: Zone
   public readonly zone: Phaser.GameObjects.Zone
   public readonly spawnPoints: Position[]
 
   private readonly debugGraphics?: Phaser.GameObjects.Graphics
+  private readonly boardEventSink: EventSink<BoardSupportedEvents>
 
-  constructor(params: ZoneViewParams, pointerOverCallback?: (pointedZoneView: ZoneView) => void) {
+  constructor(params: ZoneViewParams, dependencies: ZoneDependencies) {
     this.id = params.id
+    this.boardEventSink = dependencies.boardEventSink
 
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)
@@ -66,10 +73,8 @@ export class ZoneView implements IdHolder, Destroyable {
     zone.input.dropZone = true
 
     zone.on('pointerover', () => {
-      console.log(params.id, 'zone was dragger over')
-      if (pointerOverCallback) {
-        pointerOverCallback(this)
-      }
+      console.log(params.id, 'zone was hovered over')
+      this.boardEventSink.emit('ZONE_HOVERED_OVER', this)
     })
 
     this.zone = zone
