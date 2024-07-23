@@ -1,6 +1,7 @@
 import { type Destroyable, type IdHolder, generateUuid } from '@potato-golem/core'
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
+import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import type { Zone } from '../../../model/registries/zoneRegistry'
 
 export type ZoneViewParams = {
@@ -36,7 +37,7 @@ export class ZoneView implements IdHolder, Destroyable {
       this.debugGraphics.fillStyle(color, 0.2)
       this.debugGraphics.fillPoints(polygon.points, true)
       this.debugGraphics.strokePoints(polygon.points, true)
-      this.debugGraphics.depth = 40
+      this.debugGraphics.depth = DepthRegistry.ZONE_HIGHLIGHT
       this.debugGraphics.visible = false
     }
 

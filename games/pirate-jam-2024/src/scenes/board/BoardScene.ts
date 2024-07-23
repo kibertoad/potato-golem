@@ -30,6 +30,7 @@ import EventEmitter = Phaser.Events.EventEmitter
 import type { EVENT_EVENTS, SpawnCardMessage } from '../../model/activations/event/eventActivations'
 
 export type BoardSupportedEvents = typeof EVENT_EVENTS.SPAWN_CARD
+import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 
 const debug = true
@@ -47,6 +48,7 @@ export class BoardScene extends PotatoScene {
   private cardDefinitions: CardDefinitions
 
   private draggedCardView?: CardView = null
+  private cards: CardView[] = []
 
   private zones: { string?: ZoneView } = {}
   private pointedZoneView?: ZoneView = null
@@ -222,6 +224,20 @@ export class BoardScene extends PotatoScene {
     return zoneView
   }
 
+  moveCardToTop(cardView: CardView) {
+    this.cards.sort((a, b) => a.depth - b.depth)
+
+    //set depth of all cards and make sure that cardView is on top
+    let depthCounter = 0
+    this.cards.forEach((existingCardView, index) => {
+      if (existingCardView === cardView) {
+        return
+      }
+      existingCardView.setDepth(DepthRegistry.CARD_MIN + depthCounter++)
+    })
+    cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length - 1)
+  }
+
   addCard(cardId: CardId, zone: Zone) {
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
@@ -248,6 +264,8 @@ export class BoardScene extends PotatoScene {
         endTurnProcessor: this.endTurnProcessor,
       },
     )
+    cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length)
+    this.cards.push(cardView)
     this.addChildViewObject(cardView)
   }
 
@@ -256,6 +274,7 @@ export class BoardScene extends PotatoScene {
     if (this.pointedZoneView) {
       this.pointedZoneView.highlight()
     }
+    this.moveCardToTop(cardView)
   }
   onCardDragEnd(cardView: CardView) {
     this.draggedCardView = null
@@ -280,7 +299,7 @@ export class BoardScene extends PotatoScene {
         x: 0,
         y: 0,
       })
-      .setDepth(30)
+      .setDepth(DepthRegistry.BOARD_BACKGROUND)
       .setDimensions({
         width: 2560,
         height: 1440,

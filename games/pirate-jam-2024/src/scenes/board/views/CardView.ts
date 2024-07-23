@@ -71,7 +71,6 @@ export class CardView extends Container implements IdHolder {
     this.id = params.model.id
     this.x = params.x
     this.y = params.y
-    this.setDepth(100)
 
     this.model = params.model
     this.endTurnProcessor = dependencies.endTurnProcessor
