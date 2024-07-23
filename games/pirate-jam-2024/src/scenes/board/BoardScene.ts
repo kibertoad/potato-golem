@@ -109,7 +109,7 @@ export class BoardScene extends PotatoScene {
   initZones() {
     this.createZone({
       scene: this,
-      id: 'lab',
+      id: 'alchemy',
       name: 'alchemy',
       debug: debug,
       spawnPoints: [
