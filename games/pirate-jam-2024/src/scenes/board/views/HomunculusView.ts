@@ -24,8 +24,8 @@ export class HomunculusView extends Container {
     this.homunculusSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.HOMUNCULUS)
       .setPosition({
-        x: 1250,
-        y: 670,
+        x: 1265,
+        y: 672,
       })
       .setOrigin(0.5, 0.5)
       .setWidth(350)
