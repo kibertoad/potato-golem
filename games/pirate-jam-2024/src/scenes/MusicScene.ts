@@ -2,6 +2,7 @@ import { PotatoScene } from '@potato-golem/ui'
 import type Phaser from 'phaser'
 
 import { MusicRegistry } from '../model/registries/musicRegistry'
+import { SfxRegistry } from '../model/registries/sfxRegistry'
 import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = false
@@ -43,6 +44,10 @@ export class MusicScene extends PotatoScene {
         require('url:../../assets/music/board_theme_loop.ogg'),
       )
     }
+
+    this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
+    this.load.audio(SfxRegistry.BITE_2, require('url:../../assets/sfx/bite_2.mp3'))
+    this.load.audio(SfxRegistry.BITE_3, require('url:../../assets/sfx/bite_3.mp3'))
   }
 
   create() {

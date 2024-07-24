@@ -14,6 +14,7 @@ import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcesso
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import { SfxRegistry } from '../../../model/registries/sfxRegistry'
 import { delay } from '../../../utils/timeUtils'
 import type { BoardSupportedEvents } from '../BoardScene'
 
@@ -285,6 +286,7 @@ export class CardView extends Container implements IdHolder {
     let mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatMaskImage)
     let shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatShadowMaskImage)
 
+    this.scene.sound.play(SfxRegistry.BITE_1)
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
@@ -293,9 +295,11 @@ export class CardView extends Container implements IdHolder {
     mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2MaskImage)
     shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2ShadowMaskImage)
 
+    this.scene.sound.play(SfxRegistry.BITE_3)
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
     await delay(300)
+    this.scene.sound.play(SfxRegistry.BITE_2)
   }
 }
