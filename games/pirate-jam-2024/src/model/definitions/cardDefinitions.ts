@@ -1,4 +1,5 @@
 import { DescribedTargettedMultipleActivation, type EventSink } from '@potato-golem/core'
+import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   DecomposeCardActivation,
   FeedActivation,
@@ -6,14 +7,12 @@ import {
   GainHatredActivation,
   GainHealthActivation,
 } from '../activations/card/cardActivations'
+import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { Dependencies } from '../diConfig'
 import type { CardModel } from '../entities/CardModel'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import type { WorldModel } from '../state/WorldModel'
-import { SpawnCardActivation } from '../activations/event/extraEventActivations'
-import type { EventEventId } from '../activations/event/eventActivations'
-import { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -113,11 +112,11 @@ export class CardDefinitionGenerator {
           BUNSEN_BURNER: new DescribedTargettedMultipleActivation<CardModel>([
             new SpawnCardActivation(eventSink, {
               cardId: 'POISON',
-              zone: 'alchemy'
+              zone: 'alchemy',
             }),
-            new DecomposeCardActivation()
-          ])
-        }
+            new DecomposeCardActivation(),
+          ]),
+        },
       },
 
       ALEMBIC: {
@@ -129,7 +128,6 @@ export class CardDefinitionGenerator {
         id: 'BUNSEN_BURNER',
         name: 'Bunsen burner',
       },
-
 
       HEALTH: {
         id: 'HEALTH',

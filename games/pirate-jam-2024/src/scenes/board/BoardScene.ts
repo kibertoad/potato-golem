@@ -34,6 +34,7 @@ export type BoardSupportedEvents =
   | 'CARD_HOVERED'
   | 'CARD_DRAGGED_OVER_CARD'
   | 'ZONE_HOVERED_OVER'
+import { zones } from '../../model/definitions/zoneDefinitions'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
@@ -142,155 +143,11 @@ export class BoardScene extends PotatoScene {
   }
 
   initZones() {
-    this.createZone({
-      scene: this,
-      id: 'alchemy',
-      name: 'alchemy',
-      debug: debug,
-      stackDirection: 'right',
-      spawnPoints: [
-        {
-          x: 150 + 300 * 2,
-          y: 340 + 390,
-        },
-      ],
-      vertices: [
-        { x: 0, y: 12 },
-        { x: 1282, y: 720 },
-        { x: 0, y: 1440 },
-      ],
-    })
-
-    this.createZone({
-      scene: this,
-      id: 'home',
-      name: 'home',
-      debug: debug,
-      debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
-      stackDirection: 'down',
-      spawnPoints: [
-        {
-          x: 680,
-          y: 170,
-        },
-        {
-          x: 680 + 300,
-          y: 170,
-        },
-        {
-          x: 680 + 300 * 2,
-          y: 170,
-        },
-        {
-          x: 680 + 300 * 3,
-          y: 170,
-        },
-        {
-          x: 680 + 300 * 4,
-          y: 170,
-        },
-      ],
-      vertices: [
-        { x: -18, y: 0 },
-        { x: 1282, y: 720 },
-        { x: 2560, y: 0 },
-      ],
-    })
-
-    this.createZone({
-      scene: this,
-      id: 'streets',
-      name: 'streets',
-      debug: debug,
-      debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
-      stackDirection: 'left',
-      spawnPoints: [
-        {
-          x: 2410,
-          y: 340,
-        },
-        {
-          x: 2410,
-          y: 340 + 390,
-        },
-        {
-          x: 2410,
-          y: 340 + 390 * 2,
-        },
-      ],
-      vertices: [
-        { x: 2560, y: 0 },
-        { x: 1282, y: 720 },
-        { x: 2560, y: 1440 },
-      ],
-    })
-
-    this.createZone({
-      scene: this,
-      id: 'lab',
-      name: 'lab',
-      debug: debug,
-      debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
-      stackDirection: 'up',
-      spawnPoints: [
-        {
-          x: 680,
-          y: 1275,
-        },
-        {
-          x: 680 + 300,
-          y: 1275,
-        },
-        {
-          x: 680 + 300 * 2,
-          y: 1275,
-        },
-        {
-          x: 680 + 300 * 3,
-          y: 1275,
-        },
-        {
-          x: 680 + 300 * 4,
-          y: 1275,
-        },
-      ],
-      vertices: [
-        { x: 0, y: 1440 },
-        { x: 1282, y: 720 },
-        { x: 2560, y: 1440 },
-      ],
-    })
-
-    this.createZone({
-      scene: this,
-      id: 'homunculus',
-      name: 'homunculus',
-      debug: debug,
-      debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
-      stackDirection: 'left',
-      spawnPoints: [
-        {
-          x: 150,
-          y: 340,
-        },
-        {
-          x: 150,
-          y: 340 + 390,
-        },
-        {
-          x: 150,
-          y: 340 + 390 * 2,
-        },
-      ],
-      vertices: [
-        { x: 1088, y: 835 },
-        { x: 1088, y: 602 },
-        { x: 1285, y: 500 },
-        { x: 1472, y: 612 },
-        { x: 1472, y: 855 },
-        { x: 1282, y: 940 },
-      ],
-    })
+    this.createZone(zones.alchemy)
+    this.createZone(zones.home)
+    this.createZone(zones.streets)
+    this.createZone(zones.lab)
+    this.createZone(zones.homunculus)
   }
 
   createZone(zoneParams: ZoneViewParams) {
