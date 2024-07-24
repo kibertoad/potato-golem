@@ -42,7 +42,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   }
 
   changeZone(zone: Zone): boolean {
-    if (!(zone in this.definition.idleZoneEffect)) {
+    if (!this.definition.idleZoneEffect || !(zone in this.definition.idleZoneEffect)) {
       return false
     }
 
