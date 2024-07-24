@@ -57,7 +57,7 @@ export class CardEffectView extends Container {
   showCardZoneEffect(cardView: CardView, zoneView: ZoneView) {
     let resolvedText = 'No effect'
 
-    const idleZoneEffect = cardView.model.definition.idleZoneEffect[zoneView.id]
+    const idleZoneEffect = cardView.model.definition.idleZoneEffect?.[zoneView.id]
     if (idleZoneEffect) {
       resolvedText = `In ${idleZoneEffect.timeTillTrigger} ${idleZoneEffect.timeTillTrigger === 1 ? 'turn' : 'turns'} \n ${idleZoneEffect.effect.getDescriptions().join(' \n')}`
     }
