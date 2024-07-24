@@ -143,11 +143,11 @@ export class BoardScene extends PotatoScene {
   }
 
   initZones() {
-    this.createZone(zones.alchemy)
-    this.createZone(zones.home)
-    this.createZone(zones.streets)
-    this.createZone(zones.lab)
-    this.createZone(zones.homunculus)
+    this.createZone({ ...zones.alchemy, scene: this, debug })
+    this.createZone({ ...zones.home, scene: this, debug })
+    this.createZone({ ...zones.streets, scene: this, debug })
+    this.createZone({ ...zones.lab, scene: this, debug })
+    this.createZone({ ...zones.homunculus, scene: this, debug })
   }
 
   createZone(zoneParams: ZoneViewParams) {

@@ -2,9 +2,8 @@ import Phaser from 'phaser'
 import type { ZoneViewParams } from '../../scenes/board/views/ZoneView'
 import type { Zone } from '../registries/zoneRegistry'
 
-export const zones: Record<Exclude<Zone, 'any'>, ZoneViewParams> = {
+export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> = {
   streets: {
-    scene: this,
     id: 'streets',
     name: 'streets',
     //    debug: debug,
@@ -32,7 +31,6 @@ export const zones: Record<Exclude<Zone, 'any'>, ZoneViewParams> = {
   },
 
   lab: {
-    scene: this,
     id: 'lab',
     name: 'lab',
     //    debug: debug,
@@ -67,7 +65,6 @@ export const zones: Record<Exclude<Zone, 'any'>, ZoneViewParams> = {
     ],
   },
   homunculus: {
-    scene: this,
     id: 'homunculus',
     name: 'homunculus',
     //    debug: debug,
@@ -98,7 +95,6 @@ export const zones: Record<Exclude<Zone, 'any'>, ZoneViewParams> = {
   },
 
   home: {
-    scene: this,
     id: 'home',
     name: 'home',
     //    debug: debug,
@@ -134,7 +130,6 @@ export const zones: Record<Exclude<Zone, 'any'>, ZoneViewParams> = {
   },
 
   alchemy: {
-    scene: this,
     id: 'alchemy',
     name: 'alchemy',
     //    debug: debug,
