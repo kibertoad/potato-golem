@@ -10,6 +10,10 @@ export class DecomposeCardActivation implements CardActivation {
     await targetCard.view.playEatAnimation()
     targetCard.destroy()
   }
+
+  getDescription(): string {
+    return 'Remove card'
+  }
 }
 
 export class GainHealthActivation implements Activation {
@@ -23,6 +27,10 @@ export class GainHealthActivation implements Activation {
 
   activate() {
     this.target.eventSink.emit('HEAL', this.amount)
+  }
+
+  getDescription(): string {
+    return `Gain ${this.amount} health`
   }
 }
 
@@ -38,6 +46,10 @@ export class GainConscienceActivation implements Activation {
   activate() {
     this.target.eventSink.emit('GAIN_CONSCIENCE', this.amount)
   }
+
+  getDescription(): string {
+    return `Homunculus gets ${this.amount} conscience`
+  }
 }
 
 export class GainHatredActivation implements Activation {
@@ -52,6 +64,10 @@ export class GainHatredActivation implements Activation {
   activate() {
     this.target.eventSink.emit('GAIN_HATRED', this.amount)
   }
+
+  getDescription(): string {
+    return `Homunculus gets ${this.amount} hatred`
+  }
 }
 
 export class FeedActivation implements Activation {
@@ -65,5 +81,9 @@ export class FeedActivation implements Activation {
 
   activate() {
     this.target.eventSink.emit('FEED', this.amount)
+  }
+
+  getDescription(): string {
+    return `Homunculus gets ${this.amount} satiation`
   }
 }

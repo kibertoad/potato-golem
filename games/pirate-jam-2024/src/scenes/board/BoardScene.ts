@@ -35,6 +35,7 @@ export type BoardSupportedEvents =
   | 'CARD_DRAGGED_OVER_CARD'
   | 'ZONE_HOVERED_OVER'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
+import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 
@@ -55,13 +56,13 @@ export class BoardScene extends PotatoScene {
   private draggedCardView?: CardView = null
   private cards: CardView[] = []
   private homunculus: HomunculusView
-
+  private eventView: EventView
+  private cardEffectView: CardEffectView
   private zones: { string?: ZoneView } = {}
 
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
 
-  private eventView: EventView
   private readonly eventDefinitionGenerator: EventDefinitionGenerator
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
@@ -103,6 +104,8 @@ export class BoardScene extends PotatoScene {
 
       // we get here in case we dragged card over a zone
       if (this.draggedCardView) {
+        this.cardEffectView.showCardZoneEffect(this.draggedCardView, zone)
+
         this.pointedZoneView.highlight()
       }
     })
@@ -115,6 +118,9 @@ export class BoardScene extends PotatoScene {
       boardEventSink: this.eventSink,
     })
     this.homunculus = new HomunculusView(this, { model: this.worldModel.homunculusModel })
+    this.cardEffectView = new CardEffectView(this, {
+      cardDefinitions: this.cardDefinitions,
+    })
 
     this.initZones()
 
@@ -290,6 +296,7 @@ export class BoardScene extends PotatoScene {
 
   onCardDragStart(cardView: CardView) {
     this.draggedCardView = cardView
+    this.cardEffectView.show()
     if (this.pointedZoneView) {
       this.pointedZoneView.highlight()
     }
@@ -297,6 +304,7 @@ export class BoardScene extends PotatoScene {
   }
   onCardDragEnd(cardView: CardView) {
     this.draggedCardView = null
+    this.cardEffectView.hide()
 
     // we get here if we dropped card into a zone
     if (this.pointedZoneView) {

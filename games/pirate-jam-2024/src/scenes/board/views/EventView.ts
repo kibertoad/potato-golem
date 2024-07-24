@@ -17,6 +17,7 @@ import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
+import { DepthRegistry } from '../../../model/registries/depthRegistry'
 
 export type EventViewDependencies = {
   worldModel: WorldModel
@@ -76,7 +77,7 @@ export class EventView extends Container {
         x: 100,
         y: 100,
       })
-      .setDepth(100)
+      .setDepth(DepthRegistry.EVENT_BACKGROUND)
       .setDimensions({
         width: 1560,
         height: 740,

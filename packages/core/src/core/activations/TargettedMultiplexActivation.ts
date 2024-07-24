@@ -4,7 +4,7 @@ import { AVERAGE_PRIORITY, type TargettedActivation, type TargettedActivationCal
  * Activation with a single target, which invokes other activations in bulk
  */
 export class TargettedMultiplexActivation<Target> implements TargettedActivation<Target> {
-  private readonly activations: TargettedActivation<Target>[]
+  protected readonly activations: TargettedActivation<Target>[]
   public priority: number
 
   constructor(activations: TargettedActivation<Target>[], priority?: number) {

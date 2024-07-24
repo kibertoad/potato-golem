@@ -1,5 +1,5 @@
 import { LimitedNumber } from '../primitives/LimitedNumber'
-import { EventSink } from '../messages/EventBus'
+import type { EventSink } from '../messages/EventBus'
 
 export interface IdHolder {
   id: string
@@ -7,6 +7,14 @@ export interface IdHolder {
 
 export interface HPHolder {
   hp: LimitedNumber
+}
+
+export interface DynamicDescriptionHolder {
+  getDescription(): string
+}
+
+export interface DynamicDescriptionsHolder {
+  getDescriptions(): string[]
 }
 
 export interface EventReceiver<T extends string = string> {

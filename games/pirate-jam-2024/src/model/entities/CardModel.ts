@@ -1,4 +1,5 @@
 import {
+  type DescribedTargettedMultipleActivation,
   type EventSink,
   type TurnProcessor,
   generateUuid,
@@ -6,7 +7,6 @@ import {
 } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
 import type { CardView } from '../../scenes/board/views/CardView'
-import type { CardActivation } from '../activations/card/CardActivation'
 import type { CardDefinition } from '../definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
@@ -42,7 +42,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   }
 
   changeZone(zone: Zone): boolean {
-    if (!this.definition.idleZoneEffect.hasOwnProperty(zone)) {
+    if (!(zone in this.definition.idleZoneEffect)) {
       return false
     }
 
@@ -68,8 +68,8 @@ export class CardModel implements TurnProcessor, CommonEntity {
     }
   }
 
-  private findTriggeredActivations(): CardActivation[] {
-    const relevantActivations: CardActivation[] = []
+  private findTriggeredActivations(): DescribedTargettedMultipleActivation<CardModel>[] {
+    const relevantActivations: DescribedTargettedMultipleActivation<CardModel>[] = []
 
     if (this.definition.idleZoneEffect.any?.timeTillTrigger <= this.turnsExisted) {
       relevantActivations.push(this.definition.idleZoneEffect.any.effect)

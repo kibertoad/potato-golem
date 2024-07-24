@@ -1,5 +1,4 @@
-import { TargettedMultiplexActivation } from '@potato-golem/core'
-import type { CardActivation } from '../activations/card/CardActivation'
+import { DescribedTargettedMultipleActivation } from '@potato-golem/core'
 import {
   DecomposeCardActivation,
   FeedActivation,
@@ -8,13 +7,14 @@ import {
   GainHealthActivation,
 } from '../activations/card/cardActivations'
 import type { Dependencies } from '../diConfig'
+import type { CardModel } from '../entities/CardModel'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import type { WorldModel } from '../state/WorldModel'
 
 export type IdleZoneEffect = {
   timeTillTrigger: number
-  effect: CardActivation
+  effect: DescribedTargettedMultipleActivation<CardModel>
 }
 
 export type CardDefinition = {
@@ -47,7 +47,7 @@ export class CardDefinitionGenerator {
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
-            effect: new TargettedMultiplexActivation([
+            effect: new DescribedTargettedMultipleActivation<CardModel>([
               new GainConscienceActivation(this.worldModel.homunculusModel, 1),
               new FeedActivation(this.worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
@@ -62,7 +62,7 @@ export class CardDefinitionGenerator {
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
-            effect: new TargettedMultiplexActivation([
+            effect: new DescribedTargettedMultipleActivation([
               new GainHatredActivation(this.worldModel.homunculusModel, 1),
               new FeedActivation(this.worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
@@ -78,7 +78,7 @@ export class CardDefinitionGenerator {
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
-            effect: new TargettedMultiplexActivation([
+            effect: new DescribedTargettedMultipleActivation([
               new GainHealthActivation(this.worldModel.homunculusModel, 1),
               new FeedActivation(this.worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
@@ -94,7 +94,7 @@ export class CardDefinitionGenerator {
         idleZoneEffect: {
           any: {
             timeTillTrigger: 3,
-            effect: new DecomposeCardActivation(),
+            effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
           },
         },
       },
@@ -112,7 +112,7 @@ export class CardDefinitionGenerator {
         idleZoneEffect: {
           home: {
             timeTillTrigger: 1,
-            effect: new TargettedMultiplexActivation([
+            effect: new DescribedTargettedMultipleActivation([
               new GainHealthActivation(this.worldModel.alchemistModel, 1),
               new DecomposeCardActivation(),
             ]),

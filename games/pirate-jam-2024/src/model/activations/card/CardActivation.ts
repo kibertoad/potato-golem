@@ -6,4 +6,6 @@ export abstract class CardActivation implements Prioritized, TargettedActivation
   abstract priority: number
 
   abstract activate(target: CardModel): void
+
+  abstract getDescription(): string
 }
