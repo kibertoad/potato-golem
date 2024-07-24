@@ -19,6 +19,12 @@ import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 
+const EVENT_WINDOW_X = 100
+const EVENT_WINDOW_Y = 100
+
+const EVENT_WINDOW_WIDTH = 1024
+const EVENT_WINDOW_HEIGHT = 520
+
 export type EventViewDependencies = {
   worldModel: WorldModel
   eventDefinitionGenerator: EventDefinitionGenerator
@@ -74,13 +80,13 @@ export class EventView extends Container {
     this.background = SpriteBuilder.instance(this.potatoScene)
       .setTextureKey(ImageRegistry.EVENTS_BACKGROUND)
       .setPosition({
-        x: 100,
-        y: 100,
+        x: EVENT_WINDOW_X,
+        y: EVENT_WINDOW_Y,
       })
       .setDepth(DepthRegistry.EVENT_BACKGROUND)
       .setDimensions({
-        width: 1560,
-        height: 740,
+        width: EVENT_WINDOW_WIDTH,
+        height: EVENT_WINDOW_HEIGHT,
       })
       .build()
 
@@ -131,20 +137,19 @@ export class EventView extends Container {
     }
 
     // Create the text object with auto-wrap
-    this.eventText = this.potatoScene.add.text(100, 100, event.description, textStyle)
-
+    this.eventText = this.potatoScene.add.text(130, 150, event.description, textStyle)
     this.add(this.eventText)
 
     this.buttonList = new ButtonListBuilder(this.scene, {
       depth: 100,
       distance: 20,
       height: 50,
-      width: 300,
+      width: 400,
       orientation: 'vertical',
       hoverTint: 0x66ff7f,
       position: {
-        x: width / 2,
-        y: height / 2,
+        x: EVENT_WINDOW_X + EVENT_WINDOW_WIDTH - 450,
+        y: EVENT_WINDOW_Y + EVENT_WINDOW_HEIGHT - 150,
       },
       textureKey: ImageRegistry.GLASS_PANEL,
     })
