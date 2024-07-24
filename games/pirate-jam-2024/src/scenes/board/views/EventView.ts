@@ -9,6 +9,7 @@ import type {
   EventDefinition,
   EventDefinitionGenerator,
   EventDefinitions,
+  EventId,
 } from '../../../model/definitions/eventDefinitions'
 import type { WorldModel } from '../../../model/state/WorldModel'
 import EventEmitter = Phaser.Events.EventEmitter
@@ -89,6 +90,7 @@ export class EventView extends Container {
         height: EVENT_WINDOW_HEIGHT,
       })
       .build()
+    this.hide()
 
     this.add(this.background)
     this.scene.add.existing(this)
@@ -120,10 +122,13 @@ export class EventView extends Container {
     this.setVisible(false)
   }
 
-  setToEvent(event: EventDefinition) {
+  setToEvent(event: EventId) {
     const { width, height } = this.scene.scale
 
-    this.currentEvent = event
+    this.currentEvent = this.eventDefinitions[event]
+    if (!this.currentEvent) {
+      throw new Error(`Unknown error: ${this.currentEvent} (${event})`)
+    }
 
     if (this.buttonList) {
       this.buttonList.destroy()
@@ -137,7 +142,7 @@ export class EventView extends Container {
     }
 
     // Create the text object with auto-wrap
-    this.eventText = this.potatoScene.add.text(130, 150, event.description, textStyle)
+    this.eventText = this.potatoScene.add.text(130, 150, this.currentEvent.description, textStyle)
     this.add(this.eventText)
 
     this.buttonList = new ButtonListBuilder(this.scene, {

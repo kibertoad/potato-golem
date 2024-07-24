@@ -17,9 +17,8 @@ import type { CommonEntity, EventSink, EventSource } from '@potato-golem/core'
 import type {
   CardDefinitionGenerator,
   CardDefinitions,
-  CardId,
 } from '../../model/definitions/cardDefinitions'
-import type { EventDefinitionGenerator } from '../../model/definitions/eventDefinitions'
+import type { EventDefinitionGenerator, EventId } from '../../model/definitions/eventDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
@@ -34,7 +33,10 @@ export type BoardSupportedEvents =
   | 'CARD_HOVERED'
   | 'CARD_DRAGGED_OVER_CARD'
   | 'ZONE_HOVERED_OVER'
+  | 'START_EVENT'
+
 import { zones } from '../../model/definitions/zoneDefinitions'
+import type { CardId } from '../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
@@ -96,6 +98,11 @@ export class BoardScene extends PotatoScene {
       this.pointedCardView = card
     })
 
+    this.eventSink.on('START_EVENT', (eventId: EventId) => {
+      this.eventView.setToEvent(eventId)
+      this.eventView.show()
+    })
+
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
       this.pointedZoneView = zone
 
@@ -129,6 +136,9 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home')
     this.addCard('HEALTH', 'home')
 
+    this.addCard('GOLD', 'home')
+    this.addCard('MERCHANT', 'streets')
+
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
     this.addCard('POISON', 'lab')
@@ -141,7 +151,8 @@ export class BoardScene extends PotatoScene {
       }
     })
 
-    this.eventView.setToEvent(this.eventView.eventDefinitions.INTRO)
+    this.eventView.setToEvent('INTRO')
+    this.eventView.show()
   }
 
   initZones() {

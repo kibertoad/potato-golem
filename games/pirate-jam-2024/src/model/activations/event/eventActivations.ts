@@ -1,5 +1,5 @@
 import type { Activation, EventSink } from '@potato-golem/core'
-import type { CardId } from '../../definitions/cardDefinitions'
+import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 
 export type EventEventId = (typeof EVENT_EVENTS)[keyof typeof EVENT_EVENTS]

@@ -1,4 +1,11 @@
-import { type Activation, type EventReceiver, LOW_PRIORITY } from '@potato-golem/core'
+import {
+  type Activation,
+  type EventReceiver,
+  type EventSink,
+  LOW_PRIORITY,
+} from '@potato-golem/core'
+import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
+import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardActivation } from './CardActivation'
 
@@ -103,5 +110,23 @@ export class FeedActivation implements Activation {
 
   getDescription(): string {
     return `Homunculus gets ${this.amount} satiation`
+  }
+}
+
+export class StartEventActivation implements Activation {
+  private readonly eventId: EventId
+  private readonly eventSink: EventSink<BoardSupportedEvents>
+
+  constructor(eventId: EventId, eventSink: EventSink<BoardSupportedEvents>) {
+    this.eventId = eventId
+    this.eventSink = eventSink
+  }
+
+  activate() {
+    this.eventSink.emit('START_EVENT', this.eventId)
+  }
+
+  getDescription(): string {
+    return `Start event`
   }
 }

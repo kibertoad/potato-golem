@@ -11,6 +11,7 @@ import {
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { Dependencies } from '../diConfig'
 import type { CardModel } from '../entities/CardModel'
+import type { CardId } from '../registries/cardRegistry'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import type { WorldModel } from '../state/WorldModel'
@@ -34,8 +35,6 @@ export type CardDefinition = {
 export type CardDefinitions = ReturnType<
   (typeof CardDefinitionGenerator.prototype)['generateDefinitions']
 >
-
-export type CardId = keyof CardDefinitions
 
 export class CardDefinitionGenerator {
   private readonly worldModel: WorldModel
@@ -95,13 +94,17 @@ export class CardDefinitionGenerator {
         id: 'MOLD',
         name: 'Mold',
         cardCombinationEffect: {
-          BUNSEN_BURNER: new DescribedTargettedMultipleActivation<CardModel>([
-            new SpawnCardActivation(eventSink, {
-              cardId: 'POISON',
-              zone: 'alchemy',
-            }),
-            new DecomposeCardActivation(),
-          ]),
+          BUNSEN_BURNER: {
+            timeTillTrigger: 2,
+            effect: new DescribedTargettedMultipleActivation<CardModel>([
+              new SpawnCardActivation(eventSink, {
+                cardId: 'POISON',
+                zone: 'alchemy',
+              }),
+
+              new DecomposeCardActivation(),
+            ]),
+          },
         },
       },
 
@@ -134,7 +137,6 @@ export class CardDefinitionGenerator {
       FOOD: {
         id: 'FOOD',
         name: 'Food',
-        image: 'corpse_card',
         idleZoneEffect: {
           any: {
             timeTillTrigger: 3,
@@ -161,6 +163,17 @@ export class CardDefinitionGenerator {
         id: 'GOLD',
         name: 'Gold',
         image: 'gold_card',
+        cardCombinationEffect: {
+          MERCHANT: {
+            timeTillTrigger: 0,
+            effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
+          },
+        },
+      },
+
+      MERCHANT: {
+        id: 'MERCHANT',
+        name: 'Merchant',
       },
 
       MEDICINE: {

@@ -6,7 +6,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
   streets: {
     id: 'streets',
     name: 'streets',
-    //    debug: debug,
     debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
     stackDirection: 'left',
     spawnPoints: [
@@ -33,7 +32,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
   lab: {
     id: 'lab',
     name: 'lab',
-    //    debug: debug,
     debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
     stackDirection: 'up',
     spawnPoints: [
@@ -67,7 +65,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
   homunculus: {
     id: 'homunculus',
     name: 'homunculus',
-    //    debug: debug,
     debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
     stackDirection: 'left',
     spawnPoints: [
@@ -97,7 +94,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
   home: {
     id: 'home',
     name: 'home',
-    //    debug: debug,
     debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
     stackDirection: 'down',
     spawnPoints: [
@@ -132,7 +128,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
   alchemy: {
     id: 'alchemy',
     name: 'alchemy',
-    //    debug: debug,
     stackDirection: 'right',
     spawnPoints: [
       {

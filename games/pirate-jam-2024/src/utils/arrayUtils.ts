@@ -1,6 +1,6 @@
 export const shuffleArray = <T>(array: T[]): T[] => {
-  let currentIndex = array.length,
-    randomIndex
+  let currentIndex = array.length
+  let randomIndex: number
 
   // While there remain elements to shuffle.
   while (currentIndex != 0) {
