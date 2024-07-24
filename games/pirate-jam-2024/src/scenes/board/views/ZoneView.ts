@@ -4,6 +4,7 @@ import Phaser from 'phaser'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import type { Zone } from '../../../model/registries/zoneRegistry'
 import type { BoardSupportedEvents } from '../BoardScene'
+import { CardView } from './CardView'
 
 export type ZoneViewParams = {
   scene: PotatoScene
@@ -22,9 +23,10 @@ export type ZoneDependencies = {
 export class ZoneView implements IdHolder, Destroyable {
   id: Zone
   public readonly zone: Phaser.GameObjects.Zone
-  public readonly spawnPoints: Position[]
+  public spawnPoints: Position[] = []
 
   private readonly debugGraphics?: Phaser.GameObjects.Graphics
+  private readonly debugGraphicsSpawns?: Phaser.GameObjects.Graphics
   private readonly boardEventSink: EventSink<BoardSupportedEvents>
 
   constructor(params: ZoneViewParams, dependencies: ZoneDependencies) {
@@ -46,6 +48,34 @@ export class ZoneView implements IdHolder, Destroyable {
       this.debugGraphics.strokePoints(polygon.points, true)
       this.debugGraphics.depth = DepthRegistry.ZONE_HIGHLIGHT
       this.debugGraphics.visible = false
+    }
+
+    if (params.debug) {
+      const cardHalfWidth = CardView.cardWidth / 2
+      const cardHalfHeight = CardView.cardHeight / 2
+
+      for (const i in this.spawnPoints) {
+        const spawnPoint = this.spawnPoints[i]
+        const color = params.debugColor || Phaser.Display.Color.GetColor(255, 0, 0)
+
+        this.debugGraphicsSpawns = params.scene.add.graphics()
+        this.debugGraphicsSpawns.lineStyle(0, color)
+        this.debugGraphicsSpawns.fillStyle(color, 0.5)
+        this.debugGraphicsSpawns.strokeRect(
+          spawnPoint.x - cardHalfWidth,
+          spawnPoint.y - cardHalfHeight,
+          CardView.cardWidth,
+          CardView.cardHeight,
+        )
+        this.debugGraphicsSpawns.fillRect(
+          spawnPoint.x - cardHalfWidth,
+          spawnPoint.y - cardHalfHeight,
+          CardView.cardWidth,
+          CardView.cardHeight,
+        )
+        this.debugGraphicsSpawns.depth = DepthRegistry.ZONE_HIGHLIGHT + 100
+        this.debugGraphicsSpawns.visible = false
+      }
     }
 
     const vertices = params.vertices

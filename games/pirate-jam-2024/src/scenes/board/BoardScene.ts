@@ -149,8 +149,8 @@ export class BoardScene extends PotatoScene {
       debug: debug,
       spawnPoints: [
         {
-          x: 0,
-          y: 0,
+          x: 150 + 300 * 2,
+          y: 340 + 390,
         },
       ],
       vertices: [
@@ -168,8 +168,24 @@ export class BoardScene extends PotatoScene {
       debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
       spawnPoints: [
         {
-          x: 1270,
-          y: 240,
+          x: 680,
+          y: 170,
+        },
+        {
+          x: 680 + 300,
+          y: 170,
+        },
+        {
+          x: 680 + 300 * 2,
+          y: 170,
+        },
+        {
+          x: 680 + 300 * 3,
+          y: 170,
+        },
+        {
+          x: 680 + 300 * 4,
+          y: 170,
         },
       ],
       vertices: [
@@ -187,8 +203,16 @@ export class BoardScene extends PotatoScene {
       debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
       spawnPoints: [
         {
-          x: 1270,
-          y: 240,
+          x: 2410,
+          y: 340,
+        },
+        {
+          x: 2410,
+          y: 340 + 390,
+        },
+        {
+          x: 2410,
+          y: 340 + 390 * 2,
         },
       ],
       vertices: [
@@ -206,8 +230,24 @@ export class BoardScene extends PotatoScene {
       debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
       spawnPoints: [
         {
-          x: 1270,
-          y: 1200,
+          x: 680,
+          y: 1275,
+        },
+        {
+          x: 680 + 300,
+          y: 1275,
+        },
+        {
+          x: 680 + 300 * 2,
+          y: 1275,
+        },
+        {
+          x: 680 + 300 * 3,
+          y: 1275,
+        },
+        {
+          x: 680 + 300 * 4,
+          y: 1275,
         },
       ],
       vertices: [
@@ -225,8 +265,16 @@ export class BoardScene extends PotatoScene {
       debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
       spawnPoints: [
         {
-          x: 1270,
-          y: 240,
+          x: 150,
+          y: 340,
+        },
+        {
+          x: 150,
+          y: 340 + 390,
+        },
+        {
+          x: 150,
+          y: 340 + 390 * 2,
         },
       ],
       vertices: [
@@ -333,8 +381,6 @@ export class BoardScene extends PotatoScene {
   }
 
   create() {
-    // this.musicScene.playBoardTheme()
-
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
       .setPosition({
