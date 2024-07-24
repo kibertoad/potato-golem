@@ -4,6 +4,7 @@ export const ImageRegistry = {
   ROCKET: 'rocket',
   BOARD_BACKGROUND: 'board_background',
   CARD_FRAME: 'card_frame',
+  CARD_FRAME_DECOR: 'card_frame_decor',
   CARD_FRAME_EAT: 'card_frame_eat',
   CARD_FRAME_EAT_2: 'card_frame_eat_2',
   GLASS_PANEL: 'glass_panel',
@@ -16,7 +17,7 @@ export const ImageRegistry = {
   MEDICINE_CARD: 'medicine_card',
   CORPSE_CARD: 'corpse_card',
 
-  //statused
+  //statuses
   HOMUNCULUS_HEART: 'homunculus_heart',
   TIME: 'time',
 } as const

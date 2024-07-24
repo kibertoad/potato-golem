@@ -26,6 +26,7 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
     this.load.image(ImageRegistry.GLASS_PANEL, require('../../assets/img/glass_panel.png'))
     this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
+    this.load.image(ImageRegistry.CARD_FRAME_DECOR, require('../../assets/img/card_background_decor.png'))
     this.load.image(
       ImageRegistry.CARD_FRAME_EAT,
       require('../../assets/img/card_background_eat.png'),
