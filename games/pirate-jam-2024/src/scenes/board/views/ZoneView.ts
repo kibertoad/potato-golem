@@ -12,6 +12,7 @@ export type ZoneViewParams = {
   name: string
   vertices: Position[]
   spawnPoints: Position[]
+  stackDirection: StackDirection
   debug?: boolean
   debugColor?: number
 }
@@ -19,6 +20,10 @@ export type ZoneViewParams = {
 export type ZoneDependencies = {
   boardEventSink: EventSink<BoardSupportedEvents>
 }
+
+export type StackDirection = 'up' | 'down' | 'left' | 'right'
+
+export const StackSpacing: number = 20
 
 export class ZoneView implements IdHolder, Destroyable {
   id: Zone
@@ -29,6 +34,10 @@ export class ZoneView implements IdHolder, Destroyable {
   private readonly debugGraphicsSpawns?: Phaser.GameObjects.Graphics
   private readonly boardEventSink: EventSink<BoardSupportedEvents>
 
+  private readonly spawnPointCards: Array<CardView[]> = []
+
+  private readonly stackDirection: StackDirection
+
   constructor(params: ZoneViewParams, dependencies: ZoneDependencies) {
     this.id = params.id
     this.boardEventSink = dependencies.boardEventSink
@@ -36,6 +45,11 @@ export class ZoneView implements IdHolder, Destroyable {
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)
     this.spawnPoints = params.spawnPoints
+    this.stackDirection = params.stackDirection
+
+    for (const spawnPoint of this.spawnPoints) {
+      this.spawnPointCards.push([])
+    }
 
     if (params.debug) {
       // Draw the Polygon
@@ -108,6 +122,67 @@ export class ZoneView implements IdHolder, Destroyable {
     })
 
     this.zone = zone
+  }
+
+  public findEmptySpawnPointFromMiddle(cardToStack?: CardView): number {
+    const middle = Math.floor(this.spawnPoints.length / 2)
+
+    const stackedCardType = cardToStack.model.definition.id
+    if (
+      this.spawnPointCards[middle].length === 0 ||
+      (cardToStack && this.spawnPointCards[middle][0].model.definition.id === stackedCardType)
+    ) {
+      return middle
+    }
+
+    for (let i = 1; i <= middle; i++) {
+      const left = middle - i
+      const right = middle + i
+
+      if (
+        left >= 0 &&
+        (this.spawnPointCards[left].length === 0 ||
+          (cardToStack && this.spawnPointCards[left][0].model.definition.id === stackedCardType))
+      ) {
+        return left
+      }
+
+      if (
+        right < this.spawnPoints.length &&
+        (this.spawnPointCards[right].length === 0 ||
+          (cardToStack && this.spawnPointCards[right][0].model.definition.id === stackedCardType))
+      ) {
+        return right
+      }
+    }
+
+    return 0
+  }
+
+  public addCard(cardView: CardView) {
+    //pick random spawn point from zone
+    const spawnPointIndex = this.findEmptySpawnPointFromMiddle(cardView)
+    const spawnPoint = this.spawnPoints[spawnPointIndex]
+
+    switch (this.stackDirection) {
+      case 'up':
+        cardView.y = this.spawnPointCards[spawnPointIndex].length * -StackSpacing
+        break
+      case 'down':
+        cardView.y = this.spawnPointCards[spawnPointIndex].length * StackSpacing
+        break
+      case 'left':
+        cardView.x = this.spawnPointCards[spawnPointIndex].length * -StackSpacing
+        break
+      case 'right':
+        cardView.x = this.spawnPointCards[spawnPointIndex].length * StackSpacing
+        break
+    }
+
+    cardView.x += spawnPoint.x
+    cardView.y += spawnPoint.y
+
+    this.spawnPointCards[spawnPointIndex].push(cardView)
   }
 
   public highlight() {

@@ -147,6 +147,7 @@ export class BoardScene extends PotatoScene {
       id: 'alchemy',
       name: 'alchemy',
       debug: debug,
+      stackDirection: 'right',
       spawnPoints: [
         {
           x: 150 + 300 * 2,
@@ -166,6 +167,7 @@ export class BoardScene extends PotatoScene {
       name: 'home',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(0, 255, 0),
+      stackDirection: 'down',
       spawnPoints: [
         {
           x: 680,
@@ -201,6 +203,7 @@ export class BoardScene extends PotatoScene {
       name: 'streets',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(0, 0, 255),
+      stackDirection: 'left',
       spawnPoints: [
         {
           x: 2410,
@@ -228,6 +231,7 @@ export class BoardScene extends PotatoScene {
       name: 'lab',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(255, 0, 255),
+      stackDirection: 'up',
       spawnPoints: [
         {
           x: 680,
@@ -263,6 +267,7 @@ export class BoardScene extends PotatoScene {
       name: 'homunculus',
       debug: debug,
       debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
+      stackDirection: 'left',
       spawnPoints: [
         {
           x: 150,
@@ -320,15 +325,12 @@ export class BoardScene extends PotatoScene {
 
     const zoneView = this.zones[zone]
 
-    //pick random spawn point from zone
-    const spawnPoint = zoneView.spawnPoints[Math.floor(Math.random() * zoneView.spawnPoints.length)]
-
     const cardView = new CardView(
       this,
       {
         model: cardModel,
-        x: spawnPoint.x,
-        y: spawnPoint.y,
+        x: 0,
+        y: 0,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
       },
@@ -338,6 +340,8 @@ export class BoardScene extends PotatoScene {
       },
     )
     cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length)
+
+    zoneView.addCard(cardView)
     this.cards.push(cardView)
     this.addChildViewObject(cardView)
   }
