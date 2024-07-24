@@ -1,4 +1,4 @@
-import { DescribedTargettedMultipleActivation } from '@potato-golem/core'
+import { DescribedTargettedMultipleActivation, type EventSink } from '@potato-golem/core'
 import {
   DecomposeCardActivation,
   FeedActivation,
@@ -11,8 +11,11 @@ import type { CardModel } from '../entities/CardModel'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import type { WorldModel } from '../state/WorldModel'
+import { SpawnCardActivation } from '../activations/event/extraEventActivations'
+import type { EventEventId } from '../activations/event/eventActivations'
+import { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 
-export type IdleZoneEffect = {
+export type CardEffectDefinition = {
   timeTillTrigger: number
   effect: DescribedTargettedMultipleActivation<CardModel>
 }
@@ -23,7 +26,9 @@ export type CardDefinition = {
   image?: ImageId
 
   // Effect that is triggered after card staying within a zone for a while
-  idleZoneEffect?: Partial<Record<Zone, IdleZoneEffect>>
+  idleZoneEffect?: Partial<Record<Zone, CardEffectDefinition>>
+
+  cardCombinationEffect?: Partial<Record<CardId, CardEffectDefinition>>
 }
 
 export type CardDefinitions = ReturnType<
@@ -39,7 +44,7 @@ export class CardDefinitionGenerator {
     this.worldModel = worldModel
   }
 
-  generateDefinitions() {
+  generateDefinitions(eventSink: EventSink<BoardSupportedEvents>) {
     return {
       HUMILITY: {
         id: 'HUMILITY',
@@ -71,6 +76,61 @@ export class CardDefinitionGenerator {
         },
       },
 
+      ABSYNTHE: {
+        id: 'ABSYNTHE',
+        name: 'Absynthe',
+        idleZoneEffect: {
+          homunculus: {
+            timeTillTrigger: 1,
+            effect: new DescribedTargettedMultipleActivation<CardModel>([
+              new GainHatredActivation(this.worldModel.homunculusModel, 1),
+              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new DecomposeCardActivation(),
+            ]),
+          },
+        },
+      },
+
+      POISON: {
+        id: 'POISON',
+        name: 'Poison',
+        idleZoneEffect: {
+          homunculus: {
+            timeTillTrigger: 1,
+            effect: new DescribedTargettedMultipleActivation<CardModel>([
+              new GainHatredActivation(this.worldModel.homunculusModel, 3),
+              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new DecomposeCardActivation(),
+            ]),
+          },
+        },
+      },
+
+      MOLD: {
+        id: 'MOLD',
+        name: 'Mold',
+        cardCombinationEffect: {
+          BUNSEN_BURNER: new DescribedTargettedMultipleActivation<CardModel>([
+            new SpawnCardActivation(eventSink, {
+              cardId: 'POISON',
+              zone: 'alchemy'
+            }),
+            new DecomposeCardActivation()
+          ])
+        }
+      },
+
+      ALEMBIC: {
+        id: 'ALEMBIC',
+        name: 'Alembic',
+      },
+
+      BUNSEN_BURNER: {
+        id: 'BUNSEN_BURNER',
+        name: 'Bunsen burner',
+      },
+
+
       HEALTH: {
         id: 'HEALTH',
         name: 'Health',
@@ -87,9 +147,9 @@ export class CardDefinitionGenerator {
         },
       },
 
-      MOLDY_SAUSAGE: {
-        id: 'MOLDY_SAUSAGE',
-        name: 'Moldy Sausage',
+      FOOD: {
+        id: 'FOOD',
+        name: 'Food',
         image: 'corpse_card',
         idleZoneEffect: {
           any: {

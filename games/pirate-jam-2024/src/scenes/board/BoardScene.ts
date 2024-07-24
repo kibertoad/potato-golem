@@ -80,7 +80,7 @@ export class BoardScene extends PotatoScene {
     this.endTurnProcessor = endTurnProcessor
 
     this.eventDefinitionGenerator = eventDefinitionGenerator
-    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions()
+    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions(this.eventSink)
     this.eventSink = new EventEmitter()
 
     this.registerListeners()
