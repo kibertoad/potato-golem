@@ -40,6 +40,7 @@ export class CardView extends Container implements IdHolder {
    * Generic frame for the card
    */
   private readonly cardFrameSprite: Phaser.GameObjects.Sprite
+  private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
 
   /**
    * Card-specific image for the card
@@ -149,6 +150,18 @@ export class CardView extends Container implements IdHolder {
       this.title.setColor('#000000')
       this.cardMainSpriteContainer.add(this.title)
     }
+
+    this.cardFrameDecorSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.CARD_FRAME_DECOR)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardWidth)
+      .setHeight(CardView.cardHeight)
+      .build()
+    this.cardMainSpriteContainer.add(this.cardFrameDecorSprite)
 
     this.add(this.cardMainSpriteContainer)
 
