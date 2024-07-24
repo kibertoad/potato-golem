@@ -363,7 +363,8 @@ export class BoardScene extends PotatoScene {
       this.pointedZoneView.unhighlight()
 
       if (!cardView.model.changeZone(this.pointedZoneView.id)) {
-        // cardView.cancelDrag()
+        cardView.cancelDrag()
+        this.zones[cardView.model.zone].reorderStackedCardDepths()
       } else if (this.pointedZoneView.id === 'homunculus') {
         // Every time we feed a homunculus, a day passes
         this.endTurnProcessor.processTurn()

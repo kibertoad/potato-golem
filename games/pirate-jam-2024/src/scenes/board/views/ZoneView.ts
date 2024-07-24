@@ -185,6 +185,15 @@ export class ZoneView implements IdHolder, Destroyable {
     this.spawnPointCards[spawnPointIndex].push(cardView)
   }
 
+  public reorderStackedCardDepths() {
+    for (const spawnPoint of this.spawnPointCards) {
+      let counter = 0
+      for (const card of spawnPoint) {
+        card.setDepth(DepthRegistry.CARD_MIN + counter++)
+      }
+    }
+  }
+
   public highlight() {
     if (this.debugGraphics) {
       this.debugGraphics.visible = true
