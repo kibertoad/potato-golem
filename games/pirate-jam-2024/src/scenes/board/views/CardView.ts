@@ -14,6 +14,7 @@ import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcesso
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import { delay } from '../../../utils/timeUtils'
 import type { BoardSupportedEvents } from '../BoardScene'
 
 export type CardViewParams = {
@@ -44,6 +45,12 @@ export class CardView extends Container implements IdHolder {
   private readonly cardPictureSprite: Phaser.GameObjects.Sprite
 
   private readonly cardMainSpriteContainer: Container
+
+  private cardEatMaskImage: Phaser.GameObjects.Image
+  private cardEat2MaskImage: Phaser.GameObjects.Image
+
+  private cardEatShadowMaskImage: Phaser.GameObjects.Image
+  private cardEat2ShadowMaskImage: Phaser.GameObjects.Image
 
   /**
    * Text element with the name of the card
@@ -78,6 +85,7 @@ export class CardView extends Container implements IdHolder {
     this.y = params.y
 
     this.model = params.model
+    this.model.view = this
     this.endTurnProcessor = dependencies.endTurnProcessor
     this.boardEventSink = dependencies.boardEventSink
 
@@ -131,6 +139,7 @@ export class CardView extends Container implements IdHolder {
     this.cardPictureSprite.setScale((CardView.cardHeight - 20) / CardView.cardImageHeight)
 
     this.cardMainSpriteContainer = new Container(scene)
+
     this.cardMainSpriteContainer.add(this.cardFrameSprite)
     this.cardMainSpriteContainer.add(this.cardPictureSprite)
     this.cardMainSpriteContainer.add(this.title)
@@ -186,6 +195,7 @@ export class CardView extends Container implements IdHolder {
         //Disable input events on the card so that it does not block pointer events for zones
         this.cardFrameSprite.input.enabled = false
         this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
+
         this.dragDistanceFromCenter.x = (this.x - 1280) / 1280
         this.dragDistanceFromCenter.y = (this.y - 720) / 720
         this.cardShadowSprite.setPosition(
@@ -232,5 +242,60 @@ export class CardView extends Container implements IdHolder {
         console.log(this.model.id, 'card was hovered over')
         this.boardEventSink.emit('CARD_HOVERED', this)
       })
+  }
+
+  createEatMasks() {
+    this.cardEatMaskImage = this.scene.make.image({
+      x: this.x,
+      y: this.y,
+      key: ImageRegistry.CARD_FRAME_EAT,
+      add: false,
+    })
+
+    this.cardEat2MaskImage = this.scene.make.image({
+      x: this.x,
+      y: this.y,
+      key: ImageRegistry.CARD_FRAME_EAT_2,
+      add: false,
+    })
+
+    this.cardEatShadowMaskImage = this.scene.make.image({
+      x: this.x + this.cardShadowSprite.x,
+      y: this.y + this.cardShadowSprite.y,
+      key: ImageRegistry.CARD_FRAME_EAT,
+      add: false,
+    })
+    this.cardEatShadowMaskImage.scaleX = this.cardShadowSprite.scaleX
+    this.cardEatShadowMaskImage.scaleY = this.cardShadowSprite.scaleY
+
+    this.cardEat2ShadowMaskImage = this.scene.make.image({
+      x: this.x + this.cardShadowSprite.x,
+      y: this.y + this.cardShadowSprite.y,
+      key: ImageRegistry.CARD_FRAME_EAT_2,
+      add: false,
+    })
+    this.cardEat2ShadowMaskImage.scaleX = this.cardShadowSprite.scaleX
+    this.cardEat2ShadowMaskImage.scaleY = this.cardShadowSprite.scaleY
+  }
+
+  async playEatAnimation(onEatenCallback?: () => void) {
+    this.cardFrameSprite.setInteractive(false).removeAllListeners()
+    await delay(200)
+    this.createEatMasks()
+    let mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatMaskImage)
+    let shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatShadowMaskImage)
+
+    this.cardMainSpriteContainer.setMask(mask)
+    this.cardShadowSprite.setMask(shadowMask)
+
+    await delay(300)
+
+    mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2MaskImage)
+    shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2ShadowMaskImage)
+
+    this.cardMainSpriteContainer.setMask(mask)
+    this.cardShadowSprite.setMask(shadowMask)
+
+    await delay(300)
   }
 }

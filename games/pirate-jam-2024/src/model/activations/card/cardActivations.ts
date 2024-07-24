@@ -6,7 +6,8 @@ export class DecomposeCardActivation implements CardActivation {
   isExclusive = true
   priority = LOW_PRIORITY
 
-  activate(targetCard: CardModel) {
+  async activate(targetCard: CardModel) {
+    await targetCard.view.playEatAnimation()
     targetCard.destroy()
   }
 }
