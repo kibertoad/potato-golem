@@ -300,14 +300,14 @@ export class BoardScene extends PotatoScene {
 
     // we get here if we dropped card into a zone
     if (this.pointedZoneView) {
-      cardView.model.changeZone(this.pointedZoneView.id)
+      this.pointedZoneView.unhighlight()
 
-      // Every time we feed a homunculus, a day passes
-      if (this.pointedZoneView.id === 'homunculus') {
+      if (!cardView.model.changeZone(this.pointedZoneView.id)) {
+        // cardView.cancelDrag()
+      } else if (this.pointedZoneView.id === 'homunculus') {
+        // Every time we feed a homunculus, a day passes
         this.endTurnProcessor.processTurn()
       }
-
-      this.pointedZoneView.unhighlight()
     }
 
     if (this.pointedCardView) {

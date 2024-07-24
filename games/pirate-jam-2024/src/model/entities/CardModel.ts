@@ -5,6 +5,7 @@ import {
   sortAndFilterActivations,
 } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
+import type { CardView } from '../../scenes/board/views/CardView'
 import type { CardActivation } from '../activations/card/CardActivation'
 import type { CardDefinition } from '../definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
@@ -25,6 +26,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
   id: string
   zone: Zone
+  view: CardView
   turnsExisted: number
   turnsStayedInZone: number
 
@@ -39,11 +41,17 @@ export class CardModel implements TurnProcessor, CommonEntity {
     this.turnsStayedInZone = 0
   }
 
-  changeZone(zone: Zone): void {
+  changeZone(zone: Zone): boolean {
+    if (!this.definition.idleZoneEffect.hasOwnProperty(zone)) {
+      return false
+    }
+
     this.zone = zone
     this.turnsStayedInZone = 0
+
+    return true
   }
-  1
+
   destroy() {
     this.parentEventSink.emit('DESTROY', this)
   }

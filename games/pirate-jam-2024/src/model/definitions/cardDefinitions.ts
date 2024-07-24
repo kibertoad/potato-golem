@@ -20,7 +20,7 @@ export type IdleZoneEffect = {
 export type CardDefinition = {
   id: string
   name: string
-  image: ImageId
+  image?: ImageId
 
   // Effect that is triggered after card staying within a zone for a while
   idleZoneEffect?: Partial<Record<Zone, IdleZoneEffect>>
@@ -44,7 +44,6 @@ export class CardDefinitionGenerator {
       HUMILITY: {
         id: 'HUMILITY',
         name: 'Humility',
-        image: 'health_card',
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
@@ -60,7 +59,6 @@ export class CardDefinitionGenerator {
       ANGER: {
         id: 'ANGER',
         name: 'Anger',
-        image: 'health_card',
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,

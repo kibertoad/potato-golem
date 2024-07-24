@@ -65,6 +65,7 @@ export class CardView extends Container implements IdHolder {
   private dragDeltaY = 0
 
   private dragDistanceFromCenter: Position = { x: 0, y: 0 }
+  private positionBeforeDrag: Position = { x: 0, y: 0 }
 
   /**
    * Domain model of the card
@@ -91,16 +92,7 @@ export class CardView extends Container implements IdHolder {
     this.endTurnProcessor = dependencies.endTurnProcessor
     this.boardEventSink = dependencies.boardEventSink
 
-    this.title = TextBuilder.instance(scene)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0, 0)
-      .setText(params.model.name)
-      .setDisplaySize(15, 15)
-      .build()
-      .value.setDepth(DepthRegistry.CARD_MIN)
+    this.cardMainSpriteContainer = new Container(scene)
 
     this.cardShadowSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
@@ -127,24 +119,36 @@ export class CardView extends Container implements IdHolder {
       .setWidth(CardView.cardWidth)
       .setHeight(CardView.cardHeight)
       .build()
-
-    this.cardPictureSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(params.model.definition.image)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardImageWidth)
-      .setHeight(CardView.cardImageHeight)
-      .build()
-    this.cardPictureSprite.setScale((CardView.cardHeight - 20) / CardView.cardImageHeight)
-
-    this.cardMainSpriteContainer = new Container(scene)
-
     this.cardMainSpriteContainer.add(this.cardFrameSprite)
-    this.cardMainSpriteContainer.add(this.cardPictureSprite)
-    this.cardMainSpriteContainer.add(this.title)
+
+    if (params.model.definition.image) {
+      this.cardPictureSprite = SpriteBuilder.instance(scene)
+        .setTextureKey(params.model.definition.image)
+        .setPosition({
+          x: 0,
+          y: 0,
+        })
+        .setOrigin(0.5, 0.5)
+        .setWidth(CardView.cardImageWidth)
+        .setHeight(CardView.cardImageHeight)
+        .build()
+      this.cardPictureSprite.setScale((CardView.cardHeight - 20) / CardView.cardImageHeight)
+      this.cardMainSpriteContainer.add(this.cardPictureSprite)
+    } else {
+      this.title = TextBuilder.instance(scene)
+        .setPosition({
+          x: 0,
+          y: 0,
+        })
+        .setOrigin(0.5, 0.5)
+        .setText(params.model.name)
+        .setDisplaySize(15, 15)
+        .build()
+        .value.setDepth(DepthRegistry.CARD_MIN)
+      this.title.setFontSize(40)
+      this.title.setColor('#000000')
+      this.cardMainSpriteContainer.add(this.title)
+    }
 
     this.add(this.cardMainSpriteContainer)
 
@@ -161,6 +165,9 @@ export class CardView extends Container implements IdHolder {
         useHandCursor: true,
       })
       .on('dragstart', (pointer, _dragX, _dragY) => {
+        this.positionBeforeDrag.x = this.x
+        this.positionBeforeDrag.y = this.y
+
         this.dragDeltaX = pointer.x - this.x
         this.dragDeltaY = pointer.y - this.y
 
@@ -244,6 +251,16 @@ export class CardView extends Container implements IdHolder {
         console.log(this.model.id, 'card was hovered over')
         this.boardEventSink.emit('CARD_HOVERED', this)
       })
+  }
+
+  cancelDrag() {
+    this.scene.tweens.add({
+      targets: this,
+      x: this.positionBeforeDrag.x,
+      y: this.positionBeforeDrag.y,
+      duration: 200,
+      ease: 'Cubic',
+    })
   }
 
   createEatMasks() {
