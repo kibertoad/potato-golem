@@ -138,7 +138,7 @@ export class EventView extends Container {
       fontFamily: 'Arial', // Customize the font
       fontSize: '24px', // Customize the text size
       color: '#ffffff', // Customize the text color
-      wordWrap: { width: EVENT_WINDOW_WIDTH, useAdvancedWrap: true }, // Enable word wrap and set the width
+      wordWrap: { width: EVENT_WINDOW_WIDTH - 30, useAdvancedWrap: true }, // Enable word wrap and set the width
     }
 
     // Create the text object with auto-wrap
