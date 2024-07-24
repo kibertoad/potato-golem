@@ -15,6 +15,7 @@ import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import { SfxRegistry } from '../../../model/registries/sfxRegistry'
+import { shuffleArray } from '../../../utils/arrayUtils'
 import { delay } from '../../../utils/timeUtils'
 import type { BoardSupportedEvents } from '../BoardScene'
 
@@ -280,13 +281,14 @@ export class CardView extends Container implements IdHolder {
   }
 
   async playEatAnimation(onEatenCallback?: () => void) {
+    const biteSounds = shuffleArray([SfxRegistry.BITE_1, SfxRegistry.BITE_2, SfxRegistry.BITE_3])
     this.cardFrameSprite.setInteractive(false).removeAllListeners()
     await delay(200)
     this.createEatMasks()
     let mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatMaskImage)
     let shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatShadowMaskImage)
 
-    this.scene.sound.play(SfxRegistry.BITE_1)
+    this.scene.sound.play(biteSounds[0])
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
@@ -295,11 +297,11 @@ export class CardView extends Container implements IdHolder {
     mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2MaskImage)
     shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2ShadowMaskImage)
 
-    this.scene.sound.play(SfxRegistry.BITE_3)
+    this.scene.sound.play(biteSounds[1])
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
     await delay(300)
-    this.scene.sound.play(SfxRegistry.BITE_2)
+    this.scene.sound.play(biteSounds[2])
   }
 }
