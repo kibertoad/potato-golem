@@ -91,7 +91,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
-                cardId: 'HUMILITY',
+                cardId: 'ABSYNTHE',
               }),
               new ConcludeEventActivation(eventSink),
             ]),
@@ -102,7 +102,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
-                cardId: 'HUMILITY',
+                cardId: 'BUNSEN_BURNER',
               }),
               new ConcludeEventActivation(eventSink),
             ]),
@@ -113,7 +113,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
-                cardId: 'HUMILITY',
+                cardId: 'ALEMBIC',
               }),
               new ConcludeEventActivation(eventSink),
             ]),

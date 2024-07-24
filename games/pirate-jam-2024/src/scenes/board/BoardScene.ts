@@ -83,8 +83,8 @@ export class BoardScene extends PotatoScene {
     this.endTurnProcessor = endTurnProcessor
 
     this.eventDefinitionGenerator = eventDefinitionGenerator
-    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions(this.eventSink)
     this.eventSink = new EventEmitter()
+    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions(this.eventSink)
 
     this.registerListeners()
   }
@@ -96,6 +96,12 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on('CARD_HOVERED', (card: CardView) => {
       this.pointedCardView = card
+
+      if (this.draggedCardView) {
+        this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
+
+        this.pointedZoneView.highlight()
+      }
     })
 
     this.eventSink.on('START_EVENT', (eventId: EventId) => {
@@ -245,6 +251,14 @@ export class BoardScene extends PotatoScene {
       console.log(
         `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
       )
+      const combinationEffect = cardView.model.getActivationForCombinedCard(
+        this.pointedCardView.model,
+      )
+      cardView.model.combineWithCard(this.pointedCardView.model)
+
+      if (combinationEffect.timeTillTrigger === 0) {
+        combinationEffect.effect.activate(cardView.model)
+      }
     }
   }
 

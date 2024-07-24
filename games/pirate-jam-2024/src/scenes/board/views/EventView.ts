@@ -138,7 +138,7 @@ export class EventView extends Container {
       fontFamily: 'Arial', // Customize the font
       fontSize: '24px', // Customize the text size
       color: '#ffffff', // Customize the text color
-      wordWrap: { width: 1200, useAdvancedWrap: true }, // Enable word wrap and set the width
+      wordWrap: { width: EVENT_WINDOW_WIDTH, useAdvancedWrap: true }, // Enable word wrap and set the width
     }
 
     // Create the text object with auto-wrap
@@ -154,7 +154,7 @@ export class EventView extends Container {
       hoverTint: 0x66ff7f,
       position: {
         x: EVENT_WINDOW_X + EVENT_WINDOW_WIDTH - 450,
-        y: EVENT_WINDOW_Y + EVENT_WINDOW_HEIGHT - 150,
+        y: EVENT_WINDOW_Y + EVENT_WINDOW_HEIGHT - 275,
       },
       textureKey: ImageRegistry.GLASS_PANEL,
     })

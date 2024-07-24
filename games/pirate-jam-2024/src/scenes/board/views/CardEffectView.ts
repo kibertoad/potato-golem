@@ -15,7 +15,7 @@ export type CardEffectViewDependencies = {
 export class CardEffectView extends Container {
   private readonly potatoScene: PotatoScene
   private readonly background: Sprite
-  private eventText: Phaser.GameObjects.Text
+  private effectDescriptionText: Phaser.GameObjects.Text
 
   constructor(potatoScene: PotatoScene, dependencies: CardEffectViewDependencies) {
     super(potatoScene)
@@ -42,10 +42,10 @@ export class CardEffectView extends Container {
     }
 
     // Create the text object with auto-wrap
-    this.eventText = this.potatoScene.add.text(100, 100, 'No effect', textStyle)
+    this.effectDescriptionText = this.potatoScene.add.text(100, 100, 'No effect', textStyle)
 
     this.add(this.background)
-    this.add(this.eventText)
+    this.add(this.effectDescriptionText)
 
     this.setPosition(100, 100)
     this.setDepth(DepthRegistry.EVENT_BACKGROUND)
@@ -62,7 +62,24 @@ export class CardEffectView extends Container {
       resolvedText = `In ${idleZoneEffect.timeTillTrigger} ${idleZoneEffect.timeTillTrigger === 1 ? 'turn' : 'turns'} \n ${idleZoneEffect.effect.getDescriptions().join(' \n')}`
     }
 
-    this.eventText.setText(resolvedText)
+    this.effectDescriptionText.setText(resolvedText)
+  }
+
+  showCardCombinationEffect(sourceCardView: CardView, targetCardView: CardView) {
+    let resolvedText = 'No effect'
+
+    const combinationEffect = sourceCardView.model.getActivationForCombinedCard(
+      targetCardView.model,
+    )
+    if (combinationEffect) {
+      const timeString =
+        combinationEffect.timeTillTrigger > 0
+          ? `In ${combinationEffect.timeTillTrigger} ${combinationEffect.timeTillTrigger === 1 ? 'turn' : 'turns'} \n `
+          : ''
+      resolvedText = `${timeString}${combinationEffect.effect.getDescriptions().join(' \n')}`
+    }
+
+    this.effectDescriptionText.setText(resolvedText)
   }
 
   show() {

@@ -7,6 +7,7 @@ import {
   GainConscienceActivation,
   GainHatredActivation,
   GainHealthActivation,
+  StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { Dependencies } from '../diConfig'
@@ -166,7 +167,10 @@ export class CardDefinitionGenerator {
         cardCombinationEffect: {
           MERCHANT: {
             timeTillTrigger: 0,
-            effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
+            effect: new DescribedTargettedMultipleActivation([
+              new StartEventActivation('SHOPKEEPER', eventSink),
+              new DecomposeCardActivation(),
+            ]),
           },
         },
       },
