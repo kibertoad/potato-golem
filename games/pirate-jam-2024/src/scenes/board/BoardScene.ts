@@ -131,6 +131,8 @@ export class BoardScene extends PotatoScene {
 
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
+    this.addCard('POISON', 'lab')
+    this.addCard('POISON', 'lab')
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {

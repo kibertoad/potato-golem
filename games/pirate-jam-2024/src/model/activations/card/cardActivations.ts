@@ -34,6 +34,24 @@ export class GainHealthActivation implements Activation {
   }
 }
 
+export class DamageActivation implements Activation {
+  private readonly amount: number
+  private readonly target: EventReceiver
+
+  constructor(target: EventReceiver, amount: number) {
+    this.amount = amount
+    this.target = target
+  }
+
+  activate() {
+    this.target.eventSink.emit('DAMAGE', this.amount)
+  }
+
+  getDescription(): string {
+    return `Lose ${this.amount} health`
+  }
+}
+
 export class GainConscienceActivation implements Activation {
   private readonly amount: number
   private readonly target: EventReceiver
