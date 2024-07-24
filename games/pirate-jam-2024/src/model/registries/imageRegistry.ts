@@ -15,4 +15,8 @@ export const ImageRegistry = {
   GOLD_CARD: 'gold_card',
   MEDICINE_CARD: 'medicine_card',
   CORPSE_CARD: 'corpse_card',
+
+  //statused
+  HOMUNCULUS_HEART: 'homunculus_heart',
+  TIME: 'time',
 } as const
