@@ -1,6 +1,7 @@
 import { DescribedTargettedMultipleActivation, type EventSink } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
+  DamageActivation,
   DecomposeCardActivation,
   FeedActivation,
   GainConscienceActivation,
@@ -90,21 +91,6 @@ export class CardDefinitionGenerator {
         },
       },
 
-      POISON: {
-        id: 'POISON',
-        name: 'Poison',
-        idleZoneEffect: {
-          homunculus: {
-            timeTillTrigger: 1,
-            effect: new DescribedTargettedMultipleActivation<CardModel>([
-              new GainHatredActivation(this.worldModel.homunculusModel, 3),
-              new FeedActivation(this.worldModel.homunculusModel, 1),
-              new DecomposeCardActivation(),
-            ]),
-          },
-        },
-      },
-
       MOLD: {
         id: 'MOLD',
         name: 'Mold',
@@ -153,6 +139,20 @@ export class CardDefinitionGenerator {
           any: {
             timeTillTrigger: 3,
             effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
+          },
+        },
+      },
+
+      POISON: {
+        id: 'POISON',
+        name: 'Poison',
+        idleZoneEffect: {
+          homunculus: {
+            timeTillTrigger: 1,
+            effect: new DescribedTargettedMultipleActivation([
+              new DamageActivation(this.worldModel.homunculusModel, 1),
+              new DecomposeCardActivation(),
+            ]),
           },
         },
       },
