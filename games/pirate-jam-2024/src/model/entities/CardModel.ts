@@ -71,11 +71,11 @@ export class CardModel implements TurnProcessor, CommonEntity {
   private findTriggeredActivations(): DescribedTargettedMultipleActivation<CardModel>[] {
     const relevantActivations: DescribedTargettedMultipleActivation<CardModel>[] = []
 
-    if (this.definition.idleZoneEffect.any?.timeTillTrigger <= this.turnsExisted) {
+    if (this.definition.idleZoneEffect?.any?.timeTillTrigger <= this.turnsExisted) {
       relevantActivations.push(this.definition.idleZoneEffect.any.effect)
     }
 
-    if (this.definition.idleZoneEffect[this.zone]?.timeTillTrigger <= this.turnsStayedInZone) {
+    if (this.definition.idleZoneEffect?.[this.zone]?.timeTillTrigger <= this.turnsStayedInZone) {
       relevantActivations.push(this.definition.idleZoneEffect[this.zone].effect)
     }
 
