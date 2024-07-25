@@ -98,8 +98,11 @@ export class BoardScene extends PotatoScene {
 
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
+      }
 
-        this.pointedZoneView.highlight()
+      if (this.pointedZoneView) {
+        this.pointedZoneView.unhighlight()
+        this.pointedZoneView = null
       }
     })
 
@@ -110,6 +113,7 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
       this.pointedZoneView = zone
+      this.pointedCardView = null
 
       for (const zone in this.worldModel.zones) {
         this.worldModel.zones[zone].unhighlight()
