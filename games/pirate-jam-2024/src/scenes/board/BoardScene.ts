@@ -94,10 +94,23 @@ export class BoardScene extends PotatoScene {
     })
 
     this.eventSink.on('CARD_HOVERED', (card: CardView) => {
+      if (this.pointedCardView) {
+        this.pointedCardView.unhighlight()
+      }
+
       this.pointedCardView = card
 
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
+
+        const canCombine =
+          this.draggedCardView.model.getActivationForCombinedCard(this.pointedCardView.model) ||
+          this.pointedCardView.model.getActivationForCombinedCard(this.draggedCardView.model)
+
+        if (canCombine) {
+          this.draggedCardView.highlight()
+          this.pointedCardView.highlight()
+        }
       }
 
       if (this.pointedZoneView) {
@@ -113,7 +126,11 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
       this.pointedZoneView = zone
-      this.pointedCardView = null
+
+      if (this.pointedCardView) {
+        this.pointedCardView.unhighlight()
+        this.pointedCardView = null
+      }
 
       for (const zone in this.worldModel.zones) {
         this.worldModel.zones[zone].unhighlight()
@@ -124,6 +141,7 @@ export class BoardScene extends PotatoScene {
         this.cardEffectView.showCardZoneEffect(this.draggedCardView, zone)
 
         this.pointedZoneView.highlight()
+        this.draggedCardView.unhighlight()
       }
     })
   }

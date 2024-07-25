@@ -122,7 +122,7 @@ export class CardView extends Container implements IdHolder {
       .setHeight(CardView.cardHeight)
       .build()
     this.cardFrameGlow.setAlpha(0)
-    this.cardFrameGlow.postFX.addGlow(0xffffff, 3, 0, true, 0.1, 15)
+    this.cardFrameGlow.postFX.addGlow(0x00cc20, 3, 0, true, 0.1, 15)
     this.cardMainSpriteContainer.add(this.cardFrameGlow)
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
