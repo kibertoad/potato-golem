@@ -180,6 +180,7 @@ export class CardDefinitionGenerator {
       MERCHANT: {
         id: 'MERCHANT',
         name: 'Merchant',
+        image: 'merchant_card',
         nonDraggable: true,
       },
 
