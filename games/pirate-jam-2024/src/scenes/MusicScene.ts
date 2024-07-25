@@ -82,6 +82,7 @@ export class MusicScene extends PotatoScene {
       return
     }
 
+    this.boardThemeIntro.volume = 0.4
     this.boardThemeIntro.play()
     this.boardThemeIntro.once('complete', () => {
       this.boardThemeLoop.play({
@@ -96,6 +97,7 @@ export class MusicScene extends PotatoScene {
     }
 
     this.boardThemeIntro.stop()
+    this.boardThemeIntro.volume = 0
     this.mainTheme.volume = 0.4
     this.mainTheme.play({
       loop: true,
