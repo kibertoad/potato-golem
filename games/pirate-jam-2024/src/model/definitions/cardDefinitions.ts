@@ -3,6 +3,7 @@ import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   DamageActivation,
   DecomposeCardActivation,
+  EatCardActivation,
   FeedActivation,
   GainConscienceActivation,
   GainHatredActivation,
@@ -129,7 +130,7 @@ export class CardDefinitionGenerator {
             effect: new DescribedTargettedMultipleActivation([
               new GainHealthActivation(this.worldModel.homunculusModel, 1),
               new FeedActivation(this.worldModel.homunculusModel, 1),
-              new DecomposeCardActivation(),
+              new EatCardActivation(),
             ]),
           },
         },
@@ -154,7 +155,7 @@ export class CardDefinitionGenerator {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation([
               new DamageActivation(this.worldModel.homunculusModel, 1),
-              new DecomposeCardActivation(),
+              new EatCardActivation(),
             ]),
           },
         },

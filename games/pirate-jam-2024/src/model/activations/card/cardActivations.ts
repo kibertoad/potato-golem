@@ -14,12 +14,25 @@ export class DecomposeCardActivation implements CardActivation {
   priority = LOW_PRIORITY
 
   async activate(targetCard: CardModel) {
-    await targetCard.view.playEatAnimation()
     targetCard.destroy()
   }
 
   getDescription(): string {
     return 'Remove card'
+  }
+}
+
+export class EatCardActivation implements CardActivation {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  async activate(targetCard: CardModel) {
+    await targetCard.view.playEatAnimation()
+    targetCard.destroy()
+  }
+
+  getDescription(): string {
+    return 'Remove card after eating animation'
   }
 }
 
