@@ -128,9 +128,9 @@ export class CardDefinitionGenerator {
           homunculus: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation([
+              new EatCardActivation(),
               new GainHealthActivation(this.worldModel.homunculusModel, 1),
               new FeedActivation(this.worldModel.homunculusModel, 1),
-              new EatCardActivation(),
             ]),
           },
         },
@@ -154,8 +154,8 @@ export class CardDefinitionGenerator {
           homunculus: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation([
-              new DamageActivation(this.worldModel.homunculusModel, 1),
               new EatCardActivation(),
+              new DamageActivation(this.worldModel.homunculusModel, 1),
             ]),
           },
         },

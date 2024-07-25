@@ -12,9 +12,11 @@ export class TargettedMultiplexActivation<Target> implements TargettedActivation
     this.priority = priority ?? AVERAGE_PRIORITY
   }
 
-  activate(target: Target) {
+  async activate(target: Target) {
     for (const activation of this.activations) {
-      activation.activate(target)
+      console.log('Activating', activation)
+      await activation.activate(target)
+      console.log('Activated', activation)
     }
   }
 
