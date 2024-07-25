@@ -160,7 +160,7 @@ export class BoardScene extends PotatoScene {
         this.destroyChildByModelId(entity.id)
       }
     })
-    this.eventBus.on('ZONE_CHANGED', (entity: CommonEntity, previousZone: Zone) => {
+    this.eventBus.on('MOVE', (entity: CommonEntity, previousZone: Zone) => {
       if (entity.type === EntityTypeRegistry.CARD) {
         this.worldModel.removeCardFromZone(previousZone, entity.id)
       }
