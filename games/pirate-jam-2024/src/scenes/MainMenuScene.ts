@@ -55,6 +55,12 @@ export class MainMenuScene extends PotatoScene {
     //statuses
     this.load.image(ImageRegistry.HOMUNCULUS_HEART, require('../../assets/img/small_heart.png'))
     this.load.image(ImageRegistry.TIME, require('../../assets/img/watch.png'))
+
+    //animations
+    this.load.image(ImageRegistry.CLOUD_1, require('../../assets/img/cloud_1.png'))
+    this.load.image(ImageRegistry.CLOUD_2, require('../../assets/img/cloud_2.png'))
+    this.load.image(ImageRegistry.CLOUD_3, require('../../assets/img/cloud_3.png'))
+    this.load.image(ImageRegistry.CLOUD_4, require('../../assets/img/cloud_4.png'))
   }
 
   create() {

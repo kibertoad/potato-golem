@@ -312,6 +312,18 @@ export class BoardScene extends PotatoScene {
   }
 
   create() {
+    this.anims.create({
+      key: 'poof',
+      frames: [
+        { key: ImageRegistry.CLOUD_3, duration: 40 },
+        { key: ImageRegistry.CLOUD_2, duration: 40 },
+        { key: ImageRegistry.CLOUD_1, duration: 40 },
+        { key: ImageRegistry.CLOUD_2 },
+        { key: ImageRegistry.CLOUD_3 },
+        { key: ImageRegistry.CLOUD_4 },
+      ],
+      frameRate: 24,
+    })
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
       .setPosition({

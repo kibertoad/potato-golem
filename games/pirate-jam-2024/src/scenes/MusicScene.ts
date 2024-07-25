@@ -48,6 +48,7 @@ export class MusicScene extends PotatoScene {
     this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
     this.load.audio(SfxRegistry.BITE_2, require('url:../../assets/sfx/bite_2.mp3'))
     this.load.audio(SfxRegistry.BITE_3, require('url:../../assets/sfx/bite_3.mp3'))
+    this.load.audio(SfxRegistry.POOF, require('url:../../assets/sfx/poof.mp3'))
   }
 
   create() {

@@ -43,6 +43,8 @@ export class CardView extends Container implements IdHolder {
   private readonly cardFrameGlow: Phaser.GameObjects.Sprite
   private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
 
+  private readonly cardPoofSprite: Phaser.GameObjects.Sprite
+
   /**
    * Card-specific image for the card
    */
@@ -180,6 +182,20 @@ export class CardView extends Container implements IdHolder {
       .setHeight(CardView.cardHeight)
       .build()
     this.cardMainSpriteContainer.add(this.cardFrameDecorSprite)
+
+    this.cardPoofSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.CLOUD_1)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardWidth)
+      .setHeight(CardView.cardHeight)
+      .build()
+    this.cardPoofSprite.setVisible(false)
+    this.cardPoofSprite.setScale(1.3)
+    this.add(this.cardPoofSprite)
 
     this.add(this.cardMainSpriteContainer)
 
@@ -333,6 +349,26 @@ export class CardView extends Container implements IdHolder {
     })
     this.cardEat2ShadowMaskImage.scaleX = this.cardShadowSprite.scaleX
     this.cardEat2ShadowMaskImage.scaleY = this.cardShadowSprite.scaleY
+  }
+
+  async playPoofAnimation() {
+    this.cardShadowSprite.setVisible(false)
+    this.cardMainSpriteContainer.setVisible(false)
+    this.cardPoofSprite.setVisible(true)
+    this.cardPoofSprite.once('animationcomplete', () => {
+      this.cardPoofSprite.setVisible(false)
+    })
+    this.cardPoofSprite.setAlpha(1)
+    await this.cardPoofSprite.play('poof')
+    this.scene.sound.play(SfxRegistry.POOF)
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 0,
+      delay: 60,
+      duration: 600,
+      ease: 'Cubic',
+    })
+    await delay(500)
   }
 
   async playEatAnimation(onEatenCallback?: () => void) {

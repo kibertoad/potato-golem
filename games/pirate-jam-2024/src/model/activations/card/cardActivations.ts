@@ -14,6 +14,7 @@ export class DecomposeCardActivation implements CardActivation {
   priority = LOW_PRIORITY
 
   async activate(targetCard: CardModel) {
+    await targetCard.view.playPoofAnimation()
     targetCard.destroy()
   }
 

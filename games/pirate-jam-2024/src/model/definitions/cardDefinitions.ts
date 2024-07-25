@@ -170,8 +170,8 @@ export class CardDefinitionGenerator {
           MERCHANT: {
             timeTillTrigger: 0,
             effect: new DescribedTargettedMultipleActivation([
-              new StartEventActivation('SHOPKEEPER', eventSink),
               new DecomposeCardActivation(),
+              new StartEventActivation('SHOPKEEPER', eventSink),
             ]),
           },
         },

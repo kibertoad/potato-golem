@@ -21,4 +21,10 @@ export const ImageRegistry = {
   //statuses
   HOMUNCULUS_HEART: 'homunculus_heart',
   TIME: 'time',
+
+  //animations
+  CLOUD_1: 'cloud_1',
+  CLOUD_2: 'cloud_2',
+  CLOUD_3: 'cloud_3',
+  CLOUD_4: 'cloud_4',
 } as const
