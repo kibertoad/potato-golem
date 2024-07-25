@@ -124,14 +124,22 @@ export class ZoneView implements IdHolder, Destroyable {
     this.zone = zone
   }
 
-  public findEmptySpawnPointFromMiddle(cardToStack?: CardView): number {
+  public findEmptySpawnPointFromMiddle(cardToStack: CardView): number {
     const middle = Math.floor(this.spawnPoints.length / 2)
 
     const stackedCardType = cardToStack.model.definition.id
-    if (
-      this.spawnPointCards[middle].length === 0 ||
-      (cardToStack && this.spawnPointCards[middle][0].model.definition.id === stackedCardType)
-    ) {
+    if (cardToStack) {
+      for (let i = 0; i < this.spawnPoints.length; i++) {
+        if (this.spawnPointCards[i].length === 0) {
+          continue
+        }
+        if (this.spawnPointCards[i][0].model.definition.id === stackedCardType) {
+          return i
+        }
+      }
+    }
+
+    if (this.spawnPointCards[middle].length === 0) {
       return middle
     }
 
@@ -139,19 +147,11 @@ export class ZoneView implements IdHolder, Destroyable {
       const left = middle - i
       const right = middle + i
 
-      if (
-        left >= 0 &&
-        (this.spawnPointCards[left].length === 0 ||
-          (cardToStack && this.spawnPointCards[left][0].model.definition.id === stackedCardType))
-      ) {
+      if (left >= 0 && this.spawnPointCards[left].length === 0) {
         return left
       }
 
-      if (
-        right < this.spawnPoints.length &&
-        (this.spawnPointCards[right].length === 0 ||
-          (cardToStack && this.spawnPointCards[right][0].model.definition.id === stackedCardType))
-      ) {
+      if (right < this.spawnPoints.length && this.spawnPointCards[right].length === 0) {
         return right
       }
     }
