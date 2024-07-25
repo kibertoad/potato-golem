@@ -234,14 +234,15 @@ export class BoardScene extends PotatoScene {
     this.draggedCardView = null
     this.cardEffectView.hide()
 
+    let wasCardActivated = false
+
     // we get here if we dropped card into a zone
     if (this.pointedZoneView) {
       this.pointedZoneView.unhighlight()
 
-      if (!cardView.model.changeZone(this.pointedZoneView.id)) {
-        cardView.cancelDrag()
-        this.zones[cardView.model.zone].reorderStackedCardDepths()
-      } else if (this.pointedZoneView.id === 'homunculus') {
+      wasCardActivated = cardView.model.changeZone(this.pointedZoneView.id)
+
+      if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
         // Every time we feed a homunculus, a day passes
         this.endTurnProcessor.processTurn()
       }
@@ -254,11 +255,20 @@ export class BoardScene extends PotatoScene {
       const combinationEffect = cardView.model.getActivationForCombinedCard(
         this.pointedCardView.model,
       )
-      cardView.model.combineWithCard(this.pointedCardView.model)
 
-      if (combinationEffect.timeTillTrigger === 0) {
-        combinationEffect.effect.activate(cardView.model)
+      if (combinationEffect) {
+        cardView.model.combineWithCard(this.pointedCardView.model)
+
+        if (combinationEffect.timeTillTrigger === 0) {
+          combinationEffect.effect.activate(cardView.model)
+        }
+        wasCardActivated = true
       }
+    }
+
+    if (!wasCardActivated) {
+      cardView.cancelDrag()
+      this.zones[cardView.model.zone].reorderStackedCardDepths()
     }
   }
 
