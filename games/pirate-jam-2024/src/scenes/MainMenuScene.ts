@@ -50,6 +50,7 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.GOLD_CARD, require('../../assets/img/card_gold.png'))
     this.load.image(ImageRegistry.MEDICINE_CARD, require('../../assets/img/card_medicine.png'))
     this.load.image(ImageRegistry.CORPSE_CARD, require('../../assets/img/card_corpse.png'))
+    this.load.image(ImageRegistry.MERCHANT_CARD, require('../../assets/img/card_merchant.png'))
 
     //statuses
     this.load.image(ImageRegistry.HOMUNCULUS_HEART, require('../../assets/img/small_heart.png'))
@@ -87,6 +88,9 @@ export class MainMenuScene extends PotatoScene {
     })
     buttonList.addButton('Settings')
     buttonList.addButton('Credits')
+
+    this.add.existing(buttonList.build())
+    // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
   }
 
   centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
