@@ -140,8 +140,12 @@ export class BoardScene extends PotatoScene {
       if (this.draggedCardView) {
         this.cardEffectView.showCardZoneEffect(this.draggedCardView, zone)
 
-        this.pointedZoneView.highlight()
-        this.draggedCardView.unhighlight()
+        // this.pointedZoneView.highlight()
+        if (this.draggedCardView.model.hasActivationForZone(zone.id)) {
+          this.draggedCardView.highlight()
+        } else {
+          this.draggedCardView.unhighlight()
+        }
       }
     })
   }
@@ -258,6 +262,7 @@ export class BoardScene extends PotatoScene {
     this.moveCardToTop(cardView)
   }
   onCardDragEnd(cardView: CardView) {
+    this.draggedCardView.unhighlight()
     this.draggedCardView = null
     this.cardEffectView.hide()
 

@@ -86,6 +86,10 @@ export class CardModel implements TurnProcessor, CommonEntity {
     return combinationEffect
   }
 
+  hasActivationForZone(zone: Zone): boolean {
+    return this.definition.idleZoneEffect?.[zone] !== undefined
+  }
+
   processTurn(): void {
     this.turnsExisted++
     this.turnsStayedInZone++
