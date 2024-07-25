@@ -56,8 +56,14 @@ export class CardModel implements TurnProcessor, CommonEntity {
       return false
     }
 
+    const previousZone = this.zone
+
     this.zone = zone
     this.turnsStayedInZone = 0
+
+    if (previousZone !== zone) {
+      this.parentEventSink.emit('ZONE_CHANGED', this, previousZone, this.zone)
+    }
 
     return true
   }

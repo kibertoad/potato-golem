@@ -47,7 +47,7 @@ export class ZoneView implements IdHolder, Destroyable {
     this.spawnPoints = params.spawnPoints
     this.stackDirection = params.stackDirection
 
-    for (const spawnPoint of this.spawnPoints) {
+    for (const _spawnPoint of this.spawnPoints) {
       this.spawnPointCards.push([])
     }
 
@@ -190,6 +190,18 @@ export class ZoneView implements IdHolder, Destroyable {
       let counter = 0
       for (const card of spawnPoint) {
         card.setDepth(DepthRegistry.CARD_MIN + counter++)
+      }
+    }
+  }
+
+  public removeCardById(cardId: string): void {
+    for (const spawnPoint of this.spawnPointCards) {
+      const card = spawnPoint.find((card) => card.model.id === cardId)
+      if (card) {
+        const index = spawnPoint.indexOf(card)
+        spawnPoint.splice(index, 1)
+        this.reorderStackedCardDepths()
+        return
       }
     }
   }

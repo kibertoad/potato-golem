@@ -61,7 +61,6 @@ export class BoardScene extends PotatoScene {
   private homunculus: HomunculusView
   private eventView: EventView
   private cardEffectView: CardEffectView
-  private zones: { string?: ZoneView } = {}
 
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
@@ -112,8 +111,8 @@ export class BoardScene extends PotatoScene {
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
       this.pointedZoneView = zone
 
-      for (const zone in this.zones) {
-        this.zones[zone].unhighlight()
+      for (const zone in this.worldModel.zones) {
+        this.worldModel.zones[zone].unhighlight()
       }
 
       // we get here in case we dragged card over a zone
@@ -143,6 +142,7 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home')
 
     this.addCard('GOLD', 'home')
+    this.addCard('GOLD', 'home')
     this.addCard('MERCHANT', 'streets')
 
     this.addCard('MEDICINE', 'lab')
@@ -154,6 +154,11 @@ export class BoardScene extends PotatoScene {
       if (entity.type === EntityTypeRegistry.CARD) {
         this.worldModel.removeCard(entity.id)
         this.destroyChildByModelId(entity.id)
+      }
+    })
+    this.eventBus.on('ZONE_CHANGED', (entity: CommonEntity, previousZone: Zone) => {
+      if (entity.type === EntityTypeRegistry.CARD) {
+        this.worldModel.removeCardFromZone(previousZone, entity.id)
       }
     })
 
@@ -172,7 +177,7 @@ export class BoardScene extends PotatoScene {
   createZone(zoneParams: ZoneViewParams) {
     const zoneView = new ZoneView(zoneParams, { boardEventSink: this.eventSink })
     this.addChildViewObject(zoneView)
-    this.zones[zoneParams.id] = zoneView
+    this.worldModel.zones[zoneParams.id] = zoneView
 
     return zoneView
   }
@@ -199,7 +204,7 @@ export class BoardScene extends PotatoScene {
     })
     this.worldModel.addCard(cardModel)
 
-    const zoneView = this.zones[zone]
+    const zoneView = this.worldModel.zones[zone]
 
     const cardView = new CardView(
       this,
@@ -268,7 +273,7 @@ export class BoardScene extends PotatoScene {
 
     if (!wasCardActivated) {
       cardView.cancelDrag()
-      this.zones[cardView.model.zone].reorderStackedCardDepths()
+      this.worldModel.zones[cardView.model.zone].reorderStackedCardDepths()
     }
   }
 
