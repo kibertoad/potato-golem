@@ -27,6 +27,7 @@ export type CardDefinition = {
   id: string
   name: string
   image?: ImageId
+  nonDraggable?: boolean
 
   // Effect that is triggered after card staying within a zone for a while
   idleZoneEffect?: Partial<Record<Zone, CardEffectDefinition>>
@@ -179,6 +180,7 @@ export class CardDefinitionGenerator {
       MERCHANT: {
         id: 'MERCHANT',
         name: 'Merchant',
+        nonDraggable: true,
       },
 
       MEDICINE: {

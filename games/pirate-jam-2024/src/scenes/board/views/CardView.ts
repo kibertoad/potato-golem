@@ -172,7 +172,7 @@ export class CardView extends Container implements IdHolder {
 
     this.cardFrameSprite
       .setInteractive({
-        draggable: true,
+        draggable: !this.model.definition.nonDraggable,
         pixelPerfect: false,
         alphaTolerance: undefined,
         useHandCursor: true,
