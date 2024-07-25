@@ -148,6 +148,8 @@ export class CardView extends Container implements IdHolder {
         .value.setDepth(DepthRegistry.CARD_MIN)
       this.title.setFontSize(40)
       this.title.setColor('#000000')
+      this.title.setAlign('center')
+      this.title.setText(this.title.getWrappedText().map((line) => line.trim()))
       this.cardMainSpriteContainer.add(this.title)
     }
 
