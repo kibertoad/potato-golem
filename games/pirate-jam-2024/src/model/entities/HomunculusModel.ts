@@ -8,8 +8,10 @@ import {
 import Phaser from 'phaser'
 import EventEmitter = Phaser.Events.EventEmitter
 
+export type HomunculusEvents = 'HEAL' | 'DAMAGE' | 'DEATH'
+
 export class HomunculusModel implements EventReceiver, HPHolder {
-  readonly eventSink: EventSource<'HEAL' | 'DAMAGE'> & EventSink<'HEAL' | 'DAMAGE'>
+  readonly eventSink: EventSource<HomunculusEvents> & EventSink<HomunculusEvents>
   readonly hp: LimitedNumber
 
   constructor() {
@@ -19,12 +21,19 @@ export class HomunculusModel implements EventReceiver, HPHolder {
     this.registerListeners()
   }
 
+  public reset() {
+    this.hp.setToMax()
+  }
+
   private registerListeners() {
     this.eventSink.on('HEAL', (amount: number) => {
       this.hp.increase(amount)
     })
     this.eventSink.on('DAMAGE', (amount: number) => {
       this.hp.decrease(amount)
+      if (this.hp.value <= 0) {
+        this.eventSink.emit('DEATH')
+      }
     })
   }
 }

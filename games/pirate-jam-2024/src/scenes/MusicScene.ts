@@ -61,10 +61,6 @@ export class MusicScene extends PotatoScene {
     this.boardThemeIntro.volume = 0.4
     this.boardThemeLoop = this.sound.add(MusicRegistry.BOARD_THEME_LOOP)
     this.boardThemeLoop.volume = 0.4
-
-    this.mainTheme.play({
-      loop: true,
-    })
   }
 
   public fadeOutMainTheme() {
@@ -91,6 +87,18 @@ export class MusicScene extends PotatoScene {
       this.boardThemeLoop.play({
         loop: true,
       })
+    })
+  }
+
+  public playMainTheme() {
+    if (!isMusicEnabled) {
+      return
+    }
+
+    this.boardThemeIntro.stop()
+    this.mainTheme.volume = 0.4
+    this.mainTheme.play({
+      loop: true,
     })
   }
 }

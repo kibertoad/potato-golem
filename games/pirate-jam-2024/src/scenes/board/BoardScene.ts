@@ -35,9 +35,12 @@ export type BoardSupportedEvents =
   | 'ZONE_HOVERED_OVER'
   | 'START_EVENT'
 
+import { TextBuilder } from '@potato-golem/ui'
+import { ChangeSceneActivation } from '@potato-golem/ui'
 import { zones } from '../../model/definitions/zoneDefinitions'
 import type { CardId } from '../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
+import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
@@ -156,6 +159,7 @@ export class BoardScene extends PotatoScene {
       eventDefinitionGenerator: this.eventDefinitionGenerator,
       boardEventSink: this.eventSink,
     })
+    this.worldModel.homunculusModel.reset()
     this.homunculus = new HomunculusView(this, { model: this.worldModel.homunculusModel })
     this.cardEffectView = new CardEffectView(this, {
       cardDefinitions: this.cardDefinitions,
@@ -173,6 +177,8 @@ export class BoardScene extends PotatoScene {
 
     this.addCard('MEDICINE', 'lab')
     this.addCard('MEDICINE', 'lab')
+    this.addCard('POISON', 'lab')
+    this.addCard('POISON', 'lab')
     this.addCard('POISON', 'lab')
     this.addCard('POISON', 'lab')
 
@@ -304,6 +310,79 @@ export class BoardScene extends PotatoScene {
     }
   }
 
+  async gameOver(text: string) {
+    const container = new Phaser.GameObjects.Container(this)
+    container.setDepth(DepthRegistry.GAME_OVER)
+
+    var backdrop = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
+    backdrop.setInteractive({
+      draggable: false,
+      pixelPerfect: false,
+      alphaTolerance: undefined,
+      useHandCursor: false,
+    })
+    backdrop.alpha = 0.001
+    backdrop.setDepth(DepthRegistry.GAME_OVER)
+    container.add(backdrop)
+
+    const title = TextBuilder.instance(this)
+      .setPosition({
+        x: 1280,
+        y: 720,
+      })
+      .setOrigin(0.5, 0.5)
+      .setText(text)
+      .setDisplaySize(1200, 15)
+      .build()
+      .value.setDepth(DepthRegistry.CARD_MIN)
+
+    title.setFontSize(120)
+    title.setColor('#FFFFFF')
+    title.setAlign('center')
+    title.setFontFamily('Arial')
+    title.setText(title.getWrappedText().map((line) => line.trim()))
+    title.setLineSpacing(20)
+    title.setLetterSpacing(2)
+    title.alpha = 0
+    title.scaleY = 0.87
+
+    container.add(title)
+
+    this.add.existing(container)
+
+    this.tweens.add({
+      targets: backdrop,
+      alpha: 1,
+      delay: 0,
+      duration: 600,
+      ease: 'Cubic',
+    })
+    this.tweens.add({
+      targets: title,
+      alpha: 1,
+      delay: 1000,
+      duration: 6000,
+      ease: 'Cubic',
+    })
+    this.tweens.add({
+      targets: title,
+      scaleX: 2,
+      scaleY: 0.87 * 2,
+      delay: 1000,
+      duration: 80000,
+      ease: 'Cubic',
+    })
+    this.tweens.add({
+      targets: title,
+      alpha: 0,
+      delay: 7000,
+      duration: 600,
+      ease: 'Cubic',
+    })
+    await delay(8000)
+    ChangeSceneActivation.build(this, Scenes.MAIN_MENU_SCENE)()
+  }
+
   preload() {}
 
   update() {
@@ -339,5 +418,9 @@ export class BoardScene extends PotatoScene {
 
     this.globalPositionLabel = createGlobalPositionLabel(this)
     this.globalTrackerLabel = createGlobalTrackerLabel(this)
+
+    this.worldModel.homunculusModel.eventSink.on('DEATH', () => {
+      this.gameOver('Homunculus\nis dead')
+    })
   }
 }
