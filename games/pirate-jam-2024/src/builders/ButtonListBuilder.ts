@@ -1,4 +1,4 @@
-import type Phaser from 'phaser'
+import Phaser from 'phaser'
 
 interface ButtonListBuilderConfig {
   textureKey: string
@@ -21,6 +21,7 @@ export class ButtonListBuilder {
   private distance: number
   private orientation: 'vertical' | 'horizontal'
   private buttons: Phaser.GameObjects.Container[]
+  private container: Phaser.GameObjects.Container
   private currentX: number
   private currentY: number
   private hoverTint: number
@@ -35,6 +36,7 @@ export class ButtonListBuilder {
     this.distance = config.distance || 10
     this.orientation = config.orientation || 'vertical'
     this.buttons = []
+    this.container = new Phaser.GameObjects.Container(this.scene)
     this.currentX = this.position.x
     this.currentY = this.position.y
     this.hoverTint = config.hoverTint || 0xffff00 // Default hover tint to yellow
@@ -57,7 +59,7 @@ export class ButtonListBuilder {
       .setOrigin(0.5, 0.5)
 
     // Create container for button and text
-    const container = this.scene.add.container(this.currentX, this.currentY, [
+    const container = new Phaser.GameObjects.Container(this.scene, this.currentX, this.currentY, [
       buttonImage,
       buttonText,
     ])
@@ -91,6 +93,11 @@ export class ButtonListBuilder {
 
     // Store button container
     this.buttons.push(container)
+    this.container.add(container)
+  }
+
+  build(): Phaser.GameObjects.Container {
+    return this.container
   }
 
   hide(): void {

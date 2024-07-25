@@ -58,7 +58,7 @@ export class EventView extends Container {
 
     this.setX(0)
     this.setY(0)
-    this.setDepth(100)
+    this.setDepth(DepthRegistry.EVENT)
 
     /*
     this.backSlice = this.scene.add.nineslice(
@@ -146,7 +146,6 @@ export class EventView extends Container {
     this.add(this.eventText)
 
     this.buttonList = new ButtonListBuilder(this.scene, {
-      depth: 100,
       distance: 20,
       height: 50,
       width: 400,
@@ -165,5 +164,7 @@ export class EventView extends Container {
         option.effect.activate()
       })
     }
+
+    this.add(this.buttonList.build())
   }
 }
