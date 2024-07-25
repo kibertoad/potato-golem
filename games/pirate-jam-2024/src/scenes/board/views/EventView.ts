@@ -20,9 +20,6 @@ import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 
-const EVENT_WINDOW_X = 100
-const EVENT_WINDOW_Y = 100
-
 const EVENT_WINDOW_WIDTH = 1024
 const EVENT_WINDOW_HEIGHT = 520
 
@@ -39,6 +36,8 @@ export class EventView extends Container {
   readonly eventDefinitions: EventDefinitions
 
   private currentEvent: EventDefinition
+
+  private windowContainer: Container
 
   private readonly background: Sprite
   private buttonList: ButtonListBuilder
@@ -78,21 +77,39 @@ export class EventView extends Container {
     this.add(this.backSlice)
      */
 
+    var backdrop = new Phaser.GameObjects.Rectangle(scene, 1280, 720, 2560, 1440, 0, 0.5)
+    backdrop.setInteractive({
+      draggable: false,
+      pixelPerfect: false,
+      alphaTolerance: undefined,
+      useHandCursor: false,
+    })
+    this.add(backdrop)
+
+    this.windowContainer = new Phaser.GameObjects.Container(
+      scene,
+      1280 - EVENT_WINDOW_WIDTH / 2,
+      720 - EVENT_WINDOW_HEIGHT / 2,
+    )
+    this.windowContainer.width = EVENT_WINDOW_WIDTH
+    this.windowContainer.height = EVENT_WINDOW_HEIGHT
+
     this.background = SpriteBuilder.instance(this.potatoScene)
       .setTextureKey(ImageRegistry.EVENTS_BACKGROUND)
-      .setPosition({
-        x: EVENT_WINDOW_X,
-        y: EVENT_WINDOW_Y,
-      })
-      .setDepth(DepthRegistry.EVENT_BACKGROUND)
       .setDimensions({
         width: EVENT_WINDOW_WIDTH,
         height: EVENT_WINDOW_HEIGHT,
       })
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
       .build()
     this.hide()
 
-    this.add(this.background)
+    this.windowContainer.add(this.background)
+    this.add(this.windowContainer)
+
     this.scene.add.existing(this)
 
     this.registerListeners()
@@ -135,15 +152,32 @@ export class EventView extends Container {
     }
 
     const textStyle = {
+      padding: {
+        x: 30,
+        y: 30,
+      },
       fontFamily: 'Arial', // Customize the font
-      fontSize: '24px', // Customize the text size
+      fontSize: '30px', // Customize the text size
       color: '#ffffff', // Customize the text color
+      shadow: {
+        offsetX: 2,
+        offsetY: 2,
+        color: '#00000088',
+        blur: 3,
+        stroke: true,
+        fill: true,
+      },
       wordWrap: { width: EVENT_WINDOW_WIDTH - 30, useAdvancedWrap: true }, // Enable word wrap and set the width
     }
 
     // Create the text object with auto-wrap
-    this.eventText = this.potatoScene.add.text(130, 150, this.currentEvent.description, textStyle)
-    this.add(this.eventText)
+    this.eventText = this.potatoScene.add.text(
+      0,
+      0,
+      this.currentEvent.description.trim(),
+      textStyle,
+    )
+    this.windowContainer.add(this.eventText)
 
     this.buttonList = new ButtonListBuilder(this.scene, {
       distance: 20,
@@ -152,8 +186,8 @@ export class EventView extends Container {
       orientation: 'vertical',
       hoverTint: 0x66ff7f,
       position: {
-        x: EVENT_WINDOW_X + EVENT_WINDOW_WIDTH - 450,
-        y: EVENT_WINDOW_Y + EVENT_WINDOW_HEIGHT - 275,
+        x: EVENT_WINDOW_WIDTH - 450,
+        y: EVENT_WINDOW_HEIGHT - 275,
       },
       textureKey: ImageRegistry.GLASS_PANEL,
     })
@@ -165,6 +199,6 @@ export class EventView extends Container {
       })
     }
 
-    this.add(this.buttonList.build())
+    this.windowContainer.add(this.buttonList.build())
   }
 }

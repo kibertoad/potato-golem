@@ -48,7 +48,7 @@ export class CardEffectView extends Container {
     this.add(this.effectDescriptionText)
 
     this.setPosition(100, 100)
-    this.setDepth(DepthRegistry.EVENT_BACKGROUND)
+    this.setDepth(DepthRegistry.EVENT)
     this.setVisible(false)
 
     this.scene.add.existing(this)
