@@ -174,20 +174,20 @@ export class BoardScene extends PotatoScene {
 
     this.initZones()
 
-    this.addCard('HEALTH', 'home')
-    this.addCard('HEALTH', 'home')
-    this.addCard('HEALTH', 'home')
+    this.addCard('HEALTH', 'home', 'none')
+    this.addCard('HEALTH', 'home', 'none')
+    this.addCard('HEALTH', 'home', 'none')
 
-    this.addCard('GOLD', 'home')
-    this.addCard('GOLD', 'home')
-    this.addCard('MERCHANT', 'streets')
+    this.addCard('GOLD', 'home', 'none')
+    this.addCard('GOLD', 'home', 'none')
+    this.addCard('MERCHANT', 'streets', 'none')
 
-    this.addCard('MEDICINE', 'lab')
-    this.addCard('MEDICINE', 'lab')
-    this.addCard('POISON', 'lab')
-    this.addCard('POISON', 'lab')
-    this.addCard('POISON', 'lab')
-    this.addCard('POISON', 'lab')
+    this.addCard('MEDICINE', 'lab', 'none')
+    this.addCard('MEDICINE', 'lab', 'none')
+    this.addCard('POISON', 'lab', 'none')
+    this.addCard('POISON', 'lab', 'none')
+    this.addCard('POISON', 'lab', 'none')
+    this.addCard('POISON', 'lab', 'none')
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {

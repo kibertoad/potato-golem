@@ -30,7 +30,7 @@ export type CardViewDependencies = {
   boardEventSink: EventSink<BoardSupportedEvents>
 }
 
-export type SpawnAnimation = 'fly_in_right' | 'fly_in_left' | 'fly_in_top' | 'fly_in_bottom'
+export type SpawnAnimation = 'none' | 'fly_in_left' | 'pop_in'
 
 const textOffsetX = 35
 const textOffsetY = 5
@@ -400,6 +400,10 @@ export class CardView extends Container implements IdHolder {
 
   async playAnimation(animation?: SpawnAnimation) {
     if (!animation) {
+      animation = 'pop_in'
+    }
+
+    if (animation === 'none') {
       return
     }
 
@@ -414,6 +418,23 @@ export class CardView extends Container implements IdHolder {
         ease: 'Back.easeOut',
       })
       await delay(500)
+      return
     }
+
+    //pop_in is the default animation
+    this.setAlpha(0)
+    this.scale = 0.2
+    this.scene.tweens.add({
+      targets: this,
+      scale: 1,
+      duration: 400,
+      ease: 'Back.easeOut',
+    })
+    this.scene.tweens.add({
+      targets: this,
+      alpha: 1,
+      duration: 200,
+      ease: 'Cubic',
+    })
   }
 }
