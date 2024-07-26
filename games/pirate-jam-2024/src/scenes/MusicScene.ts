@@ -66,6 +66,7 @@ export class MusicScene extends PotatoScene {
   public stopAll() {
     this.boardThemeLoop.stop()
     this.boardThemeIntro.stop()
+    this.boardThemeIntro.off()
     this.mainTheme.stop()
     this.gameOver.stop()
   }
