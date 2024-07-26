@@ -424,5 +424,6 @@ export class BoardScene extends PotatoScene {
     this.worldModel.homunculusModel.eventSink.on('DEATH', () => {
       this.gameOver('Homunculus\nis dead')
     })
+    this.musicScene.playBoardTheme()
   }
 }

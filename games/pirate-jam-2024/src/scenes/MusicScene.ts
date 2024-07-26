@@ -1,33 +1,16 @@
 import { PotatoScene } from '@potato-golem/ui'
-import type Phaser from 'phaser'
 
-import { MusicRegistry } from '../model/registries/musicRegistry'
+import { Howl } from 'howler'
 import { SfxRegistry } from '../model/registries/sfxRegistry'
 import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = true
 
 export class MusicScene extends PotatoScene {
-  private mainTheme:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
-  private boardTheme:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
-  private boardThemeIntro:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
-  private boardThemeLoop:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
-  private gameOver:
-    | Phaser.Sound.NoAudioSound
-    | Phaser.Sound.HTML5AudioSound
-    | Phaser.Sound.WebAudioSound
+  private mainTheme: Howl
+  private boardThemeIntro: Howl
+  private boardThemeLoop: Howl
+  private gameOver: Howl
 
   constructor() {
     super({
@@ -37,21 +20,24 @@ export class MusicScene extends PotatoScene {
   }
 
   preload() {
-    if (isMusicEnabled) {
-      this.load.audio(MusicRegistry.MAIN_THEME, require('url:../../assets/music/bg_draft.mp3'))
-      this.load.audio(
-        MusicRegistry.BOARD_THEME_INTRO,
-        require('url:../../assets/music/board_theme_intro.ogg'),
-      )
-      this.load.audio(
-        MusicRegistry.BOARD_THEME_LOOP,
-        require('url:../../assets/music/board_theme_loop.ogg'),
-      )
-      this.load.audio(
-        MusicRegistry.GAME_OVER,
-        require('url:../../assets/music/game_over_short.ogg'),
-      )
-    }
+    this.mainTheme = new Howl({
+      src: require('url:../../assets/music/bg_draft.mp3'),
+      loop: true,
+    })
+    this.mainTheme.volume(0.4)
+    this.boardThemeIntro = new Howl({
+      src: require('url:../../assets/music/board_theme_intro.ogg'),
+    })
+    this.boardThemeIntro.volume(0.4)
+    this.boardThemeLoop = new Howl({
+      src: require('url:../../assets/music/board_theme_loop.ogg'),
+      loop: true,
+    })
+    this.boardThemeLoop.volume(0.4)
+    this.gameOver = new Howl({
+      src: require('url:../../assets/music/game_over_short.ogg'),
+    })
+    this.gameOver.volume(0.4)
 
     this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
     this.load.audio(SfxRegistry.BITE_2, require('url:../../assets/sfx/bite_2.mp3'))
@@ -59,32 +45,11 @@ export class MusicScene extends PotatoScene {
     this.load.audio(SfxRegistry.POOF, require('url:../../assets/sfx/poof.mp3'))
   }
 
-  create() {
-    if (!isMusicEnabled) {
-      return
-    }
-    this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME)
-    this.mainTheme.volume = 0.4
-    this.boardThemeIntro = this.sound.add(MusicRegistry.BOARD_THEME_INTRO)
-    this.boardThemeIntro.volume = 0.4
-    this.boardThemeLoop = this.sound.add(MusicRegistry.BOARD_THEME_LOOP)
-    this.boardThemeLoop.volume = 0.4
-    this.gameOver = this.sound.add(MusicRegistry.GAME_OVER)
-    this.gameOver.volume = 0.4
-  }
-
-  public fadeOutMainTheme() {
-    if (!isMusicEnabled) {
-      return
-    }
-    this.tweens.add({
-      targets: this.mainTheme,
-      volume: 0,
-      duration: 100,
-      onComplete: () => {
-        this.mainTheme.stop()
-      },
-    })
+  public stopAll() {
+    this.boardThemeLoop.stop()
+    this.boardThemeIntro.stop()
+    this.mainTheme.stop()
+    this.gameOver.stop()
   }
 
   public playBoardTheme() {
@@ -92,13 +57,11 @@ export class MusicScene extends PotatoScene {
       return
     }
 
-    this.boardThemeIntro.volume = 0.4
-    this.gameOver.stop()
+    this.stopAll()
+
     this.boardThemeIntro.play()
-    this.boardThemeIntro.once('complete', () => {
-      this.boardThemeLoop.play({
-        loop: true,
-      })
+    this.boardThemeIntro.once('end', () => {
+      this.boardThemeLoop.play()
     })
   }
 
@@ -107,23 +70,16 @@ export class MusicScene extends PotatoScene {
       return
     }
 
-    this.gameOver.stop()
-    this.boardThemeIntro.stop()
-    this.boardThemeIntro.volume = 0
-    this.mainTheme.volume = 0.4
-    this.mainTheme.play({
-      loop: true,
-    })
+    this.stopAll()
+    this.mainTheme.play()
   }
 
   public playGameOver() {
     if (!isMusicEnabled) {
       return
     }
-    this.boardThemeLoop.stop()
-    this.boardThemeIntro.stop()
-    this.mainTheme.stop()
-    this.gameOver.volume = 0.4
+
+    this.stopAll()
     this.gameOver.play()
   }
 }

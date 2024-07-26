@@ -90,15 +90,13 @@ export class MainMenuScene extends PotatoScene {
 
     buttonList.addButton('Play', () => {
       ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
-      this.musicScene.fadeOutMainTheme()
-      this.musicScene.playBoardTheme()
     })
     buttonList.addButton('Settings')
     buttonList.addButton('Credits')
 
     this.add.existing(buttonList.build())
     // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
-    setTimeout(() => this.musicScene.playMainTheme(), 400)
+    this.musicScene.playMainTheme()
   }
 
   centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
