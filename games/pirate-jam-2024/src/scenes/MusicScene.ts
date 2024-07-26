@@ -21,7 +21,7 @@ export class MusicScene extends PotatoScene {
 
   preload() {
     this.mainTheme = new Howl({
-      src: require('url:../../assets/music/bg_draft.mp3'),
+      src: require('url:../../assets/music/main_menu.ogg'),
       loop: true,
     })
     this.mainTheme.volume(0.4)
