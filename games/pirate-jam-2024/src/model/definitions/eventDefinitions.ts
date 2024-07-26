@@ -17,6 +17,8 @@ export type EventOption = {
 }
 
 export type EventDefinition = {
+  id: string
+  playableByDirector?: boolean // default is false
   name: string
   description: string
   image: ImageId
@@ -39,6 +41,7 @@ export class EventDefinitionGenerator {
   generateDefinitions(eventSink: EventSink<EventEventId>) {
     return {
       INTRO: {
+        id: 'INTRO',
         name: 'And so it begins',
         description: '[insert description of how homunculus began],',
         image: 'medicine_card',
@@ -67,7 +70,47 @@ export class EventDefinitionGenerator {
         ],
       },
 
+      PATROL: {
+        id: 'PATROL',
+        name: 'To serve and protect',
+        playableByDirector: true,
+        description: 'Suddenly a random group of law enforcement folks appear.',
+        image: 'merchant_card',
+        options: [
+          {
+            text: 'The world will pay for this',
+            effect: new MultiplexActivation([
+              new SpawnCardActivation(eventSink, {
+                zone: 'streets',
+                cardId: 'THE_LAW',
+              }),
+              new SpawnCardActivation(eventSink, {
+                zone: 'home',
+                cardId: 'ANGER',
+              }),
+              new ConcludeEventActivation(eventSink),
+            ]),
+          },
+
+          {
+            text: 'I deserved this',
+            effect: new MultiplexActivation([
+              new SpawnCardActivation(eventSink, {
+                zone: 'streets',
+                cardId: 'THE_LAW',
+              }),
+              new SpawnCardActivation(eventSink, {
+                zone: 'home',
+                cardId: 'HUMILITY',
+              }),
+              new ConcludeEventActivation(eventSink),
+            ]),
+          },
+        ],
+      },
+
       SHOPKEEPER: {
+        id: 'SHOPKEEPER',
         name: 'Shopkeeper',
         description: `
 "Ah, good day to you, sir!" the shopkeeper exclaims, his voice rich and warm, carrying the 

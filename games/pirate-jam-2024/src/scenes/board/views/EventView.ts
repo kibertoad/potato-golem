@@ -77,7 +77,7 @@ export class EventView extends Container {
     this.add(this.backSlice)
      */
 
-    var backdrop = new Phaser.GameObjects.Rectangle(scene, 1280, 720, 2560, 1440, 0, 0.5)
+    const backdrop = new Phaser.GameObjects.Rectangle(scene, 1280, 720, 2560, 1440, 0, 0.5)
     backdrop.setInteractive({
       draggable: false,
       pixelPerfect: false,

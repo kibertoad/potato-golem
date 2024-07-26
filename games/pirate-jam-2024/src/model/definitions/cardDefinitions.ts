@@ -230,7 +230,6 @@ export class CardDefinitionGenerator {
         name: 'The Rough Kind',
         nonDraggable: true,
       },
-
     } as const satisfies Record<string, CardDefinition>
   }
 }

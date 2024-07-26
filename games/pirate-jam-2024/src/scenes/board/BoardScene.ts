@@ -38,6 +38,7 @@ export type BoardSupportedEvents =
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
 import { zones } from '../../model/definitions/zoneDefinitions'
+import { EventDirector } from '../../model/processors/EventDirector'
 import type { CardId } from '../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { delay } from '../../utils/timeUtils'
@@ -55,7 +56,10 @@ export class BoardScene extends PotatoScene {
   private globalTrackerLabel: Phaser.GameObjects.Text
 
   private backgroundImage: Sprite
+
   private readonly endTurnProcessor: EndTurnProcessor
+  private eventDirector!: EventDirector
+
   private readonly cardDefinitionGenerator: CardDefinitionGenerator
   private cardDefinitions: CardDefinitions
 
@@ -82,11 +86,12 @@ export class BoardScene extends PotatoScene {
 
     this.musicScene = musicScene
     this.worldModel = worldModel
-    this.endTurnProcessor = endTurnProcessor
 
     this.eventDefinitionGenerator = eventDefinitionGenerator
     this.eventSink = new EventEmitter()
     this.cardDefinitions = cardDefinitionGenerator.generateDefinitions(this.eventSink)
+
+    this.endTurnProcessor = endTurnProcessor
 
     this.registerListeners()
   }
@@ -159,6 +164,8 @@ export class BoardScene extends PotatoScene {
       eventDefinitionGenerator: this.eventDefinitionGenerator,
       boardEventSink: this.eventSink,
     })
+    this.eventDirector = new EventDirector(this.eventView.eventDefinitions, this.eventSink)
+
     this.worldModel.homunculusModel.reset()
     this.homunculus = new HomunculusView(this, { model: this.worldModel.homunculusModel })
     this.cardEffectView = new CardEffectView(this, {
@@ -282,7 +289,7 @@ export class BoardScene extends PotatoScene {
 
       if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
         // Every time we feed a homunculus, a day passes
-        this.endTurnProcessor.processTurn()
+        this.nextTurn()
       }
     }
 
@@ -310,11 +317,16 @@ export class BoardScene extends PotatoScene {
     }
   }
 
+  nextTurn() {
+    this.endTurnProcessor.processTurn()
+    this.eventDirector.processTurn()
+  }
+
   async gameOver(text: string) {
     const container = new Phaser.GameObjects.Container(this)
     container.setDepth(DepthRegistry.GAME_OVER)
 
-    var backdrop = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
+    const backdrop = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
     backdrop.setInteractive({
       draggable: false,
       pixelPerfect: false,

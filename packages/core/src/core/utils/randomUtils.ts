@@ -22,8 +22,7 @@ export function normalizedRandom(maxValue: number) {
 
 /**
  * Return a random element from the array
- * @param items
  */
-export function randomOneOf<T>(items: T[]): T {
+export function randomOneOf<T>(items: readonly T[]): T {
   return items[(items.length * Math.random()) | 0]
 }

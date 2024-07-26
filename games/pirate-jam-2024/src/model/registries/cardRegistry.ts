@@ -13,4 +13,9 @@ export const CardRegistry = {
   GOLD: 'GOLD',
   MERCHANT: 'MERCHANT',
   MEDICINE: 'MEDICINE',
+  BLACK_WIDOW: 'BLACK_WIDOW',
+  SURGEON: 'SURGEON',
+  THE_RAID: 'THE_RAID',
+  THE_LAW: 'THE_LAW',
+  THE_ROUGH_KIND: 'THE_ROUGH_KIND',
 } as const

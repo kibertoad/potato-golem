@@ -124,6 +124,7 @@ export class ZoneView implements IdHolder, Destroyable {
     this.zone = zone
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   public findEmptySpawnPointFromMiddle(cardToStack: CardView): number {
     const middle = Math.floor(this.spawnPoints.length / 2)
 
