@@ -22,22 +22,22 @@ export class MusicScene extends PotatoScene {
   preload() {
     this.mainTheme = new Howl({
       src: require('url:../../assets/music/main_menu.ogg'),
+      volume: 0.4,
       loop: true,
     })
-    this.mainTheme.volume(0.4)
     this.boardThemeIntro = new Howl({
       src: require('url:../../assets/music/board_theme_intro.ogg'),
+      volume: 0.4,
     })
-    this.boardThemeIntro.volume(0.4)
     this.boardThemeLoop = new Howl({
       src: require('url:../../assets/music/board_theme_loop.ogg'),
       loop: true,
+      volume: 0.4,
     })
-    this.boardThemeLoop.volume(0.4)
     this.gameOver = new Howl({
       src: require('url:../../assets/music/game_over_short.ogg'),
+      volume: 0.4,
     })
-    this.gameOver.volume(0.4)
 
     this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
     this.load.audio(SfxRegistry.BITE_2, require('url:../../assets/sfx/bite_2.mp3'))
