@@ -1,4 +1,5 @@
 import type { Activation, EventSink } from '@potato-golem/core'
+import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 
@@ -7,6 +8,7 @@ export type EventEventId = (typeof EVENT_EVENTS)[keyof typeof EVENT_EVENTS]
 export type SpawnCardMessage = {
   cardId: CardId
   zone: Zone
+  spawnAnimation?: SpawnAnimation
 }
 
 export const EVENT_EVENTS = {

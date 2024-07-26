@@ -30,6 +30,8 @@ export type CardViewDependencies = {
   boardEventSink: EventSink<BoardSupportedEvents>
 }
 
+export type SpawnAnimation = 'fly_in_right' | 'fly_in_left' | 'fly_in_top' | 'fly_in_bottom'
+
 const textOffsetX = 35
 const textOffsetY = 5
 
@@ -394,5 +396,24 @@ export class CardView extends Container implements IdHolder {
 
     await delay(300)
     this.scene.sound.play(biteSounds[2])
+  }
+
+  async playAnimation(animation?: SpawnAnimation) {
+    if (!animation) {
+      return
+    }
+
+    if (animation === 'fly_in_left') {
+      const currentX = this.x
+      this.x = 3000
+
+      this.scene.tweens.add({
+        targets: this,
+        x: currentX,
+        duration: 500,
+        ease: 'Back.easeOut',
+      })
+      await delay(500)
+    }
   }
 }

@@ -83,6 +83,7 @@ export class EventDefinitionGenerator {
               new SpawnCardActivation(eventSink, {
                 zone: 'streets',
                 cardId: 'THE_LAW',
+                spawnAnimation: 'fly_in_left',
               }),
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
@@ -98,6 +99,7 @@ export class EventDefinitionGenerator {
               new SpawnCardActivation(eventSink, {
                 zone: 'streets',
                 cardId: 'THE_LAW',
+                spawnAnimation: 'fly_in_left',
               }),
               new SpawnCardActivation(eventSink, {
                 zone: 'home',

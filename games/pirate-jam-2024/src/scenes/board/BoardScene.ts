@@ -11,7 +11,7 @@ import type { Dependencies } from '../../model/diConfig'
 import { CardModel } from '../../model/entities/CardModel'
 import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
-import { CardView } from './views/CardView'
+import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity, EventSink, EventSource } from '@potato-golem/core'
 import type {
@@ -98,7 +98,7 @@ export class BoardScene extends PotatoScene {
 
   private registerListeners() {
     this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
-      this.addCard(event.cardId, event.zone)
+      this.addCard(event.cardId, event.zone, event.spawnAnimation)
     })
 
     this.eventSink.on('CARD_HOVERED', (card: CardView) => {
@@ -235,7 +235,7 @@ export class BoardScene extends PotatoScene {
     cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length - 1)
   }
 
-  addCard(cardId: CardId, zone: Zone) {
+  addCard(cardId: CardId, zone: Zone, spawnAnimation?: SpawnAnimation) {
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
       zone: zone,
@@ -264,6 +264,8 @@ export class BoardScene extends PotatoScene {
     zoneView.addCard(cardView)
     this.cards.push(cardView)
     this.addChildViewObject(cardView)
+
+    cardView.playAnimation(spawnAnimation)
   }
 
   onCardDragStart(cardView: CardView) {
