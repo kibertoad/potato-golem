@@ -6,6 +6,8 @@ import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = true
 
+const musicVolume = 0.4
+
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl
   private boardThemeIntro: Howl
@@ -22,21 +24,21 @@ export class MusicScene extends PotatoScene {
   preload() {
     this.mainTheme = new Howl({
       src: require('url:../../assets/music/main_menu.ogg'),
-      volume: 0.4,
+      volume: musicVolume,
       loop: true,
     })
     this.boardThemeIntro = new Howl({
       src: require('url:../../assets/music/board_theme_intro.ogg'),
-      volume: 0.4,
+      volume: musicVolume,
     })
     this.boardThemeLoop = new Howl({
       src: require('url:../../assets/music/board_theme_loop.ogg'),
       loop: true,
-      volume: 0.4,
+      volume: musicVolume,
     })
     this.gameOver = new Howl({
       src: require('url:../../assets/music/game_over_short.ogg'),
-      volume: 0.4,
+      volume: musicVolume,
     })
 
     this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
@@ -62,6 +64,7 @@ export class MusicScene extends PotatoScene {
     this.boardThemeIntro.play()
     this.boardThemeIntro.once('end', () => {
       this.boardThemeLoop.play()
+      this.boardThemeLoop.volume(musicVolume)
     })
   }
 
