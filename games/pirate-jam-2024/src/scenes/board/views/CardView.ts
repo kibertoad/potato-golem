@@ -211,7 +211,7 @@ export class CardView extends Container implements IdHolder {
         draggable: !this.model.definition.nonDraggable,
         pixelPerfect: false,
         alphaTolerance: undefined,
-        useHandCursor: true,
+        useHandCursor: !this.model.definition.nonDraggable,
       })
       .on('dragstart', (pointer, _dragX, _dragY) => {
         this.positionBeforeDrag.x = this.x
