@@ -21,7 +21,20 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
         x: 2410,
         y: 340 + 390 * 2,
       },
+      {
+        x: 2410 - 310,
+        y: 524,
+      },
+      {
+        x: 2410 - 310,
+        y: 524 + 390,
+      },
+      {
+        x: 2410 - 310 * 2,
+        y: 524 + 184,
+      },
     ],
+    cardStartingSpawnPoint: 1,
     vertices: [
       { x: 2560, y: 0 },
       { x: 1282, y: 720 },

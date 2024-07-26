@@ -15,6 +15,7 @@ export type ZoneViewParams = {
   stackDirection: StackDirection
   debug?: boolean
   debugColor?: number
+  cardStartingSpawnPoint?: number //Card spawn point index which will be used as a starting point for stacking cards
 }
 
 export type ZoneDependencies = {
@@ -38,9 +39,12 @@ export class ZoneView implements IdHolder, Destroyable {
 
   private readonly stackDirection: StackDirection
 
+  private readonly cardStartingSpawnPoint?: number
+
   constructor(params: ZoneViewParams, dependencies: ZoneDependencies) {
     this.id = params.id
     this.boardEventSink = dependencies.boardEventSink
+    this.cardStartingSpawnPoint = params.cardStartingSpawnPoint
 
     // Create a Polygon
     const polygon = new Phaser.Geom.Polygon(params.vertices)
@@ -125,8 +129,9 @@ export class ZoneView implements IdHolder, Destroyable {
   }
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-  public findEmptySpawnPointFromMiddle(cardToStack: CardView): number {
-    const middle = Math.floor(this.spawnPoints.length / 2)
+  public findEmptySpawnPointOnTheSides(cardToStack?: CardView): number {
+    const startingPoint = this.cardStartingSpawnPoint ?? Math.floor(this.spawnPoints.length / 2)
+    const iterations = this.spawnPoints.length - startingPoint - 1
 
     const stackedCardType = cardToStack.model.definition.id
     if (cardToStack) {
@@ -140,13 +145,13 @@ export class ZoneView implements IdHolder, Destroyable {
       }
     }
 
-    if (this.spawnPointCards[middle].length === 0) {
-      return middle
+    if (this.spawnPointCards[startingPoint].length === 0) {
+      return startingPoint
     }
 
-    for (let i = 1; i <= middle; i++) {
-      const left = middle - i
-      const right = middle + i
+    for (let i = 1; i <= iterations; i++) {
+      const left = startingPoint - i
+      const right = startingPoint + i
 
       if (left >= 0 && this.spawnPointCards[left].length === 0) {
         return left
@@ -162,7 +167,7 @@ export class ZoneView implements IdHolder, Destroyable {
 
   public addCard(cardView: CardView) {
     //pick random spawn point from zone
-    const spawnPointIndex = this.findEmptySpawnPointFromMiddle(cardView)
+    const spawnPointIndex = this.findEmptySpawnPointOnTheSides(cardView)
     const spawnPoint = this.spawnPoints[spawnPointIndex]
 
     switch (this.stackDirection) {
