@@ -177,13 +177,6 @@ export class CardDefinitionGenerator {
         },
       },
 
-      MERCHANT: {
-        id: 'MERCHANT',
-        name: 'Merchant',
-        image: 'merchant_card',
-        nonDraggable: true,
-      },
-
       MEDICINE: {
         id: 'MEDICINE',
         name: 'Medicne',
@@ -198,6 +191,46 @@ export class CardDefinitionGenerator {
           },
         },
       },
+
+      // People
+
+      MERCHANT: {
+        id: 'MERCHANT',
+        name: 'Merchant',
+        image: 'merchant_card',
+        nonDraggable: true,
+      },
+
+      BLACK_WIDOW: {
+        id: 'BLACK_WIDOW',
+        name: 'Black Widow',
+        nonDraggable: true,
+      },
+
+      SURGEON: {
+        id: 'SURGEON',
+        name: 'Surgeon',
+        nonDraggable: true,
+      },
+
+      THE_RAID: {
+        id: 'THE_RAID',
+        name: 'The Raid',
+        nonDraggable: true,
+      },
+
+      THE_LAW: {
+        id: 'THE_LAW',
+        name: 'The Law',
+        nonDraggable: true,
+      },
+
+      THE_ROUGH_KIND: {
+        id: 'THE_ROUGH_KIND',
+        name: 'The Rough Kind',
+        nonDraggable: true,
+      },
+
     } as const satisfies Record<string, CardDefinition>
   }
 }
