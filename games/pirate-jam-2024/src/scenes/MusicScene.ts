@@ -23,20 +23,24 @@ export class MusicScene extends PotatoScene {
 
   preload() {
     this.mainTheme = new Howl({
+      preload: true,
       src: require('url:../../assets/music/main_menu.ogg'),
       volume: musicVolume,
       loop: true,
     })
     this.boardThemeIntro = new Howl({
+      preload: true,
       src: require('url:../../assets/music/board_theme_intro.ogg'),
       volume: musicVolume,
     })
     this.boardThemeLoop = new Howl({
+      preload: true,
       src: require('url:../../assets/music/board_theme_loop.ogg'),
       loop: true,
       volume: musicVolume,
     })
     this.gameOver = new Howl({
+      preload: true,
       src: require('url:../../assets/music/game_over_short.ogg'),
       volume: musicVolume,
     })
