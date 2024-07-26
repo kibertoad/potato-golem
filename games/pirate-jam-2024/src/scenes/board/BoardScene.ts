@@ -350,6 +350,8 @@ export class BoardScene extends PotatoScene {
 
     this.add.existing(container)
 
+    this.musicScene.playGameOver()
+
     this.tweens.add({
       targets: backdrop,
       alpha: 1,
@@ -376,10 +378,10 @@ export class BoardScene extends PotatoScene {
       targets: title,
       alpha: 0,
       delay: 7000,
-      duration: 600,
+      duration: 2000,
       ease: 'Cubic',
     })
-    await delay(8000)
+    await delay(10000)
     ChangeSceneActivation.build(this, Scenes.MAIN_MENU_SCENE)()
   }
 

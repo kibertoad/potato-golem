@@ -5,7 +5,7 @@ import { MusicRegistry } from '../model/registries/musicRegistry'
 import { SfxRegistry } from '../model/registries/sfxRegistry'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = false
+const isMusicEnabled = true
 
 export class MusicScene extends PotatoScene {
   private mainTheme:
@@ -21,6 +21,10 @@ export class MusicScene extends PotatoScene {
     | Phaser.Sound.HTML5AudioSound
     | Phaser.Sound.WebAudioSound
   private boardThemeLoop:
+    | Phaser.Sound.NoAudioSound
+    | Phaser.Sound.HTML5AudioSound
+    | Phaser.Sound.WebAudioSound
+  private gameOver:
     | Phaser.Sound.NoAudioSound
     | Phaser.Sound.HTML5AudioSound
     | Phaser.Sound.WebAudioSound
@@ -43,6 +47,10 @@ export class MusicScene extends PotatoScene {
         MusicRegistry.BOARD_THEME_LOOP,
         require('url:../../assets/music/board_theme_loop.ogg'),
       )
+      this.load.audio(
+        MusicRegistry.GAME_OVER,
+        require('url:../../assets/music/game_over_short.ogg'),
+      )
     }
 
     this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
@@ -61,6 +69,8 @@ export class MusicScene extends PotatoScene {
     this.boardThemeIntro.volume = 0.4
     this.boardThemeLoop = this.sound.add(MusicRegistry.BOARD_THEME_LOOP)
     this.boardThemeLoop.volume = 0.4
+    this.gameOver = this.sound.add(MusicRegistry.GAME_OVER)
+    this.gameOver.volume = 0.4
   }
 
   public fadeOutMainTheme() {
@@ -83,6 +93,7 @@ export class MusicScene extends PotatoScene {
     }
 
     this.boardThemeIntro.volume = 0.4
+    this.gameOver.stop()
     this.boardThemeIntro.play()
     this.boardThemeIntro.once('complete', () => {
       this.boardThemeLoop.play({
@@ -96,11 +107,23 @@ export class MusicScene extends PotatoScene {
       return
     }
 
+    this.gameOver.stop()
     this.boardThemeIntro.stop()
     this.boardThemeIntro.volume = 0
     this.mainTheme.volume = 0.4
     this.mainTheme.play({
       loop: true,
     })
+  }
+
+  public playGameOver() {
+    if (!isMusicEnabled) {
+      return
+    }
+    this.boardThemeLoop.stop()
+    this.boardThemeIntro.stop()
+    this.mainTheme.stop()
+    this.gameOver.volume = 0.4
+    this.gameOver.play()
   }
 }
