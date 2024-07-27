@@ -22,7 +22,7 @@ import type { BoardSupportedEvents } from '../BoardScene'
 export type CardViewParams = {
   model: CardModel
   onDragStart?: (card: CardView) => void
-  onDragEnd?: (card: CardView) => void
+  onDragEnd?: (card: CardView) => boolean | void
 } & Position
 
 export type CardViewDependencies = {
@@ -248,6 +248,7 @@ export class CardView extends Container implements IdHolder {
         if (params.onDragStart) {
           params.onDragStart(this)
         }
+        this.playRandomCardSound()
       })
       .on('drag', (pointer, dragX, dragY) => {
         //Disable input events on the card so that it does not block pointer events for zones
@@ -292,14 +293,23 @@ export class CardView extends Container implements IdHolder {
           duration: 200,
           ease: 'Cubic',
         })
-        if (params.onDragEnd) {
-          params.onDragEnd(this)
+        if (params.onDragEnd && params.onDragEnd(this) !== true) {
+          //We want to play the sound only if card was not activated
+          this.playRandomCardSound()
         }
       })
       .on('pointerover', () => {
         console.log(this.model.id, 'card was hovered over')
         this.boardEventSink.emit('CARD_HOVERED', this)
       })
+  }
+
+  playRandomCardSound() {
+    const cardSounds = [SfxRegistry.CARD_1, SfxRegistry.CARD_2, SfxRegistry.CARD_3]
+
+    this.scene.sound.play(cardSounds[Math.floor(Math.random() * cardSounds.length)], {
+      volume: 0.4,
+    })
   }
 
   cancelDrag() {

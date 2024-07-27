@@ -57,10 +57,41 @@ export class MusicScene extends PotatoScene {
       volume: musicVolume,
     })
 
-    this.load.audio(SfxRegistry.BITE_1, require('url:../../assets/sfx/bite_1.mp3'))
-    this.load.audio(SfxRegistry.BITE_2, require('url:../../assets/sfx/bite_2.mp3'))
-    this.load.audio(SfxRegistry.BITE_3, require('url:../../assets/sfx/bite_3.mp3'))
-    this.load.audio(SfxRegistry.POOF, require('url:../../assets/sfx/poof.mp3'))
+    this.load.audio(
+      SfxRegistry.CARD_1,
+      [require('url:../../assets/sfx/card_1.ogg'), require('url:../../assets/sfx/card_1.aac')],
+      {
+        volume: 0.5,
+      },
+    )
+    this.load.audio(SfxRegistry.CARD_2, [
+      require('url:../../assets/sfx/card_2.ogg'),
+      require('url:../../assets/sfx/card_2.aac'),
+    ])
+    this.load.audio(SfxRegistry.CARD_3, [
+      require('url:../../assets/sfx/card_3.ogg'),
+      require('url:../../assets/sfx/card_3.aac'),
+    ])
+    this.load.audio(SfxRegistry.CARD_4, [
+      require('url:../../assets/sfx/card_4.ogg'),
+      require('url:../../assets/sfx/card_4.aac'),
+    ])
+    this.load.audio(SfxRegistry.BITE_1, [
+      require('url:../../assets/sfx/bite_1.ogg'),
+      require('url:../../assets/sfx/bite_1.aac'),
+    ])
+    this.load.audio(SfxRegistry.BITE_2, [
+      require('url:../../assets/sfx/bite_2.ogg'),
+      require('url:../../assets/sfx/bite_2.aac'),
+    ])
+    this.load.audio(SfxRegistry.BITE_3, [
+      require('url:../../assets/sfx/bite_3.ogg'),
+      require('url:../../assets/sfx/bite_3.aac'),
+    ])
+    this.load.audio(SfxRegistry.POOF, [
+      require('url:../../assets/sfx/poof.ogg'),
+      require('url:../../assets/sfx/poof.aac'),
+    ])
   }
 
   public stopAll() {

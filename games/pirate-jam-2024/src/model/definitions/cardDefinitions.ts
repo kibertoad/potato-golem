@@ -5,7 +5,8 @@ import {
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
-  DamageActivation, DecomposeBothCardsActivation,
+  DamageActivation,
+  DecomposeBothCardsActivation,
   DecomposeCardActivation,
   EatCardActivation,
   FeedActivation,
