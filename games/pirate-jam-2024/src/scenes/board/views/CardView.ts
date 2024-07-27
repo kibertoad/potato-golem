@@ -399,15 +399,13 @@ export class CardView extends Container implements IdHolder {
   }
 
   async playAnimation(animation?: SpawnAnimation) {
-    if (!animation) {
-      animation = 'pop_in'
-    }
+    const resolvedAnimation = animation ?? 'pop_in'
 
-    if (animation === 'none') {
+    if (resolvedAnimation === 'none') {
       return
     }
 
-    if (animation === 'fly_in_left') {
+    if (resolvedAnimation === 'fly_in_left') {
       const currentX = this.x
       this.x = 3000
 

@@ -1,24 +1,22 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import type { EventSink, EventSource } from '@potato-golem/core'
-import type {
-  EventEventId,
-} from '../../../model/activations/event/eventActivations'
+import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
+import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
+import type { EventEventId } from '../../../model/activations/event/eventActivations'
 import {
-  eventDefinitions,
   type EventDefinition,
   type EventDefinitions,
   type EventId,
+  eventDefinitions,
 } from '../../../model/definitions/eventDefinitions'
-import type { WorldModel } from '../../../model/state/WorldModel'
-import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
-import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import type { WorldModel } from '../../../model/state/WorldModel'
 import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
+import type { SpawnCardMessage } from '../../../model/activations/event/extraEventActivations'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EventEmitters } from '../../../model/registries/eventEmitterRegistry'
-import type { SpawnCardMessage } from '../../../model/activations/event/extraEventActivations'
 
 const EVENT_WINDOW_WIDTH = 1024
 const EVENT_WINDOW_HEIGHT = 520

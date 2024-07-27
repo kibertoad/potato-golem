@@ -78,6 +78,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
     }
 
     const combinationEffect = this.definition.cardCombinationEffect?.[combinedCard.definition.id]
+      ?? combinedCard.definition.cardCombinationEffect?.[this.definition.id]
 
     if (!combinationEffect) {
       return undefined

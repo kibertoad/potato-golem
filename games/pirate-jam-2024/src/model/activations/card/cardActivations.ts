@@ -26,6 +26,24 @@ export class DecomposeCardActivation implements CardActivation, DynamicDescripti
   }
 }
 
+export class DecomposeBothCardsActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  async activate(targetCard: CardModel) {
+    await Promise.all([targetCard.view.playPoofAnimation(),
+      targetCard.combinedCard.view.playPoofAnimation()
+    ])
+
+    targetCard.destroy()
+    targetCard.combinedCard.destroy()
+  }
+
+  getDescription(): string {
+    return 'Consume both cards'
+  }
+}
+
 export class EatCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY

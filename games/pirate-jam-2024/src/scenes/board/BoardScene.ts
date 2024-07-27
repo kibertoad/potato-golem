@@ -14,10 +14,8 @@ import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
-import {
-  cardDefinitions,
-  type CardDefinitions,
-} from '../../model/definitions/cardDefinitions'
+import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
+import { type CardDefinitions, cardDefinitions } from '../../model/definitions/cardDefinitions'
 import type { EventId } from '../../model/definitions/eventDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
@@ -25,7 +23,6 @@ import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
 import { EventView } from './views/EventView'
-import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
 
 export type BoardSupportedEvents =
   | typeof EVENT_EVENTS.SPAWN_CARD
@@ -37,16 +34,16 @@ export type BoardSupportedEvents =
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
+import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 import { zones } from '../../model/definitions/zoneDefinitions'
 import { EventDirector } from '../../model/processors/EventDirector'
 import type { CardId } from '../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
+import { EventEmitters } from '../../model/registries/eventEmitterRegistry'
 import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
-import { EventEmitters } from '../../model/registries/eventEmitterRegistry'
-import { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 
 const debug = true
 
@@ -75,11 +72,7 @@ export class BoardScene extends PotatoScene {
 
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
-  constructor({
-    musicScene,
-    worldModel,
-    endTurnProcessor,
-  }: Dependencies) {
+  constructor({ musicScene, worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
     this.musicScene = musicScene

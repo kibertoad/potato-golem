@@ -17,4 +17,5 @@ export const CardRegistry = {
   THE_RAID: 'THE_RAID',
   THE_LAW: 'THE_LAW',
   THE_ROUGH_KIND: 'THE_ROUGH_KIND',
+  EXPLOSIVES: 'EXPLOSIVES',
 } as const

@@ -68,8 +68,8 @@ export class CardEffectView extends Container {
 
   private resolveTimeString(timeTillTrigger: number): string {
     return timeTillTrigger > 0
-        ? `In ${timeTillTrigger} ${timeTillTrigger === 1 ? 'turn' : 'turns'} \n `
-        : ''
+      ? `In ${timeTillTrigger} ${timeTillTrigger === 1 ? 'turn' : 'turns'} \n `
+      : ''
   }
 
   showCardCombinationEffect(sourceCardView: CardView, targetCardView: CardView) {

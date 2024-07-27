@@ -3,7 +3,7 @@ import { MainMenuScene } from '../scenes/MainMenuScene'
 import { MusicScene } from '../scenes/MusicScene'
 import { BoardScene } from '../scenes/board/BoardScene'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
-import { worldModel, type WorldModel } from './state/WorldModel'
+import { type WorldModel, worldModel } from './state/WorldModel'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = Record<keyof Dependencies, Resolver<any>>
