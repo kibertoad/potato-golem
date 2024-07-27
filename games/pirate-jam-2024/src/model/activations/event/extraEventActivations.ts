@@ -1,8 +1,11 @@
-import type { EventSink, StaticDescriptionHolder } from '@potato-golem/core'
+import { type EventSink, LOW_PRIORITY, type StaticDescriptionHolder } from '@potato-golem/core'
+import type { Activation } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
+import { cardDefinitions } from '../../definitions/cardDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
+import type { CardActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
 
 export type SpawnCardMessage = {
@@ -14,7 +17,9 @@ export type SpawnCardMessage = {
   sourceCard?: CardModel
 }
 
-export class SpawnCardActivation implements CardActivation, StaticDescriptionHolder {
+export class SpawnCardActivation implements Activation, CardActivation, StaticDescriptionHolder {
+  priority: number = LOW_PRIORITY
+
   private readonly cardId: CardId
   private readonly zone: Zone
   private readonly spawnAnimation?: SpawnAnimation
@@ -31,7 +36,7 @@ export class SpawnCardActivation implements CardActivation, StaticDescriptionHol
     this.amount = params.amount ?? 1
   }
 
-  activate(targetCard: CardModel) {
+  activate(targetCard?: CardModel) {
     this.eventSink.emit('spawn_card', {
       cardId: this.cardId,
       sourceCard: targetCard,
@@ -40,5 +45,9 @@ export class SpawnCardActivation implements CardActivation, StaticDescriptionHol
       description: this.description,
       amount: this.amount,
     } satisfies SpawnCardMessage)
+  }
+
+  getDescription(): string {
+    return `Get 1 ${cardDefinitions[this.cardId].name}`
   }
 }
