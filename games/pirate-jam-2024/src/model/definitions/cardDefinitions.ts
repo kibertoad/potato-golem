@@ -132,6 +132,20 @@ export const cardDefinitions = {
             spawnAnimation: 'pop_in',
           }),
         ]),
+      },
+
+      THE_LAW: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+        ]),
+      },
+
+      THE_RAID: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+        ]),
       }
     }
   },
