@@ -1,4 +1,4 @@
-import { DescribedTargettedMultipleActivation, type EventSink } from '@potato-golem/core'
+import { DescribedTargettedMultipleActivation, type EventSink, QueuedActivation } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   DamageActivation,
@@ -7,7 +7,7 @@ import {
   FeedActivation,
   GainConscienceActivation,
   GainHatredActivation,
-  GainHealthActivation,
+  GainHealthActivation, QueueActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
@@ -172,6 +172,17 @@ export class CardDefinitionGenerator {
             effect: new DescribedTargettedMultipleActivation([
               new DecomposeCardActivation(),
               new StartEventActivation('SHOPKEEPER', eventSink),
+              new QueueActivation(eventSink, new QueuedActivation({
+                id: 'SPAWN_ROUGH_KIND',
+                unique: true,
+                description: 'May attract attention',
+                activatesIn: 1,
+                activation: new SpawnCardActivation(eventSink, {
+                  zone: 'streets',
+                  cardId: 'THE_ROUGH_KIND',
+                  spawnAnimation: 'pop_in',
+                })
+              }))
             ]),
           },
         },

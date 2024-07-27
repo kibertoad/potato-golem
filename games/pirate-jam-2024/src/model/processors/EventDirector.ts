@@ -2,7 +2,7 @@ import {
   type EventSink,
   type TurnProcessor,
   normalizedRandom,
-  randomOneOf,
+  randomOneOf, type QueuedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
@@ -11,6 +11,9 @@ export class EventDirector implements TurnProcessor {
   private readonly eventsPlayed: Partial<Record<EventId, number>> = {}
   private readonly eventDefinitions: EventDefinitions
   private readonly eventSink: EventSink<BoardSupportedEvents>
+
+  private readonly queuedActivations: QueuedActivation[] = []
+
   private counterTillNextEvent: number
 
   constructor(eventDefinitions: EventDefinitions, eventSink: EventSink<BoardSupportedEvents>) {
@@ -23,7 +26,33 @@ export class EventDirector implements TurnProcessor {
     this.counterTillNextEvent = normalizedRandom(5)
   }
 
+  addQueuedActivation(activation: QueuedActivation) {
+    if (activation.unique) {
+      if (this.queuedActivations.some((entry) => entry.id === activation.id)) {
+        return
+      }
+    }
+
+    this.queuedActivations.push(activation)
+  }
+
   processTurn(): void {
+    this.processQueuedActivations()
+    this.processRandomEvents()
+  }
+
+  private processQueuedActivations() {
+    while (this.queuedActivations.length > 0) {
+      const nextActivation = this.queuedActivations[0]
+      const isReady = nextActivation.processTime(1)
+      if (isReady) {
+        nextActivation.activate()
+        this.queuedActivations.shift()
+      }
+    }
+  }
+
+  private processRandomEvents() {
     this.counterTillNextEvent--
     if (this.counterTillNextEvent > 0) {
       return

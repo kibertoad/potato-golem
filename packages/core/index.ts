@@ -26,6 +26,7 @@ export {
   globalEventEmitter,
 } from './src/core/messages/EventBus'
 export type {
+  StaticDescriptionHolder,
   DynamicDescriptionHolder,
   DynamicDescriptionsHolder,
   Destroyable,
@@ -36,3 +37,4 @@ export type {
   CommonView,
   CommonEntity,
 } from './src/core/interfaces/Entities'
+export { QueuedActivation, type QueuedActivationParams } from './src/core/activations/commonActivations'

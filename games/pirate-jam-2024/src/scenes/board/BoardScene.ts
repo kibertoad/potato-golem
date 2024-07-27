@@ -13,7 +13,7 @@ import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CommonEntity, EventSink, EventSource } from '@potato-golem/core'
+import { Activation, CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
 import type {
   CardDefinitionGenerator,
   CardDefinitions,
@@ -34,6 +34,7 @@ export type BoardSupportedEvents =
   | 'CARD_DRAGGED_OVER_CARD'
   | 'ZONE_HOVERED_OVER'
   | 'START_EVENT'
+  | 'QUEUE_ACTIVATION'
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
@@ -130,6 +131,10 @@ export class BoardScene extends PotatoScene {
     this.eventSink.on('START_EVENT', (eventId: EventId) => {
       this.eventView.setToEvent(eventId)
       this.eventView.show()
+    })
+
+    this.eventSink.on('QUEUE_ACTIVATION', (activation: QueuedActivation) => {
+      this.eventDirector.addQueuedActivation(activation)
     })
 
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {

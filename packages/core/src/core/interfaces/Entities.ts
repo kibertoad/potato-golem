@@ -1,4 +1,4 @@
-import { LimitedNumber } from '../primitives/LimitedNumber'
+import type { LimitedNumber } from '../primitives/LimitedNumber'
 import type { EventSink } from '../messages/EventBus'
 
 export interface IdHolder {
@@ -11,6 +11,10 @@ export interface HPHolder {
 
 export interface DynamicDescriptionHolder {
   getDescription(): string
+}
+
+export interface StaticDescriptionHolder {
+  description: string
 }
 
 export interface DynamicDescriptionsHolder {

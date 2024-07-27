@@ -1,15 +1,15 @@
 import {
-  type Activation,
+  type Activation, type DynamicDescriptionHolder,
   type EventReceiver,
   type EventSink,
-  LOW_PRIORITY,
+  LOW_PRIORITY, type QueuedActivation, type StaticDescriptionHolder,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardActivation } from './CardActivation'
 
-export class DecomposeCardActivation implements CardActivation {
+export class DecomposeCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY
 
@@ -23,7 +23,7 @@ export class DecomposeCardActivation implements CardActivation {
   }
 }
 
-export class EatCardActivation implements CardActivation {
+export class EatCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY
 
@@ -37,7 +37,7 @@ export class EatCardActivation implements CardActivation {
   }
 }
 
-export class GainHealthActivation implements Activation {
+export class GainHealthActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -55,7 +55,7 @@ export class GainHealthActivation implements Activation {
   }
 }
 
-export class DamageActivation implements Activation {
+export class DamageActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -73,7 +73,7 @@ export class DamageActivation implements Activation {
   }
 }
 
-export class GainConscienceActivation implements Activation {
+export class GainConscienceActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -91,7 +91,7 @@ export class GainConscienceActivation implements Activation {
   }
 }
 
-export class GainHatredActivation implements Activation {
+export class GainHatredActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -109,7 +109,7 @@ export class GainHatredActivation implements Activation {
   }
 }
 
-export class FeedActivation implements Activation {
+export class FeedActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -127,7 +127,23 @@ export class FeedActivation implements Activation {
   }
 }
 
-export class StartEventActivation implements Activation {
+export class QueueActivation implements Activation, StaticDescriptionHolder {
+  private readonly activation: QueuedActivation
+  private readonly eventSink: EventSink<BoardSupportedEvents>
+  readonly description: string
+
+  constructor(eventSink: EventSink<BoardSupportedEvents>, activation: QueuedActivation) {
+    this.activation = activation
+    this.eventSink = eventSink
+    this.description = activation.description ?? ''
+  }
+
+  activate() {
+    this.eventSink.emit('QUEUE_ACTIVATION', this.activation)
+}
+}
+
+export class StartEventActivation implements Activation, DynamicDescriptionHolder {
   private readonly eventId: EventId
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
