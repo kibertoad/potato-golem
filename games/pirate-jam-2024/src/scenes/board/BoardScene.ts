@@ -89,7 +89,7 @@ export class BoardScene extends PotatoScene {
   private registerListeners() {
     this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
       for (let x = 0; x < event.amount; x++) {
-        this.addCard(event.cardId, event.zone, event.spawnAnimation)
+        this.addCard(event.cardId, event.zone, event.spawnAnimation, event.sourceCard)
       }
     })
 
@@ -240,7 +240,7 @@ export class BoardScene extends PotatoScene {
     cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length - 1)
   }
 
-  addCard(cardId: CardId, zone: Zone, spawnAnimation?: SpawnAnimation) {
+  addCard(cardId: CardId, zone: Zone, spawnAnimation?: SpawnAnimation, sourceCard?: CardModel) {
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
       zone: zone,
@@ -270,6 +270,12 @@ export class BoardScene extends PotatoScene {
     this.cards.push(cardView)
     this.addChildViewObject(cardView)
 
+    if (sourceCard) {
+      cardView.animateMoveFrom({
+        x: sourceCard.view.x,
+        y: sourceCard.view.y,
+      })
+    }
     cardView.playAnimation(spawnAnimation)
   }
 

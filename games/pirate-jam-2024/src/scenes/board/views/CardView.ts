@@ -407,6 +407,21 @@ export class CardView extends Container implements IdHolder {
     this.scene.sound.play(biteSounds[2])
   }
 
+  async animateMoveFrom(moveFromPosition: Position) {
+    const currentX = this.x
+    const currentY = this.y
+    this.x = moveFromPosition.x
+    this.y = moveFromPosition.y
+    this.scene.tweens.add({
+      targets: this,
+      x: currentX,
+      y: currentY,
+      duration: 300,
+      ease: 'Cubic',
+    })
+    await delay(300)
+  }
+
   async playAnimation(animation?: SpawnAnimation) {
     const resolvedAnimation = animation ?? 'pop_in'
 
