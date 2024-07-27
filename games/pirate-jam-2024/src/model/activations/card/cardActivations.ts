@@ -31,8 +31,9 @@ export class DecomposeBothCardsActivation implements CardActivation, DynamicDesc
   priority = LOW_PRIORITY
 
   async activate(targetCard: CardModel) {
-    await Promise.all([targetCard.view.playPoofAnimation(),
-      targetCard.combinedCard.view.playPoofAnimation()
+    await Promise.all([
+      targetCard.view.playPoofAnimation(),
+      targetCard.combinedCard.view.playPoofAnimation(),
     ])
 
     targetCard.destroy()

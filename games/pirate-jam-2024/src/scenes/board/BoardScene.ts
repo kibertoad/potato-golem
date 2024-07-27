@@ -310,6 +310,8 @@ export class BoardScene extends PotatoScene {
       cardView.cancelDrag()
       this.worldModel.zones[cardView.model.zone].reorderStackedCardDepths()
     }
+
+    return wasCardActivated
   }
 
   nextTurn() {
