@@ -75,9 +75,9 @@ export const cardDefinitions = {
     },
   },
 
-  ABSYNTHE: {
-    id: 'ABSYNTHE',
-    name: 'Absynthe',
+  ABSINTHE: {
+    id: 'ABSINTHE',
+    name: 'Absinthe',
     image: 'booze_card',
     idleZoneEffect: {
       homunculus: {
@@ -96,7 +96,7 @@ export const cardDefinitions = {
     name: 'Mold',
     cardCombinationEffect: {
       ALCHEMICAL_SUPPLIES: {
-        timeTillTrigger: 2,
+        timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(eventSink, {
             cardId: 'EXPLOSIVES', // replace with explosives
