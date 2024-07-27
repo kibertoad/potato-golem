@@ -116,17 +116,16 @@ export class CardView extends Container implements IdHolder {
     this.add(this.cardShadowSprite)
 
     this.cardFrameGlow = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.CARD_FRAME)
+      .setTextureKey(ImageRegistry.CARD_GLOW)
       .setPosition({
         x: 0,
         y: 0,
       })
       .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardWidth)
-      .setHeight(CardView.cardHeight)
+      .setWidth(CardView.cardWidth + 20)
+      .setHeight(CardView.cardHeight + 20)
       .build()
     this.cardFrameGlow.setAlpha(0)
-    this.cardFrameGlow.postFX.addGlow(0x00cc20, 3, 0, true, 0.1, 15)
     this.cardMainSpriteContainer.add(this.cardFrameGlow)
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)

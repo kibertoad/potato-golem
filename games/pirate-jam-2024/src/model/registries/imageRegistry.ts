@@ -4,6 +4,7 @@ export const ImageRegistry = {
   ROCKET: 'rocket',
   BOARD_BACKGROUND: 'board_background',
   CARD_FRAME: 'card_frame',
+  CARD_GLOW: 'card_glow',
   CARD_FRAME_DECOR: 'card_frame_decor',
   CARD_FRAME_EAT: 'card_frame_eat',
   CARD_FRAME_EAT_2: 'card_frame_eat_2',
