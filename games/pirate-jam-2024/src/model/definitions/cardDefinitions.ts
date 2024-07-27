@@ -117,6 +117,12 @@ export class CardDefinitionGenerator {
         },
       },
 
+      ALCHEMICAL_SUPPLIES: {
+        id: 'ALCHEMICAL_SUPPLIES',
+        image: 'alchemical_supplies_card',
+        name: 'Alchemical supplies',
+      },
+
       HEALTH: {
         id: 'HEALTH',
         name: 'Health',

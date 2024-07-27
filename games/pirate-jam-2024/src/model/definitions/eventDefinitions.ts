@@ -136,29 +136,22 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
-                cardId: 'ABSYNTHE',
+                cardId: 'ABSINTHE',
+              }),
+              new SpawnCardActivation(eventSink, {
+                zone: 'home',
+                cardId: 'ABSINTHE',
               }),
               new ConcludeEventActivation(eventSink),
             ]),
           },
 
           {
-            text: 'Buy a Bunsen burner',
+            text: 'Buy some alchemical supplies',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
                 zone: 'home',
-                cardId: 'BUNSEN_BURNER',
-              }),
-              new ConcludeEventActivation(eventSink),
-            ]),
-          },
-
-          {
-            text: 'Buy an alembic',
-            effect: new MultiplexActivation([
-              new SpawnCardActivation(eventSink, {
-                zone: 'home',
-                cardId: 'ALEMBIC',
+                cardId: 'ALCHEMICAL_SUPPLIES',
               }),
               new ConcludeEventActivation(eventSink),
             ]),
