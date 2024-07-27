@@ -189,7 +189,15 @@ export class BoardScene extends PotatoScene {
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
         this.worldModel.removeCard(entity.id)
+        this.removeCardByUuid(entity.id)
         this.destroyChildByModelId(entity.id)
+
+        const healthCards = this.cards.filter(
+          (cardView) => cardView.model.definition.id === 'HEALTH',
+        )
+        if (healthCards.length === 0) {
+          this.gameOver('You are dead')
+        }
       }
     })
     this.eventBus.on('MOVE', (entity: CommonEntity, previousZone: Zone) => {
@@ -263,6 +271,10 @@ export class BoardScene extends PotatoScene {
     this.addChildViewObject(cardView)
 
     cardView.playAnimation(spawnAnimation)
+  }
+
+  removeCardByUuid(cardUuid: string) {
+    this.cards = this.cards.filter((cardView) => cardView.model.id !== cardUuid)
   }
 
   onCardDragStart(cardView: CardView) {

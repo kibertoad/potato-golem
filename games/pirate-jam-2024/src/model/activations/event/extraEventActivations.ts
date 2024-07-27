@@ -35,7 +35,7 @@ export class SpawnCardActivation implements Activation, StaticDescriptionHolder 
       zone: this.zone,
       spawnAnimation: this.spawnAnimation,
       description: this.description,
-      amount: this.amount
+      amount: this.amount,
     } satisfies SpawnCardMessage)
   }
 }

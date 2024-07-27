@@ -92,12 +92,10 @@ export const cardDefinitions = {
     },
     cardCombinationEffect: {
       THE_ROUGH_KIND: {
-          timeTillTrigger: 0,
-          effect: new DescribedTargettedMultipleActivation([
-            new DecomposeBothCardsActivation(),
-          ]),
-      }
-    }
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+      },
+    },
   },
 
   MOLD: {
@@ -145,18 +143,14 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
-        ]),
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
       },
 
       THE_RAID: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
-        ]),
-      }
-    }
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+      },
+    },
   },
 
   HEALTH: {
