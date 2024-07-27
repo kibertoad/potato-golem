@@ -59,10 +59,17 @@ export class CardEffectView extends Container {
 
     const idleZoneEffect = cardView.model.definition.idleZoneEffect?.[zoneView.id]
     if (idleZoneEffect) {
-      resolvedText = `In ${idleZoneEffect.timeTillTrigger} ${idleZoneEffect.timeTillTrigger === 1 ? 'turn' : 'turns'} \n ${idleZoneEffect.effect.getDescriptions().join(' \n')}`
+      const timeString = this.resolveTimeString(idleZoneEffect.timeTillTrigger)
+      resolvedText = `${timeString}${idleZoneEffect.effect.getDescriptions().join(' \n')}`
     }
 
     this.effectDescriptionText.setText(resolvedText)
+  }
+
+  private resolveTimeString(timeTillTrigger: number): string {
+    return timeTillTrigger > 0
+        ? `In ${timeTillTrigger} ${timeTillTrigger === 1 ? 'turn' : 'turns'} \n `
+        : ''
   }
 
   showCardCombinationEffect(sourceCardView: CardView, targetCardView: CardView) {
@@ -72,10 +79,7 @@ export class CardEffectView extends Container {
       targetCardView.model,
     )
     if (combinationEffect) {
-      const timeString =
-        combinationEffect.timeTillTrigger > 0
-          ? `In ${combinationEffect.timeTillTrigger} ${combinationEffect.timeTillTrigger === 1 ? 'turn' : 'turns'} \n `
-          : ''
+      const timeString = this.resolveTimeString(combinationEffect.timeTillTrigger)
       resolvedText = `${timeString}${combinationEffect.effect.getDescriptions().join(' \n')}`
     }
 

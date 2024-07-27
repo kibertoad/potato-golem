@@ -6,9 +6,8 @@ import {
 } from '@potato-golem/core'
 import { ConcludeEventActivation, type EventEventId } from '../activations/event/eventActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
-import type { Dependencies } from '../diConfig'
 import type { ImageId } from '../registries/imageRegistry'
-import type { WorldModel } from '../state/WorldModel'
+import { EventEmitters } from '../registries/eventEmitterRegistry'
 
 export type EventOption = {
   text: string
@@ -25,21 +24,13 @@ export type EventDefinition = {
   options: EventOption[]
 }
 
-export type EventDefinitions = ReturnType<
-  (typeof EventDefinitionGenerator.prototype)['generateDefinitions']
->
+export type EventDefinitions = typeof eventDefinitions
 
 export type EventId = keyof EventDefinitions
 
-export class EventDefinitionGenerator {
-  protected readonly _worldModel: WorldModel
+const eventSink: EventSink<EventEventId> = EventEmitters.eventViewEmitter
 
-  constructor({ worldModel }: Dependencies) {
-    this._worldModel = worldModel
-  }
-
-  generateDefinitions(eventSink: EventSink<EventEventId>) {
-    return {
+export const eventDefinitions = {
       INTRO: {
         id: 'INTRO',
         name: 'And so it begins',
@@ -50,6 +41,7 @@ export class EventDefinitionGenerator {
             text: 'The world will pay for this',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'ANGER',
               }),
@@ -61,6 +53,7 @@ export class EventDefinitionGenerator {
             text: 'I deserved this',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'HUMILITY',
               }),
@@ -81,11 +74,13 @@ export class EventDefinitionGenerator {
             text: 'The world will pay for this',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'streets',
                 cardId: 'THE_LAW',
                 spawnAnimation: 'fly_in_left',
               }),
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'ANGER',
               }),
@@ -97,11 +92,13 @@ export class EventDefinitionGenerator {
             text: 'I deserved this',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'streets',
                 cardId: 'THE_LAW',
                 spawnAnimation: 'fly_in_left',
               }),
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'HUMILITY',
               }),
@@ -124,6 +121,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             text: 'Buy cured beef',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'FOOD',
               }),
@@ -135,10 +133,12 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             text: 'Buy absinthe',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'ABSINTHE',
               }),
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'ABSINTHE',
               }),
@@ -150,6 +150,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             text: 'Buy some alchemical supplies',
             effect: new MultiplexActivation([
               new SpawnCardActivation(eventSink, {
+                description: '',
                 zone: 'home',
                 cardId: 'ALCHEMICAL_SUPPLIES',
               }),
@@ -159,5 +160,3 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
         ],
       },
     } as const satisfies Record<string, EventDefinition>
-  }
-}

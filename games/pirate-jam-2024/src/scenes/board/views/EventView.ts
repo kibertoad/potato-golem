@@ -3,35 +3,33 @@ import Container = Phaser.GameObjects.Container
 import type { EventSink, EventSource } from '@potato-golem/core'
 import type {
   EventEventId,
-  SpawnCardMessage,
 } from '../../../model/activations/event/eventActivations'
-import type {
-  EventDefinition,
-  EventDefinitionGenerator,
-  EventDefinitions,
-  EventId,
+import {
+  eventDefinitions,
+  type EventDefinition,
+  type EventDefinitions,
+  type EventId,
 } from '../../../model/definitions/eventDefinitions'
 import type { WorldModel } from '../../../model/state/WorldModel'
-import EventEmitter = Phaser.Events.EventEmitter
 import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
 import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
+import { EventEmitters } from '../../../model/registries/eventEmitterRegistry'
+import type { SpawnCardMessage } from '../../../model/activations/event/extraEventActivations'
 
 const EVENT_WINDOW_WIDTH = 1024
 const EVENT_WINDOW_HEIGHT = 520
 
 export type EventViewDependencies = {
   worldModel: WorldModel
-  eventDefinitionGenerator: EventDefinitionGenerator
   boardEventSink: EventSink<BoardSupportedEvents>
 }
 
 export class EventView extends Container {
   private readonly potatoScene: PotatoScene
-  private readonly worldModel: WorldModel
   private readonly eventSink: EventSink<EventEventId> & EventSource<EventEventId>
   readonly eventDefinitions: EventDefinitions
 
@@ -47,13 +45,9 @@ export class EventView extends Container {
   constructor(scene: PotatoScene, dependencies: EventViewDependencies) {
     super(scene)
     this.potatoScene = scene
-    this.worldModel = dependencies.worldModel
-    this.eventSink = new EventEmitter()
+    this.eventSink = EventEmitters.eventViewEmitter
     this.boardEventSink = dependencies.boardEventSink
-
-    this.eventDefinitions = dependencies.eventDefinitionGenerator.generateDefinitions(
-      this.eventSink,
-    )
+    this.eventDefinitions = eventDefinitions
 
     this.setX(0)
     this.setY(0)

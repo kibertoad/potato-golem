@@ -14,19 +14,18 @@ import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
-import type {
-  CardDefinitionGenerator,
-  CardDefinitions,
+import {
+  cardDefinitions,
+  type CardDefinitions,
 } from '../../model/definitions/cardDefinitions'
-import type { EventDefinitionGenerator, EventId } from '../../model/definitions/eventDefinitions'
+import type { EventId } from '../../model/definitions/eventDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
 import type { MusicScene } from '../MusicScene'
 import { EventView } from './views/EventView'
-import EventEmitter = Phaser.Events.EventEmitter
-import type { EVENT_EVENTS, SpawnCardMessage } from '../../model/activations/event/eventActivations'
+import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
 
 export type BoardSupportedEvents =
   | typeof EVENT_EVENTS.SPAWN_CARD
@@ -46,6 +45,8 @@ import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
+import { EventEmitters } from '../../model/registries/eventEmitterRegistry'
+import { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 
 const debug = true
 
@@ -61,7 +62,6 @@ export class BoardScene extends PotatoScene {
   private readonly endTurnProcessor: EndTurnProcessor
   private eventDirector!: EventDirector
 
-  private readonly cardDefinitionGenerator: CardDefinitionGenerator
   private cardDefinitions: CardDefinitions
 
   private draggedCardView?: CardView = null
@@ -73,13 +73,10 @@ export class BoardScene extends PotatoScene {
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
 
-  private readonly eventDefinitionGenerator: EventDefinitionGenerator
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
   constructor({
     musicScene,
-    eventDefinitionGenerator,
-    cardDefinitionGenerator,
     worldModel,
     endTurnProcessor,
   }: Dependencies) {
@@ -88,9 +85,8 @@ export class BoardScene extends PotatoScene {
     this.musicScene = musicScene
     this.worldModel = worldModel
 
-    this.eventDefinitionGenerator = eventDefinitionGenerator
-    this.eventSink = new EventEmitter()
-    this.cardDefinitions = cardDefinitionGenerator.generateDefinitions(this.eventSink)
+    this.eventSink = EventEmitters.boardEventEmitter
+    this.cardDefinitions = cardDefinitions
 
     this.endTurnProcessor = endTurnProcessor
 
@@ -166,7 +162,6 @@ export class BoardScene extends PotatoScene {
   init() {
     this.eventView = new EventView(this, {
       worldModel: this.worldModel,
-      eventDefinitionGenerator: this.eventDefinitionGenerator,
       boardEventSink: this.eventSink,
     })
     this.eventDirector = new EventDirector(this.eventView.eventDefinitions, this.eventSink)

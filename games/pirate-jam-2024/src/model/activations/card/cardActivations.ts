@@ -36,7 +36,7 @@ export class EatCardActivation implements CardActivation, DynamicDescriptionHold
   }
 
   getDescription(): string {
-    return 'Remove card after eating animation'
+    return 'Consume card'
   }
 }
 

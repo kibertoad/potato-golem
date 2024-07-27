@@ -30,3 +30,5 @@ export class WorldModel {
     this.zones[zoneId].removeCardById(cardModelId)
   }
 }
+
+export const worldModel = new WorldModel()

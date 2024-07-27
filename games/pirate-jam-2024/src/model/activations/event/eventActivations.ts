@@ -6,12 +6,6 @@ import type { Zone } from '../../registries/zoneRegistry'
 export type EventEventId = (typeof EVENT_EVENTS)[keyof typeof EVENT_EVENTS]
 export const SpawnCardEventId: EventEventId = 'spawn_card'
 
-export type SpawnCardMessage = {
-  cardId: CardId
-  zone: Zone
-  spawnAnimation?: SpawnAnimation
-}
-
 export const EVENT_EVENTS = {
   CONCLUDE_EVENT: 'conclude_event',
   SPAWN_CARD: 'spawn_card',

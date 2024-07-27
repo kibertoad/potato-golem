@@ -16,12 +16,12 @@ import {
   StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
-import type { Dependencies } from '../diConfig'
 import type { CardModel } from '../entities/CardModel'
 import type { CardId } from '../registries/cardRegistry'
 import type { ImageId } from '../registries/imageRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import type { WorldModel } from '../state/WorldModel'
+import { EventEmitters } from '../registries/eventEmitterRegistry'
+import { worldModel } from '../state/WorldModel'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -40,19 +40,11 @@ export type CardDefinition = {
   cardCombinationEffect?: Partial<Record<CardId, CardEffectDefinition>>
 }
 
-export type CardDefinitions = ReturnType<
-  (typeof CardDefinitionGenerator.prototype)['generateDefinitions']
->
+export type CardDefinitions = typeof cardDefinitions
 
-export class CardDefinitionGenerator {
-  private readonly worldModel: WorldModel
+const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
-  constructor({ worldModel }: Dependencies) {
-    this.worldModel = worldModel
-  }
-
-  generateDefinitions(eventSink: EventSink<BoardSupportedEvents>) {
-    return {
+export const cardDefinitions = {
       HUMILITY: {
         id: 'HUMILITY',
         name: 'Humility',
@@ -60,8 +52,8 @@ export class CardDefinitionGenerator {
           homunculus: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation<CardModel>([
-              new GainConscienceActivation(this.worldModel.homunculusModel, 1),
-              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new GainConscienceActivation(worldModel.homunculusModel, 1),
+              new FeedActivation(worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
             ]),
           },
@@ -75,8 +67,8 @@ export class CardDefinitionGenerator {
           homunculus: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation([
-              new GainHatredActivation(this.worldModel.homunculusModel, 1),
-              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new GainHatredActivation(worldModel.homunculusModel, 1),
+              new FeedActivation(worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
             ]),
           },
@@ -91,8 +83,8 @@ export class CardDefinitionGenerator {
           homunculus: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation<CardModel>([
-              new GainHatredActivation(this.worldModel.homunculusModel, 1),
-              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new GainHatredActivation(worldModel.homunculusModel, 1),
+              new FeedActivation(worldModel.homunculusModel, 1),
               new DecomposeCardActivation(),
             ]),
           },
@@ -103,11 +95,12 @@ export class CardDefinitionGenerator {
         id: 'MOLD',
         name: 'Mold',
         cardCombinationEffect: {
-          BUNSEN_BURNER: {
+          ALCHEMICAL_SUPPLIES: {
             timeTillTrigger: 2,
             effect: new DescribedTargettedMultipleActivation<CardModel>([
               new SpawnCardActivation(eventSink, {
-                cardId: 'POISON',
+                cardId: 'ABSINTHE', // replace with explosives
+                description: 'Create 1 Explosive',
                 zone: 'alchemy',
               }),
 
@@ -129,11 +122,11 @@ export class CardDefinitionGenerator {
         image: 'health_card',
         idleZoneEffect: {
           homunculus: {
-            timeTillTrigger: 1,
+            timeTillTrigger: 0,
             effect: new DescribedTargettedMultipleActivation([
               new EatCardActivation(),
-              new GainHealthActivation(this.worldModel.homunculusModel, 1),
-              new FeedActivation(this.worldModel.homunculusModel, 1),
+              new GainHealthActivation(worldModel.homunculusModel, 1),
+              new FeedActivation(worldModel.homunculusModel, 1),
             ]),
           },
         },
@@ -147,6 +140,14 @@ export class CardDefinitionGenerator {
             timeTillTrigger: 3,
             effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
           },
+            homunculus: {
+              timeTillTrigger: 0,
+              effect: new DescribedTargettedMultipleActivation([
+                new EatCardActivation(),
+                new GainHealthActivation(worldModel.homunculusModel, 1),
+                new FeedActivation(worldModel.homunculusModel, 1),
+              ]),
+          },
         },
       },
 
@@ -156,10 +157,10 @@ export class CardDefinitionGenerator {
         image: 'poison_card',
         idleZoneEffect: {
           homunculus: {
-            timeTillTrigger: 1,
+            timeTillTrigger: 0,
             effect: new DescribedTargettedMultipleActivation([
               new EatCardActivation(),
-              new DamageActivation(this.worldModel.homunculusModel, 1),
+              new DamageActivation(worldModel.homunculusModel, 1),
             ]),
           },
         },
@@ -185,6 +186,7 @@ export class CardDefinitionGenerator {
                   activation: new SpawnCardActivation(eventSink, {
                     zone: 'streets',
                     cardId: 'THE_ROUGH_KIND',
+                    description: '',
                     spawnAnimation: 'pop_in',
                   }),
                 }),
@@ -202,7 +204,12 @@ export class CardDefinitionGenerator {
           home: {
             timeTillTrigger: 1,
             effect: new DescribedTargettedMultipleActivation([
-              new GainHealthActivation(this.worldModel.alchemistModel, 1),
+              new SpawnCardActivation(eventSink, {
+                spawnAnimation: 'pop_in',
+                description: 'Spawn 1 Health',
+                cardId: 'HEALTH',
+                zone: 'home'
+              }),
               new DecomposeCardActivation(),
             ]),
           },
@@ -250,5 +257,3 @@ export class CardDefinitionGenerator {
         nonDraggable: true,
       },
     } as const satisfies Record<string, CardDefinition>
-  }
-}

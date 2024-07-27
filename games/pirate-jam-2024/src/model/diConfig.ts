@@ -2,10 +2,8 @@ import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awil
 import { MainMenuScene } from '../scenes/MainMenuScene'
 import { MusicScene } from '../scenes/MusicScene'
 import { BoardScene } from '../scenes/board/BoardScene'
-import { CardDefinitionGenerator } from './definitions/cardDefinitions'
-import { EventDefinitionGenerator } from './definitions/eventDefinitions'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
-import { WorldModel } from './state/WorldModel'
+import { worldModel, type WorldModel } from './state/WorldModel'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = Record<keyof Dependencies, Resolver<any>>
@@ -16,8 +14,6 @@ export interface Dependencies {
   boardScene: BoardScene
   mainMenuScene: MainMenuScene
   endTurnProcessor: EndTurnProcessor
-  cardDefinitionGenerator: CardDefinitionGenerator
-  eventDefinitionGenerator: EventDefinitionGenerator
 }
 
 export function instantiateContainer() {
@@ -26,9 +22,7 @@ export function instantiateContainer() {
   })
 
   const diConfig: DiConfig = {
-    worldModel: asValue(new WorldModel()),
-    cardDefinitionGenerator: asClass(CardDefinitionGenerator, SINGLETON_CONFIG),
-    eventDefinitionGenerator: asClass(EventDefinitionGenerator, SINGLETON_CONFIG),
+    worldModel: asValue(worldModel),
 
     musicScene: asClass(MusicScene, SINGLETON_CONFIG),
     boardScene: asClass(BoardScene, SINGLETON_CONFIG),
