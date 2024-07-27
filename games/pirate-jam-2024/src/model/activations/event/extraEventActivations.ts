@@ -2,7 +2,7 @@ import type { EventSink } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import { EventActivation, type EventEventId, SpawnCardEventId, type SpawnCardMessage } from './eventActivations'
+import { EventActivation, type SpawnCardEventId, type SpawnCardMessage } from './eventActivations'
 
 export class SpawnCardActivation extends EventActivation {
   private readonly cardId: CardId

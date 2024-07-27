@@ -1,4 +1,8 @@
-import { DescribedTargettedMultipleActivation, type EventSink, QueuedActivation } from '@potato-golem/core'
+import {
+  DescribedTargettedMultipleActivation,
+  type EventSink,
+  QueuedActivation,
+} from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   DamageActivation,
@@ -7,7 +11,8 @@ import {
   FeedActivation,
   GainConscienceActivation,
   GainHatredActivation,
-  GainHealthActivation, QueueActivation,
+  GainHealthActivation,
+  QueueActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
@@ -81,6 +86,7 @@ export class CardDefinitionGenerator {
       ABSYNTHE: {
         id: 'ABSYNTHE',
         name: 'Absynthe',
+        image: 'booze_card',
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
@@ -109,16 +115,6 @@ export class CardDefinitionGenerator {
             ]),
           },
         },
-      },
-
-      ALEMBIC: {
-        id: 'ALEMBIC',
-        name: 'Alembic',
-      },
-
-      BUNSEN_BURNER: {
-        id: 'BUNSEN_BURNER',
-        name: 'Bunsen burner',
       },
 
       HEALTH: {
@@ -151,6 +147,7 @@ export class CardDefinitionGenerator {
       POISON: {
         id: 'POISON',
         name: 'Poison',
+        image: 'poison_card',
         idleZoneEffect: {
           homunculus: {
             timeTillTrigger: 1,
@@ -172,17 +169,20 @@ export class CardDefinitionGenerator {
             effect: new DescribedTargettedMultipleActivation([
               new DecomposeCardActivation(),
               new StartEventActivation('SHOPKEEPER', eventSink),
-              new QueueActivation(eventSink, new QueuedActivation({
-                id: 'SPAWN_ROUGH_KIND',
-                unique: true,
-                description: 'May attract attention',
-                activatesIn: 1,
-                activation: new SpawnCardActivation(eventSink, {
-                  zone: 'streets',
-                  cardId: 'THE_ROUGH_KIND',
-                  spawnAnimation: 'pop_in',
-                })
-              }))
+              new QueueActivation(
+                eventSink,
+                new QueuedActivation({
+                  id: 'SPAWN_ROUGH_KIND',
+                  unique: true,
+                  description: 'May attract attention',
+                  activatesIn: 1,
+                  activation: new SpawnCardActivation(eventSink, {
+                    zone: 'streets',
+                    cardId: 'THE_ROUGH_KIND',
+                    spawnAnimation: 'pop_in',
+                  }),
+                }),
+              ),
             ]),
           },
         },
@@ -233,6 +233,7 @@ export class CardDefinitionGenerator {
       THE_LAW: {
         id: 'THE_LAW',
         name: 'The Law',
+        image: 'the_law_card',
         nonDraggable: true,
       },
 

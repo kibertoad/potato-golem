@@ -1,8 +1,11 @@
 import {
-  type Activation, type DynamicDescriptionHolder,
+  type Activation,
+  type DynamicDescriptionHolder,
   type EventReceiver,
   type EventSink,
-  LOW_PRIORITY, type QueuedActivation, type StaticDescriptionHolder,
+  LOW_PRIORITY,
+  type QueuedActivation,
+  type StaticDescriptionHolder,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import type { EventId } from '../../definitions/eventDefinitions'
@@ -140,7 +143,7 @@ export class QueueActivation implements Activation, StaticDescriptionHolder {
 
   activate() {
     this.eventSink.emit('QUEUE_ACTIVATION', this.activation)
-}
+  }
 }
 
 export class StartEventActivation implements Activation, DynamicDescriptionHolder {

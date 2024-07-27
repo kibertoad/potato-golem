@@ -17,6 +17,9 @@ export const ImageRegistry = {
   POISON_CARD: 'poison_card',
   MEDICINE_CARD: 'medicine_card',
   CORPSE_CARD: 'corpse_card',
+  ALCHEMICAL_SUPPLIES_CARD: 'alchemical_supplies_card',
+  BOOZE_CARD: 'booze_card',
+
   MERCHANT_CARD: 'merchant_card',
   THE_LAW_CARD: 'the_law_card',
   SHADOW_MUSE_CARD: 'shadow_muse_card',

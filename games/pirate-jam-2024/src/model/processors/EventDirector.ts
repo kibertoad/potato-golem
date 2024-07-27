@@ -1,8 +1,9 @@
 import {
   type EventSink,
+  type QueuedActivation,
   type TurnProcessor,
   normalizedRandom,
-  randomOneOf, type QueuedActivation,
+  randomOneOf,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
