@@ -245,6 +245,7 @@ export class CardDefinitionGenerator {
 
       THE_ROUGH_KIND: {
         id: 'THE_ROUGH_KIND',
+        image: 'rough_kind_card',
         name: 'The Rough Kind',
         nonDraggable: true,
       },
