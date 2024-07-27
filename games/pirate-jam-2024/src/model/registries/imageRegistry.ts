@@ -14,6 +14,7 @@ export const ImageRegistry = {
   // cards
   HEALTH_CARD: 'health_card',
   GOLD_CARD: 'gold_card',
+  POISON_CARD: 'poison_card',
   MEDICINE_CARD: 'medicine_card',
   CORPSE_CARD: 'corpse_card',
   MERCHANT_CARD: 'merchant_card',
