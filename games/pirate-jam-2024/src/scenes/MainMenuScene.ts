@@ -51,6 +51,15 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.MEDICINE_CARD, require('../../assets/img/card_medicine.png'))
     this.load.image(ImageRegistry.CORPSE_CARD, require('../../assets/img/card_corpse.png'))
     this.load.image(ImageRegistry.MERCHANT_CARD, require('../../assets/img/card_merchant.png'))
+    this.load.image(ImageRegistry.SHADOW_MUSE_CARD, require('../../assets/img/card_shadow_muse.png'))
+    this.load.image(ImageRegistry.THE_LAW_CARD, require('../../assets/img/card_the_law.png'))
+
+    // explosions
+    this.load.image(ImageRegistry.EXPLOSION_1, require('../../assets/img/1_explosion.png'))
+    this.load.image(ImageRegistry.EXPLOSION_2, require('../../assets/img/2_explosion.png'))
+    this.load.image(ImageRegistry.EXPLOSION_3, require('../../assets/img/3_explosion.png'))
+    this.load.image(ImageRegistry.EXPLOSION_4, require('../../assets/img/4_explosion.png'))
+    this.load.image(ImageRegistry.EXPLOSION_5, require('../../assets/img/5_explosion.png'))
 
     //statuses
     this.load.image(ImageRegistry.HOMUNCULUS_HEART, require('../../assets/img/small_heart.png'))

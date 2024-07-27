@@ -17,12 +17,21 @@ export const ImageRegistry = {
   MEDICINE_CARD: 'medicine_card',
   CORPSE_CARD: 'corpse_card',
   MERCHANT_CARD: 'merchant_card',
+  THE_LAW_CARD: 'the_law_card',
+  SHADOW_MUSE_CARD: 'shadow_muse_card',
 
-  //statuses
+  // explosions
+  EXPLOSION_1: 'explosion_1',
+  EXPLOSION_2: 'explosion_2',
+  EXPLOSION_3: 'explosion_3',
+  EXPLOSION_4: 'explosion_4',
+  EXPLOSION_5: 'explosion_5',
+
+  // statuses
   HOMUNCULUS_HEART: 'homunculus_heart',
   TIME: 'time',
 
-  //animations
+  // animations
   CLOUD_1: 'cloud_1',
   CLOUD_2: 'cloud_2',
   CLOUD_3: 'cloud_3',
