@@ -119,6 +119,21 @@ export const cardDefinitions = {
   EXPLOSIVES: {
     id: 'EXPLOSIVES',
     name: 'Explosives',
+    cardCombinationEffect: {
+      THE_ROUGH_KIND: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new SpawnCardActivation(eventSink, {
+            zone: 'home',
+            cardId: 'GOLD',
+            amount: 2,
+            description: 'Get 2 Gold',
+            spawnAnimation: 'pop_in',
+          }),
+        ]),
+      }
+    }
   },
 
   HEALTH: {

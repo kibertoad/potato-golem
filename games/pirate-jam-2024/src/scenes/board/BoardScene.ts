@@ -88,7 +88,9 @@ export class BoardScene extends PotatoScene {
 
   private registerListeners() {
     this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
-      this.addCard(event.cardId, event.zone, event.spawnAnimation)
+      for (let x = 0; x < event.amount; x++) {
+        this.addCard(event.cardId, event.zone, event.spawnAnimation)
+      }
     })
 
     this.eventSink.on('CARD_HOVERED', (card: CardView) => {
@@ -170,6 +172,8 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
+
+    this.addCard('EXPLOSIVES', 'lab', 'none')
 
     this.addCard('GOLD', 'home', 'none')
     this.addCard('GOLD', 'home', 'none')
