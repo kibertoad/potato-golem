@@ -4,6 +4,7 @@ export const CardRegistry = {
   WORKBENCH: 'WORKBENCH',
   ABSINTHE: 'ABSINTHE',
   MOLD: 'MOLD',
+  CORPSE: 'CORPSE',
   HEALTH: 'HEALTH',
   FOOD: 'FOOD',
   POISON: 'POISON',

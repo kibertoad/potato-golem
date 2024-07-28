@@ -11,10 +11,14 @@ import {
   DamageActivation,
   DecomposeBothCardsActivation,
   DecomposeCardActivation,
+  DestroyCardActivation,
   EatCardActivation,
   FeedActivation,
   GainHatredActivation,
   GainHealthActivation,
+  MoveToZoneCardActivation,
+  NextTurnActivation,
+  PoofCardActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
   QueueActivation,
@@ -409,7 +413,14 @@ export const cardDefinitions = {
             "I'll stop you in the name of the LAW!",
           ]),
           new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
-          new DecomposeCardActivation(),
+          new PoofCardActivation(100),
+          new SpawnCardActivation(eventSink, {
+            spawnAnimation: 'pop_in',
+            description: 'Spawn 1 Corpse',
+            cardId: 'CORPSE',
+            zone: 'homunculus',
+          }),
+          new DestroyCardActivation(),
         ]),
       },
       home: {
@@ -426,5 +437,11 @@ export const cardDefinitions = {
     image: 'rough_kind_card',
     name: 'The Rough Kind',
     nonDraggable: true,
+  },
+
+  CORPSE: {
+    id: 'CORPSE',
+    image: 'corpse_card',
+    name: 'Corpse',
   },
 } as const satisfies Record<CardId, CardDefinition>
