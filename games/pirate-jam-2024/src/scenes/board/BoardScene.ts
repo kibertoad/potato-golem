@@ -389,7 +389,7 @@ export class BoardScene extends PotatoScene {
     return wasCardActivated
   }
 
-  nextTurn(playedCard?: CardModel) {
+  async nextTurn(playedCard?: CardModel) {
     /*
     if (playedCard) {
       //Move card to the start of this.worldModel.cards
@@ -398,8 +398,8 @@ export class BoardScene extends PotatoScene {
       this.worldModel.cards.unshift(playedCard)
     }
      */
-    this.endTurnProcessor.processTurn()
-    this.eventDirector.processTurn()
+    await this.endTurnProcessor.processTurn()
+    await this.eventDirector.processTurn()
   }
 
   async gameOver(text: string) {

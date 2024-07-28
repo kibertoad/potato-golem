@@ -1,6 +1,7 @@
 import { type EventSink, LOW_PRIORITY, type StaticDescriptionHolder } from '@potato-golem/core'
 import type { Activation } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
+import { delay } from '../../../utils/timeUtils'
 import { cardDefinitions } from '../../definitions/cardDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
@@ -36,7 +37,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     this.amount = params.amount ?? 1
   }
 
-  activate(targetCard?: CardModel) {
+  async activate(targetCard?: CardModel) {
     this.eventSink.emit('spawn_card', {
       cardId: this.cardId,
       sourceCard: targetCard,
@@ -45,6 +46,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
       description: this.description,
       amount: this.amount,
     } satisfies SpawnCardMessage)
+    await delay(200)
   }
 
   getDescription(): string {

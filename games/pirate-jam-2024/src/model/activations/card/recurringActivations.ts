@@ -16,7 +16,7 @@ export class SingingMushroomActivation extends QueuedActivation {
     })
   }
 
-  activate(): void {
+  async activate(): Promise<void> {
     if (!worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')) {
       const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
         amount: 1,
@@ -24,7 +24,7 @@ export class SingingMushroomActivation extends QueuedActivation {
         cardId: 'SINGING_MUSHROOMS',
         zone: 'homunculus',
       })
-      spawnActivation.activate()
+      await spawnActivation.activate()
     }
   }
 }
@@ -42,13 +42,13 @@ export class HungerActivation extends QueuedActivation {
     })
   }
 
-  activate(): void {
+  async activate(): Promise<void> {
     const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
       amount: 1,
       description: '',
       cardId: 'HUNGER',
       zone: 'homunculus',
     })
-    spawnActivation.activate()
+    await spawnActivation.activate()
   }
 }

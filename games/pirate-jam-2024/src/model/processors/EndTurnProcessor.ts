@@ -11,7 +11,10 @@ export class EndTurnProcessor implements TurnProcessor {
 
   async processTurn(): Promise<void> {
     console.log('Next turn')
-    for (const card of this.worldModel.cards) {
+
+    //Only process cards that existed before the turn ended
+    const currentCards = [...this.worldModel.cards]
+    for (const card of currentCards) {
       await card.processTurn()
     }
   }

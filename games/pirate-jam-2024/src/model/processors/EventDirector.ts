@@ -48,34 +48,34 @@ export class EventDirector implements TurnProcessor {
     this.recurringActivations.push(activation)
   }
 
-  processTurn(): void {
-    this.processRecurringActivations()
-    this.processQueuedActivations()
-    this.processRandomEvents()
+  async processTurn() {
+    await this.processRecurringActivations()
+    await this.processQueuedActivations()
+    await this.processRandomEvents()
   }
 
-  private processQueuedActivations() {
+  private async processQueuedActivations(): Promise<void> {
     while (this.queuedActivations.length > 0) {
       const nextActivation = this.queuedActivations[0]
       const isReady = nextActivation.processTime(1)
       if (isReady) {
-        nextActivation.activate()
+        await nextActivation.activate()
         this.queuedActivations.shift()
       }
     }
   }
 
-  private processRecurringActivations() {
+  private async processRecurringActivations(): Promise<void> {
     for (const activation of this.recurringActivations) {
       const isReady = activation.processTime(1)
       if (isReady) {
-        activation.activate()
+        await activation.activate()
         activation.resetTime()
       }
     }
   }
 
-  private processRandomEvents() {
+  private async processRandomEvents(): Promise<void> {
     this.counterTillNextEvent--
     if (this.counterTillNextEvent > 0) {
       return
@@ -92,7 +92,7 @@ export class EventDirector implements TurnProcessor {
       this.eventSink.emit('START_EVENT', eventToPlay.id)
     }
     if (eventToPlay.effect) {
-      eventToPlay.effect.activate()
+      await eventToPlay.effect.activate()
     }
     this.resetCounter()
   }
