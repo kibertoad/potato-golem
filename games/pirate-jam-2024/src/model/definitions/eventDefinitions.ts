@@ -68,7 +68,7 @@ export const eventDefinitions = {
     effect: new MultiplexActivation([
       new SpawnCardActivation(eventSink, {
         description: '',
-        zone: 'alchemy',
+        zone: 'homunculus',
         cardId: 'MOLD',
         spawnAnimation: 'pop_in',
       }),

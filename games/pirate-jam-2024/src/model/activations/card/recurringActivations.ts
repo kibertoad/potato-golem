@@ -22,7 +22,7 @@ export class SingingMushroomActivation extends QueuedActivation {
         amount: 1,
         description: '',
         cardId: 'SINGING_MUSHROOMS',
-        zone: 'alchemy',
+        zone: 'homunculus',
       })
       spawnActivation.activate()
     }
