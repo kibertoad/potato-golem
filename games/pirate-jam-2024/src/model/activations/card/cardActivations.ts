@@ -15,17 +15,57 @@ import type { Zone } from '../../registries/zoneRegistry'
 import type { WorldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
 
-export class DecomposeCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class PoofCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly customDelay: number
+
+  constructor(customDelay = -1) {
+    this.customDelay = customDelay
+  }
+
+  async activate(targetCard: CardModel) {
+    if (this.customDelay >= 0) {
+      targetCard.view.playPoofAnimation()
+      await delay(this.customDelay)
+    } else {
+      await targetCard.view.playPoofAnimation()
+    }
+  }
+
+  getDescription(): string {
+    return 'Hide card with a poof without destroying it'
+  }
+}
+
+export class DecomposeCardActivation
+  extends PoofCardActivation
+  implements CardActivation, DynamicDescriptionHolder
+{
   isExclusive = true
   priority = LOW_PRIORITY
 
   async activate(targetCard: CardModel) {
-    await targetCard.view.playPoofAnimation()
+    await super.activate(targetCard)
     targetCard.destroy()
   }
 
   getDescription(): string {
-    return 'Remove card'
+    return 'Destroy card after a poof animation'
+  }
+}
+
+export class DestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  async activate(targetCard: CardModel) {
+    targetCard.destroy()
+  }
+
+  getDescription(): string {
+    return 'Destroy card'
   }
 }
 
