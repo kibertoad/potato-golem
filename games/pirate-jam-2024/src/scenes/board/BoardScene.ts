@@ -175,8 +175,8 @@ export class BoardScene extends PotatoScene {
 
     this.initZones()
 
-    this.addCard('MOLD', 'alchemy', 'none')
-    this.addCard('MOLD', 'alchemy', 'none')
+    this.addCard('MOLD', 'homunculus', 'none')
+    this.addCard('MOLD', 'homunculus', 'none')
 
     this.addCard('WORKBENCH', 'lab', 'none')
     this.addCard('HEALTH', 'home', 'none')
