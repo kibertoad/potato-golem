@@ -17,7 +17,7 @@ export class SingingMushroomActivation extends QueuedActivation {
   }
 
   activate(): void {
-    if (!worldModel.zones.alchemy.hasCard('SINGING_MUSHROOMS')) {
+    if (!worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')) {
       const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
         amount: 1,
         description: '',
