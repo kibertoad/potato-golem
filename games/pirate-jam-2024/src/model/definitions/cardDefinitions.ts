@@ -280,6 +280,12 @@ export const cardDefinitions = {
           ]),
         ]),
       },
+      homunculus: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          //TODO: Add card attack activation
+        ]),
+      },
     },
   },
 
