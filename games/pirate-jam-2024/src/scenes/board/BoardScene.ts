@@ -35,6 +35,7 @@ export type BoardSupportedEvents =
   | 'ZONE_HOVERED_OVER'
   | 'START_EVENT'
   | 'QUEUE_ACTIVATION'
+  | 'NEXT_TURN'
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
@@ -92,6 +93,11 @@ export class BoardScene extends PotatoScene {
   }
 
   private registerListeners() {
+    this.eventSink.on('NEXT_TURN', (playedCard?: CardModel) => {
+      console.log('yes, next turn')
+      this.nextTurn(playedCard)
+    })
+
     this.eventSink.on('spawn_card', (event: SpawnCardMessage) => {
       for (let x = 0; x < event.amount; x++) {
         this.addCard(event.cardId, event.zone, event.spawnAnimation, event.sourceCard)
@@ -332,9 +338,16 @@ export class BoardScene extends PotatoScene {
 
       wasCardActivated = cardView.model.changeZone(this.pointedZoneView.id)
 
+      // ToDo replace with more generic logic
       if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
+        //Move card to the start of this.worldModel.cards
+        const index = this.worldModel.cards.indexOf(cardView.model)
+        this.worldModel.cards.splice(index, 1)
+        this.worldModel.cards.unshift(cardView.model)
+
         // Every time we feed a homunculus, a day passes
         this.nextTurn(cardView.model)
+        //this.resetCard(cardView.model)
       }
     }
 
@@ -365,12 +378,14 @@ export class BoardScene extends PotatoScene {
   }
 
   nextTurn(playedCard?: CardModel) {
+    /*
     if (playedCard) {
       //Move card to the start of this.worldModel.cards
       const index = this.worldModel.cards.indexOf(playedCard)
       this.worldModel.cards.splice(index, 1)
       this.worldModel.cards.unshift(playedCard)
     }
+     */
     this.endTurnProcessor.processTurn()
     this.eventDirector.processTurn()
   }
