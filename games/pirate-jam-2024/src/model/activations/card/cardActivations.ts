@@ -208,10 +208,6 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
   private readonly chatPhrases: string[]
 
-  constructor(target: EventReceiver, amount: number) {
-    super(target, amount)
-  }
-
   async activate(targetCard?: CardModel) {
     await targetCard.view.animateAttackTo({
       x: 1280,
@@ -227,6 +223,7 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
 export class NextTurnActivation implements Activation, DynamicDescriptionHolder {
   activate() {
+    console.log('emit next turn')
     EventEmitters.boardEventEmitter.emit('NEXT_TURN')
   }
 

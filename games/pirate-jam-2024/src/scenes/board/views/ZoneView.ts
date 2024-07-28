@@ -257,7 +257,6 @@ export class ZoneView implements IdHolder, Destroyable {
   }
 
   public removeCardByUUID(cardId: string): void {
-    console.log(this.findCardByUUID)
     const { card, spawnPoint } = this.findCardByUUID(cardId)
     if (card) {
       const index = spawnPoint.indexOf(card)

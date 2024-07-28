@@ -16,9 +16,9 @@ import {
   FeedActivation,
   GainHatredActivation,
   GainHealthActivation,
+  PoofCardActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
-  PoofCardActivation,
   QueueActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
@@ -151,6 +151,11 @@ export const cardDefinitions = {
   WATCHING_FLOWER: {
     id: 'WATCHING_FLOWER',
     name: 'Watching Flower',
+  },
+
+  HUNGER: {
+    id: 'HUNGER',
+    name: 'Hunger',
   },
 
   ENLIGHTENED_MANDRAKE: {

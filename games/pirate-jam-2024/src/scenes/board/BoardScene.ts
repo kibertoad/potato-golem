@@ -39,7 +39,10 @@ export type BoardSupportedEvents =
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
-import { SingingMushroomActivation } from '../../model/activations/card/recurringActivations'
+import {
+  HungerActivation,
+  SingingMushroomActivation,
+} from '../../model/activations/card/recurringActivations'
 import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 import { zones } from '../../model/definitions/zoneDefinitions'
 import { EventDirector } from '../../model/processors/EventDirector'
@@ -229,6 +232,7 @@ export class BoardScene extends PotatoScene {
     // recurring effects
 
     this.eventDirector.addRecurringActivation(new SingingMushroomActivation())
+    this.eventDirector.addRecurringActivation(new HungerActivation())
   }
 
   initZones() {
@@ -325,6 +329,7 @@ export class BoardScene extends PotatoScene {
     }
     this.moveCardToTop(cardView)
   }
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   onCardDragEnd(cardView: CardView) {
     this.draggedCardView.unhighlight()
     this.draggedCardView = null
@@ -338,6 +343,13 @@ export class BoardScene extends PotatoScene {
 
       wasCardActivated = cardView.model.changeZone(this.pointedZoneView.id)
 
+      if (cardView.model.hasActivationForZone(this.pointedZoneView.id)) {
+        const activation = cardView.model.definition.idleZoneEffect[this.pointedZoneView.id]
+        if (activation.timeTillTrigger === 0) {
+          void activation.effect.activate(cardView.model)
+        }
+      }
+
       // ToDo replace with more generic logic
       if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
         //Move card to the start of this.worldModel.cards
@@ -346,7 +358,7 @@ export class BoardScene extends PotatoScene {
         this.worldModel.cards.unshift(cardView.model)
 
         // Every time we feed a homunculus, a day passes
-        this.nextTurn(cardView.model)
+        // this.nextTurn(cardView.model)
         //this.resetCard(cardView.model)
       }
     }
