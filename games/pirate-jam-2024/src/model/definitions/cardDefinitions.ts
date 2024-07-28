@@ -11,7 +11,6 @@ import {
   DecomposeCardActivation,
   EatCardActivation,
   FeedActivation,
-  GainConscienceActivation,
   GainHatredActivation,
   GainHealthActivation,
   MoveToZoneCardActivation,
@@ -51,36 +50,6 @@ export type CardDefinitions = typeof cardDefinitions
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const cardDefinitions = {
-  HUMILITY: {
-    id: 'HUMILITY',
-    name: 'Humility',
-    idleZoneEffect: {
-      homunculus: {
-        timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new GainConscienceActivation(worldModel.homunculusModel, 1),
-          new FeedActivation(worldModel.homunculusModel, 1),
-          new DecomposeCardActivation(),
-        ]),
-      },
-    },
-  },
-
-  ANGER: {
-    id: 'ANGER',
-    name: 'Anger',
-    idleZoneEffect: {
-      homunculus: {
-        timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
-          new GainHatredActivation(worldModel.homunculusModel, 1),
-          new FeedActivation(worldModel.homunculusModel, 1),
-          new DecomposeCardActivation(),
-        ]),
-      },
-    },
-  },
-
   ABSINTHE: {
     id: 'ABSINTHE',
     name: 'Absinthe',
