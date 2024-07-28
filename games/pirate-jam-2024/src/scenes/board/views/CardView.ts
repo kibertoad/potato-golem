@@ -497,6 +497,23 @@ export class CardView extends Container implements IdHolder {
     await delay(1000)
   }
 
+  async animateAttackTo(moveToPosition: Position) {
+    await this.hideChat()
+    this.scene.tweens.add({
+      targets: this,
+      y: moveToPosition.y,
+      duration: 400,
+      ease: 'Back.easeIn',
+    })
+    this.scene.tweens.add({
+      targets: this,
+      x: moveToPosition.x,
+      duration: 400,
+      ease: 'Back.easeIn',
+    })
+    await delay(400)
+  }
+
   private async hideChat(): Promise<void> {
     let stopped = false
     if (this.chatScaleTween && this.chatScaleTween.isPlaying()) {
@@ -532,6 +549,7 @@ export class CardView extends Container implements IdHolder {
   }
 
   async say(text: string | string[]): Promise<void> {
+    await this.hideChat()
     const textToSay = Array.isArray(text) ? text[Math.floor(Math.random() * text.length)] : text
     this.tmpChatDepth = this.depth
 
@@ -540,8 +558,6 @@ export class CardView extends Container implements IdHolder {
 
     this.chatTextView.setText(textToSay)
     await this.calculateChatPosition()
-
-    await this.hideChat()
 
     await delay(0) //Allow for calculated position to take effect
     this.chatBubbleContainer.setAlpha(0).setScale(0.4).setVisible(true)
@@ -571,7 +587,7 @@ export class CardView extends Container implements IdHolder {
         }
       },
     })
-    await delay(400)
+    await delay(1000)
   }
 
   private async calculateChatPosition() {

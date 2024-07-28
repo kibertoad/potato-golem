@@ -6,6 +6,8 @@ import {
 import type { Position } from '@potato-golem/ui'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
+  AttackHomunculusCardActivation,
+  ChatCardActivation,
   DamageActivation,
   DecomposeBothCardsActivation,
   DecomposeCardActivation,
@@ -381,17 +383,23 @@ export const cardDefinitions = {
       streets: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new MoveToZoneCardActivation(
-            worldModel,
-            ['home', 'homunculus'],
-            ['Hmmm...Interesting...', 'What do we have here?', "Don't mind if I take a look?"],
-          ),
+          new ChatCardActivation([
+            'Hmmm...Interesting...',
+            'What do we have here?',
+            "Don't mind if I take a look?",
+          ]),
+          new MoveToZoneCardActivation(worldModel, ['home', 'homunculus']),
         ]),
       },
       homunculus: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new DamageActivation(worldModel.homunculusModel, 1),
+          new ChatCardActivation([
+            'I will stop this ABOMINATION!',
+            'Take this!',
+            "I'll stop you in the name of the LAW!",
+          ]),
+          new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
           new DecomposeCardActivation(),
         ]),
       },
