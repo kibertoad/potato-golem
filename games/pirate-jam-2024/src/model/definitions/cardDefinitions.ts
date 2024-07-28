@@ -88,6 +88,19 @@ export const cardDefinitions = {
           new DecomposeBothCardsActivation(),
         ]),
       },
+
+      WORKBENCH: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation<CardModel>([
+          new SpawnCardActivation(eventSink, {
+            cardId: 'POISON', // replace with explosives
+            description: 'Create 1 Poison',
+            zone: 'lab',
+          }),
+
+          new DecomposeCardActivation(),
+        ]),
+      },
     },
   },
 
@@ -95,6 +108,11 @@ export const cardDefinitions = {
     id: 'ALCHEMICAL_SUPPLIES',
     image: 'alchemical_supplies_card',
     name: 'Alchemical supplies',
+  },
+
+  WORKBENCH: {
+    id: 'WORKBENCH',
+    name: 'Workbench',
   },
 
   EXPLOSIVES: {
@@ -208,16 +226,12 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
-        ]),
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
       },
 
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
-        ]),
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
       },
     },
   },

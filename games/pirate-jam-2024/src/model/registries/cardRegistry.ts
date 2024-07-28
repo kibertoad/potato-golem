@@ -1,6 +1,7 @@
 export type CardId = keyof typeof CardRegistry
 
 export const CardRegistry = {
+  WORKBENCH: 'WORKBENCH',
   ABSINTHE: 'ABSINTHE',
   MOLD: 'MOLD',
   HEALTH: 'HEALTH',

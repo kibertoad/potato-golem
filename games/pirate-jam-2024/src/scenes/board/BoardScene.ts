@@ -104,6 +104,7 @@ export class BoardScene extends PotatoScene {
 
       this.pointedCardView = card
 
+      // Green highlight logic for the dragged card
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
 
@@ -173,6 +174,10 @@ export class BoardScene extends PotatoScene {
 
     this.initZones()
 
+    this.addCard('MOLD', 'alchemy', 'none')
+    this.addCard('MOLD', 'alchemy', 'none')
+
+    this.addCard('WORKBENCH', 'lab', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
