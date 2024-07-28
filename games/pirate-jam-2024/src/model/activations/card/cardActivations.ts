@@ -8,6 +8,7 @@ import {
   type StaticDescriptionHolder,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
+import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { Zone } from '../../registries/zoneRegistry'
@@ -67,11 +68,9 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
 
   private readonly worldModel: WorldModel
   private readonly targetZone: Zone
-  private readonly chatPhrases?: string[]
 
-  constructor(worldModel: WorldModel, targetZones: Zone | Zone[], chatPhrases?: string[]) {
+  constructor(worldModel: WorldModel, targetZones: Zone | Zone[]) {
     this.worldModel = worldModel
-    this.chatPhrases = chatPhrases
 
     this.targetZone = Array.isArray(targetZones)
       ? targetZones[Math.floor(Math.random() * targetZones.length)]
@@ -88,13 +87,41 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
       x: availableSpawnPont.x,
       y: availableSpawnPont.y,
     })
-    if (this.chatPhrases) {
-      targetCard.view.say(this.chatPhrases)
-    }
   }
 
   getDescription(): string {
-    return 'Consume card'
+    return 'Move card to a different zone'
+  }
+}
+
+export class ChatCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly chatPhrases: string[]
+
+  constructor(chatPhrases: string[]) {
+    this.chatPhrases = chatPhrases
+  }
+
+  async activate(targetCard: CardModel) {
+    await targetCard.view.say(this.chatPhrases)
+  }
+
+  getDescription(): string {
+    return 'Say something'
+  }
+}
+
+export class DelayActivation implements Activation {
+  private readonly delay: number
+
+  constructor(delay: number) {
+    this.delay = delay
+  }
+
+  async activate() {
+    await delay(this.delay)
   }
 }
 
