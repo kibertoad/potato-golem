@@ -21,7 +21,8 @@ export type EventDefinition = {
   name: string
   description: string
   image: ImageId
-  options: EventOption[]
+  effect?: Activation
+  options?: EventOption[]
 }
 
 export type EventDefinitions = typeof eventDefinitions
@@ -50,20 +51,12 @@ export const eventDefinitions = {
     playableByDirector: true,
     description: 'Suddenly a random group of law enforcement folks appear.',
     image: 'merchant_card',
-    options: [
-      {
-        text: 'OK',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'streets',
-            cardId: 'THE_LAW',
-            spawnAnimation: 'fly_in_left',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
-      },
-    ],
+    effect: new SpawnCardActivation(eventSink, {
+      description: '',
+      zone: 'streets',
+      cardId: 'THE_LAW',
+      spawnAnimation: 'fly_in_left',
+    }),
   },
 
   MOLD_GROWS: {
@@ -72,20 +65,14 @@ export const eventDefinitions = {
     playableByDirector: true,
     description: 'Mold grows in Homunculus room.',
     image: 'poison_card',
-    options: [
-      {
-        text: 'OK',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'alchemy',
-            cardId: 'MOLD',
-            spawnAnimation: 'pop_in',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
-      },
-    ],
+    effect: new MultiplexActivation([
+      new SpawnCardActivation(eventSink, {
+        description: '',
+        zone: 'alchemy',
+        cardId: 'MOLD',
+        spawnAnimation: 'pop_in',
+      }),
+    ]),
   },
 
   SHOPKEEPER: {

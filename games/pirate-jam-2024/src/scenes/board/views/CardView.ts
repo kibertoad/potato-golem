@@ -496,7 +496,7 @@ export class CardView extends Container implements IdHolder {
     await delay(1000)
   }
 
-  private async hideChat(): void {
+  private async hideChat(): Promise<void> {
     let stopped = false
     if (this.chatScaleTween && this.chatScaleTween.isPlaying()) {
       this.chatScaleTween.stop()
