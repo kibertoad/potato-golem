@@ -11,9 +11,10 @@ import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
+import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import type { WorldModel } from '../../state/WorldModel'
+import { type WorldModel, worldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
 
 export class PoofCardActivation implements CardActivation, DynamicDescriptionHolder {
@@ -218,6 +219,48 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
   getDescription(): string {
     return 'Attack homunculus'
+  }
+}
+
+export class SearchAndDestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly cardIdToAttack: CardId
+  private readonly searchZone?: Zone
+
+  constructor(cardIdToAttack: CardId, searchZone?: Zone) {
+    this.cardIdToAttack = cardIdToAttack
+  }
+
+  async activate(targetCard: CardModel) {
+    let foundCard: CardModel | undefined
+    let card: CardModel
+
+    //Search from the end of the array to potentially find cards on top of the stack and not bottom
+    for (let i = worldModel.cards.length - 1; i >= 0; i--) {
+      card = worldModel.cards[i]
+      if (
+        card.definition.id === this.cardIdToAttack &&
+        (!this.searchZone || card.zone === this.searchZone)
+      ) {
+        foundCard = card
+        break
+      }
+    }
+
+    if (!foundCard) {
+      return
+    }
+    await targetCard.view.animateAttackTo({
+      x: foundCard.view.x,
+      y: foundCard.view.y,
+    })
+    foundCard.destroy()
+  }
+
+  getDescription(): string {
+    return 'Say something'
   }
 }
 

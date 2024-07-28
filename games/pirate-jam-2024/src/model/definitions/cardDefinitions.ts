@@ -16,10 +16,11 @@ import {
   FeedActivation,
   GainHatredActivation,
   GainHealthActivation,
-  PoofCardActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
+  PoofCardActivation,
   QueueActivation,
+  SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
@@ -259,6 +260,7 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
+          new NextTurnActivation(),
         ]),
       },
     },
@@ -424,7 +426,20 @@ export const cardDefinitions = {
       home: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          //TODO: Add card attack activation
+          new ChatCardActivation([
+            'You will pay for this heresy!',
+            'Take this!',
+            "I'll stop you in the name of the LAW!",
+          ]),
+          new SearchAndDestroyCardActivation('HEALTH', 'home'),
+          new PoofCardActivation(100),
+          new SpawnCardActivation(eventSink, {
+            spawnAnimation: 'pop_in',
+            description: 'Spawn 1 Corpse',
+            cardId: 'CORPSE',
+            zone: 'home',
+          }),
+          new DestroyCardActivation(),
         ]),
       },
     },

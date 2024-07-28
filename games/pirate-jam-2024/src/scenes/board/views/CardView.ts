@@ -499,6 +499,7 @@ export class CardView extends Container implements IdHolder {
 
   async animateAttackTo(moveToPosition: Position) {
     await this.hideChat()
+    this.depth = DepthRegistry.CARD_MAX + 1
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
