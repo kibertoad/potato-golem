@@ -410,7 +410,7 @@ export const cardDefinitions = {
           new ChatCardActivation([
             'I will stop this ABOMINATION!',
             'Take this!',
-            "I'll stop you in the name of the LAW!",
+            'In the name of the LAW!',
           ]),
           new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
           new PoofCardActivation(100),
@@ -429,7 +429,7 @@ export const cardDefinitions = {
           new ChatCardActivation([
             'You will pay for this heresy!',
             'Take this!',
-            "I'll stop you in the name of the LAW!",
+            'In the name of the LAW!',
           ]),
           new SearchAndDestroyCardActivation('HEALTH', 'home'),
           new PoofCardActivation(100),

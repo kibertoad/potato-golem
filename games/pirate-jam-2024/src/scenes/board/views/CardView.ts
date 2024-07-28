@@ -588,7 +588,7 @@ export class CardView extends Container implements IdHolder {
         }
       },
     })
-    await delay(1000)
+    await delay(1500)
   }
 
   private async calculateChatPosition() {
