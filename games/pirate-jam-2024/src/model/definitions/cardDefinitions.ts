@@ -3,6 +3,7 @@ import {
   type EventSink,
   QueuedActivation,
 } from '@potato-golem/core'
+import type { Position } from '@potato-golem/ui'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   DamageActivation,
@@ -34,6 +35,8 @@ export type CardDefinition = {
   name: string
   image?: ImageId
   nonDraggable?: boolean
+  chatBubbleOrigin?: Position
+  spawnPhrases?: string[]
 
   // Effect that is triggered after card staying within a zone for a while
   idleZoneEffect?: Partial<Record<Zone, CardEffectDefinition>>
@@ -260,6 +263,7 @@ export const cardDefinitions = {
     name: 'Merchant',
     image: 'merchant_card',
     nonDraggable: true,
+    chatBubbleOrigin: { x: 80, y: 80 },
   },
 
   BLACK_WIDOW: {
@@ -285,6 +289,13 @@ export const cardDefinitions = {
     name: 'The Law',
     image: 'the_law_card',
     nonDraggable: true,
+    chatBubbleOrigin: { x: 80, y: 80 },
+    spawnPhrases: [
+      'Police! Open up!',
+      'We had a report on this place.',
+      'What is going on here?',
+      'Stop right there!',
+    ],
   },
 
   THE_ROUGH_KIND: {

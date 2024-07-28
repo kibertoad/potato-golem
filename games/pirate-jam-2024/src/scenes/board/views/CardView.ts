@@ -21,6 +21,7 @@ import type { BoardSupportedEvents } from '../BoardScene'
 
 export type CardViewParams = {
   model: CardModel
+  chatBubbleOrigin?: Position
   onDragStart?: (card: CardView) => void
   onDragEnd?: (card: CardView) => boolean | void
 } & Position
@@ -31,6 +32,9 @@ export type CardViewDependencies = {
 }
 
 export type SpawnAnimation = 'none' | 'fly_in_left' | 'pop_in'
+
+export type ChatVerticalDirection = 'up' | 'down'
+export type ChatHorizontalDirection = 'left' | 'right'
 
 const textOffsetX = 35
 const textOffsetY = 5
@@ -59,6 +63,14 @@ export class CardView extends Container implements IdHolder {
 
   private cardEatShadowMaskImage: Phaser.GameObjects.Image
   private cardEat2ShadowMaskImage: Phaser.GameObjects.Image
+
+  private readonly chatBubbleContainer: Container
+  private chatBubbleSlice: Phaser.GameObjects.NineSlice
+  private chatTextView: Phaser.GameObjects.Text
+
+  private readonly potatoScene: PotatoScene
+
+  private readonly chatBubbleOrigin: Position = { x: 0, y: 0 }
 
   /**
    * Text element with the name of the card
@@ -89,6 +101,10 @@ export class CardView extends Container implements IdHolder {
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
 
+    this.potatoScene = scene
+    if (params.chatBubbleOrigin) {
+      this.chatBubbleOrigin = params.chatBubbleOrigin
+    }
     this.id = params.model.id
     this.x = params.x
     this.y = params.y
@@ -183,6 +199,38 @@ export class CardView extends Container implements IdHolder {
       .setHeight(CardView.cardHeight)
       .build()
     this.cardMainSpriteContainer.add(this.cardFrameDecorSprite)
+
+    this.chatBubbleContainer = new Container(scene)
+    this.chatBubbleSlice = new Phaser.GameObjects.NineSlice(
+      this.scene,
+      0,
+      0,
+      ImageRegistry.CHAT_BUBBLE,
+      undefined,
+      300,
+      200,
+      30,
+      89,
+      34,
+      72,
+    )
+
+    this.chatTextView = TextBuilder.instance(this.potatoScene)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setOrigin(0.5, 0.5)
+      .setDisplaySize(500, 15)
+      .build().value
+    this.chatTextView.setFontSize(25)
+    this.chatTextView.setColor('#000000')
+    this.chatTextView.setAlign('center')
+
+    this.chatBubbleContainer.setVisible(false)
+    this.chatBubbleContainer.add(this.chatBubbleSlice)
+    this.chatBubbleContainer.add(this.chatTextView)
+    this.cardMainSpriteContainer.add(this.chatBubbleContainer)
 
     this.cardPoofSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CLOUD_1)
@@ -420,6 +468,94 @@ export class CardView extends Container implements IdHolder {
       ease: 'Cubic',
     })
     await delay(300)
+  }
+
+  async animateMoveTo(moveToPosition: Position) {
+    this.scene.tweens.add({
+      targets: this,
+      y: moveToPosition.y,
+      duration: 900,
+      ease: 'Sine.easeInOut',
+    })
+    this.scene.tweens.add({
+      targets: this,
+      x: moveToPosition.x,
+      duration: 1000,
+      ease: 'Sine.easeInOut',
+    })
+    await delay(1000)
+  }
+
+  async say(text: string): Promise<void> {
+    this.chatTextView.setText(text)
+    this.calculateChatPosition()
+
+    await delay(0) //Allow for calculated position to take effect
+    this.chatBubbleContainer.setAlpha(0).setScale(0.4).setVisible(true)
+    this.scene.tweens.add({
+      targets: this.chatBubbleContainer,
+      scale: 1,
+      duration: 400,
+      ease: 'Back.easeOut',
+    })
+    this.scene.tweens.add({
+      targets: this.chatBubbleContainer,
+      alpha: 1,
+      duration: 400,
+      ease: 'Cubic',
+    })
+    this.scene.tweens.add({
+      targets: this.chatBubbleContainer,
+      alpha: 0,
+      delay: 3000,
+      duration: 1000,
+      ease: 'Cubic',
+      onComplete: () => {
+        this.chatBubbleContainer.setVisible(false)
+      },
+    })
+    await delay(400)
+  }
+
+  private async calculateChatPosition() {
+    await delay(0) //This is to allow the card position to settle after spawn
+    let chatVerticalDirection: ChatVerticalDirection = 'up'
+    let chatHorizontalDirection: ChatHorizontalDirection = 'left'
+
+    if (this.x + this.chatBubbleOrigin.x < 1280) {
+      chatHorizontalDirection = 'right'
+    }
+    if (this.y + this.chatBubbleOrigin.y < 720) {
+      chatVerticalDirection = 'down'
+    }
+
+    if (chatHorizontalDirection === 'right') {
+      this.chatBubbleSlice.scaleX = -1
+    }
+    if (chatVerticalDirection === 'down') {
+      this.chatBubbleSlice.scaleY = -1
+    }
+
+    this.chatTextView.y = chatVerticalDirection === 'down' ? 20 : -20
+    //Compensation for text length
+    this.chatBubbleSlice.width = this.chatTextView.getBounds().width + 40
+    this.chatBubbleSlice.height = this.chatTextView.getBounds().height + 60
+
+    //Initial position offset to compensate for the bubble
+    this.chatBubbleContainer.x = -80 + this.chatBubbleOrigin.x
+    this.chatBubbleContainer.y = -130 + this.chatBubbleOrigin.y
+
+    if (chatHorizontalDirection === 'left') {
+      this.chatBubbleContainer.x -= this.chatBubbleSlice.width / 2
+    } else {
+      this.chatBubbleContainer.x += this.chatBubbleSlice.width / 2 - 55
+    }
+
+    if (chatVerticalDirection === 'up') {
+      this.chatBubbleContainer.y -= this.chatBubbleSlice.height / 2
+    } else {
+      this.chatBubbleContainer.y += this.chatBubbleSlice.height / 2 - 5
+    }
   }
 
   async playAnimation(animation?: SpawnAnimation) {

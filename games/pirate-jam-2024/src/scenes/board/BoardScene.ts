@@ -15,7 +15,11 @@ import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
-import { type CardDefinitions, cardDefinitions } from '../../model/definitions/cardDefinitions'
+import {
+  type CardDefinition,
+  type CardDefinitions,
+  cardDefinitions,
+} from '../../model/definitions/cardDefinitions'
 import type { EventId } from '../../model/definitions/eventDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
@@ -240,7 +244,13 @@ export class BoardScene extends PotatoScene {
     cardView.setDepth(DepthRegistry.CARD_MIN + this.cards.length - 1)
   }
 
-  addCard(cardId: CardId, zone: Zone, spawnAnimation?: SpawnAnimation, sourceCard?: CardModel) {
+  async addCard(
+    cardId: CardId,
+    zone: Zone,
+    spawnAnimation?: SpawnAnimation,
+    sourceCard?: CardModel,
+  ) {
+    const cardDefinition: CardDefinition = this.cardDefinitions[cardId]
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
       zone: zone,
@@ -256,6 +266,7 @@ export class BoardScene extends PotatoScene {
         model: cardModel,
         x: 0,
         y: 0,
+        chatBubbleOrigin: cardDefinition.chatBubbleOrigin,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
       },
@@ -276,7 +287,12 @@ export class BoardScene extends PotatoScene {
         y: sourceCard.view.y,
       })
     }
-    cardView.playAnimation(spawnAnimation)
+    await cardView.playAnimation(spawnAnimation)
+    if (cardDefinition.spawnPhrases && spawnAnimation !== 'none') {
+      cardView.say(
+        cardDefinition.spawnPhrases[Math.floor(Math.random() * cardDefinition.spawnPhrases.length)],
+      )
+    }
   }
 
   removeCardByUuid(cardUuid: string) {

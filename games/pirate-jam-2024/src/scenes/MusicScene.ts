@@ -4,7 +4,7 @@ import { Howl } from 'howler'
 import { SfxRegistry } from '../model/registries/sfxRegistry'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = true
+const isMusicEnabled = false
 
 const musicVolume = 0.4
 

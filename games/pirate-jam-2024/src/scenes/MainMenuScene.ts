@@ -84,6 +84,9 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.CLOUD_2, require('../../assets/img/cloud_2.png'))
     this.load.image(ImageRegistry.CLOUD_3, require('../../assets/img/cloud_3.png'))
     this.load.image(ImageRegistry.CLOUD_4, require('../../assets/img/cloud_4.png'))
+
+    //other
+    this.load.image(ImageRegistry.CHAT_BUBBLE, require('../../assets/img/chat_bubble.png'))
   }
 
   create() {
@@ -118,7 +121,7 @@ export class MainMenuScene extends PotatoScene {
     buttonList.addButton('Credits')
 
     this.add.existing(buttonList.build())
-    // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
+    ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     this.musicScene.playMainTheme()
   }
 

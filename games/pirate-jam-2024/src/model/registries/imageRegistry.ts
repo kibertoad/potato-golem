@@ -42,4 +42,7 @@ export const ImageRegistry = {
   CLOUD_2: 'cloud_2',
   CLOUD_3: 'cloud_3',
   CLOUD_4: 'cloud_4',
+
+  // other
+  CHAT_BUBBLE: 'chat_bubble',
 } as const
