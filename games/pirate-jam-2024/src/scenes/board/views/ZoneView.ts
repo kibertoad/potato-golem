@@ -1,11 +1,16 @@
 import type { Destroyable, EventSink, IdHolder } from '@potato-golem/core'
 import type { Position, PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
+import type { CardId } from '../../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import type { Zone } from '../../../model/registries/zoneRegistry'
 import type { BoardSupportedEvents } from '../BoardScene'
 import { CardView } from './CardView'
 
+export type FindCardResult = {
+  card?: CardView
+  spawnPoint?: CardView[]
+}
 export type ZoneViewParams = {
   scene: PotatoScene
   id: Zone
@@ -214,15 +219,51 @@ export class ZoneView implements IdHolder, Destroyable {
     }
   }
 
-  public removeCardById(cardId: string): void {
+  public findCardByID(cardId: CardId): FindCardResult {
+    for (const spawnPoint of this.spawnPointCards) {
+      const card = spawnPoint.find((card) => card.model.definition.id === cardId)
+      if (card) {
+        return {
+          spawnPoint,
+          card,
+        }
+      }
+      return {
+        spawnPoint: undefined,
+        card: undefined,
+      }
+    }
+  }
+
+  public hasCard(cardId: CardId) {
+    const { card } = this.findCardByID(cardId)
+    return card !== undefined
+  }
+
+  public findCardByUUID(cardId: string): FindCardResult {
     for (const spawnPoint of this.spawnPointCards) {
       const card = spawnPoint.find((card) => card.model.id === cardId)
       if (card) {
-        const index = spawnPoint.indexOf(card)
-        spawnPoint.splice(index, 1)
-        this.reorderStackedCardDepths()
-        return
+        return {
+          spawnPoint,
+          card,
+        }
       }
+      return {
+        spawnPoint: undefined,
+        card: undefined,
+      }
+    }
+  }
+
+  public removeCardByUUID(cardId: string): void {
+    console.log(this.findCardByUUID)
+    const { card, spawnPoint } = this.findCardByUUID(cardId)
+    if (card) {
+      const index = spawnPoint.indexOf(card)
+      spawnPoint.splice(index, 1)
+      this.reorderStackedCardDepths()
+      return
     }
   }
 

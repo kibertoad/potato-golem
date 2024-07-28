@@ -3,10 +3,11 @@ import type { ZoneView } from '../../scenes/board/views/ZoneView'
 import { AlchemistModel } from '../entities/AlchemistModel'
 import type { CardModel } from '../entities/CardModel'
 import { HomunculusModel } from '../entities/HomunculusModel'
+import type { Zone } from '../registries/zoneRegistry'
 
 export class WorldModel {
   public readonly cards: CardModel[] = []
-  public readonly zones: { string?: ZoneView } = {}
+  public readonly zones: Partial<Record<Zone, ZoneView>> = {}
   public readonly homunculusModel: HomunculusModel
   public readonly alchemistModel: AlchemistModel
 
@@ -20,14 +21,14 @@ export class WorldModel {
   }
 
   removeCard(cardModelId: string): CardModel {
-    for (const zoneView in this.zones) {
-      this.removeCardFromZone(zoneView, cardModelId)
+    for (const zoneId of Object.keys(this.zones)) {
+      this.removeCardFromZone(zoneId as Zone, cardModelId)
     }
     return removeFromArrayById(this.cards, cardModelId)
   }
 
-  removeCardFromZone(zoneId: string, cardModelId: string) {
-    this.zones[zoneId].removeCardById(cardModelId)
+  removeCardFromZone(zoneId: Zone, cardModelId: string) {
+    this.zones[zoneId].removeCardByUUID(cardModelId)
   }
 }
 

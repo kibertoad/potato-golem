@@ -38,6 +38,7 @@ export type BoardSupportedEvents =
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
+import { SingingMushroomActivation } from '../../model/activations/card/recurringActivations'
 import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 import { zones } from '../../model/definitions/zoneDefinitions'
 import { EventDirector } from '../../model/processors/EventDirector'
@@ -218,6 +219,10 @@ export class BoardScene extends PotatoScene {
 
     this.eventView.setToEvent('INTRO')
     this.eventView.show()
+
+    // recurring effects
+
+    this.eventDirector.addRecurringActivation(new SingingMushroomActivation())
   }
 
   initZones() {
@@ -232,6 +237,8 @@ export class BoardScene extends PotatoScene {
     const zoneView = new ZoneView(zoneParams, { boardEventSink: this.eventSink })
     this.addChildViewObject(zoneView)
     this.worldModel.zones[zoneParams.id] = zoneView
+
+    console.log(`added zone ${zoneParams.id}`)
 
     return zoneView
   }

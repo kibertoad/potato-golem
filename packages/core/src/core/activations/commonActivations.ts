@@ -1,4 +1,5 @@
 import type { Activation } from './Activation'
+import { LimitedNumber } from '../primitives/LimitedNumber'
 
 export type QueuedActivationParams = {
   id: string
@@ -9,14 +10,14 @@ export type QueuedActivationParams = {
 }
 
 export class QueuedActivation implements Activation {
-  private activatesIn: number
+  private activatesIn: LimitedNumber
   private readonly activation: Activation
   public readonly unique: boolean
   public readonly id: string
   public readonly description?: string
 
   constructor(params: QueuedActivationParams) {
-    this.activatesIn = params.activatesIn
+    this.activatesIn = new LimitedNumber(params.activatesIn, params.activatesIn)
     this.activation = params.activation
     this.unique = params.unique ?? false
     this.id = params.id
@@ -24,8 +25,12 @@ export class QueuedActivation implements Activation {
   }
 
   processTime(timeUnits: number): boolean {
-    this.activatesIn -= timeUnits
-    return (this.activatesIn <= 0)
+    this.activatesIn.decrease(timeUnits)
+    return (this.activatesIn.value <= 0)
+  }
+
+  resetTime() {
+    this.activatesIn.setToMax()
   }
 
   activate() {

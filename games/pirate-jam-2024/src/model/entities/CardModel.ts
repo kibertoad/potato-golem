@@ -81,14 +81,17 @@ export class CardModel implements TurnProcessor, CommonEntity {
     this.parentEventSink.emit('DESTROY', this)
   }
 
-  getActivationForCombinedCard(combinedCard: CardModel, includeCombined?: boolean): CardEffectDefinition | undefined {
+  getActivationForCombinedCard(
+    combinedCard: CardModel,
+    includeCombined?: boolean,
+  ): CardEffectDefinition | undefined {
     // nothing is highlighted
     if (!combinedCard) {
       return undefined
     }
 
     // card is already busy
-    if (!(includeCombined) && (combinedCard.combinedCard || this.combinedCard)) {
+    if (!includeCombined && (combinedCard.combinedCard || this.combinedCard)) {
       return undefined
     }
 

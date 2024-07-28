@@ -31,7 +31,7 @@ export type CardEffectDefinition = {
 }
 
 export type CardDefinition = {
-  id: string
+  id: CardId
   name: string
   image?: ImageId
   nonDraggable?: boolean
@@ -147,13 +147,13 @@ export const cardDefinitions = {
     id: 'SHADOW_MUSE',
     image: 'shadow_muse_card',
     name: 'Shadow Muse',
-    nonDraggable: true
+    nonDraggable: true,
   },
 
   SONECHKA: {
     id: 'SONECHKA',
     name: 'Sonechka',
-    nonDraggable: true
+    nonDraggable: true,
   },
 
   DAYDREAM: {

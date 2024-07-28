@@ -14,6 +14,7 @@ export class EventDirector implements TurnProcessor {
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
   private readonly queuedActivations: QueuedActivation[] = []
+  private readonly recurringActivations: QueuedActivation[] = []
 
   private counterTillNextEvent: number
 
@@ -37,7 +38,18 @@ export class EventDirector implements TurnProcessor {
     this.queuedActivations.push(activation)
   }
 
+  addRecurringActivation(activation: QueuedActivation) {
+    if (activation.unique) {
+      if (this.recurringActivations.some((entry) => entry.id === activation.id)) {
+        return
+      }
+    }
+
+    this.recurringActivations.push(activation)
+  }
+
   processTurn(): void {
+    this.processRecurringActivations()
     this.processQueuedActivations()
     this.processRandomEvents()
   }
@@ -49,6 +61,16 @@ export class EventDirector implements TurnProcessor {
       if (isReady) {
         nextActivation.activate()
         this.queuedActivations.shift()
+      }
+    }
+  }
+
+  private processRecurringActivations() {
+    for (const activation of this.recurringActivations) {
+      const isReady = activation.processTime(1)
+      if (isReady) {
+        activation.activate()
+        activation.resetTime()
       }
     }
   }
