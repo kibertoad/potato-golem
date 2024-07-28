@@ -113,6 +113,7 @@ export const cardDefinitions = {
   WORKBENCH: {
     id: 'WORKBENCH',
     name: 'Workbench',
+    nonDraggable: true,
   },
 
   EXPLOSIVES: {
