@@ -79,7 +79,7 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
     id: 'homunculus',
     name: 'homunculus',
     debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
-    stackDirection: 'left',
+    stackDirection: 'right',
     spawnPoints: [
       {
         x: 150,

@@ -82,6 +82,8 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
     const targetZoneView = this.worldModel.zones[this.targetZone]
     targetCard.changeZone(this.targetZone)
     const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
+    targetZoneView.registerCard(targetCard.view, availableSpawnPont.index)
+    targetZoneView.reorderStackedCardDepths()
     await targetCard.view.animateMoveTo({
       x: availableSpawnPont.x,
       y: availableSpawnPont.y,
