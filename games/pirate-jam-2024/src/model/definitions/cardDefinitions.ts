@@ -16,8 +16,6 @@ import {
   FeedActivation,
   GainHatredActivation,
   GainHealthActivation,
-  MoveToZoneCardActivation,
-  NextTurnActivation,
   PoofCardActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
