@@ -65,7 +65,13 @@ export class EventDirector implements TurnProcessor {
 
     const eventToPlay = randomOneOf(eligibleEvents)
 
-    this.eventSink.emit('START_EVENT', eventToPlay.id)
+    // There is an event dialog to display
+    if (eventToPlay.options) {
+      this.eventSink.emit('START_EVENT', eventToPlay.id)
+    }
+    if (eventToPlay.effect) {
+      eventToPlay.effect.activate()
+    }
     this.resetCounter()
   }
 
