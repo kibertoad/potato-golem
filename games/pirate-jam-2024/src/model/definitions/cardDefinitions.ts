@@ -6,6 +6,7 @@ import {
 import type { Position } from '@potato-golem/ui'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
+  AttackHomunculusCardActivation,
   ChatCardActivation,
   DamageActivation,
   DecomposeBothCardsActivation,
@@ -389,7 +390,7 @@ export const cardDefinitions = {
             'Take this!',
             "I'll stop you in the name of the LAW!",
           ]),
-          new DamageActivation(worldModel.homunculusModel, 1),
+          new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
           new DecomposeCardActivation(),
         ]),
       },

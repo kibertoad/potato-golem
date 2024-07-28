@@ -161,6 +161,29 @@ export class DamageActivation implements Activation, DynamicDescriptionHolder {
   }
 }
 
+export class AttackHomunculusCardActivation extends DamageActivation implements CardActivation {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly chatPhrases: string[]
+
+  constructor(target: EventReceiver, amount: number) {
+    super(target, amount)
+  }
+
+  async activate(targetCard?: CardModel) {
+    await targetCard.view.animateAttackTo({
+      x: 1280,
+      y: 720,
+    })
+    await super.activate()
+  }
+
+  getDescription(): string {
+    return 'Attack homunculus'
+  }
+}
+
 export class GainConscienceActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver

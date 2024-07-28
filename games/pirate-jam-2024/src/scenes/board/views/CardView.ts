@@ -497,6 +497,23 @@ export class CardView extends Container implements IdHolder {
     await delay(1000)
   }
 
+  async animateAttackTo(moveToPosition: Position) {
+    await this.hideChat()
+    this.scene.tweens.add({
+      targets: this,
+      y: moveToPosition.y,
+      duration: 400,
+      ease: 'Back.easeIn',
+    })
+    this.scene.tweens.add({
+      targets: this,
+      x: moveToPosition.x,
+      duration: 400,
+      ease: 'Back.easeIn',
+    })
+    await delay(400)
+  }
+
   private async hideChat(): Promise<void> {
     let stopped = false
     if (this.chatScaleTween && this.chatScaleTween.isPlaying()) {
