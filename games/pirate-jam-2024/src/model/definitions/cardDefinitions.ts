@@ -14,6 +14,7 @@ import {
   GainConscienceActivation,
   GainHatredActivation,
   GainHealthActivation,
+  MoveToZoneCardActivation,
   QueueActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
@@ -36,6 +37,7 @@ export type CardDefinition = {
   image?: ImageId
   nonDraggable?: boolean
   chatBubbleOrigin?: Position
+  chatBubbleRightOffset?: number
   spawnPhrases?: string[]
 
   // Effect that is triggered after card staying within a zone for a while
@@ -290,13 +292,26 @@ export const cardDefinitions = {
     name: 'The Law',
     image: 'the_law_card',
     nonDraggable: true,
-    chatBubbleOrigin: { x: 80, y: 80 },
+    chatBubbleOrigin: { x: 80, y: 85 },
+    chatBubbleRightOffset: 42,
     spawnPhrases: [
       'Police! Open up!',
       'We had a report on this place.',
       'What is going on here?',
       'Stop right there!',
     ],
+    idleZoneEffect: {
+      streets: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          new MoveToZoneCardActivation(worldModel, 'homunculus', [
+            'Hmmm...Interesting...',
+            'What do we have here?',
+            "Don't mind if I take a look?",
+          ]),
+        ]),
+      },
+    },
   },
 
   THE_ROUGH_KIND: {

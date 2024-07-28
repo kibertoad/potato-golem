@@ -10,6 +10,8 @@ import {
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
+import type { Zone } from '../../registries/zoneRegistry'
+import type { WorldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
 
 export class DecomposeCardActivation implements CardActivation, DynamicDescriptionHolder {
@@ -52,6 +54,38 @@ export class EatCardActivation implements CardActivation, DynamicDescriptionHold
   async activate(targetCard: CardModel) {
     await targetCard.view.playEatAnimation()
     targetCard.destroy()
+  }
+
+  getDescription(): string {
+    return 'Consume card'
+  }
+}
+
+export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly worldModel: WorldModel
+  private readonly targetZone: Zone
+  private readonly chatPhrases?: string[]
+
+  constructor(worldModel: WorldModel, targetZone: Zone, chatPhrases?: string[]) {
+    this.worldModel = worldModel
+    this.targetZone = targetZone
+    this.chatPhrases = chatPhrases
+  }
+
+  async activate(targetCard: CardModel) {
+    const targetZoneView = this.worldModel.zones[this.targetZone]
+    targetCard.changeZone(this.targetZone)
+    const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
+    await targetCard.view.animateMoveTo({
+      x: availableSpawnPont.x,
+      y: availableSpawnPont.y,
+    })
+    if (this.chatPhrases) {
+      targetCard.view.say(this.chatPhrases)
+    }
   }
 
   getDescription(): string {
