@@ -22,6 +22,7 @@ import type { BoardSupportedEvents } from '../BoardScene'
 export type CardViewParams = {
   model: CardModel
   chatBubbleOrigin?: Position
+  chatBubbleRightOffset?: number
   onDragStart?: (card: CardView) => void
   onDragEnd?: (card: CardView) => boolean | undefined
 } & Position
@@ -71,6 +72,11 @@ export class CardView extends Container implements IdHolder {
   private readonly potatoScene: PotatoScene
 
   private readonly chatBubbleOrigin: Position = { x: 0, y: 0 }
+  private readonly chatBubbleRightOffset: number = 0
+
+  private chatScaleTween: Phaser.Tweens.Tween
+  private chatAlphaTween: Phaser.Tweens.Tween
+  private chatFadeOutTween: Phaser.Tweens.Tween
 
   /**
    * Text element with the name of the card
@@ -104,6 +110,9 @@ export class CardView extends Container implements IdHolder {
     this.potatoScene = scene
     if (params.chatBubbleOrigin) {
       this.chatBubbleOrigin = params.chatBubbleOrigin
+    }
+    if (params.chatBubbleRightOffset) {
+      this.chatBubbleRightOffset = params.chatBubbleRightOffset
     }
     this.id = params.model.id
     this.x = params.x
@@ -471,40 +480,75 @@ export class CardView extends Container implements IdHolder {
   }
 
   async animateMoveTo(moveToPosition: Position) {
+    await this.hideChat()
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
-      duration: 900,
-      ease: 'Sine.easeInOut',
+      duration: 700,
+      ease: 'Back',
     })
     this.scene.tweens.add({
       targets: this,
       x: moveToPosition.x,
       duration: 1000,
-      ease: 'Sine.easeInOut',
+      ease: 'Back',
     })
     await delay(1000)
   }
 
-  async say(text: string): Promise<void> {
-    this.chatTextView.setText(text)
-    this.calculateChatPosition()
+  private async hideChat(): void {
+    let stopped = false
+    if (this.chatScaleTween && this.chatScaleTween.isPlaying()) {
+      this.chatScaleTween.stop()
+      stopped = true
+    }
+    if (this.chatAlphaTween && this.chatAlphaTween.isPlaying()) {
+      this.chatAlphaTween.stop()
+      stopped = true
+    }
+    if (this.chatFadeOutTween && this.chatFadeOutTween.isPlaying()) {
+      this.chatFadeOutTween.stop()
+      stopped = true
+    }
+
+    if (stopped) {
+      this.scene.tweens.add({
+        targets: this.chatBubbleContainer,
+        alpha: 0,
+        delay: 0,
+        duration: 100,
+        ease: 'Cubic',
+        onComplete: () => {
+          this.chatBubbleContainer.setVisible(false)
+        },
+      })
+      await delay(100)
+    }
+  }
+
+  async say(text: string | string[]): Promise<void> {
+    const textToSay = Array.isArray(text) ? text[Math.floor(Math.random() * text.length)] : text
+
+    this.chatTextView.setText(textToSay)
+    await this.calculateChatPosition()
+
+    await this.hideChat()
 
     await delay(0) //Allow for calculated position to take effect
     this.chatBubbleContainer.setAlpha(0).setScale(0.4).setVisible(true)
-    this.scene.tweens.add({
+    this.chatScaleTween = this.scene.tweens.add({
       targets: this.chatBubbleContainer,
       scale: 1,
       duration: 400,
       ease: 'Back.easeOut',
     })
-    this.scene.tweens.add({
+    this.chatAlphaTween = this.scene.tweens.add({
       targets: this.chatBubbleContainer,
       alpha: 1,
       duration: 400,
       ease: 'Cubic',
     })
-    this.scene.tweens.add({
+    this.chatFadeOutTween = this.scene.tweens.add({
       targets: this.chatBubbleContainer,
       alpha: 0,
       delay: 3000,
@@ -521,6 +565,9 @@ export class CardView extends Container implements IdHolder {
     await delay(0) //This is to allow the card position to settle after spawn
     let chatVerticalDirection: ChatVerticalDirection = 'up'
     let chatHorizontalDirection: ChatHorizontalDirection = 'left'
+
+    this.chatBubbleSlice.scaleX = 1
+    this.chatBubbleSlice.scaleY = 1
 
     if (this.x + this.chatBubbleOrigin.x < 1280) {
       chatHorizontalDirection = 'right'
@@ -542,7 +589,10 @@ export class CardView extends Container implements IdHolder {
     this.chatBubbleSlice.height = this.chatTextView.getBounds().height + 60
 
     //Initial position offset to compensate for the bubble
-    this.chatBubbleContainer.x = -80 + this.chatBubbleOrigin.x
+    this.chatBubbleContainer.x =
+      -80 +
+      this.chatBubbleOrigin.x +
+      (chatHorizontalDirection === 'right' ? this.chatBubbleRightOffset : 0)
     this.chatBubbleContainer.y = -130 + this.chatBubbleOrigin.y
 
     if (chatHorizontalDirection === 'left') {
@@ -559,6 +609,7 @@ export class CardView extends Container implements IdHolder {
   }
 
   async playAnimation(animation?: SpawnAnimation) {
+    await this.hideChat()
     const resolvedAnimation = animation ?? 'pop_in'
 
     if (resolvedAnimation === 'none') {

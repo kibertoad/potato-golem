@@ -165,30 +165,40 @@ export class ZoneView implements IdHolder, Destroyable {
     return 0
   }
 
-  public addCard(cardView: CardView) {
+  public findAvailableSpawnPoint(cardView: CardView): { x: number; y: number; index: number } {
     //pick random spawn point from zone
-    const spawnPointIndex = this.findEmptySpawnPointOnTheSides(cardView)
-    const spawnPoint = this.spawnPoints[spawnPointIndex]
+    const index = this.findEmptySpawnPointOnTheSides(cardView)
+    const spawnPoint = this.spawnPoints[index]
+    const result: { x: number; y: number; index: number } = { x: 0, y: 0, index: index }
 
     switch (this.stackDirection) {
       case 'up':
-        cardView.y = this.spawnPointCards[spawnPointIndex].length * -StackSpacing
+        result.y = this.spawnPointCards[index].length * -StackSpacing
         break
       case 'down':
-        cardView.y = this.spawnPointCards[spawnPointIndex].length * StackSpacing
+        result.y = this.spawnPointCards[index].length * StackSpacing
         break
       case 'left':
-        cardView.x = this.spawnPointCards[spawnPointIndex].length * -StackSpacing
+        result.x = this.spawnPointCards[index].length * -StackSpacing
         break
       case 'right':
-        cardView.x = this.spawnPointCards[spawnPointIndex].length * StackSpacing
+        result.x = this.spawnPointCards[index].length * StackSpacing
         break
     }
 
-    cardView.x += spawnPoint.x
-    cardView.y += spawnPoint.y
+    result.x += spawnPoint.x
+    result.y += spawnPoint.y
 
-    this.spawnPointCards[spawnPointIndex].push(cardView)
+    return result
+  }
+
+  public addCard(cardView: CardView) {
+    const spawnPoint = this.findAvailableSpawnPoint(cardView)
+
+    cardView.x = spawnPoint.x
+    cardView.y = spawnPoint.y
+
+    this.spawnPointCards[spawnPoint.index].push(cardView)
   }
 
   public reorderStackedCardDepths() {

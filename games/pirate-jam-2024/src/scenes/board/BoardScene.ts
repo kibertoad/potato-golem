@@ -176,6 +176,7 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
+    // this.addCard('THE_LAW', 'streets', 'none')
 
     this.addCard('EXPLOSIVES', 'lab', 'none')
 
@@ -267,6 +268,7 @@ export class BoardScene extends PotatoScene {
         x: 0,
         y: 0,
         chatBubbleOrigin: cardDefinition.chatBubbleOrigin,
+        chatBubbleRightOffset: cardDefinition.chatBubbleRightOffset,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
       },
@@ -289,9 +291,7 @@ export class BoardScene extends PotatoScene {
     }
     await cardView.playAnimation(spawnAnimation)
     if (cardDefinition.spawnPhrases && spawnAnimation !== 'none') {
-      cardView.say(
-        cardDefinition.spawnPhrases[Math.floor(Math.random() * cardDefinition.spawnPhrases.length)],
-      )
+      cardView.say(cardDefinition.spawnPhrases)
     }
   }
 
