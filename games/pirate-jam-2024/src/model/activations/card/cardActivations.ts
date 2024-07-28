@@ -69,10 +69,13 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
   private readonly targetZone: Zone
   private readonly chatPhrases?: string[]
 
-  constructor(worldModel: WorldModel, targetZone: Zone, chatPhrases?: string[]) {
+  constructor(worldModel: WorldModel, targetZones: Zone | Zone[], chatPhrases?: string[]) {
     this.worldModel = worldModel
-    this.targetZone = targetZone
     this.chatPhrases = chatPhrases
+
+    this.targetZone = Array.isArray(targetZones)
+      ? targetZones[Math.floor(Math.random() * targetZones.length)]
+      : targetZones
   }
 
   async activate(targetCard: CardModel) {

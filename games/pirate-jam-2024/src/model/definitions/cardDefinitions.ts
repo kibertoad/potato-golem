@@ -273,14 +273,20 @@ export const cardDefinitions = {
       streets: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new MoveToZoneCardActivation(worldModel, 'homunculus', [
-            'Hmmm...Interesting...',
-            'What do we have here?',
-            "Don't mind if I take a look?",
-          ]),
+          new MoveToZoneCardActivation(
+            worldModel,
+            ['home', 'homunculus'],
+            ['Hmmm...Interesting...', 'What do we have here?', "Don't mind if I take a look?"],
+          ),
         ]),
       },
       homunculus: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          //TODO: Add card attack activation
+        ]),
+      },
+      home: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
           //TODO: Add card attack activation
