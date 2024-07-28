@@ -116,6 +116,51 @@ export const cardDefinitions = {
     nonDraggable: true,
   },
 
+  PORTAL: {
+    id: 'PORTAL',
+    name: 'Portal',
+    nonDraggable: true,
+  },
+
+  THE_ID: {
+    id: 'THE_ID',
+    name: 'The Id',
+    nonDraggable: true,
+  },
+
+  SINGING_MUSHROOMS: {
+    id: 'SINGING_MUSHROOMS',
+    name: 'Singing Mushrooms',
+  },
+
+  WATCHING_FLOWER: {
+    id: 'WATCHING_FLOWER',
+    name: 'Watching Flower',
+  },
+
+  ENLIGHTENED_MANDRAKE: {
+    id: 'ENLIGHTENED_MANDRAKE',
+    name: 'Enlightened Mandrake',
+  },
+
+  SHADOW_MUSE: {
+    id: 'SHADOW_MUSE',
+    image: 'shadow_muse_card',
+    name: 'Shadow Muse',
+    nonDraggable: true
+  },
+
+  SONECHKA: {
+    id: 'SONECHKA',
+    name: 'Sonechka',
+    nonDraggable: true
+  },
+
+  DAYDREAM: {
+    id: 'DAYDREAM',
+    name: 'Daydream',
+  },
+
   EXPLOSIVES: {
     id: 'EXPLOSIVES',
     name: 'Explosives',
@@ -237,6 +282,31 @@ export const cardDefinitions = {
     },
   },
 
+  MONEY: {
+    id: 'MONEY',
+    name: 'Money',
+    image: 'money_card',
+    cardCombinationEffect: {
+      MERCHANT: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('SHOPKEEPER', eventSink),
+        ]),
+      },
+
+      THE_LAW: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+      },
+
+      THE_ROUGH_KIND: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+      },
+    },
+  },
+
   MEDICINE: {
     id: 'MEDICINE',
     name: 'Medicne',
@@ -330,4 +400,4 @@ export const cardDefinitions = {
     name: 'The Rough Kind',
     nonDraggable: true,
   },
-} as const satisfies Record<string, CardDefinition>
+} as const satisfies Record<CardId, CardDefinition>
