@@ -11,6 +11,7 @@ import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
+import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import type { WorldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
@@ -221,6 +222,16 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
   getDescription(): string {
     return 'Attack homunculus'
+  }
+}
+
+export class NextTurnActivation implements Activation, DynamicDescriptionHolder {
+  activate() {
+    EventEmitters.boardEventEmitter.emit('NEXT_TURN')
+  }
+
+  getDescription(): string {
+    return `Time passes`
   }
 }
 
