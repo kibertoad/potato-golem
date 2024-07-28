@@ -129,6 +129,7 @@ export const cardDefinitions = {
   EXPLOSIVES: {
     id: 'EXPLOSIVES',
     name: 'Explosives',
+    image: 'explosives_card',
     cardCombinationEffect: {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
