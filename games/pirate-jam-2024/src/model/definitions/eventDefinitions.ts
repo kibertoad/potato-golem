@@ -38,27 +38,8 @@ export const eventDefinitions = {
     image: 'medicine_card',
     options: [
       {
-        text: 'The world will pay for this',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'ANGER',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
-      },
-
-      {
-        text: 'I deserved this',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'HUMILITY',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
+        text: 'OK',
+        effect: new MultiplexActivation([new ConcludeEventActivation(eventSink)]),
       },
     ],
   },
@@ -71,36 +52,13 @@ export const eventDefinitions = {
     image: 'merchant_card',
     options: [
       {
-        text: 'The world will pay for this',
+        text: 'OK',
         effect: new MultiplexActivation([
           new SpawnCardActivation(eventSink, {
             description: '',
             zone: 'streets',
             cardId: 'THE_LAW',
             spawnAnimation: 'fly_in_left',
-          }),
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'ANGER',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
-      },
-
-      {
-        text: 'I deserved this',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'streets',
-            cardId: 'THE_LAW',
-            spawnAnimation: 'fly_in_left',
-          }),
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'HUMILITY',
           }),
           new ConcludeEventActivation(eventSink),
         ]),
@@ -116,36 +74,13 @@ export const eventDefinitions = {
     image: 'poison_card',
     options: [
       {
-        text: 'The world will pay for this',
+        text: 'OK',
         effect: new MultiplexActivation([
           new SpawnCardActivation(eventSink, {
             description: '',
-            zone: 'homunculus',
+            zone: 'alchemy',
             cardId: 'MOLD',
             spawnAnimation: 'pop_in',
-          }),
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'ANGER',
-          }),
-          new ConcludeEventActivation(eventSink),
-        ]),
-      },
-
-      {
-        text: 'I deserved this',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'streets',
-            cardId: 'MOLD',
-            spawnAnimation: 'pop_in',
-          }),
-          new SpawnCardActivation(eventSink, {
-            description: '',
-            zone: 'home',
-            cardId: 'HUMILITY',
           }),
           new ConcludeEventActivation(eventSink),
         ]),

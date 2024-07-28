@@ -23,7 +23,7 @@ export type CardViewParams = {
   model: CardModel
   chatBubbleOrigin?: Position
   onDragStart?: (card: CardView) => void
-  onDragEnd?: (card: CardView) => boolean | void
+  onDragEnd?: (card: CardView) => boolean | undefined
 } & Position
 
 export type CardViewDependencies = {
