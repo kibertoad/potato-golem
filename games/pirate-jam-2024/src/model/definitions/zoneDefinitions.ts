@@ -93,6 +93,18 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
         x: 150,
         y: 340 + 390 * 2,
       },
+      {
+        x: 150 + 310,
+        y: 524,
+      },
+      {
+        x: 150 + 310,
+        y: 524 + 390,
+      },
+      {
+        x: 150 + 310 * 2,
+        y: 524 + 184,
+      },
     ],
     vertices: [
       { x: 1088, y: 835 },
