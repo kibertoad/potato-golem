@@ -131,6 +131,15 @@ export const cardDefinitions = {
   SINGING_MUSHROOMS: {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
+    cardCombinationEffect: {
+      WORKBENCH: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
+        ]),
+      },
+    },
   },
 
   WATCHING_FLOWER: {

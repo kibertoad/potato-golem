@@ -18,8 +18,8 @@ import type { SpawnCardMessage } from '../../../model/activations/event/extraEve
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EventEmitters } from '../../../model/registries/eventEmitterRegistry'
 
-const EVENT_WINDOW_WIDTH = 1024
-const EVENT_WINDOW_HEIGHT = 520
+const EVENT_WINDOW_WIDTH = 1280
+const EVENT_WINDOW_HEIGHT = 660
 
 export type EventViewDependencies = {
   worldModel: WorldModel

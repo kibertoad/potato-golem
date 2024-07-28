@@ -126,4 +126,40 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
       },
     ],
   },
+
+  CRAFT_MUSHROOMS: {
+    id: 'CRAFT_MUSHROOMS',
+    name: 'CRAFT_MUSHROOMS',
+    description: `
+The alchemist's lab is a haven of controlled chaos, filled with the thick aroma of herbs and simmering brews. In the center of it stands a sturdy wooden workbench, its surface scarred from countless experiments.
+
+The lab is bathed in the soft glow of gaslights, their flickering flames casting dancing shadows. The alchemist approaches a well-worn tome, its pages filled with arcane recipes and notes. The Singing Mushrooms hold incredible potential - either to save lives, or to take them.        
+        `,
+    image: 'medicine_card',
+    options: [
+      {
+        text: 'Create a life-saving medicine',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'MEDICINE',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+
+      {
+        text: 'Prepare deadly poison',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'POISON',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+    ],
+  },
 } as const satisfies Record<string, EventDefinition>
