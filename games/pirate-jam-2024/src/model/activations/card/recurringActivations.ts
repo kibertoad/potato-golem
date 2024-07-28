@@ -28,3 +28,27 @@ export class SingingMushroomActivation extends QueuedActivation {
     }
   }
 }
+
+export class HungerActivation extends QueuedActivation {
+  description: ''
+
+  constructor() {
+    super({
+      activatesIn: 1,
+      id: 'HungerActivation',
+      description: '',
+      unique: true,
+      activation: null, // activation method is overriden
+    })
+  }
+
+  activate(): void {
+    const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+      amount: 1,
+      description: '',
+      cardId: 'HUNGER',
+      zone: 'homunculus',
+    })
+    spawnActivation.activate()
+  }
+}

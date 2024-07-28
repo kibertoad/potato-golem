@@ -11,10 +11,10 @@ import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
+import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import type { WorldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
-import { EventEmitters } from '../../registries/eventEmitterRegistry'
 
 export class DecomposeCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
@@ -168,10 +168,6 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
   private readonly chatPhrases: string[]
 
-  constructor(target: EventReceiver, amount: number) {
-    super(target, amount)
-  }
-
   async activate(targetCard?: CardModel) {
     await targetCard.view.animateAttackTo({
       x: 1280,
@@ -187,6 +183,7 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
 
 export class NextTurnActivation implements Activation, DynamicDescriptionHolder {
   activate() {
+    console.log('emit next turn')
     EventEmitters.boardEventEmitter.emit('NEXT_TURN')
   }
 
