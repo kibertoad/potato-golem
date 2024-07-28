@@ -106,6 +106,7 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
         y: 524 + 184,
       },
     ],
+    cardStartingSpawnPoint: 1,
     vertices: [
       { x: 1088, y: 835 },
       { x: 1088, y: 602 },
