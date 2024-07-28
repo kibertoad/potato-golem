@@ -9,10 +9,10 @@ export class EndTurnProcessor implements TurnProcessor {
     this.worldModel = worldModel
   }
 
-  processTurn(): void {
+  async processTurn(): Promise<void> {
     console.log('Next turn')
     for (const card of this.worldModel.cards) {
-      card.processTurn()
+      await card.processTurn()
     }
   }
 }

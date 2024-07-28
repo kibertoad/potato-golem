@@ -382,7 +382,8 @@ export const cardDefinitions = {
       homunculus: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          //TODO: Add card attack activation
+          new DamageActivation(worldModel.homunculusModel, 1),
+          new DecomposeCardActivation(),
         ]),
       },
       home: {

@@ -73,6 +73,7 @@ export class CardView extends Container implements IdHolder {
 
   private readonly chatBubbleOrigin: Position = { x: 0, y: 0 }
   private readonly chatBubbleRightOffset: number = 0
+  private tmpChatDepth = 0
 
   private chatScaleTween: Phaser.Tweens.Tween
   private chatAlphaTween: Phaser.Tweens.Tween
@@ -520,6 +521,10 @@ export class CardView extends Container implements IdHolder {
         ease: 'Cubic',
         onComplete: () => {
           this.chatBubbleContainer.setVisible(false)
+          if (this.depth === DepthRegistry.CARD_MAX) {
+            //Restore depth only if it was not changed during the chat
+            this.depth = this.tmpChatDepth
+          }
         },
       })
       await delay(100)
@@ -528,6 +533,10 @@ export class CardView extends Container implements IdHolder {
 
   async say(text: string | string[]): Promise<void> {
     const textToSay = Array.isArray(text) ? text[Math.floor(Math.random() * text.length)] : text
+    this.tmpChatDepth = this.depth
+
+    //Temporarily set depth to max so that chat bubble is always on top
+    this.depth = DepthRegistry.CARD_MAX
 
     this.chatTextView.setText(textToSay)
     await this.calculateChatPosition()
@@ -556,6 +565,10 @@ export class CardView extends Container implements IdHolder {
       ease: 'Cubic',
       onComplete: () => {
         this.chatBubbleContainer.setVisible(false)
+        if (this.depth === DepthRegistry.CARD_MAX) {
+          //Restore depth only if it was not changed during the chat
+          this.depth = this.tmpChatDepth
+        }
       },
     })
     await delay(400)

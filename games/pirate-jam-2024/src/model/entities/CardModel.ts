@@ -110,7 +110,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
     return this.definition.idleZoneEffect?.[zone] !== undefined
   }
 
-  processTurn(): void {
+  async processTurn(): Promise<void> {
     this.turnsExisted++
     this.turnsStayedInZone++
     this.turnsCombinedToCard++
@@ -119,7 +119,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
     const activationsTriggered = sortAndFilterActivations(allApplicableActivations)
 
     for (const activation of activationsTriggered) {
-      activation.activate(this)
+      await activation.activate(this)
     }
   }
 

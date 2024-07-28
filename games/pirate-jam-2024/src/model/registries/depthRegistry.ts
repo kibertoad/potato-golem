@@ -4,6 +4,7 @@ export const DepthRegistry = {
   HOMUNCULUS: 90,
   CARD_MIN: 100,
   CARD_MAX: 300,
+  CARD_CHAT_BUBBLE: 400,
   EVENT: 1000,
   GAME_OVER: 10000,
 }

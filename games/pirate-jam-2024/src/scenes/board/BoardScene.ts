@@ -182,7 +182,7 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
-    // this.addCard('THE_LAW', 'streets', 'none')
+    this.addCard('THE_LAW', 'streets', 'none')
 
     this.addCard('EXPLOSIVES', 'lab', 'none')
 
@@ -334,7 +334,7 @@ export class BoardScene extends PotatoScene {
 
       if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
         // Every time we feed a homunculus, a day passes
-        this.nextTurn()
+        this.nextTurn(cardView.model)
       }
     }
 
@@ -364,7 +364,13 @@ export class BoardScene extends PotatoScene {
     return wasCardActivated
   }
 
-  nextTurn() {
+  nextTurn(playedCard?: CardModel) {
+    if (playedCard) {
+      //Move card to the start of this.worldModel.cards
+      const index = this.worldModel.cards.indexOf(playedCard)
+      this.worldModel.cards.splice(index, 1)
+      this.worldModel.cards.unshift(playedCard)
+    }
     this.endTurnProcessor.processTurn()
     this.eventDirector.processTurn()
   }
