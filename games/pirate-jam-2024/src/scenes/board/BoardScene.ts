@@ -118,9 +118,9 @@ export class BoardScene extends PotatoScene {
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
 
-        const canCombine =
-          this.draggedCardView.model.getActivationForCombinedCard(this.pointedCardView.model) ||
-          this.pointedCardView.model.getActivationForCombinedCard(this.draggedCardView.model)
+        const canCombine = this.draggedCardView.model.getActivationForCombinedCard(
+          this.pointedCardView.model,
+        )
 
         if (canCombine) {
           this.draggedCardView.highlight()

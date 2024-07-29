@@ -138,7 +138,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
     }
 
     if (this.combinedCard) {
-      const activation = this.getActivationForCombinedCard(this.combinedCard, true)
+      const activation = this.getActivationForCombinedCard(this.combinedCard, true, true)
       if (activation?.timeTillTrigger <= this.turnsCombinedToCard) {
         relevantActivations.push(activation.effect)
         this.disconnectFromCard()
