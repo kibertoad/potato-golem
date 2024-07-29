@@ -79,9 +79,6 @@ export class BoardScene extends PotatoScene {
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
 
-  private blockInputContainer: Phaser.GameObjects.Container
-  private blockInputCounter = 0
-
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
   constructor({ musicScene, worldModel, endTurnProcessor }: Dependencies) {
@@ -210,22 +207,6 @@ export class BoardScene extends PotatoScene {
     this.addCard('POISON', 'lab', 'none')
     this.addCard('POISON', 'lab', 'none')
 
-    this.blockInputContainer = new Phaser.GameObjects.Container(this)
-    this.blockInputContainer.setDepth(DepthRegistry.GAME_OVER + 100)
-
-    const backdrop = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
-    backdrop.setInteractive({
-      draggable: false,
-      pixelPerfect: false,
-      alphaTolerance: undefined,
-      useHandCursor: false,
-    })
-    backdrop.alpha = 0.0001
-    this.blockInputContainer.setVisible(false)
-    backdrop.setDepth(DepthRegistry.GAME_OVER)
-    this.blockInputContainer.add(backdrop)
-    this.add.existing(this.blockInputContainer)
-
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
         this.worldModel.removeCard(entity.id)
@@ -350,7 +331,7 @@ export class BoardScene extends PotatoScene {
     this.moveCardToTop(cardView)
   }
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-  async onCardDragEnd(cardView: CardView) {
+  onCardDragEnd(cardView: CardView) {
     this.draggedCardView.unhighlight()
     this.draggedCardView = null
     this.cardEffectView.hide()
@@ -366,9 +347,7 @@ export class BoardScene extends PotatoScene {
       if (cardView.model.hasActivationForZone(this.pointedZoneView.id)) {
         const activation = cardView.model.definition.idleZoneEffect[this.pointedZoneView.id]
         if (activation.timeTillTrigger === 0) {
-          this.blockInput()
-          await activation.effect.activate(cardView.model)
-          this.unblockInput()
+          void activation.effect.activate(cardView.model)
         }
       }
 
@@ -401,7 +380,8 @@ export class BoardScene extends PotatoScene {
     return wasCardActivated
   }
 
-  private async tryCombineCards(cardView: CardView, pointedCardView: CardView): Promise<boolean> {
+
+  private tryCombineCards(cardView: CardView, pointedCardView: CardView): boolean {
     let combinationOwnerCard = cardView
     let combinationChildCard = pointedCardView
 
@@ -430,28 +410,12 @@ export class BoardScene extends PotatoScene {
       combinationOwnerCard.model.combineWithCard(combinationChildCard.model)
 
       if (combinationEffect.timeTillTrigger === 0) {
-        this.blockInput()
-        await combinationEffect.effect.activate(combinationOwnerCard.model)
-        this.unblockInput()
+        combinationEffect.effect.activate(combinationOwnerCard.model)
       }
       return true
     }
 
     return false
-  }
-
-  blockInput() {
-    this.blockInputCounter++
-    this.blockInputContainer.setVisible(true)
-    // this.sys.canvas.style.cursor = 'wait'
-  }
-
-  unblockInput() {
-    if (--this.blockInputCounter > 0) {
-      return
-    }
-    this.blockInputContainer.setVisible(false)
-    // this.sys.canvas.style.cursor = 'default'
   }
 
   async nextTurn(playedCard?: CardModel) {
@@ -463,10 +427,8 @@ export class BoardScene extends PotatoScene {
       this.worldModel.cards.unshift(playedCard)
     }
      */
-    this.blockInput()
     await this.endTurnProcessor.processTurn()
     await this.eventDirector.processTurn()
-    this.unblockInput()
   }
 
   async gameOver(text: string) {
