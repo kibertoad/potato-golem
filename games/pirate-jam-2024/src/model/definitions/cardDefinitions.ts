@@ -170,11 +170,6 @@ export const cardDefinitions = {
     image: 'watching_flower_card',
   },
 
-  HUNGER: {
-    id: 'HUNGER',
-    name: 'Hunger',
-  },
-
   ENLIGHTENED_MANDRAKE: {
     id: 'ENLIGHTENED_MANDRAKE',
     name: 'Enlightened Mandrake',
