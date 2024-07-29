@@ -482,7 +482,7 @@ export class CardView extends Container implements IdHolder {
   }
 
   async animateMoveTo(moveToPosition: Position) {
-    await this.hideChat()
+    this.hideChat()
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
@@ -500,7 +500,7 @@ export class CardView extends Container implements IdHolder {
 
   async animateAttackTo(moveToPosition: Position) {
     this.depth = DepthRegistry.CARD_MAX + 1
-    await this.hideChat()
+    this.hideChat()
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
