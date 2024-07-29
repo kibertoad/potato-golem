@@ -11,6 +11,7 @@ export class WorldModel {
   public readonly zones: Partial<Record<Zone, ZoneView>> = {}
   public readonly homunculusModel: HomunculusModel
   public readonly alchemistModel: AlchemistModel
+  public musicScene: Phaser.Scene
 
   constructor() {
     this.homunculusModel = new HomunculusModel()
