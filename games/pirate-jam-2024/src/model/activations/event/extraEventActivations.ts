@@ -1,4 +1,4 @@
-import { type EventSink, LOW_PRIORITY, type StaticDescriptionHolder } from '@potato-golem/core'
+import { type EventSink, LOW_PRIORITY, Precondition, type StaticDescriptionHolder } from '@potato-golem/core'
 import type { Activation } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import { delay } from '../../../utils/timeUtils'
@@ -16,6 +16,7 @@ export type SpawnCardMessage = {
   description: string
   amount?: number
   sourceCard?: CardModel
+  precondition?: Precondition
 }
 
 export class SpawnCardActivation implements Activation, CardActivation, StaticDescriptionHolder {

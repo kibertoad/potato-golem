@@ -240,9 +240,9 @@ export class ZoneView implements IdHolder, Destroyable {
     return card !== undefined
   }
 
-  public findCardByUUID(cardId: string): FindCardResult {
+  public findCardByUUID(cardUUID: string): FindCardResult {
     for (const spawnPoint of this.spawnPointCards) {
-      const card = spawnPoint.find((card) => card.model.id === cardId)
+      const card = spawnPoint.find((card) => card.model.id === cardUUID)
       if (card) {
         return {
           spawnPoint,
@@ -256,9 +256,9 @@ export class ZoneView implements IdHolder, Destroyable {
     }
   }
 
-  public removeCardByUUID(cardId: string): void {
+  public removeCardByUUID(cardUUID: string): void {
     for (const spawnPoint of this.spawnPointCards) {
-      const cardIndex = spawnPoint.findIndex((card) => card.model.id === cardId)
+      const cardIndex = spawnPoint.findIndex((card) => card.model.id === cardUUID)
       if (cardIndex !== -1) {
         spawnPoint.splice(cardIndex, 1)
         this.reorderStackedCardDepths()

@@ -34,6 +34,7 @@ import type { ImageId } from '../registries/imageRegistry'
 import { SfxRegistry } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
+import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -169,12 +170,31 @@ export const cardDefinitions = {
     id: 'WATCHING_FLOWER',
     name: 'Watching Flower',
     image: 'watching_flower_card',
+    cardCombinationEffect: {
+      WORKBENCH: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('CRAFT_FLOWERS', eventSink),
+        ]),
+      },
+    },
   },
 
   ENLIGHTENED_MANDRAKE: {
     id: 'ENLIGHTENED_MANDRAKE',
     name: 'Enlightened Mandrake',
     image: 'enlightened_mandrake_card',
+
+    cardCombinationEffect: {
+      WORKBENCH: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('CRAFT_MANDRAKE', eventSink),
+        ]),
+      },
+    },
   },
 
   SHADOW_MUSE: {
@@ -309,6 +329,7 @@ export const cardDefinitions = {
               activatesIn: 1,
               activation: new SpawnCardActivation(eventSink, {
                 zone: 'streets',
+                precondition: new RoughKindPrecondition(),
                 cardId: 'THE_ROUGH_KIND',
                 description: '',
                 spawnAnimation: 'pop_in',
