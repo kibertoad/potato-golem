@@ -4,6 +4,9 @@ import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
 import type { HomunculusModel } from '../../../model/entities/HomunculusModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import { SfxRegistry } from '../../../model/registries/sfxRegistry'
+import { delay } from '../../../utils/timeUtils'
+import { CardView } from './CardView'
 
 export type HomunculusDependencies = {
   model: HomunculusModel
@@ -13,6 +16,7 @@ export class HomunculusView extends Container {
   private readonly model: HomunculusModel
 
   private readonly homunculusSprite: Phaser.GameObjects.Sprite
+  private readonly cardBloodSplatSprite: Phaser.GameObjects.Sprite
 
   private readonly hearts: Phaser.GameObjects.Sprite[] = []
   private readonly food: Phaser.GameObjects.Sprite[] = []
@@ -73,10 +77,26 @@ export class HomunculusView extends Container {
       this.food.push(food)
     }
 
+    this.cardBloodSplatSprite = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.BLOOD_1)
+      .setPosition({
+        x: 1280,
+        y: 720,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardWidth)
+      .setHeight(CardView.cardHeight)
+      .build()
+    this.cardBloodSplatSprite.setVisible(false)
+    this.cardBloodSplatSprite.setDepth(500)
+    this.add(this.cardBloodSplatSprite)
+    scene.add.existing(this.cardBloodSplatSprite)
+
     this.model.eventSink.on('HEAL', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('DAMAGE', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('FEED', (_amount: number) => this.updateFoodDisplay())
     this.model.eventSink.on('STARVE', (_amount: number) => this.updateFoodDisplay())
+    this.model.eventSink.on('ATTACKED', () => this.playBloodSplatAnimation())
   }
 
   updateHpDisplay() {
@@ -89,5 +109,38 @@ export class HomunculusView extends Container {
     for (let i = 0; i < this.hearts.length; i++) {
       this.food[i].setVisible(i < this.model.food.value)
     }
+  }
+
+  async playBloodSplatAnimation() {
+    this.cardBloodSplatSprite.setVisible(true)
+    this.cardBloodSplatSprite.setAlpha(1)
+    await this.cardBloodSplatSprite.play('blood_splat')
+
+    const splatSounds = [SfxRegistry.SLASH_SPLAT_1, SfxRegistry.SLASH_SPLAT_2]
+
+    this.scene.sound.play(splatSounds[Math.floor(Math.random() * splatSounds.length)], {
+      volume: 0.6,
+    })
+
+    this.scene.tweens.add({
+      targets: this.cardBloodSplatSprite,
+      alpha: 0,
+      delay: 400,
+      duration: 700,
+      ease: 'Cubic',
+    })
+    this.scene.tweens.add({
+      targets: this.cardBloodSplatSprite,
+      y: this.cardBloodSplatSprite.y + 200,
+      delay: 200,
+      duration: 1000,
+      ease: 'Sine',
+      onComplete: () => {
+        this.cardBloodSplatSprite.setVisible(false)
+        this.cardBloodSplatSprite.x = 1280
+        this.cardBloodSplatSprite.y = 720
+      },
+    })
+    await delay(1200)
   }
 }

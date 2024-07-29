@@ -200,7 +200,11 @@ export class CardView extends Container implements IdHolder {
     }
 
     this.cardFrameDecorSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(this.model.definition.nonDraggable ? ImageRegistry.CARD_FRAME_HANDY : ImageRegistry.CARD_FRAME_DECOR)
+      .setTextureKey(
+        this.model.definition.nonDraggable
+          ? ImageRegistry.CARD_FRAME_HANDY
+          : ImageRegistry.CARD_FRAME_DECOR,
+      )
       .setPosition({
         x: 0,
         y: 0,
@@ -548,17 +552,27 @@ export class CardView extends Container implements IdHolder {
   async animateAttackTo(moveToPosition: Position) {
     this.depth = DepthRegistry.CARD_MAX + 1
     this.hideChat()
+
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
-      duration: 400,
-      ease: 'Back.easeIn',
-    })
-    this.scene.tweens.add({
-      targets: this,
       x: moveToPosition.x,
       duration: 400,
       ease: 'Back.easeIn',
+    })
+    await delay(400)
+  }
+
+  async animateRushTo(moveToPosition: Position) {
+    this.depth = DepthRegistry.CARD_MAX + 1
+    this.hideChat()
+
+    this.scene.tweens.add({
+      targets: this,
+      y: moveToPosition.y,
+      x: moveToPosition.x,
+      duration: 400,
+      ease: 'Back.easeOut',
     })
     await delay(400)
   }

@@ -179,8 +179,7 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
   CRAFT_FLOWERS: {
     id: 'CRAFT_FLOWERS',
     name: 'CRAFT_FLOWERS',
-    description:
-`
+    description: `
 Amidst the myriad of flasks and beakers, a basket sits prominently on the workbench, containing the latest specimen: the Watching Flower. With petals that seemed to shift and shimmer in the light, following every movement with an eerie accuracy, these flowers are both beautiful and unnerving.
 
 You approach the basket with a mix of curiosity and caution. The Watching Flowers, with their unique properties, hold the potential for two vastly different creations: a volatile explosive or a potent brew.        

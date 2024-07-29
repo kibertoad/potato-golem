@@ -1,8 +1,8 @@
 import { QueuedActivation } from '@potato-golem/core'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
+import { type Zone, zoneRegistry } from '../../registries/zoneRegistry'
 import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
-import { Zone, zoneRegistry } from '../../registries/zoneRegistry'
 
 export class SingingMushroomActivation extends QueuedActivation {
   description: ''
@@ -68,7 +68,11 @@ export class SingingMushroomActivation extends QueuedActivation {
 
   async activate(): Promise<void> {
     const startingPoints = Object.values(zoneRegistry).filter((zone) => {
-      return zone !== 'any' && zone !== 'homunculus' && worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')
+      return (
+        zone !== 'any' &&
+        zone !== 'homunculus' &&
+        worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')
+      )
     })
 
     if (startingPoints.length === 0) {

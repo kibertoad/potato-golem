@@ -28,13 +28,13 @@ import {
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
+import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
 import { SfxRegistry } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
-import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -507,10 +507,7 @@ export const cardDefinitions = {
             'CORPSE',
             'home',
             [
-              new ChatCardActivation([
-                'Is this...A CORPSE?!',
-                'A body?! I KNEW IT!',
-              ]),
+              new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
               new ChatCardActivation([
                 'You will pay for this heresy!',
                 'I will stop you!',
@@ -540,6 +537,50 @@ export const cardDefinitions = {
     image: 'rough_kind_card',
     name: 'The Rough Kind',
     nonDraggable: true,
+    chatBubbleOrigin: { x: 80, y: 85 },
+    chatBubbleRightOffset: 42,
+    spawnPhrases: ['Well hello there!', 'Now this place looks antiquish!'],
+    idleZoneEffect: {
+      streets: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          new ChatCardActivation([
+            'Okay boys, turn this place upside down!',
+            "Let's check this place out!",
+          ]),
+          new MoveToZoneCardActivation(worldModel, ['home']),
+        ]),
+      },
+      home: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          new SearchAndDecideCardActivation(
+            ['GOLD', 'MONEY'],
+            'home',
+            [
+              new ChatCardActivation([
+                "Now that's what I'm talking about!",
+                'Cha-ching!',
+                'Oooo...shiny!',
+                'If it sparkles or glows, it goes in the bag!',
+              ]),
+              new SearchAndDestroyCardActivation(['GOLD', 'MONEY'], 'home', false),
+            ],
+            [
+              new ChatCardActivation(['Keep looking!', 'There has to be something...']),
+              new MoveToZoneCardActivation(worldModel, ['homunculus']),
+            ],
+          ),
+        ]),
+      },
+      homunculus: {
+        timeTillTrigger: 1,
+        effect: new DescribedTargettedMultipleActivation([
+          new ChatCardActivation(['What the hell is this?!', 'Get him boys!', 'Get it off me!']),
+          new AttackHomunculusCardActivation(worldModel.homunculusModel, 1, false),
+        ]),
+      },
+    },
   },
 
   CORPSE: {

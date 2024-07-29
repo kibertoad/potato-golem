@@ -8,14 +8,12 @@ export class RoughKindPrecondition implements Precondition {
       return false
     }
 
-    const streetHasLaw = worldModel.zones.streets.hasCard('THE_LAW') || worldModel.zones.streets.hasCard('THE_RAID')
+    const streetHasLaw =
+      worldModel.zones.streets.hasCard('THE_LAW') || worldModel.zones.streets.hasCard('THE_RAID')
     if (streetHasLaw) {
       return false
     }
 
     return true
   }
-
-
-
 }

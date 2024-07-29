@@ -219,8 +219,8 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
 }
 
 export class DamageActivation implements Activation, DynamicDescriptionHolder {
-  private readonly amount: number
-  private readonly target: EventReceiver
+  protected readonly amount: number
+  protected readonly target: EventReceiver
 
   constructor(target: EventReceiver, amount: number) {
     this.amount = amount
@@ -240,14 +240,30 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
   isExclusive = true
   priority = LOW_PRIORITY
 
-  private readonly chatPhrases: string[]
+  private readonly kamikaze: boolean
+
+  constructor(target: EventReceiver, amount: number, kamikaze = true) {
+    super(target, amount)
+    this.kamikaze = kamikaze
+  }
 
   async activate(targetCard?: CardModel) {
+    const currentX = targetCard.view.x
+    const currentY = targetCard.view.y
+
     await targetCard.view.animateAttackTo({
       x: 1280,
       y: 720,
     })
     await super.activate()
+    if (this.kamikaze) {
+      return
+    }
+    this.target.eventSink.emit('ATTACKED')
+    await targetCard.view.animateRushTo({
+      x: currentX,
+      y: currentY,
+    })
   }
 
   getDescription(): string {
@@ -259,25 +275,38 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
   isExclusive = true
   priority = LOW_PRIORITY
 
-  private readonly cardIdToAttack: CardId
+  private readonly cardIdsToAttack: CardId | CardId[]
   private readonly searchZone: Zone
+  private readonly kamikaze: boolean
+  private readonly decompozeAcivation: DecomposeCardActivation = new DecomposeCardActivation()
 
-  constructor(cardIdToAttack: CardId, searchZone: Zone = 'any') {
-    this.cardIdToAttack = cardIdToAttack
+  constructor(cardIdsToAttack: CardId | CardId[], searchZone: Zone = 'any', kamikaze = true) {
+    this.cardIdsToAttack = cardIdsToAttack
     this.searchZone = searchZone
+    this.kamikaze = kamikaze
   }
 
   async activate(targetCard: CardModel) {
-    const foundCard = worldModel.searchForCard(this.cardIdToAttack, this.searchZone)
+    const foundCard = worldModel.searchForCards(this.cardIdsToAttack, this.searchZone)
 
     if (!foundCard) {
       return
     }
+    const currentX = targetCard.view.x
+    const currentY = targetCard.view.y
     await targetCard.view.animateAttackTo({
       x: foundCard.view.x,
       y: foundCard.view.y,
     })
-    foundCard.destroy()
+    if (this.kamikaze) {
+      targetCard.destroy()
+      return
+    }
+    this.decompozeAcivation.activate(foundCard)
+    await targetCard.view.animateRushTo({
+      x: currentX,
+      y: currentY,
+    })
   }
 
   getDescription(): string {
@@ -289,25 +318,25 @@ export class SearchAndDecideCardActivation implements CardActivation, DynamicDes
   isExclusive = true
   priority = LOW_PRIORITY
 
-  private readonly cardIdToSearch: CardId
+  private readonly cardIdsToSearch: CardId | CardId[]
   private readonly searchZone: Zone
   private readonly successActivations: ActivationArray
   private readonly failureActivations: ActivationArray
 
   constructor(
-    cardIdToSearch: CardId,
+    cardIdsToSearch: CardId | CardId[],
     searchZone: Zone = 'any',
     successActivations: ActivationArray,
     failureActivations: ActivationArray,
   ) {
-    this.cardIdToSearch = cardIdToSearch
+    this.cardIdsToSearch = cardIdsToSearch
     this.searchZone = searchZone
     this.successActivations = successActivations
     this.failureActivations = failureActivations
   }
 
   async activate(targetCard: CardModel) {
-    const foundCard = worldModel.searchForCard(this.cardIdToSearch, this.searchZone)
+    const foundCard = worldModel.searchForCards(this.cardIdsToSearch, this.searchZone)
     const activations = foundCard ? this.successActivations : this.failureActivations
     for (const activation of activations) {
       await activation.activate(targetCard)

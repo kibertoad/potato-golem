@@ -33,11 +33,12 @@ export class WorldModel {
     this.zones[zoneId].removeCardByUUID(cardModelId)
   }
 
-  searchForCard(cardId: CardId, zone: Zone = 'any'): CardModel | undefined {
+  searchForCards(cardIds: CardId | CardId[], zone: Zone = 'any'): CardModel | undefined {
+    cardIds = Array.isArray(cardIds) ? cardIds : [cardIds]
     let card: CardModel
     for (let i = worldModel.cards.length - 1; i >= 0; i--) {
       card = worldModel.cards[i]
-      if (card.definition.id === cardId && (zone === 'any' || card.zone === zone)) {
+      if ((zone === 'any' || card.zone === zone) && cardIds.includes(card.definition.id)) {
         return card
       }
     }

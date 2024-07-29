@@ -31,10 +31,7 @@ export class MainMenuScene extends PotatoScene {
       ImageRegistry.CARD_FRAME_DECOR,
       require('../../assets/img/card_background_decor.png'),
     )
-    this.load.image(
-      ImageRegistry.CARD_FRAME_HANDY,
-      require('../../assets/img/handy.png'),
-    )
+    this.load.image(ImageRegistry.CARD_FRAME_HANDY, require('../../assets/img/handy.png'))
     this.load.image(
       ImageRegistry.CARD_FRAME_EAT,
       require('../../assets/img/card_background_eat.png'),
@@ -68,7 +65,10 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.THE_LAW_CARD, require('../../assets/img/card_the_law.png'))
     this.load.image(ImageRegistry.THE_ID_CARD, require('../../assets/img/card_the_id.png'))
     this.load.image(ImageRegistry.POISON_CARD, require('../../assets/img/card_poison.png'))
-    this.load.image(ImageRegistry.POISON_MOLD_CARD, require('../../assets/img/card_poison_mold.png'))
+    this.load.image(
+      ImageRegistry.POISON_MOLD_CARD,
+      require('../../assets/img/card_poison_mold.png'),
+    )
     this.load.image(
       ImageRegistry.ALCHEMICAL_SUPPLIES_CARD,
       require('../../assets/img/card_alchemical_supplies.png'),
