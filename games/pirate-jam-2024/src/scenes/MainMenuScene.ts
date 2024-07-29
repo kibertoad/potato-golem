@@ -32,6 +32,10 @@ export class MainMenuScene extends PotatoScene {
       require('../../assets/img/card_background_decor.png'),
     )
     this.load.image(
+      ImageRegistry.CARD_FRAME_HANDY,
+      require('../../assets/img/handy.png'),
+    )
+    this.load.image(
       ImageRegistry.CARD_FRAME_EAT,
       require('../../assets/img/card_background_eat.png'),
     )
