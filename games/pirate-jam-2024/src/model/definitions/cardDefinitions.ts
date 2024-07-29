@@ -125,6 +125,7 @@ export const cardDefinitions = {
   PORTAL: {
     id: 'PORTAL',
     name: 'Portal',
+    image: 'portal_card',
     nonDraggable: true,
   },
 
@@ -137,6 +138,7 @@ export const cardDefinitions = {
   SINGING_MUSHROOMS: {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
+    image: 'singing_mushrooms_card',
     cardCombinationEffect: {
       WORKBENCH: {
         timeTillTrigger: 1,
@@ -374,6 +376,7 @@ export const cardDefinitions = {
   THE_RAID: {
     id: 'THE_RAID',
     name: 'The Raid',
+    image: 'the_raid_card',
     nonDraggable: true,
   },
 
