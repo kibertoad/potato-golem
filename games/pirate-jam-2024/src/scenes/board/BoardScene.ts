@@ -443,7 +443,7 @@ export class BoardScene extends PotatoScene {
   blockInput() {
     this.blockInputCounter++
     this.blockInputContainer.setVisible(true)
-    this.sys.canvas.style.cursor = 'wait'
+    // this.sys.canvas.style.cursor = 'wait'
   }
 
   unblockInput() {
@@ -451,7 +451,7 @@ export class BoardScene extends PotatoScene {
       return
     }
     this.blockInputContainer.setVisible(false)
-    this.sys.canvas.style.cursor = 'default'
+    // this.sys.canvas.style.cursor = 'default'
   }
 
   async nextTurn(playedCard?: CardModel) {
