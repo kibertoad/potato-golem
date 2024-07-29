@@ -162,6 +162,7 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeCardActivation(),
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
+          new NextTurnActivation(),
         ]),
       },
     },

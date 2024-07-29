@@ -49,6 +49,7 @@ export class CardView extends Container implements IdHolder {
   private readonly cardFrameSprite: Phaser.GameObjects.Sprite
   private readonly cardFrameGlow: Phaser.GameObjects.Sprite
   private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
+  private readonly cardFrameNailsSprite: Phaser.GameObjects.Sprite
 
   private readonly cardPoofSprite: Phaser.GameObjects.Sprite
   private readonly cardBloodSplatSprite: Phaser.GameObjects.Sprite
@@ -200,11 +201,7 @@ export class CardView extends Container implements IdHolder {
     }
 
     this.cardFrameDecorSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(
-        this.model.definition.nonDraggable
-          ? ImageRegistry.CARD_FRAME_HANDY
-          : ImageRegistry.CARD_FRAME_DECOR,
-      )
+      .setTextureKey(ImageRegistry.CARD_FRAME_DECOR)
       .setPosition({
         x: 0,
         y: 0,
@@ -213,7 +210,22 @@ export class CardView extends Container implements IdHolder {
       .setWidth(CardView.cardWidth)
       .setHeight(CardView.cardHeight)
       .build()
+    this.cardFrameDecorSprite.setVisible(!this.model.definition.nonDraggable)
     this.cardMainSpriteContainer.add(this.cardFrameDecorSprite)
+
+    if (this.model.definition.nonDraggable) {
+      this.cardFrameNailsSprite = SpriteBuilder.instance(scene)
+        .setTextureKey(ImageRegistry.CARD_FRAME_NAILS)
+        .setPosition({
+          x: 0,
+          y: 0,
+        })
+        .setOrigin(0.5, 0.5)
+        .setWidth(CardView.cardWidth)
+        .setHeight(CardView.cardHeight)
+        .build()
+      this.cardMainSpriteContainer.add(this.cardFrameNailsSprite)
+    }
 
     this.chatBubbleContainer = new Container(scene)
     this.chatBubbleSlice = new Phaser.GameObjects.NineSlice(
