@@ -220,6 +220,10 @@ export class ZoneView implements IdHolder, Destroyable {
   }
 
   public findCardByID(cardId: CardId): FindCardResult {
+    // console.log(`Searching for ${cardId} in ${this.id}`)
+    // const currentCards = this.spawnPointCards.map((entry) => entry.map((card) => card.model.definition.id).join('; '))
+    // console.log(`Current cards: ${currentCards.join(', ')}`)
+
     for (const spawnPoint of this.spawnPointCards) {
       const card = spawnPoint.find((card) => card.model.definition.id === cardId)
       if (card) {
@@ -228,10 +232,10 @@ export class ZoneView implements IdHolder, Destroyable {
           card,
         }
       }
-      return {
-        spawnPoint: undefined,
-        card: undefined,
-      }
+    }
+    return {
+      spawnPoint: undefined,
+      card: undefined,
     }
   }
 
