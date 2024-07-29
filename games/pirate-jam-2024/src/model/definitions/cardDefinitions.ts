@@ -489,10 +489,7 @@ export const cardDefinitions = {
             'CORPSE',
             'home',
             [
-              new ChatCardActivation([
-                'Is this...A CORPSE?!',
-                'A body?! I KNEW IT!',
-              ]),
+              new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
               new ChatCardActivation([
                 'You will pay for this heresy!',
                 'I will stop you!',
