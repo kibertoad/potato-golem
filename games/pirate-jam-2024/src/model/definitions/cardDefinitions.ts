@@ -491,7 +491,7 @@ export const cardDefinitions = {
           ]),
           new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
           new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
-          new AnimateCardActivation('blood_splat', 100),
+          new AnimateCardActivation('blood_splat', 0),
           new FeedActivation(worldModel.homunculusModel, 1, true),
           new SpawnCardActivation(eventSink, {
             spawnAnimation: 'pop_in',
@@ -518,7 +518,7 @@ export const cardDefinitions = {
               ]),
               new SearchAndDestroyCardActivation('HEALTH', 'home'),
               new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
-              new AnimateCardActivation('blood_splat', 100),
+              new AnimateCardActivation('blood_splat', 0),
               new SpawnCardActivation(eventSink, {
                 spawnAnimation: 'pop_in',
                 description: 'Spawn 1 Corpse',

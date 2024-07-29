@@ -305,7 +305,7 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
       y: foundCard.view.y,
     })
     if (this.kamikaze) {
-      targetCard.destroy()
+      foundCard.destroy()
       return
     }
     this.decompozeAcivation.activate(foundCard)
