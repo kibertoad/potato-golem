@@ -335,17 +335,34 @@ export const cardDefinitions = {
     id: 'MEDICINE',
     name: 'Medicne',
     image: 'medicine_card',
-    idleZoneEffect: {
-      home: {
-        timeTillTrigger: 1,
+    // idleZoneEffect: {
+    //   home: {
+    //     timeTillTrigger: 1,
+    //     effect: new DescribedTargettedMultipleActivation([
+    //       new SpawnCardActivation(eventSink, {
+    //         spawnAnimation: 'pop_in',
+    //         description: 'Spawn 1 Health',
+    //         cardId: 'HEALTH',
+    //         zone: 'home',
+    //       }),
+    //       new DecomposeCardActivation(),
+    //     ]),
+    //   },
+    // },
+    cardCombinationEffect: {
+      HEALTH: {
+        timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
-          new SpawnCardActivation(eventSink, {
-            spawnAnimation: 'pop_in',
-            description: 'Spawn 1 Health',
-            cardId: 'HEALTH',
-            zone: 'home',
-          }),
-          new DecomposeCardActivation(),
+          new CombineCardActivation(
+            eventSink,
+            {
+              zone: 'home',
+              cardId: 'HEALTH',
+              amount: 1,
+              description: 'Get 1 Health',
+            },
+            true,
+          ),
         ]),
       },
     },

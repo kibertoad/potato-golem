@@ -7,7 +7,7 @@ import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import type { CardActivation } from '../card/CardActivation'
-import { DecomposeBothCardsActivation } from '../card/cardActivations'
+import { DecomposeBothCardsActivation, DecomposeCardActivation } from '../card/cardActivations'
 import type { SpawnCardEventId } from './eventActivations'
 
 export type SpawnCardMessage = {
@@ -59,8 +59,26 @@ export class CombineCardActivation extends SpawnCardActivation {
   private readonly decomposeBothCards: DecomposeBothCardsActivation =
     new DecomposeBothCardsActivation()
 
+  private readonly decomposeCard: DecomposeCardActivation = new DecomposeCardActivation()
+
+  private readonly destroyOnlyTarget: boolean
+
+  constructor(
+    worldEventSink: EventSink<typeof SpawnCardEventId>,
+    params: SpawnCardMessage,
+    destroyOnlyTarget = false,
+  ) {
+    super(worldEventSink, params)
+    this.destroyOnlyTarget = destroyOnlyTarget
+  }
+
   async activate(targetCard: CardModel) {
     super.activate(targetCard)
+
+    if (this.destroyOnlyTarget) {
+      await this.decomposeCard.activate(targetCard)
+      return
+    }
     await this.decomposeBothCards.activate(targetCard)
   }
 
