@@ -175,4 +175,75 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
       },
     ],
   },
+
+  CRAFT_FLOWERS: {
+    id: 'CRAFT_FLOWERS',
+    name: 'CRAFT_FLOWERS',
+    description:
+`
+Amidst the myriad of flasks and beakers, a basket sits prominently on the workbench, containing the latest specimen: the Watching Flower. With petals that seemed to shift and shimmer in the light, following every movement with an eerie accuracy, these flowers are both beautiful and unnerving.
+
+You approach the basket with a mix of curiosity and caution. The Watching Flowers, with their unique properties, hold the potential for two vastly different creations: a volatile explosive or a potent brew.        
+`,
+    image: 'medicine_card',
+    options: [
+      {
+        text: 'Create explosives',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'EXPLOSIVES',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+
+      {
+        text: 'Brew booze',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'ABSINTHE',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+    ],
+  },
+
+  CRAFT_MANDRAKE: {
+    id: 'CRAFT_MANDRAKE',
+    name: 'CRAFT_MANDRAKE',
+    description: `
+Today, your focus is on the newly acquired specimen: the Enlightened Mandrake. This rare root, with its humanoid shape and faint, ethereal glow, pulses with latent power. As you place it on the workbench, its gentle luminescence casts an otherworldly light.        
+        `,
+    image: 'medicine_card',
+    options: [
+      {
+        text: 'Create a medicine',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'MEDICINE',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+
+      {
+        text: 'Prepare brew',
+        effect: new MultiplexActivation([
+          new SpawnCardActivation(eventSink, {
+            description: '',
+            zone: 'lab',
+            cardId: 'ABSINTHE',
+          }),
+          new ConcludeEventActivation(eventSink),
+        ]),
+      },
+    ],
+  },
 } as const satisfies Record<string, EventDefinition>

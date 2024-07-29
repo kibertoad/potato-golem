@@ -114,6 +114,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   }
 
   async processTurn(): Promise<void> {
+    console.log(`Processing turn for card "${this.definition.id}"`)
     this.turnsExisted++
     this.turnsStayedInZone++
     this.turnsCombinedToCard++

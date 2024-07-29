@@ -169,12 +169,31 @@ export const cardDefinitions = {
     id: 'WATCHING_FLOWER',
     name: 'Watching Flower',
     image: 'watching_flower_card',
+    cardCombinationEffect: {
+      WORKBENCH: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('CRAFT_FLOWERS', eventSink),
+        ]),
+      },
+    },
   },
 
   ENLIGHTENED_MANDRAKE: {
     id: 'ENLIGHTENED_MANDRAKE',
     name: 'Enlightened Mandrake',
     image: 'enlightened_mandrake_card',
+
+    cardCombinationEffect: {
+      WORKBENCH: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeCardActivation(),
+          new StartEventActivation('CRAFT_MANDRAKE', eventSink),
+        ]),
+      },
+    },
   },
 
   SHADOW_MUSE: {

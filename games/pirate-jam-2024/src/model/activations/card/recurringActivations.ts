@@ -95,7 +95,7 @@ export class HungerActivation extends QueuedActivation {
     })
   }
 
-  async activate(): Promise<void> {
+  activate(): void {
     worldModel.homunculusModel.eventSink.emit('STARVE', 1)
   }
 }
