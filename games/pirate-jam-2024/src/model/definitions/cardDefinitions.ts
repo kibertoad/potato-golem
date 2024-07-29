@@ -323,12 +323,18 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
 
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
     },
   },
@@ -387,7 +393,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           //TODO: Fix ability to drag a heart to medicine causing the heart to dissapear
-          new DecomposeBothCardsActivation(0),
+          new DecomposeBothCardsActivation('poof', 300),
           new SpawnCardActivation(eventSink, {
             zone: 'home',
             cardId: 'HEALTH',
