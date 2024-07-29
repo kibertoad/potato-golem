@@ -171,6 +171,7 @@ export const cardDefinitions = {
   ENLIGHTENED_MANDRAKE: {
     id: 'ENLIGHTENED_MANDRAKE',
     name: 'Enlightened Mandrake',
+    image: 'enlightened_mandrake_card',
   },
 
   SHADOW_MUSE: {
