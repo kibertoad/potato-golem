@@ -472,7 +472,7 @@ export const cardDefinitions = {
             cardId: 'CORPSE',
             zone: 'homunculus',
           }),
-          new DelayActivation(900), //Allow blood splat animation to finish
+          new DelayActivation(1100), //Allow blood splat animation to finish
           new DestroyCardActivation(),
         ]),
       },
@@ -483,10 +483,13 @@ export const cardDefinitions = {
             'CORPSE',
             'home',
             [
-              new ChatCardActivation(['Is this...A CORPSE?!']),
+              new ChatCardActivation([
+                'Is this...A CORPSE?!',
+                'A body?! I KNEW IT!',
+              ]),
               new ChatCardActivation([
                 'You will pay for this heresy!',
-                'Take this!',
+                'I will stop you!',
                 'In the name of the LAW!',
               ]),
               new SearchAndDestroyCardActivation('HEALTH', 'home'),
@@ -498,7 +501,7 @@ export const cardDefinitions = {
                 cardId: 'CORPSE',
                 zone: 'home',
               }),
-              new DelayActivation(900), //Allow blood splat animation to finish
+              new DelayActivation(1100), //Allow blood splat animation to finish
               new DestroyCardActivation(),
             ],
             [new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()],
