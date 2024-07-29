@@ -6,6 +6,7 @@ export const ImageRegistry = {
   CARD_FRAME: 'card_frame',
   CARD_GLOW: 'card_glow',
   CARD_FRAME_DECOR: 'card_frame_decor',
+  CARD_FRAME_HANDY: 'card_frame_handy',
   CARD_FRAME_EAT: 'card_frame_eat',
   CARD_FRAME_EAT_2: 'card_frame_eat_2',
   GLASS_PANEL: 'glass_panel',

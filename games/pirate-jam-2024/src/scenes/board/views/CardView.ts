@@ -200,7 +200,7 @@ export class CardView extends Container implements IdHolder {
     }
 
     this.cardFrameDecorSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.CARD_FRAME_DECOR)
+      .setTextureKey(this.model.definition.nonDraggable ? ImageRegistry.CARD_FRAME_HANDY : ImageRegistry.CARD_FRAME_DECOR)
       .setPosition({
         x: 0,
         y: 0,
