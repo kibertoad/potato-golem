@@ -137,6 +137,12 @@ export class PlaySfxActivation implements Activation {
   }
 }
 
+export class LawIsDeadActivation implements Activation {
+  activate() {
+    worldModel.theLawIsDead = true
+  }
+}
+
 export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY

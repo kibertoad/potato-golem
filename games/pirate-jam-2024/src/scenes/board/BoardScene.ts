@@ -41,7 +41,7 @@ import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
 import {
   HungerActivation,
-  SingingMushroomActivation,
+  SingingMushroomActivation, TheRaidActivation,
 } from '../../model/activations/card/recurringActivations'
 import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 import { zones } from '../../model/definitions/zoneDefinitions'
@@ -233,6 +233,7 @@ export class BoardScene extends PotatoScene {
     // recurring effects
 
     this.eventDirector.addRecurringActivation(new SingingMushroomActivation())
+    this.eventDirector.addRecurringActivation(new TheRaidActivation())
     this.eventDirector.addRecurringActivation(new HungerActivation())
   }
 

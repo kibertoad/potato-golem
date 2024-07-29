@@ -17,7 +17,7 @@ import {
   EatCardActivation,
   FeedActivation,
   GainHatredActivation,
-  GainHealthActivation,
+  GainHealthActivation, LawIsDeadActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
   PlaySfxActivation,
@@ -243,6 +243,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
+          new LawIsDeadActivation(),
           new NextTurnActivation(),
         ]),
       },
