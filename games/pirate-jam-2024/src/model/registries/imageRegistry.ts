@@ -23,6 +23,7 @@ export const ImageRegistry = {
   BOOZE_CARD: 'booze_card',
   EXPLOSIVES_CARD: 'explosives_card',
   SINGING_MUSHROOMS_CARD: 'singing_mushrooms_card',
+  POISON_MOLD_CARD: 'poison_mold_card',
   PORTAL_CARD: 'portal_card',
   THE_RAID_CARD: 'the_raid_card',
   ENLIGHTENED_MANDRAKE_CARD: 'enlightened_mandrake_card',

@@ -86,6 +86,7 @@ export const cardDefinitions = {
   MOLD: {
     id: 'MOLD',
     name: 'Mold',
+    image: 'poison_mold_card',
     cardCombinationEffect: {
       ALCHEMICAL_SUPPLIES: {
         timeTillTrigger: 0,
@@ -154,7 +155,7 @@ export const cardDefinitions = {
     image: 'singing_mushrooms_card',
     cardCombinationEffect: {
       WORKBENCH: {
-        timeTillTrigger: 1,
+        timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeCardActivation(),
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
