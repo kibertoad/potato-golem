@@ -2,7 +2,7 @@ import { QueuedActivation } from '@potato-golem/core'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
-import { Zone } from '../../registries/zoneRegistry'
+import { Zone, zoneRegistry } from '../../registries/zoneRegistry'
 
 export class SingingMushroomActivation extends QueuedActivation {
   description: ''
@@ -67,17 +67,18 @@ export class SingingMushroomActivation extends QueuedActivation {
   }
 
   async activate(): Promise<void> {
-    if (!worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')) {
-      const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
-        amount: 1,
-        description: '',
-        cardId: 'SINGING_MUSHROOMS',
-        zone: 'homunculus',
-      })
-      await spawnActivation.activate()
+    const startingPoints = Object.values(zoneRegistry).filter((zone) => {
+      return zone !== 'any' && zone !== 'homunculus' && worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')
+    })
+
+    if (startingPoints.length === 0) {
+      await this.populate('homunculus')
+      return
     }
 
-
+    for (const startingPoint of startingPoints) {
+      await this.populateNeighbours(startingPoint)
+    }
   }
 }
 
