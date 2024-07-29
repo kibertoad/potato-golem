@@ -352,7 +352,7 @@ export class BoardScene extends PotatoScene {
       }
 
       // ToDo replace with more generic logic
-      if (wasCardActivated && this.pointedZoneView.id === 'homunculus') {
+      if (wasCardActivated) {
         //Move card to the start of this.worldModel.cards
         const index = this.worldModel.cards.indexOf(cardView.model)
         this.worldModel.cards.splice(index, 1)

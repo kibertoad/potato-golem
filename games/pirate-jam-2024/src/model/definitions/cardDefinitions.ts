@@ -105,7 +105,7 @@ export const cardDefinitions = {
       },
 
       WORKBENCH: {
-        timeTillTrigger: 1,
+        timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(
             eventSink,
@@ -116,7 +116,7 @@ export const cardDefinitions = {
             },
             0,
           ),
-          new DecomposeBothCardsActivation(),
+          new DecomposeCardActivation(),
           new NextTurnActivation(),
         ]),
       },
