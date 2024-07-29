@@ -29,6 +29,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
   readonly description: string
   private readonly amount: number
   private readonly customDelay: number
+  private readonly precondition?: Precondition
 
   constructor(
     worldEventSink: EventSink<typeof SpawnCardEventId>,
@@ -42,18 +43,21 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     this.description = params.description
     this.amount = params.amount ?? 1
     this.customDelay = customDelay
+    this.precondition = params.precondition
   }
 
   async activate(targetCard?: CardModel) {
-    this.eventSink.emit('spawn_card', {
-      cardId: this.cardId,
-      sourceCard: targetCard,
-      zone: this.zone,
-      spawnAnimation: this.spawnAnimation,
-      description: this.description,
-      amount: this.amount,
-    } satisfies SpawnCardMessage)
-    await delay(this.customDelay >= 0 ? this.customDelay : 200)
+    if (!this.precondition || this.precondition.isSatisfied()) {
+      this.eventSink.emit('spawn_card', {
+        cardId: this.cardId,
+        sourceCard: targetCard,
+        zone: this.zone,
+        spawnAnimation: this.spawnAnimation,
+        description: this.description,
+        amount: this.amount,
+      } satisfies SpawnCardMessage)
+      await delay(this.customDelay >= 0 ? this.customDelay : 200)
+    }
   }
 
   getDescription(): string {
