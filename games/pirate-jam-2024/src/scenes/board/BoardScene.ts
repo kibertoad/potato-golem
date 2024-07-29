@@ -390,7 +390,7 @@ export class BoardScene extends PotatoScene {
         `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
       )
 
-      wasCardActivated = wasCardActivated || this.tryCombineCards(cardView, this.pointedCardView)
+      wasCardActivated = wasCardActivated || await this.tryCombineCards(cardView, this.pointedCardView)
     }
 
     if (!wasCardActivated) {
@@ -401,7 +401,7 @@ export class BoardScene extends PotatoScene {
     return wasCardActivated
   }
 
-  private async tryCombineCards(cardView: CardView, pointedCardView: CardView): boolean {
+  private async tryCombineCards(cardView: CardView, pointedCardView: CardView): Promise<boolean> {
     let combinationOwnerCard = cardView
     let combinationChildCard = pointedCardView
 
