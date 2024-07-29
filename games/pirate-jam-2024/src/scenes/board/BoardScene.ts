@@ -369,7 +369,7 @@ export class BoardScene extends PotatoScene {
         `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
       )
 
-      wasCardActivated = wasCardActivated || await this.tryCombineCards(cardView, this.pointedCardView)
+      wasCardActivated = wasCardActivated || this.tryCombineCards(cardView, this.pointedCardView)
     }
 
     if (!wasCardActivated) {
