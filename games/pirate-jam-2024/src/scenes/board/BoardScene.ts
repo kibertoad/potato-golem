@@ -367,18 +367,8 @@ export class BoardScene extends PotatoScene {
       console.log(
         `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
       )
-      const combinationEffect = cardView.model.getActivationForCombinedCard(
-        this.pointedCardView.model,
-      )
 
-      if (combinationEffect) {
-        cardView.model.combineWithCard(this.pointedCardView.model)
-
-        if (combinationEffect.timeTillTrigger === 0) {
-          combinationEffect.effect.activate(cardView.model)
-        }
-        wasCardActivated = true
-      }
+      wasCardActivated = wasCardActivated || this.tryCombineCards(cardView, this.pointedCardView)
     }
 
     if (!wasCardActivated) {
@@ -387,6 +377,43 @@ export class BoardScene extends PotatoScene {
     }
 
     return wasCardActivated
+  }
+
+  private tryCombineCards(cardView: CardView, pointedCardView: CardView): boolean {
+    let combinationOwnerCard = cardView
+    let combinationChildCard = pointedCardView
+
+    //Check if the dragged card has any combination activations in strict mode
+    let combinationEffect = combinationOwnerCard.model.getActivationForCombinedCard(
+      combinationChildCard.model,
+      false,
+      true,
+    )
+    if (!combinationEffect) {
+      //If no combinations found, check the other way around (if the pointed card has any activations)
+      combinationEffect = combinationChildCard.model.getActivationForCombinedCard(
+        combinationOwnerCard.model,
+        false,
+        true,
+      )
+
+      //Swap the cards, so that the activation happens from the perspective
+      //of the card that has the activation defined
+      if (combinationEffect) {
+        combinationOwnerCard = pointedCardView
+        combinationChildCard = cardView
+      }
+    }
+    if (combinationEffect) {
+      combinationOwnerCard.model.combineWithCard(combinationChildCard.model)
+
+      if (combinationEffect.timeTillTrigger === 0) {
+        combinationEffect.effect.activate(combinationOwnerCard.model)
+      }
+      return true
+    }
+
+    return false
   }
 
   async nextTurn(playedCard?: CardModel) {

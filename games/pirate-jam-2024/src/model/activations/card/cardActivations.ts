@@ -58,6 +58,26 @@ export class DecomposeCardActivation
   }
 }
 
+export class DecomposeCombinedCardActivation extends DecomposeCardActivation {
+  async activate(targetCard: CardModel) {
+    await super.activate(targetCard.combinedCard)
+  }
+
+  getDescription(): string {
+    return 'Consume combined card'
+  }
+}
+
+export class DecomposeBothCardsActivation extends DecomposeCardActivation {
+  async activate(targetCard: CardModel) {
+    await Promise.all([super.activate(targetCard), super.activate(targetCard.combinedCard)])
+  }
+
+  getDescription(): string {
+    return 'Consume both cards'
+  }
+}
+
 export class DestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY
@@ -68,25 +88,6 @@ export class DestroyCardActivation implements CardActivation, DynamicDescription
 
   getDescription(): string {
     return 'Destroy card'
-  }
-}
-
-export class DecomposeBothCardsActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
-  async activate(targetCard: CardModel) {
-    await Promise.all([
-      targetCard.view.playPoofAnimation(),
-      targetCard.combinedCard.view.playPoofAnimation(),
-    ])
-
-    targetCard.destroy()
-    targetCard.combinedCard.destroy()
-  }
-
-  getDescription(): string {
-    return 'Consume both cards'
   }
 }
 

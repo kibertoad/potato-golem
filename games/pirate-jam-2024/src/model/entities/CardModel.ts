@@ -84,6 +84,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   getActivationForCombinedCard(
     combinedCard: CardModel,
     includeCombined?: boolean,
+    strict?: boolean,
   ): CardEffectDefinition | undefined {
     // nothing is highlighted
     if (!combinedCard) {
@@ -95,9 +96,11 @@ export class CardModel implements TurnProcessor, CommonEntity {
       return undefined
     }
 
-    const combinationEffect =
-      this.definition.cardCombinationEffect?.[combinedCard.definition.id] ??
-      combinedCard.definition.cardCombinationEffect?.[this.definition.id]
+    //Do not check combinations both ways in strict mode
+    const combinationEffect = !strict
+      ? this.definition.cardCombinationEffect?.[combinedCard.definition.id] ??
+        combinedCard.definition.cardCombinationEffect?.[this.definition.id]
+      : this.definition.cardCombinationEffect?.[combinedCard.definition.id]
 
     if (!combinationEffect) {
       return undefined

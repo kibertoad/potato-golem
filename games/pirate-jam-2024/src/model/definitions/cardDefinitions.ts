@@ -23,10 +23,7 @@ import {
   SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
-import {
-  CombineCardActivation,
-  SpawnCardActivation,
-} from '../activations/event/extraEventActivations'
+import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
@@ -89,22 +86,32 @@ export const cardDefinitions = {
       ALCHEMICAL_SUPPLIES: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new CombineCardActivation(eventSink, {
-            cardId: 'EXPLOSIVES', // replace with explosives
-            description: 'Create 1 Explosives',
-            zone: 'lab',
-          }),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              cardId: 'EXPLOSIVES', // replace with explosives
+              description: 'Create 1 Explosives',
+              zone: 'lab',
+            },
+            0,
+          ),
+          new DecomposeBothCardsActivation(),
         ]),
       },
 
       WORKBENCH: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new CombineCardActivation(eventSink, {
-            cardId: 'POISON', // replace with explosives
-            description: 'Create 1 Poison',
-            zone: 'lab',
-          }),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              cardId: 'POISON', // replace with explosives
+              description: 'Create 1 Poison',
+              zone: 'lab',
+            },
+            0,
+          ),
+          new DecomposeBothCardsActivation(),
         ]),
       },
     },
@@ -191,13 +198,18 @@ export const cardDefinitions = {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
-          new CombineCardActivation(eventSink, {
-            zone: 'home',
-            cardId: 'GOLD',
-            amount: 2,
-            description: 'Get 2 Gold',
-            spawnAnimation: 'pop_in',
-          }),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'home',
+              cardId: 'GOLD',
+              amount: 2,
+              description: 'Get 2 Gold',
+              spawnAnimation: 'pop_in',
+            },
+            0,
+          ),
+          new DecomposeBothCardsActivation(),
         ]),
       },
 
@@ -354,16 +366,13 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           //TODO: Fix ability to drag a heart to medicine causing the heart to dissapear
-          new CombineCardActivation(
-            eventSink,
-            {
-              zone: 'home',
-              cardId: 'HEALTH',
-              amount: 1,
-              description: 'Get 1 Health',
-            },
-            true,
-          ),
+          new DecomposeBothCardsActivation(0),
+          new SpawnCardActivation(eventSink, {
+            zone: 'home',
+            cardId: 'HEALTH',
+            amount: 2,
+            description: 'Get 1 Health',
+          }),
         ]),
       },
     },

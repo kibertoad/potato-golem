@@ -7,7 +7,6 @@ import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import type { CardActivation } from '../card/CardActivation'
-import { DecomposeBothCardsActivation, DecomposeCardActivation } from '../card/cardActivations'
 import type { SpawnCardEventId } from './eventActivations'
 
 export type SpawnCardMessage = {
@@ -28,14 +27,20 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
   private readonly eventSink: EventSink<typeof SpawnCardEventId>
   readonly description: string
   private readonly amount: number
+  private readonly customDelay: number
 
-  constructor(worldEventSink: EventSink<typeof SpawnCardEventId>, params: SpawnCardMessage) {
+  constructor(
+    worldEventSink: EventSink<typeof SpawnCardEventId>,
+    params: SpawnCardMessage,
+    customDelay = -1,
+  ) {
     this.eventSink = worldEventSink
     this.cardId = params.cardId
     this.zone = params.zone
     this.spawnAnimation = params.spawnAnimation
     this.description = params.description
     this.amount = params.amount ?? 1
+    this.customDelay = customDelay
   }
 
   async activate(targetCard?: CardModel) {
@@ -47,42 +52,10 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
       description: this.description,
       amount: this.amount,
     } satisfies SpawnCardMessage)
-    await delay(200)
+    await delay(this.customDelay >= 0 ? this.customDelay : 200)
   }
 
   getDescription(): string {
     return `Get 1 ${cardDefinitions[this.cardId].name}`
-  }
-}
-
-export class CombineCardActivation extends SpawnCardActivation {
-  private readonly decomposeBothCards: DecomposeBothCardsActivation =
-    new DecomposeBothCardsActivation()
-
-  private readonly decomposeCard: DecomposeCardActivation = new DecomposeCardActivation()
-
-  private readonly destroyOnlyTarget: boolean
-
-  constructor(
-    worldEventSink: EventSink<typeof SpawnCardEventId>,
-    params: SpawnCardMessage,
-    destroyOnlyTarget = false,
-  ) {
-    super(worldEventSink, params)
-    this.destroyOnlyTarget = destroyOnlyTarget
-  }
-
-  async activate(targetCard: CardModel) {
-    super.activate(targetCard)
-
-    if (this.destroyOnlyTarget) {
-      await this.decomposeCard.activate(targetCard)
-      return
-    }
-    await this.decomposeBothCards.activate(targetCard)
-  }
-
-  getDescription(): string {
-    return `Combine cards`
   }
 }
