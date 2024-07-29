@@ -145,6 +145,7 @@ export const cardDefinitions = {
 
   THE_ID: {
     id: 'THE_ID',
+    image: 'the_id_card',
     name: 'The Id',
     nonDraggable: true,
   },
