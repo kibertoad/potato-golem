@@ -353,6 +353,7 @@ export const cardDefinitions = {
       HEALTH: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
+          //TODO: Fix ability to drag a heart to medicine causing the heart to dissapear
           new CombineCardActivation(
             eventSink,
             {
