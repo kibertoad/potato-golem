@@ -161,6 +161,7 @@ export const cardDefinitions = {
   WATCHING_FLOWER: {
     id: 'WATCHING_FLOWER',
     name: 'Watching Flower',
+    image: 'watching_flower_card',
   },
 
   HUNGER: {

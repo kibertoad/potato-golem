@@ -25,7 +25,8 @@ export const ImageRegistry = {
   SINGING_MUSHROOMS_CARD: 'singing_mushrooms_card',
   PORTAL_CARD: 'portal_card',
   THE_RAID_CARD: 'the_raid_card',
-  ENLIGHTENED_MANDRAKE: 'enlightened_mandrake_card',
+  ENLIGHTENED_MANDRAKE_CARD: 'enlightened_mandrake_card',
+  WATCHING_FLOWER_CARD: 'watching_flower_card',
 
   ROUGH_KIND_CARD: 'rough_kind_card',
   MERCHANT_CARD: 'merchant_card',
