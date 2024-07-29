@@ -1,11 +1,11 @@
 import { removeFromArrayById } from '@potato-golem/core'
+import type Phaser from 'phaser'
 import type { ZoneView } from '../../scenes/board/views/ZoneView'
 import { AlchemistModel } from '../entities/AlchemistModel'
 import type { CardModel } from '../entities/CardModel'
 import { HomunculusModel } from '../entities/HomunculusModel'
 import type { CardId } from '../registries/cardRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import type Phaser from 'phaser'
 
 export class WorldModel {
   public readonly cards: CardModel[] = []

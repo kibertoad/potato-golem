@@ -41,7 +41,8 @@ import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
 import {
   HungerActivation,
-  SingingMushroomActivation, TheRaidActivation,
+  SingingMushroomActivation,
+  TheRaidActivation,
 } from '../../model/activations/card/recurringActivations'
 import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
 import { zones } from '../../model/definitions/zoneDefinitions'
@@ -380,7 +381,6 @@ export class BoardScene extends PotatoScene {
 
     return wasCardActivated
   }
-
 
   private tryCombineCards(cardView: CardView, pointedCardView: CardView): boolean {
     let combinationOwnerCard = cardView
