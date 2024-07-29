@@ -2,6 +2,7 @@ import { PotatoScene } from '@potato-golem/ui'
 
 import { Howl } from 'howler'
 import { SfxRegistry } from '../model/registries/sfxRegistry'
+import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = false
@@ -88,10 +89,22 @@ export class MusicScene extends PotatoScene {
       require('url:../../assets/sfx/bite_3.ogg'),
       require('url:../../assets/sfx/bite_3.aac'),
     ])
+    this.load.audio(SfxRegistry.SLASH_SPLAT_1, [
+      require('url:../../assets/sfx/slash_splat_1.ogg'),
+      require('url:../../assets/sfx/slash_splat_1.aac'),
+    ])
+    this.load.audio(SfxRegistry.SLASH_SPLAT_2, [
+      require('url:../../assets/sfx/slash_splat_2.ogg'),
+      require('url:../../assets/sfx/slash_splat_2.aac'),
+    ])
     this.load.audio(SfxRegistry.POOF, [
       require('url:../../assets/sfx/poof.ogg'),
       require('url:../../assets/sfx/poof.aac'),
     ])
+  }
+
+  public create() {
+    worldModel.musicScene = this
   }
 
   public stopAll() {

@@ -13,28 +13,46 @@ import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
+import type { SfxId } from '../../registries/sfxRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
 
 export type ActivationArray = Array<Activation | CardActivation>
 
-export class PoofCardActivation implements CardActivation, DynamicDescriptionHolder {
+export type AnimationType = 'none' | 'poof' | 'blood_splat'
+
+export class AnimateCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY
 
   private readonly customDelay: number
+  private readonly animationType: AnimationType
 
-  constructor(customDelay = -1) {
+  constructor(animationType: AnimationType = 'poof', customDelay = -1) {
     this.customDelay = customDelay
+    this.animationType = animationType
+  }
+
+  private async playAnimation(targetCard: CardModel) {
+    switch (this.animationType) {
+      case 'poof':
+        await targetCard.view.playPoofAnimation()
+        break
+      case 'blood_splat':
+        await targetCard.view.playBloodSplatAnimation()
+        break
+      case 'none':
+        break
+    }
   }
 
   async activate(targetCard: CardModel) {
     if (this.customDelay >= 0) {
-      targetCard.view.playPoofAnimation()
+      this.playAnimation(targetCard)
       await delay(this.customDelay)
     } else {
-      await targetCard.view.playPoofAnimation()
+      await this.playAnimation(targetCard)
     }
   }
 
@@ -44,7 +62,7 @@ export class PoofCardActivation implements CardActivation, DynamicDescriptionHol
 }
 
 export class DecomposeCardActivation
-  extends PoofCardActivation
+  extends AnimateCardActivation
   implements CardActivation, DynamicDescriptionHolder
 {
   isExclusive = true
@@ -60,7 +78,7 @@ export class DecomposeCardActivation
   }
 }
 
-export class DecomposeCombinedCardActivation extends DecomposeCardActivation {
+export class DecomposeOtherCardActivation extends DecomposeCardActivation {
   async activate(targetCard: CardModel) {
     await super.activate(targetCard.combinedCard)
   }
@@ -104,6 +122,18 @@ export class EatCardActivation implements CardActivation, DynamicDescriptionHold
 
   getDescription(): string {
     return 'Consume card'
+  }
+}
+
+export class PlaySfxActivation implements Activation {
+  private readonly sfx: Array<SfxId>
+
+  constructor(sfx: Array<SfxId>) {
+    this.sfx = sfx
+  }
+
+  async activate() {
+    worldModel.musicScene.sound.play(this.sfx[Math.floor(Math.random() * this.sfx.length)])
   }
 }
 

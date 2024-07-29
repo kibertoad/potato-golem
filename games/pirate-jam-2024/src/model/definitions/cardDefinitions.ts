@@ -6,11 +6,13 @@ import {
 import type { Position } from '@potato-golem/ui'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
+  AnimateCardActivation,
   AttackHomunculusCardActivation,
   ChatCardActivation,
   DamageActivation,
   DecomposeBothCardsActivation,
   DecomposeCardActivation,
+  DelayActivation,
   DestroyCardActivation,
   EatCardActivation,
   FeedActivation,
@@ -18,7 +20,7 @@ import {
   GainHealthActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
-  PoofCardActivation,
+  PlaySfxActivation,
   QueueActivation,
   SearchAndDecideCardActivation,
   SearchAndDestroyCardActivation,
@@ -29,6 +31,7 @@ import type { CardModel } from '../entities/CardModel'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
+import { SfxRegistry } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
 
@@ -460,7 +463,8 @@ export const cardDefinitions = {
             'In the name of the LAW!',
           ]),
           new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
-          new PoofCardActivation(100),
+          new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+          new AnimateCardActivation('blood_splat', 100),
           new FeedActivation(worldModel.homunculusModel, 1, true),
           new SpawnCardActivation(eventSink, {
             spawnAnimation: 'pop_in',
@@ -468,6 +472,7 @@ export const cardDefinitions = {
             cardId: 'CORPSE',
             zone: 'homunculus',
           }),
+          new DelayActivation(900), //Allow blood splat animation to finish
           new DestroyCardActivation(),
         ]),
       },
@@ -478,19 +483,22 @@ export const cardDefinitions = {
             'CORPSE',
             'home',
             [
+              new ChatCardActivation(['Is this...A CORPSE?!']),
               new ChatCardActivation([
                 'You will pay for this heresy!',
                 'Take this!',
                 'In the name of the LAW!',
               ]),
               new SearchAndDestroyCardActivation('HEALTH', 'home'),
-              new PoofCardActivation(100),
+              new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+              new AnimateCardActivation('blood_splat', 100),
               new SpawnCardActivation(eventSink, {
                 spawnAnimation: 'pop_in',
                 description: 'Spawn 1 Corpse',
                 cardId: 'CORPSE',
                 zone: 'home',
               }),
+              new DelayActivation(900), //Allow blood splat animation to finish
               new DestroyCardActivation(),
             ],
             [new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()],

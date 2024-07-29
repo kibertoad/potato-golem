@@ -102,6 +102,10 @@ export class MainMenuScene extends PotatoScene {
     this.load.image(ImageRegistry.CLOUD_3, require('../../assets/img/cloud_3.png'))
     this.load.image(ImageRegistry.CLOUD_4, require('../../assets/img/cloud_4.png'))
 
+    this.load.image(ImageRegistry.BLOOD_1, require('../../assets/img/1_blood.png'))
+    this.load.image(ImageRegistry.BLOOD_2, require('../../assets/img/2_blood.png'))
+    this.load.image(ImageRegistry.BLOOD_3, require('../../assets/img/3_blood.png'))
+
     //other
     this.load.image(ImageRegistry.CHAT_BUBBLE, require('../../assets/img/chat_bubble.png'))
   }

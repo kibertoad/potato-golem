@@ -191,6 +191,7 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
+    this.addCard('CORPSE', 'home', 'none')
     this.addCard('THE_LAW', 'streets', 'none')
 
     this.addCard('EXPLOSIVES', 'lab', 'none')
@@ -523,6 +524,15 @@ export class BoardScene extends PotatoScene {
         { key: ImageRegistry.CLOUD_4 },
       ],
       frameRate: 24,
+    })
+    this.anims.create({
+      key: 'blood_splat',
+      frames: [
+        { key: ImageRegistry.BLOOD_1 },
+        { key: ImageRegistry.BLOOD_2 },
+        { key: ImageRegistry.BLOOD_3, duration: 5000 },
+      ],
+      frameRate: 8,
     })
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
