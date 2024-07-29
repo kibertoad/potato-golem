@@ -20,6 +20,7 @@ import {
   NextTurnActivation,
   PoofCardActivation,
   QueueActivation,
+  SearchAndDecideCardActivation,
   SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
@@ -454,20 +455,27 @@ export const cardDefinitions = {
       home: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new ChatCardActivation([
-            'You will pay for this heresy!',
-            'Take this!',
-            'In the name of the LAW!',
-          ]),
-          new SearchAndDestroyCardActivation('HEALTH', 'home'),
-          new PoofCardActivation(100),
-          new SpawnCardActivation(eventSink, {
-            spawnAnimation: 'pop_in',
-            description: 'Spawn 1 Corpse',
-            cardId: 'CORPSE',
-            zone: 'home',
-          }),
-          new DestroyCardActivation(),
+          new SearchAndDecideCardActivation(
+            'CORPSE',
+            'home',
+            [
+              new ChatCardActivation([
+                'You will pay for this heresy!',
+                'Take this!',
+                'In the name of the LAW!',
+              ]),
+              new SearchAndDestroyCardActivation('HEALTH', 'home'),
+              new PoofCardActivation(100),
+              new SpawnCardActivation(eventSink, {
+                spawnAnimation: 'pop_in',
+                description: 'Spawn 1 Corpse',
+                cardId: 'CORPSE',
+                zone: 'home',
+              }),
+              new DestroyCardActivation(),
+            ],
+            [new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()],
+          ),
         ]),
       },
     },

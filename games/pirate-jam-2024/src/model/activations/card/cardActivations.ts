@@ -17,6 +17,8 @@ import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
 
+export type ActivationArray = Array<Activation | CardActivation>
+
 export class PoofCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
   priority = LOW_PRIORITY
@@ -228,27 +230,15 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
   priority = LOW_PRIORITY
 
   private readonly cardIdToAttack: CardId
-  private readonly searchZone?: Zone
+  private readonly searchZone: Zone
 
-  constructor(cardIdToAttack: CardId, searchZone?: Zone) {
+  constructor(cardIdToAttack: CardId, searchZone: Zone = 'any') {
     this.cardIdToAttack = cardIdToAttack
+    this.searchZone = searchZone
   }
 
   async activate(targetCard: CardModel) {
-    let foundCard: CardModel | undefined
-    let card: CardModel
-
-    //Search from the end of the array to potentially find cards on top of the stack and not bottom
-    for (let i = worldModel.cards.length - 1; i >= 0; i--) {
-      card = worldModel.cards[i]
-      if (
-        card.definition.id === this.cardIdToAttack &&
-        (!this.searchZone || card.zone === this.searchZone)
-      ) {
-        foundCard = card
-        break
-      }
-    }
+    const foundCard = worldModel.searchForCard(this.cardIdToAttack, this.searchZone)
 
     if (!foundCard) {
       return
@@ -262,6 +252,40 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
 
   getDescription(): string {
     return 'Say something'
+  }
+}
+
+export class SearchAndDecideCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private readonly cardIdToSearch: CardId
+  private readonly searchZone: Zone
+  private readonly successActivations: ActivationArray
+  private readonly failureActivations: ActivationArray
+
+  constructor(
+    cardIdToSearch: CardId,
+    searchZone: Zone = 'any',
+    successActivations: ActivationArray,
+    failureActivations: ActivationArray,
+  ) {
+    this.cardIdToSearch = cardIdToSearch
+    this.searchZone = searchZone
+    this.successActivations = successActivations
+    this.failureActivations = failureActivations
+  }
+
+  async activate(targetCard: CardModel) {
+    const foundCard = worldModel.searchForCard(this.cardIdToSearch, this.searchZone)
+    const activations = foundCard ? this.successActivations : this.failureActivations
+    for (const activation of activations) {
+      await activation.activate(targetCard)
+    }
+  }
+
+  getDescription(): string {
+    return 'Search for a card and decide what to do'
   }
 }
 

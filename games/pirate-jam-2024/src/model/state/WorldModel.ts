@@ -3,6 +3,7 @@ import type { ZoneView } from '../../scenes/board/views/ZoneView'
 import { AlchemistModel } from '../entities/AlchemistModel'
 import type { CardModel } from '../entities/CardModel'
 import { HomunculusModel } from '../entities/HomunculusModel'
+import type { CardId } from '../registries/cardRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 
 export class WorldModel {
@@ -29,6 +30,16 @@ export class WorldModel {
 
   removeCardFromZone(zoneId: Zone, cardModelId: string) {
     this.zones[zoneId].removeCardByUUID(cardModelId)
+  }
+
+  searchForCard(cardId: CardId, zone: Zone = 'any'): CardModel | undefined {
+    let card: CardModel
+    for (let i = worldModel.cards.length - 1; i >= 0; i--) {
+      card = worldModel.cards[i]
+      if (card.definition.id === cardId && (zone === 'any' || card.zone === zone)) {
+        return card
+      }
+    }
   }
 }
 
