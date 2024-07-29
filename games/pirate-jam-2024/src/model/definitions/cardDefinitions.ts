@@ -207,6 +207,7 @@ export const cardDefinitions = {
   SONECHKA: {
     id: 'SONECHKA',
     name: 'Sonechka',
+    image: 'sonechka_card',
     nonDraggable: true,
   },
 

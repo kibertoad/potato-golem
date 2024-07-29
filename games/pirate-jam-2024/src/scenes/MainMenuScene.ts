@@ -66,6 +66,7 @@ export class MainMenuScene extends PotatoScene {
       require('../../assets/img/card_shadow_muse.png'),
     )
     this.load.image(ImageRegistry.THE_LAW_CARD, require('../../assets/img/card_the_law.png'))
+    this.load.image(ImageRegistry.SONECHKA, require('../../assets/img/card_sonechka.png'))
     this.load.image(ImageRegistry.THE_ID_CARD, require('../../assets/img/card_the_id.png'))
     this.load.image(ImageRegistry.POISON_CARD, require('../../assets/img/card_poison.png'))
     this.load.image(ImageRegistry.POISON_MOLD_CARD, require('../../assets/img/card_poison_mold.png'))
