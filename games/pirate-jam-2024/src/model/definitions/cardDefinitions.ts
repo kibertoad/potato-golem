@@ -23,7 +23,10 @@ import {
   SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
-import { SpawnCardActivation } from '../activations/event/extraEventActivations'
+import {
+  CombineCardActivation,
+  SpawnCardActivation,
+} from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
@@ -86,26 +89,22 @@ export const cardDefinitions = {
       ALCHEMICAL_SUPPLIES: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new SpawnCardActivation(eventSink, {
+          new CombineCardActivation(eventSink, {
             cardId: 'EXPLOSIVES', // replace with explosives
             description: 'Create 1 Explosives',
             zone: 'lab',
           }),
-
-          new DecomposeBothCardsActivation(),
         ]),
       },
 
       WORKBENCH: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new SpawnCardActivation(eventSink, {
+          new CombineCardActivation(eventSink, {
             cardId: 'POISON', // replace with explosives
             description: 'Create 1 Poison',
             zone: 'lab',
           }),
-
-          new DecomposeCardActivation(),
         ]),
       },
     },
@@ -190,8 +189,7 @@ export const cardDefinitions = {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
-          new SpawnCardActivation(eventSink, {
+          new CombineCardActivation(eventSink, {
             zone: 'home',
             cardId: 'GOLD',
             amount: 2,

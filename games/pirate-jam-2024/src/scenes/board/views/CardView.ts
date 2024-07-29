@@ -421,6 +421,7 @@ export class CardView extends Container implements IdHolder {
   }
 
   async playPoofAnimation() {
+    this.depth = DepthRegistry.CARD_MAX + 1
     this.cardShadowSprite.setVisible(false)
     this.cardMainSpriteContainer.setVisible(false)
     this.cardPoofSprite.setVisible(true)
@@ -485,21 +486,21 @@ export class CardView extends Container implements IdHolder {
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
-      duration: 700,
-      ease: 'Back',
+      duration: 800,
+      ease: 'Cubic',
     })
     this.scene.tweens.add({
       targets: this,
       x: moveToPosition.x,
       duration: 1000,
-      ease: 'Back',
+      ease: 'Cubic',
     })
     await delay(1000)
   }
 
   async animateAttackTo(moveToPosition: Position) {
-    await this.hideChat()
     this.depth = DepthRegistry.CARD_MAX + 1
+    await this.hideChat()
     this.scene.tweens.add({
       targets: this,
       y: moveToPosition.y,
@@ -537,15 +538,13 @@ export class CardView extends Container implements IdHolder {
         delay: 0,
         duration: 100,
         ease: 'Cubic',
-        onComplete: () => {
-          this.chatBubbleContainer.setVisible(false)
-          if (this.depth === DepthRegistry.CARD_MAX) {
-            //Restore depth only if it was not changed during the chat
-            this.depth = this.tmpChatDepth
-          }
-        },
       })
       await delay(100)
+      this.chatBubbleContainer.setVisible(false)
+      if (this.depth === DepthRegistry.CARD_MAX) {
+        //Restore depth only if it was not changed during the chat
+        this.depth = this.tmpChatDepth
+      }
     }
   }
 

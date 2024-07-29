@@ -7,6 +7,7 @@ import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import type { CardActivation } from '../card/CardActivation'
+import { DecomposeBothCardsActivation } from '../card/cardActivations'
 import type { SpawnCardEventId } from './eventActivations'
 
 export type SpawnCardMessage = {
@@ -51,5 +52,19 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
 
   getDescription(): string {
     return `Get 1 ${cardDefinitions[this.cardId].name}`
+  }
+}
+
+export class CombineCardActivation extends SpawnCardActivation {
+  private readonly decomposeBothCards: DecomposeBothCardsActivation =
+    new DecomposeBothCardsActivation()
+
+  async activate(targetCard: CardModel) {
+    super.activate(targetCard)
+    await this.decomposeBothCards.activate(targetCard)
+  }
+
+  getDescription(): string {
+    return `Combine cards`
   }
 }
