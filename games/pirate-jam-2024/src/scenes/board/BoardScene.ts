@@ -226,8 +226,8 @@ export class BoardScene extends PotatoScene {
       }
     })
 
-    this.eventView.setToEvent('INTRO')
-    this.eventView.show()
+    // this.eventView.setToEvent('INTRO')
+    // this.eventView.show()
 
     // recurring effects
 

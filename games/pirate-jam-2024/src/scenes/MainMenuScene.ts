@@ -75,8 +75,14 @@ export class MainMenuScene extends PotatoScene {
     )
     this.load.image(ImageRegistry.PORTAL_CARD, require('../../assets/img/the_portal.png'))
     this.load.image(ImageRegistry.THE_RAID_CARD, require('../../assets/img/the_raid.png'))
-    this.load.image(ImageRegistry.ENLIGHTENED_MANDRAKE_CARD, require('../../assets/img/enlightened_mandrake.png'))
-    this.load.image(ImageRegistry.WATCHING_FLOWER_CARD, require('../../assets/img/watching_flower.png'))
+    this.load.image(
+      ImageRegistry.ENLIGHTENED_MANDRAKE_CARD,
+      require('../../assets/img/enlightened_mandrake.png'),
+    )
+    this.load.image(
+      ImageRegistry.WATCHING_FLOWER_CARD,
+      require('../../assets/img/watching_flower.png'),
+    )
 
     // explosions
     this.load.image(ImageRegistry.EXPLOSION_1, require('../../assets/img/1_explosion.png'))
@@ -87,6 +93,7 @@ export class MainMenuScene extends PotatoScene {
 
     //statuses
     this.load.image(ImageRegistry.HOMUNCULUS_HEART, require('../../assets/img/small_heart.png'))
+    this.load.image(ImageRegistry.HOMUNCULUS_FOOD, require('../../assets/img/small_food.png'))
     this.load.image(ImageRegistry.TIME, require('../../assets/img/watch.png'))
 
     //animations

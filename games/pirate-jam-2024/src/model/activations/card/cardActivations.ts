@@ -339,14 +339,16 @@ export class GainHatredActivation implements Activation, DynamicDescriptionHolde
 export class FeedActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
+  private readonly starveProtection: boolean
 
-  constructor(target: EventReceiver, amount: number) {
+  constructor(target: EventReceiver, amount: number, starveProtection = false) {
     this.amount = amount
     this.target = target
+    this.starveProtection = starveProtection
   }
 
   activate() {
-    this.target.eventSink.emit('FEED', this.amount)
+    this.target.eventSink.emit('FEED', this.amount, this.starveProtection)
   }
 
   getDescription(): string {

@@ -4,6 +4,7 @@ import {
   MultiplexActivation,
   type Precondition,
 } from '@potato-golem/core'
+import { NextTurnActivation } from '../activations/card/cardActivations'
 import { ConcludeEventActivation, type EventEventId } from '../activations/event/eventActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
@@ -102,6 +103,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             cardId: 'FOOD',
           }),
           new ConcludeEventActivation(eventSink),
+          new NextTurnActivation(),
         ]),
       },
 
@@ -119,6 +121,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             cardId: 'ABSINTHE',
           }),
           new ConcludeEventActivation(eventSink),
+          new NextTurnActivation(),
         ]),
       },
 
@@ -131,6 +134,7 @@ faintest trace of an accent from a bigger city than this. "Welcome to Woodley & 
             cardId: 'ALCHEMICAL_SUPPLIES',
           }),
           new ConcludeEventActivation(eventSink),
+          new NextTurnActivation(),
         ]),
       },
     ],

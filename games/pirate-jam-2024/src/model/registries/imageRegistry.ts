@@ -42,6 +42,7 @@ export const ImageRegistry = {
 
   // statuses
   HOMUNCULUS_HEART: 'homunculus_heart',
+  HOMUNCULUS_FOOD: 'homunculus_food',
   TIME: 'time',
 
   // animations

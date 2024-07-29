@@ -43,12 +43,6 @@ export class HungerActivation extends QueuedActivation {
   }
 
   async activate(): Promise<void> {
-    const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
-      amount: 1,
-      description: '',
-      cardId: 'HUNGER',
-      zone: 'homunculus',
-    })
-    await spawnActivation.activate()
+    worldModel.homunculusModel.eventSink.emit('STARVE', 1)
   }
 }

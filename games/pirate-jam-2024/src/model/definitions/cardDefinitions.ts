@@ -97,6 +97,7 @@ export const cardDefinitions = {
             0,
           ),
           new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
         ]),
       },
 
@@ -113,6 +114,7 @@ export const cardDefinitions = {
             0,
           ),
           new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
         ]),
       },
     },
@@ -213,17 +215,24 @@ export const cardDefinitions = {
             0,
           ),
           new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
         ]),
       },
 
       THE_LAW: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
 
       THE_RAID: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
     },
   },
@@ -238,7 +247,7 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new GainHealthActivation(worldModel.homunculusModel, 1),
-          new FeedActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 3, true),
           new NextTurnActivation(),
         ]),
       },
@@ -258,7 +267,7 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new GainHealthActivation(worldModel.homunculusModel, 1),
-          new FeedActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
           new NextTurnActivation(),
         ]),
       },
@@ -336,12 +345,18 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
 
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
       },
     },
   },
@@ -376,6 +391,7 @@ export const cardDefinitions = {
             amount: 2,
             description: 'Get 1 Health',
           }),
+          new NextTurnActivation(),
         ]),
       },
     },
@@ -445,6 +461,7 @@ export const cardDefinitions = {
           ]),
           new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
           new PoofCardActivation(100),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
           new SpawnCardActivation(eventSink, {
             spawnAnimation: 'pop_in',
             description: 'Spawn 1 Corpse',
