@@ -34,6 +34,7 @@ import type { ImageId } from '../registries/imageRegistry'
 import { SfxRegistry } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
+import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -328,6 +329,7 @@ export const cardDefinitions = {
               activatesIn: 1,
               activation: new SpawnCardActivation(eventSink, {
                 zone: 'streets',
+                precondition: new RoughKindPrecondition(),
                 cardId: 'THE_ROUGH_KIND',
                 description: '',
                 spawnAnimation: 'pop_in',

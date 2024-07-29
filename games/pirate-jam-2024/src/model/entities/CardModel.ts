@@ -25,7 +25,10 @@ export class CardModel implements TurnProcessor, CommonEntity {
   readonly definition: CardDefinition
 
   combinedCard?: CardModel
+
+  // uuid of a specific instance, not a definition id
   id: string
+
   zone: Zone
   view: CardView
   turnsExisted: number
