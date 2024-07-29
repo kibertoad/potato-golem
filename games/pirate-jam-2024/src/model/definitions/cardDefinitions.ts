@@ -17,7 +17,7 @@ import {
   EatCardActivation,
   FeedActivation,
   GainHatredActivation,
-  GainHealthActivation,
+  GainHealthActivation, LawIsDeadActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
   PlaySfxActivation,
@@ -207,6 +207,7 @@ export const cardDefinitions = {
   SONECHKA: {
     id: 'SONECHKA',
     name: 'Sonechka',
+    image: 'sonechka_card',
     nonDraggable: true,
   },
 
@@ -243,6 +244,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
+          new LawIsDeadActivation(),
           new NextTurnActivation(),
         ]),
       },

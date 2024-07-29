@@ -5,12 +5,14 @@ import type { CardModel } from '../entities/CardModel'
 import { HomunculusModel } from '../entities/HomunculusModel'
 import type { CardId } from '../registries/cardRegistry'
 import type { Zone } from '../registries/zoneRegistry'
+import type Phaser from 'phaser'
 
 export class WorldModel {
   public readonly cards: CardModel[] = []
   public readonly zones: Partial<Record<Zone, ZoneView>> = {}
   public readonly homunculusModel: HomunculusModel
   public readonly alchemistModel: AlchemistModel
+  public theLawIsDead = false
   public musicScene: Phaser.Scene
 
   constructor() {
@@ -42,6 +44,17 @@ export class WorldModel {
         return card
       }
     }
+  }
+
+  hasCard(cardId: CardId) {
+    for (const zone of Object.values(this.zones)) {
+      const hasCard = zone.hasCard(cardId)
+      if (hasCard) {
+        return true
+      }
+    }
+
+    return false
   }
 }
 

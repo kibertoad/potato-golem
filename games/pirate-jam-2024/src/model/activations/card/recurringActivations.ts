@@ -103,3 +103,33 @@ export class HungerActivation extends QueuedActivation {
     worldModel.homunculusModel.eventSink.emit('STARVE', 1)
   }
 }
+
+export class TheRaidActivation extends QueuedActivation {
+  description: ''
+
+  constructor() {
+    super({
+      activatesIn: 1,
+      id: 'TheRaidActivation',
+      description: '',
+      unique: true,
+      activation: null, // activation method is overriden
+    })
+  }
+
+  async activate() {
+    if (worldModel.hasCard('THE_RAID')) {
+      return
+    }
+
+    if (worldModel.theLawIsDead) {
+      const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+        amount: 1,
+        description: '',
+        cardId: 'THE_RAID',
+        zone: 'streets',
+      })
+      await spawnActivation.activate()
+    }
+  }
+}
