@@ -12,4 +12,5 @@ export const SfxRegistry = {
   SLASH_SPLAT_2: 'slash-splat-2',
   POOF: 'poof',
   LIGHT_UP: 'light_up',
+  PUT_OUT: 'put_out',
 } as const
