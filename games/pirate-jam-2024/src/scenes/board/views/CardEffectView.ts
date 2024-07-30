@@ -30,7 +30,7 @@ export class CardEffectView extends Container {
       .setOrigin(0, 0)
       .setDimensions({
         width: 500,
-        height: 300,
+        height: 500,
       })
       .build()
 
@@ -38,11 +38,12 @@ export class CardEffectView extends Container {
       fontFamily: 'Arial', // Customize the font
       fontSize: '24px', // Customize the text size
       color: '#ffffff', // Customize the text color
+      padding: { x: 25, y: 25 }, // Customize the padding
       wordWrap: { width: 500, useAdvancedWrap: true }, // Enable word wrap and set the width
     }
 
     // Create the text object with auto-wrap
-    this.effectDescriptionText = this.potatoScene.add.text(100, 100, 'No effect', textStyle)
+    this.effectDescriptionText = this.potatoScene.add.text(0, 0, 'No effect', textStyle)
 
     this.add(this.background)
     this.add(this.effectDescriptionText)
@@ -54,6 +55,17 @@ export class CardEffectView extends Container {
     this.scene.add.existing(this)
   }
 
+  setText(text: string): void {
+    this.effectDescriptionText.setText(text)
+    this.updateBoxSize()
+  }
+
+  updateBoxSize() {
+    const bounds = this.effectDescriptionText.getBounds()
+    this.background.displayWidth = bounds.width
+    this.background.displayHeight = bounds.height
+  }
+
   showCardZoneEffect(cardView: CardView, zoneView: ZoneView) {
     let resolvedText = 'No effect'
 
@@ -63,7 +75,7 @@ export class CardEffectView extends Container {
       resolvedText = `${timeString}${idleZoneEffect.effect.getDescriptions().join(' \n')}`
     }
 
-    this.effectDescriptionText.setText(resolvedText)
+    this.setText(resolvedText)
   }
 
   private resolveTimeString(timeTillTrigger: number): string {
@@ -88,7 +100,7 @@ export class CardEffectView extends Container {
       resolvedText = combinationResult.failReason
     }
 
-    this.effectDescriptionText.setText(resolvedText)
+    this.setText(resolvedText)
   }
 
   show() {

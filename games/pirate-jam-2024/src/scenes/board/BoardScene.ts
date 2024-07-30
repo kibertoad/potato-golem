@@ -330,6 +330,7 @@ export class BoardScene extends PotatoScene {
 
   onCardDragStart(cardView: CardView) {
     this.draggedCardView = cardView
+    this.cardEffectView.setText('No effect')
     this.cardEffectView.show()
     if (this.pointedZoneView) {
       this.pointedZoneView.highlight()
