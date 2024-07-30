@@ -329,6 +329,17 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'home',
+              cardId: 'GOLD',
+              amount: 1,
+              description: "",
+            },
+            0,
+            'same_as_combined',
+          ),
           new NextTurnActivation(),
         ]),
       },
@@ -656,10 +667,10 @@ export const cardDefinitions = {
           new SpawnCardActivation(
             eventSink,
             {
-              zone: 'home',
-              cardId: 'GOLD',
+              zone: 'homunculus',
+              cardId: 'ENLIGHTENED_MANDRAKE',
               amount: 2,
-              description: 'Get 2 Gold',
+              description: '',
               spawnAnimation: 'pop_in',
             },
             0,
