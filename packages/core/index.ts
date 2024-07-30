@@ -1,5 +1,5 @@
 export { LimitedNumber } from './src/core/primitives/LimitedNumber'
-export { randomOneOf, normalizedRandom, generateUuid } from './src/core/utils/randomUtils'
+export { getRandomNumber, randomOneOf, normalizedRandom, generateUuid } from './src/core/utils/randomUtils'
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor } from './src/core/interfaces/Processor'
 export type {

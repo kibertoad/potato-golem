@@ -271,6 +271,18 @@ export class ZoneView implements IdHolder, Destroyable {
     }
   }
 
+  public removeCardByID(cardId: CardId): void {
+    for (const spawnPoint of this.spawnPointCards) {
+      const cardIndex = spawnPoint.findIndex((card) => card.model.definition.id === cardId)
+      if (cardIndex !== -1) {
+        spawnPoint.splice(cardIndex, 1)
+        this.reorderStackedCardDepths()
+        return
+      }
+    }
+    console.log(`Card ${cardId} was not found`)
+  }
+
   public highlight() {
     if (this.debugGraphics) {
       this.debugGraphics.visible = true

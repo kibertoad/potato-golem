@@ -13,7 +13,7 @@ import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
+import { CommonEntity, EventSink, EventSource, QueuedActivation, randomOneOf } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
 import {
   type CardDefinition,
@@ -37,10 +37,13 @@ export type BoardSupportedEvents =
   | 'QUEUE_ACTIVATION'
   | 'NEXT_TURN'
   | 'HOMUNCULUS_EVOLVED'
+  | 'SPAWN_MUSE'
+  | 'SPAWN_ID'
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
 import {
+  AlcoholismActivation,
   EvolutionActivation,
   HungerActivation,
   SingingMushroomActivation,
@@ -117,6 +120,23 @@ export class BoardScene extends PotatoScene {
 
       this.eventSink.on('HOMUNCULUS_EVOLVED', () => {
         this.gameOver(`Homunculus has evolved. \nIt's going to be OK now.`, 72)
+      })
+
+      this.eventSink.on('SPAWN_MUSE', () => {
+        if (this.worldModel.hasCard('SHADOW_MUSE')) {
+          return
+        }
+
+        const zone = randomOneOf(['home', 'homunculus', 'lab'] satisfies Zone[])
+        this.addCard('SHADOW_MUSE', zone, 'pop_in')
+      })
+
+      this.eventSink.on('SPAWN_ID', () => {
+        if (this.worldModel.hasCard('THE_ID')) {
+          return
+        }
+
+        this.addCard('THE_ID', 'home', 'pop_in')
       })
 
       this.pointedCardView = card
@@ -202,6 +222,9 @@ export class BoardScene extends PotatoScene {
     this.addCard('MOLD', 'homunculus', 'none')
 
     this.addCard('WORKBENCH', 'lab', 'none')
+
+    this.addCard('ABSINTHE', 'home', 'none')
+
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
@@ -210,16 +233,8 @@ export class BoardScene extends PotatoScene {
 
     this.addCard('EXPLOSIVES', 'lab', 'none')
 
-    this.addCard('GOLD', 'home', 'none')
-    this.addCard('GOLD', 'home', 'none')
+    this.addCard('MONEY', 'home', 'none')
     this.addCard('MERCHANT', 'streets', 'none')
-
-    this.addCard('MEDICINE', 'lab', 'none')
-    this.addCard('MEDICINE', 'lab', 'none')
-    this.addCard('POISON', 'lab', 'none')
-    this.addCard('POISON', 'lab', 'none')
-    this.addCard('POISON', 'lab', 'none')
-    this.addCard('POISON', 'lab', 'none')
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.CARD) {
@@ -250,6 +265,7 @@ export class BoardScene extends PotatoScene {
     this.eventDirector.addRecurringActivation(new TheRaidActivation())
     this.eventDirector.addRecurringActivation(new HungerActivation())
     this.eventDirector.addRecurringActivation(new EvolutionActivation())
+    this.eventDirector.addRecurringActivation(new AlcoholismActivation())
   }
 
   initZones() {

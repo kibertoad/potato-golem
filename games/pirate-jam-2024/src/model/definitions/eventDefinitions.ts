@@ -211,6 +211,120 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
     ],
   },
 
+  CRAFT_SUPPLIES: {
+    id: 'CRAFT_SUPPLIES',
+    name: 'CRAFT_SUPPLIES',
+    description: `
+        Today, you face a pivotal choice. Before you lay a selection of alchemical supplies, each with the potential to be transformed into a variety of creations: powerful explosives, potent booze, healing medicine, or deadly poison. The air is thick with anticipation, as you ponder the possibilities.
+        `,
+    image: 'medicine_card',
+    options: [
+      {
+        text: 'Create a life-saving medicine',
+        effect: new MultiplexActivation([
+          new QueueActivation(
+            boardEventSink,
+            new QueuedActivation({
+              id: 'WORKBENCH_COOK_MEDICINE',
+              unique: true,
+              description: 'Need to let it simmer',
+              activatesIn: 1,
+              activation: new MultiplexActivation([
+                new SetActiveCardActivation(false),
+                new SpawnCardActivation(eventSink, {
+                  cardId: 'MEDICINE',
+                  description: 'Create 1 Medicine',
+                  zone: 'lab',
+                }),
+              ]),
+            }),
+          ),
+          new ConcludeEventActivation(eventSink),
+          new SetActiveCardActivation(true),
+        ]),
+      },
+
+      {
+        text: 'Prepare deadly poison',
+        effect: new MultiplexActivation([
+          new QueueActivation(
+            boardEventSink,
+            new QueuedActivation({
+              id: 'WORKBENCH_COOK_POISON',
+              unique: true,
+              description: 'Need to let it simmer',
+              activatesIn: 1,
+              activation: new MultiplexActivation([
+                new SetActiveCardActivation(false),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
+                new SpawnCardActivation(eventSink, {
+                  cardId: 'POISON', // replace with explosives
+                  description: 'Create 1 Poison',
+                  zone: 'lab',
+                }),
+              ]),
+            }),
+          ),
+          new ConcludeEventActivation(eventSink),
+          new SetActiveCardActivation(true),
+        ]),
+      },
+
+      {
+        text: 'Create explosives',
+        effect: new MultiplexActivation([
+          new QueueActivation(
+            boardEventSink,
+            new QueuedActivation({
+              id: 'WORKBENCH_COOK_EXPLOSIVES',
+              unique: true,
+              description: 'Need to let it simmer',
+              activatesIn: 1,
+              activation: new MultiplexActivation([
+                new SetActiveCardActivation(false),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
+                new SpawnCardActivation(eventSink, {
+                  cardId: 'EXPLOSIVES',
+                  description: 'Create 1 Explosives',
+                  zone: 'lab',
+                }),
+              ]),
+            }),
+          ),
+          new ConcludeEventActivation(eventSink),
+          new SetActiveCardActivation(true),
+        ]),
+      },
+
+      {
+        text: 'Brew booze',
+        effect: new MultiplexActivation([
+          new QueueActivation(
+            boardEventSink,
+            new QueuedActivation({
+              id: 'WORKBENCH_COOK_ABSINTHE',
+              unique: true,
+              description: 'Need to let it simmer',
+              activatesIn: 1,
+              activation: new MultiplexActivation([
+                new SetActiveCardActivation(false),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
+                new SpawnCardActivation(eventSink, {
+                  cardId: 'ABSINTHE',
+                  amount: 3,
+                  description: 'Create 3 Absinthe',
+                  zone: 'lab',
+                }),
+              ]),
+            }),
+          ),
+          new ConcludeEventActivation(eventSink),
+          new SetActiveCardActivation(true),
+        ]),
+      },
+    ],
+  },
+
   CRAFT_FLOWERS: {
     id: 'CRAFT_FLOWERS',
     name: 'CRAFT_FLOWERS',
