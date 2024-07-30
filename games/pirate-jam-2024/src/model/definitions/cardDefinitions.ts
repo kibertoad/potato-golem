@@ -173,7 +173,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         tooltip: `I think I can make something out of this`,
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeCardActivation(),
+          new DecomposeCardActivation('poof', 200),
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
           new NextTurnActivation(),
         ]),
