@@ -318,7 +318,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
-        tooltip: `I wonder he is immune...`,
+        tooltip: `I wonder if it is immune...`,
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
