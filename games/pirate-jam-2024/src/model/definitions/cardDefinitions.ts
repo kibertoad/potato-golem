@@ -386,6 +386,7 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
+        tooltip: `It's not a bribe if it's a donation...`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
@@ -394,6 +395,7 @@ export const cardDefinitions = {
 
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
+        tooltip: `Take it and leave me alone already!`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
@@ -417,6 +419,7 @@ export const cardDefinitions = {
 
       THE_LAW: {
         timeTillTrigger: 0,
+        tooltip: `It's not a bribe if it's a donation...`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
@@ -425,6 +428,7 @@ export const cardDefinitions = {
 
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
+        tooltip: `Take it and leave me alone already!`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
@@ -454,6 +458,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       HEALTH: {
         timeTillTrigger: 0,
+        tooltip: `This won't hurt a bit`,
         effect: new DescribedTargettedMultipleActivation([
           //TODO: Fix ability to drag a heart to medicine causing the heart to dissapear
           new DecomposeBothCardsActivation('poof', 300),
