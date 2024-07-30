@@ -26,3 +26,7 @@ export function normalizedRandom(maxValue: number) {
 export function randomOneOf<T>(items: readonly T[]): T {
   return items[(items.length * Math.random()) | 0]
 }
+
+export function getRandomNumber(xInclusive: number) {
+  return Math.floor(Math.random() * (xInclusive + 1));
+}

@@ -1,15 +1,16 @@
-import { QueuedActivation } from '@potato-golem/core'
+import { getRandomNumber, normalizedRandom, QueuedActivation } from '@potato-golem/core'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { type Zone, zoneRegistry } from '../../registries/zoneRegistry'
 import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
+import { DecomposeCardActivation } from './cardActivations'
 
 export class SingingMushroomActivation extends QueuedActivation {
   description: ''
 
   constructor() {
     super({
-      activatesIn: 1,
+      activatesIn: 2,
       id: 'SingingMushroomActivation',
       description: '',
       unique: true,
@@ -101,6 +102,41 @@ export class HungerActivation extends QueuedActivation {
 
   activate(): void {
     worldModel.homunculusModel.eventSink.emit('STARVE', 1)
+  }
+}
+
+export class AlcoholismActivation extends QueuedActivation {
+  description: ''
+
+  constructor() {
+    super({
+      activatesIn: 1,
+      id: 'AlcoholismActivation',
+      description: '',
+      unique: true,
+      activation: null, // activation method is overriden
+    })
+  }
+
+  activate(): void {
+    if (worldModel.zones.home.hasCard('ABSINTHE')) {
+      console.log('have booze, will drink')
+      const boozeCard = worldModel.zones.home.findCardByID('ABSINTHE')
+      const decomposeActivation = new DecomposeCardActivation()
+      decomposeActivation.activate(boozeCard.card.model)
+      //EventEmitters.boardEventEmitter.emit('DESTROY', boozeCard.card)
+
+      worldModel.alchemistModel.alcoholism.increase(1)
+
+      if (worldModel.alchemistModel.alcoholism.value >= 3) {
+        const randomNumber = getRandomNumber(10)
+        if (randomNumber >= 5) {
+          EventEmitters.boardEventEmitter.emit('SPAWN_MUSE')
+        } else {
+          EventEmitters.boardEventEmitter.emit('SPAWN_ID')
+        }
+      }
+    }
   }
 }
 
