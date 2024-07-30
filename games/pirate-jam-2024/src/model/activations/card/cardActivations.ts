@@ -107,6 +107,28 @@ export class DecomposeCardActivation
   }
 }
 
+export class AnimateZoneCardsActivation extends AnimateCardActivation {
+  protected readonly zone: Zone
+
+  constructor(zone: Zone, animationType: AnimationType = 'poof', customDelay = -1) {
+    super(animationType, customDelay)
+    this.zone = zone
+  }
+
+  async activate(targetCard: CardModel) {
+    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+    const promises = []
+    for (const card of cards) {
+      promises.push(super.activate(card))
+    }
+    await Promise.all(promises)
+  }
+
+  getDescription(): string {
+    return 'Consume combined card'
+  }
+}
+
 export class DecomposeOtherCardActivation extends DecomposeCardActivation {
   async activate(targetCard: CardModel) {
     await super.activate(targetCard.combinedCard)
@@ -137,6 +159,28 @@ export class DestroyCardActivation implements CardActivation, DynamicDescription
 
   getDescription(): string {
     return 'Destroy card'
+  }
+}
+
+export class DestroyZoneCardsActivation extends DestroyCardActivation {
+  protected readonly zone: Zone
+
+  constructor(zone: Zone) {
+    super()
+    this.zone = zone
+  }
+
+  async activate(targetCard: CardModel) {
+    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+    const promises = []
+    for (const card of cards) {
+      promises.push(super.activate(card))
+    }
+    await Promise.all(promises)
+  }
+
+  getDescription(): string {
+    return 'Consume combined card'
   }
 }
 

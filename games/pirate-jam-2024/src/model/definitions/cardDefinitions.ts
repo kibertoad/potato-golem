@@ -11,6 +11,7 @@ import type { TargettedReasonedPrecondition } from '../../../../../packages/core
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   AnimateCardActivation,
+  AnimateZoneCardsActivation,
   AttackHomunculusCardActivation,
   CancelDragCardActivation,
   ChatCardActivation,
@@ -20,6 +21,7 @@ import {
   DecomposeOtherCardActivation,
   DelayActivation,
   DestroyCardActivation,
+  DestroyZoneCardsActivation,
   EatCardActivation,
   FeedActivation,
   GainHatredActivation,
@@ -288,17 +290,20 @@ export const cardDefinitions = {
             },
             0,
           ),
-          new DecomposeOtherCardActivation('none', 0),
-          new DecomposeCardActivation('explosion'),
+          new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
         ]),
       },
 
       THE_LAW: {
         timeTillTrigger: 0,
+        preconditions: [
+          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
+        ],
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeOtherCardActivation('none', 0),
+          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
           new DecomposeCardActivation('explosion'),
+          new DestroyZoneCardsActivation('streets'),
           new LawIsDeadActivation(),
           new NextTurnActivation(),
         ]),
@@ -306,9 +311,13 @@ export const cardDefinitions = {
 
       THE_RAID: {
         timeTillTrigger: 0,
+        preconditions: [
+          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
+        ],
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeOtherCardActivation('none', 0),
+          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
           new DecomposeCardActivation('explosion'),
+          new DestroyZoneCardsActivation('streets'),
           new NextTurnActivation(),
         ]),
       },

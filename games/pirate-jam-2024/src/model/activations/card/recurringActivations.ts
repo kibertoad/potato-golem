@@ -1,4 +1,4 @@
-import { getRandomNumber, normalizedRandom, QueuedActivation } from '@potato-golem/core'
+import { QueuedActivation, getRandomNumber } from '@potato-golem/core'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { type Zone, zoneRegistry } from '../../registries/zoneRegistry'
 import { worldModel } from '../../state/WorldModel'
