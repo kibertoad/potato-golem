@@ -189,6 +189,15 @@ export const cardDefinitions = {
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
         ]),
       },
+      ALCHEMICAL_SUPPLIES: {
+        timeTillTrigger: 0,
+        preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
+        tooltip: `Options are limitless`,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeOtherCardActivation('poof', 200),
+          new StartEventActivation('CRAFT_SUPPLIES', eventSink),
+        ]),
+      },
       WATCHING_FLOWER: {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
