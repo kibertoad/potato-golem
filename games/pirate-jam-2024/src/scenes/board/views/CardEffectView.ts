@@ -39,7 +39,7 @@ export class CardEffectView extends Container {
       fontSize: '24px', // Customize the text size
       color: '#ffffff', // Customize the text color
       padding: { x: 25, y: 25 }, // Customize the padding
-      wordWrap: { width: 500, useAdvancedWrap: true }, // Enable word wrap and set the width
+      wordWrap: { width: 600, useAdvancedWrap: true }, // Enable word wrap and set the width
     }
 
     // Create the text object with auto-wrap
@@ -79,7 +79,9 @@ export class CardEffectView extends Container {
     const idleZoneEffect = cardView.model.definition.idleZoneEffect?.[zoneView.id]
     if (idleZoneEffect) {
       const timeString = this.resolveTimeString(idleZoneEffect.timeTillTrigger)
-      resolvedText = `${timeString}${idleZoneEffect.effect.getDescriptions().join(' \n')}`
+      resolvedText =
+        idleZoneEffect.tooltip ||
+        `${timeString}${idleZoneEffect.effect.getDescriptions().join(' \n')}`
     }
 
     this.setText(resolvedText)
@@ -101,7 +103,9 @@ export class CardEffectView extends Container {
     console.log(combinationResult)
     if (combinationResult.effect) {
       const timeString = this.resolveTimeString(combinationResult.effect.timeTillTrigger)
-      resolvedText = `${timeString}${combinationResult.effect.effect.getDescriptions().join(' \n')}`
+      resolvedText =
+        combinationResult.effect.tooltip ||
+        `${timeString}${combinationResult.effect.effect.getDescriptions().join(' \n')}`
     }
 
     if (typeof combinationResult.failReason === 'string') {

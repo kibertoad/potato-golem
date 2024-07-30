@@ -43,6 +43,7 @@ import { worldModel } from '../state/WorldModel'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
+  tooltip?: string
   preconditions?: Array<
     Precondition | TargettedPrecondition<CardModel> | TargettedReasonedPrecondition<CardModel>
   >
@@ -99,6 +100,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       ALCHEMICAL_SUPPLIES: {
         timeTillTrigger: 0,
+        tooltip: `Make sure to keep fire away from this stuff`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(
             eventSink,
@@ -116,6 +118,7 @@ export const cardDefinitions = {
 
       WORKBENCH: {
         timeTillTrigger: 0,
+        tooltip: `I bet I can make something more potent with this`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(
             eventSink,
@@ -166,6 +169,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       WORKBENCH: {
         timeTillTrigger: 0,
+        tooltip: `I think I can make something out of this`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeCardActivation(),
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
@@ -232,6 +236,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
+        tooltip: `Hopefully they will use it wisely`,
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
             eventSink,
@@ -275,6 +280,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
+        tooltip: `Sacrifices must be made...`,
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new GainHealthActivation(worldModel.homunculusModel, 1),
@@ -312,6 +318,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
+        tooltip: `I wonder he is immune...`,
         effect: new DescribedTargettedMultipleActivation([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
@@ -322,6 +329,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_LAW: {
         timeTillTrigger: 0,
+        tooltip: `He is too nosy for hiw own good...`,
         preconditions: [
           new CombinedZonePrecondition(
             ['home', 'homunculus', 'lab'],
