@@ -48,6 +48,7 @@ export class CardView extends Container implements IdHolder {
    */
   private readonly cardFrameSprite: Phaser.GameObjects.Sprite
   private readonly cardFrameGlow: Phaser.GameObjects.Sprite
+  private readonly cardFrameRedGlow: Phaser.GameObjects.Sprite
   private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
   private readonly cardFrameNailsSprite: Phaser.GameObjects.Sprite
 
@@ -155,6 +156,19 @@ export class CardView extends Container implements IdHolder {
       .build()
     this.cardFrameGlow.setAlpha(0)
     this.cardMainSpriteContainer.add(this.cardFrameGlow)
+
+    this.cardFrameRedGlow = SpriteBuilder.instance(scene)
+      .setTextureKey(ImageRegistry.CARD_GLOW_RED)
+      .setPosition({
+        x: 0,
+        y: 0,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(CardView.cardWidth + 20)
+      .setHeight(CardView.cardHeight + 20)
+      .build()
+    this.cardFrameRedGlow.setAlpha(0)
+    this.cardMainSpriteContainer.add(this.cardFrameRedGlow)
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
       .setTextureKey(ImageRegistry.CARD_FRAME)
@@ -409,11 +423,18 @@ export class CardView extends Container implements IdHolder {
     })
   }
 
-  highlight() {
+  highlight(red = false) {
+    this.unhighlight()
+    if (red) {
+      this.cardFrameRedGlow.setAlpha(1)
+      return
+    }
+
     this.cardFrameGlow.setAlpha(1)
   }
   unhighlight() {
     this.cardFrameGlow.setAlpha(0)
+    this.cardFrameRedGlow.setAlpha(0)
   }
 
   createEatMasks() {

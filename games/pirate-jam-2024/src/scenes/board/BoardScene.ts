@@ -119,13 +119,17 @@ export class BoardScene extends PotatoScene {
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
 
-        const canCombine =
-          this.draggedCardView.model.getActivationForCombinedCard(this.pointedCardView.model)
-            .effect !== undefined
+        const combinationResult = this.draggedCardView.model.getActivationForCombinedCard(
+          this.pointedCardView.model,
+        )
 
-        if (canCombine) {
+        if (combinationResult.effect !== undefined) {
           this.draggedCardView.highlight()
           this.pointedCardView.highlight()
+        }
+        if (typeof combinationResult.failReason === 'string') {
+          this.draggedCardView.highlight(true)
+          this.pointedCardView.highlight(true)
         }
       }
 

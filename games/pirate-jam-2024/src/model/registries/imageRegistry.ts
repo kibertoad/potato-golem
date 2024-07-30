@@ -5,6 +5,7 @@ export const ImageRegistry = {
   BOARD_BACKGROUND: 'board_background',
   CARD_FRAME: 'card_frame',
   CARD_GLOW: 'card_glow',
+  CARD_GLOW_RED: 'card_glow_red',
   CARD_FRAME_DECOR: 'card_frame_decor',
   CARD_FRAME_HANDY: 'card_frame_handy',
   CARD_FRAME_NAILS: 'card_frame_nails',
