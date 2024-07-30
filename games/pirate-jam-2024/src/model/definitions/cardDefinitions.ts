@@ -426,7 +426,7 @@ export const cardDefinitions = {
         tooltip: `They are ruining my carpet.`,
         preconditions: [
           new CombinedZonePrecondition(
-            ['home', 'homunculus', 'lab'],
+            ['home', 'alchemy', 'lab'],
             "Not sure it's wise to try this on the street",
           ),
         ],
