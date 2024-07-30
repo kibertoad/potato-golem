@@ -126,7 +126,7 @@ export class ZoneView implements IdHolder, Destroyable {
     zone.input.dropZone = true
 
     zone.on('pointerover', () => {
-      console.log(params.id, 'zone was hovered over')
+      //console.log(params.id, 'zone was hovered over')
       this.boardEventSink.emit('ZONE_HOVERED_OVER', this)
     })
 

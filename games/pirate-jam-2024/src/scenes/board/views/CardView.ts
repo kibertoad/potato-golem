@@ -416,7 +416,7 @@ export class CardView extends Container implements IdHolder {
         this.isDragging = false
       })
       .on('pointerover', () => {
-        console.log(this.model.id, 'card was hovered over')
+        // console.log(this.model.id, 'card was hovered over')
         this.boardEventSink.emit('CARD_HOVERED', this)
       })
   }
