@@ -687,6 +687,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         tooltip: 'I need to get rid of the evidence',
         effect: new DescribedTargettedMultipleActivation<CardModel>([
+          new EatCardActivation(),
           new GainHatredActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
@@ -700,7 +701,6 @@ export const cardDefinitions = {
             },
             0,
           ),
-          new DecomposeCardActivation(),
           new NextTurnActivation(),
         ]),
       },
