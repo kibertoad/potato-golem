@@ -174,7 +174,6 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
-          new NextTurnActivation(),
         ]),
       },
       WATCHING_FLOWER: {
