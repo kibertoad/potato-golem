@@ -3,6 +3,8 @@ import {
   type EventSink,
   QueuedActivation,
 } from '@potato-golem/core'
+import type { Precondition } from '@potato-golem/core'
+import type { TargettedPrecondition } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
@@ -27,6 +29,7 @@ import {
   SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
+import { CombinedZonePrecondition } from '../activations/card/cardPreconditions'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
 import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
@@ -39,6 +42,7 @@ import { worldModel } from '../state/WorldModel'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
+  preconditions?: Array<Precondition | TargettedPrecondition<CardModel>>
   effect: DescribedTargettedMultipleActivation<CardModel>
 }
 
@@ -315,6 +319,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_LAW: {
         timeTillTrigger: 0,
+        preconditions: [new CombinedZonePrecondition(['home', 'homunculus', 'lab'])],
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
             eventSink,

@@ -109,6 +109,19 @@ export class CardModel implements TurnProcessor, CommonEntity {
       return undefined
     }
 
+    if (combinationEffect.preconditions) {
+      //Temporarily set combined card to check preconditions
+      const currentCombinedCard = this.combinedCard
+      this.combinedCard = combinedCard
+      for (const precondition of combinationEffect.preconditions) {
+        if (!precondition.isSatisfied(this)) {
+          this.combinedCard = currentCombinedCard
+          return undefined
+        }
+      }
+      this.combinedCard = currentCombinedCard
+    }
+
     return combinationEffect
   }
 
