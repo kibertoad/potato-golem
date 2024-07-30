@@ -13,7 +13,7 @@ import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CommonEntity, EventSink, EventSource, QueuedActivation } from '@potato-golem/core'
+import { CommonEntity, EventSink, EventSource, QueuedActivation, randomOneOf } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
 import {
   type CardDefinition,
@@ -127,7 +127,8 @@ export class BoardScene extends PotatoScene {
           return
         }
 
-        this.addCard('SHADOW_MUSE', 'any', 'pop_in')
+        const zone = randomOneOf(['home', 'homunculus', 'lab'] satisfies Zone[])
+        this.addCard('SHADOW_MUSE', zone, 'pop_in')
       })
 
       this.eventSink.on('SPAWN_ID', () => {
