@@ -33,7 +33,8 @@ export class QueuedActivation implements Activation {
     this.activatesIn.setToMax()
   }
 
-  activate() {
-    this.activation.activate()
+  activate(...args: []): void {
+    console.log('AAAAA', args)
+    this.activation.activate.apply(this.activation, args)
   }
 }

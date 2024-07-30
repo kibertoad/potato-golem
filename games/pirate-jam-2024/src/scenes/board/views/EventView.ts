@@ -15,6 +15,7 @@ import type { WorldModel } from '../../../model/state/WorldModel'
 import type { BoardSupportedEvents } from '../BoardScene'
 import Sprite = Phaser.GameObjects.Sprite
 import type { SpawnCardMessage } from '../../../model/activations/event/extraEventActivations'
+import type { CardModel } from '../../../model/entities/CardModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EventEmitters } from '../../../model/registries/eventEmitterRegistry'
 
@@ -131,7 +132,7 @@ export class EventView extends Container {
     this.setVisible(false)
   }
 
-  setToEvent(event: EventId) {
+  setToEvent(event: EventId, targetCard?: CardModel) {
     const { width, height } = this.scene.scale
 
     this.currentEvent = this.eventDefinitions[event]

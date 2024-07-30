@@ -7,13 +7,17 @@ import {
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
+import type { CardModel } from '../entities/CardModel'
 
 export class EventDirector implements TurnProcessor {
   private readonly eventsPlayed: Partial<Record<EventId, number>> = {}
   private readonly eventDefinitions: EventDefinitions
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
-  private readonly queuedActivations: QueuedActivation[] = []
+  private readonly queuedActivations: Array<{
+    activation: QueuedActivation
+    arguments: Array<any>
+  }> = []
   private readonly recurringActivations: QueuedActivation[] = []
 
   private counterTillNextEvent: number
@@ -28,14 +32,17 @@ export class EventDirector implements TurnProcessor {
     this.counterTillNextEvent = normalizedRandom(5)
   }
 
-  addQueuedActivation(activation: QueuedActivation) {
+  addQueuedActivation(activation: QueuedActivation, targetCard?: CardModel) {
     if (activation.unique) {
-      if (this.queuedActivations.some((entry) => entry.id === activation.id)) {
+      if (this.queuedActivations.some((entry) => entry.activation.id === activation.id)) {
         return
       }
     }
 
-    this.queuedActivations.push(activation)
+    this.queuedActivations.push({
+      activation,
+      arguments: [targetCard, 'test'],
+    })
   }
 
   addRecurringActivation(activation: QueuedActivation) {
@@ -57,9 +64,12 @@ export class EventDirector implements TurnProcessor {
   private async processQueuedActivations(): Promise<void> {
     while (this.queuedActivations.length > 0) {
       const nextActivation = this.queuedActivations[0]
-      const isReady = nextActivation.processTime(1)
+      const isReady = nextActivation.activation.processTime(1)
       if (isReady) {
-        await nextActivation.activate()
+        await nextActivation.activation.activate.apply(
+          nextActivation.activation,
+          nextActivation.arguments,
+        )
         this.queuedActivations.shift()
       }
     }

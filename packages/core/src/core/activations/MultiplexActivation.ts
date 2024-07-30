@@ -10,9 +10,9 @@ export class MultiplexActivation implements Activation {
     this.activations = activations
   }
 
-  activate() {
+  activate(...args: []): void {
     for (const activation of this.activations) {
-      activation.activate()
+      activation.activate.apply(activation, args)
     }
   }
 
