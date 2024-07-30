@@ -299,6 +299,7 @@ export class BoardScene extends PotatoScene {
         chatBubbleOrigin: cardDefinition.chatBubbleOrigin,
         chatBubbleRightOffset: cardDefinition.chatBubbleRightOffset,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
+        onDrag: (cardView: CardView) => this.onCardDrag(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
       },
       {
@@ -330,13 +331,18 @@ export class BoardScene extends PotatoScene {
 
   onCardDragStart(cardView: CardView) {
     this.draggedCardView = cardView
-    this.cardEffectView.setText('No effect')
-    this.cardEffectView.show()
+    this.cardEffectView.moveWithCard(cardView)
+    this.cardEffectView.setText('')
     if (this.pointedZoneView) {
       this.pointedZoneView.highlight()
     }
     this.moveCardToTop(cardView)
   }
+
+  onCardDrag(cardView: CardView) {
+    this.cardEffectView.moveWithCard(cardView)
+  }
+
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   onCardDragEnd(cardView: CardView) {
     this.draggedCardView.unhighlight()

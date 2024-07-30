@@ -24,6 +24,7 @@ export type CardViewParams = {
   chatBubbleOrigin?: Position
   chatBubbleRightOffset?: number
   onDragStart?: (card: CardView) => void
+  onDrag?: (card: CardView) => void
   onDragEnd?: (card: CardView) => boolean | undefined | Promise<boolean>
 } & Position
 
@@ -36,6 +37,11 @@ export type SpawnAnimation = 'none' | 'fly_in_left' | 'pop_in'
 
 export type ChatVerticalDirection = 'up' | 'down'
 export type ChatHorizontalDirection = 'left' | 'right'
+
+export type DirectionResult = {
+  vertical: ChatVerticalDirection
+  horizontal: ChatHorizontalDirection
+}
 
 const textOffsetX = 35
 const textOffsetY = 5
@@ -373,6 +379,9 @@ export class CardView extends Container implements IdHolder {
           1.05 + Math.abs(this.dragDistanceFromCenter.x / 3),
           1.05 + Math.abs(this.dragDistanceFromCenter.y / 3),
         )
+        if (params.onDrag) {
+          params.onDrag(this)
+        }
       })
       .on('drop', (pointer, target) => {
         //Re-enable input events to not break drag and drop
@@ -682,6 +691,13 @@ export class CardView extends Container implements IdHolder {
       },
     })
     await delay(1500)
+  }
+
+  public getChatBubbleDirection(): DirectionResult {
+    return {
+      horizontal: this.x < 1280 ? 'right' : 'left',
+      vertical: this.y < 720 ? 'down' : 'up',
+    }
   }
 
   private async calculateChatPosition() {

@@ -5,7 +5,7 @@ import type { CardDefinitions } from '../../../model/definitions/cardDefinitions
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import Container = Phaser.GameObjects.Container
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
-import type { CardView } from './CardView'
+import { CardView, type DirectionResult } from './CardView'
 import type { ZoneView } from './ZoneView'
 
 export type CardEffectViewDependencies = {
@@ -58,6 +58,13 @@ export class CardEffectView extends Container {
   setText(text: string): void {
     this.effectDescriptionText.setText(text)
     this.updateBoxSize()
+
+    if (text === '') {
+      this.hide()
+      return
+    }
+
+    this.show()
   }
 
   updateBoxSize() {
@@ -67,7 +74,7 @@ export class CardEffectView extends Container {
   }
 
   showCardZoneEffect(cardView: CardView, zoneView: ZoneView) {
-    let resolvedText = 'No effect'
+    let resolvedText = ''
 
     const idleZoneEffect = cardView.model.definition.idleZoneEffect?.[zoneView.id]
     if (idleZoneEffect) {
@@ -76,6 +83,7 @@ export class CardEffectView extends Container {
     }
 
     this.setText(resolvedText)
+    this.moveWithCard(cardView)
   }
 
   private resolveTimeString(timeTillTrigger: number): string {
@@ -85,7 +93,7 @@ export class CardEffectView extends Container {
   }
 
   showCardCombinationEffect(sourceCardView: CardView, targetCardView: CardView) {
-    let resolvedText = 'No effect'
+    let resolvedText = ''
 
     const combinationResult = sourceCardView.model.getActivationForCombinedCard(
       targetCardView.model,
@@ -101,6 +109,21 @@ export class CardEffectView extends Container {
     }
 
     this.setText(resolvedText)
+    this.moveWithCard(sourceCardView)
+  }
+
+  moveWithCard(cardView: CardView) {
+    const direction: DirectionResult = cardView.getChatBubbleDirection()
+
+    let x = cardView.x
+    if (direction.horizontal === 'left') {
+      x -= this.background.displayWidth
+      x -= CardView.cardWidth / 2 + 20
+    } else {
+      x += CardView.cardWidth / 2 + 20
+    }
+
+    this.setPosition(x, cardView.y - CardView.cardHeight / 2)
   }
 
   show() {
