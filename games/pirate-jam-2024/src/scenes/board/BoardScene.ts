@@ -119,9 +119,9 @@ export class BoardScene extends PotatoScene {
       if (this.draggedCardView) {
         this.cardEffectView.showCardCombinationEffect(this.draggedCardView, this.pointedCardView)
 
-        const canCombine = this.draggedCardView.model.getActivationForCombinedCard(
-          this.pointedCardView.model,
-        )
+        const canCombine =
+          this.draggedCardView.model.getActivationForCombinedCard(this.pointedCardView.model)
+            .effect !== undefined
 
         if (canCombine) {
           this.draggedCardView.highlight()
@@ -391,14 +391,14 @@ export class BoardScene extends PotatoScene {
       combinationChildCard.model,
       false,
       true,
-    )
+    ).effect
     if (!combinationEffect) {
       //If no combinations found, check the other way around (if the pointed card has any activations)
       combinationEffect = combinationChildCard.model.getActivationForCombinedCard(
         combinationOwnerCard.model,
         false,
         true,
-      )
+      ).effect
 
       //Swap the cards, so that the activation happens from the perspective
       //of the card that has the activation defined

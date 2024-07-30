@@ -88,15 +88,22 @@ export class CardModel implements TurnProcessor, CommonEntity {
     combinedCard: CardModel,
     includeCombined?: boolean,
     strict?: boolean,
-  ): CardEffectDefinition | undefined {
+  ): {
+    effect: CardEffectDefinition | undefined
+    failReason?: boolean | string
+  } {
     // nothing is highlighted
     if (!combinedCard) {
-      return undefined
+      return {
+        effect: undefined,
+      }
     }
 
     // card is already busy
     if (!includeCombined && (combinedCard.combinedCard || this.combinedCard)) {
-      return undefined
+      return {
+        effect: undefined,
+      }
     }
 
     //Do not check combinations both ways in strict mode
@@ -106,23 +113,32 @@ export class CardModel implements TurnProcessor, CommonEntity {
       : this.definition.cardCombinationEffect?.[combinedCard.definition.id]
 
     if (!combinationEffect) {
-      return undefined
+      return {
+        effect: undefined,
+      }
     }
 
     if (combinationEffect.preconditions) {
       //Temporarily set combined card to check preconditions
       const currentCombinedCard = this.combinedCard
       this.combinedCard = combinedCard
+      let preconditionResult: boolean | string
       for (const precondition of combinationEffect.preconditions) {
-        if (!precondition.isSatisfied(this)) {
+        preconditionResult = precondition.isSatisfied(this)
+        if (preconditionResult !== true) {
           this.combinedCard = currentCombinedCard
-          return undefined
+          return {
+            effect: undefined,
+            failReason: preconditionResult,
+          }
         }
       }
       this.combinedCard = currentCombinedCard
     }
 
-    return combinationEffect
+    return {
+      effect: combinationEffect,
+    }
   }
 
   hasActivationForZone(zone: Zone): boolean {
@@ -156,7 +172,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
     if (this.combinedCard) {
       const activation = this.getActivationForCombinedCard(this.combinedCard, true, true)
-      if (activation?.timeTillTrigger <= this.turnsCombinedToCard) {
+      if (activation?.effect && activation?.effect?.timeTillTrigger <= this.turnsCombinedToCard) {
         relevantActivations.push(activation.effect)
         this.disconnectFromCard()
       }

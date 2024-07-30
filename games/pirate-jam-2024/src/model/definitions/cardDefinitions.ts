@@ -6,6 +6,7 @@ import {
 import type { Precondition } from '@potato-golem/core'
 import type { TargettedPrecondition } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
+import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   AnimateCardActivation,
@@ -42,7 +43,9 @@ import { worldModel } from '../state/WorldModel'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
-  preconditions?: Array<Precondition | TargettedPrecondition<CardModel>>
+  preconditions?: Array<
+    Precondition | TargettedPrecondition<CardModel> | TargettedReasonedPrecondition<CardModel>
+  >
   effect: DescribedTargettedMultipleActivation<CardModel>
 }
 
@@ -319,7 +322,12 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_LAW: {
         timeTillTrigger: 0,
-        preconditions: [new CombinedZonePrecondition(['home', 'homunculus', 'lab'])],
+        preconditions: [
+          new CombinedZonePrecondition(
+            ['home', 'homunculus', 'lab'],
+            "Don't think it's wise to try this on the streets",
+          ),
+        ],
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
             eventSink,

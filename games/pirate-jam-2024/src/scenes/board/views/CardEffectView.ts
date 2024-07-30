@@ -75,12 +75,17 @@ export class CardEffectView extends Container {
   showCardCombinationEffect(sourceCardView: CardView, targetCardView: CardView) {
     let resolvedText = 'No effect'
 
-    const combinationEffect = sourceCardView.model.getActivationForCombinedCard(
+    const combinationResult = sourceCardView.model.getActivationForCombinedCard(
       targetCardView.model,
     )
-    if (combinationEffect) {
-      const timeString = this.resolveTimeString(combinationEffect.timeTillTrigger)
-      resolvedText = `${timeString}${combinationEffect.effect.getDescriptions().join(' \n')}`
+    console.log(combinationResult)
+    if (combinationResult.effect) {
+      const timeString = this.resolveTimeString(combinationResult.effect.timeTillTrigger)
+      resolvedText = `${timeString}${combinationResult.effect.effect.getDescriptions().join(' \n')}`
+    }
+
+    if (typeof combinationResult.failReason === 'string') {
+      resolvedText = combinationResult.failReason
     }
 
     this.effectDescriptionText.setText(resolvedText)
