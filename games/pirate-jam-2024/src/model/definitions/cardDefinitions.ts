@@ -5,6 +5,7 @@ import {
 } from '@potato-golem/core'
 import type { Precondition } from '@potato-golem/core'
 import type { TargettedPrecondition } from '@potato-golem/core'
+import { MultiplexActivation } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
@@ -30,6 +31,7 @@ import {
   QueueActivation,
   SearchAndDecideCardActivation,
   SearchAndDestroyCardActivation,
+  SetActiveCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
@@ -143,17 +145,26 @@ export const cardDefinitions = {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `I bet I can make something more potent with this`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new SpawnCardActivation(
+          new QueueActivation(
             eventSink,
-            {
-              cardId: 'POISON', // replace with explosives
-              description: 'Create 1 Poison',
-              zone: 'lab',
-            },
-            0,
+            new QueuedActivation({
+              id: 'WORKBENCH_COOK_POISON',
+              unique: true,
+              description: 'Need to let it simmer',
+              activatesIn: 1,
+              activation: new MultiplexActivation([
+                new SetActiveCardActivation(false),
+                new PlaySfxActivation([SfxRegistry.POOF]),
+                new SpawnCardActivation(eventSink, {
+                  cardId: 'POISON', // replace with explosives
+                  description: 'Create 1 Poison',
+                  zone: 'lab',
+                }),
+              ]),
+            }),
           ),
-          new DecomposeOtherCardActivation(),
-          new NextTurnActivation(),
+          new DecomposeOtherCardActivation('poof', 300),
+          new SetActiveCardActivation(true),
         ]),
       },
       SINGING_MUSHROOMS: {

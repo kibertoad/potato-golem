@@ -447,7 +447,10 @@ export class FeedActivation implements Activation, DynamicDescriptionHolder {
   }
 }
 
-export class QueueActivation implements Activation, StaticDescriptionHolder {
+export class QueueActivation implements Activation, CardActivation, StaticDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
   private readonly activation: QueuedActivation
   private readonly eventSink: EventSink<BoardSupportedEvents>
   readonly description: string
@@ -458,8 +461,31 @@ export class QueueActivation implements Activation, StaticDescriptionHolder {
     this.description = activation.description ?? ''
   }
 
-  activate() {
-    this.eventSink.emit('QUEUE_ACTIVATION', this.activation)
+  activate(targetCard?: CardModel) {
+    this.eventSink.emit('QUEUE_ACTIVATION', this.activation, targetCard)
+  }
+
+  getDescription(): string {
+    return `Queue activation`
+  }
+}
+
+export class SetActiveCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private active: boolean
+
+  constructor(active: boolean) {
+    this.active = active
+  }
+
+  activate(targetCard: CardModel) {
+    targetCard.view.setActiveCard(this.active)
+  }
+
+  getDescription(): string {
+    return `Activate card`
   }
 }
 

@@ -139,14 +139,17 @@ export class BoardScene extends PotatoScene {
       }
     })
 
-    this.eventSink.on('START_EVENT', (eventId: EventId) => {
-      this.eventView.setToEvent(eventId)
+    this.eventSink.on('START_EVENT', (eventId: EventId, targetCard?: CardModel) => {
+      this.eventView.setToEvent(eventId, targetCard)
       this.eventView.show()
     })
 
-    this.eventSink.on('QUEUE_ACTIVATION', (activation: QueuedActivation) => {
-      this.eventDirector.addQueuedActivation(activation)
-    })
+    this.eventSink.on(
+      'QUEUE_ACTIVATION',
+      (activation: QueuedActivation, targetCard?: CardModel) => {
+        this.eventDirector.addQueuedActivation(activation, targetCard)
+      },
+    )
 
     this.eventSink.on('ZONE_HOVERED_OVER', (zone: ZoneView) => {
       this.pointedZoneView = zone
