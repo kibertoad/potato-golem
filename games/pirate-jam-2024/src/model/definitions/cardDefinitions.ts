@@ -574,8 +574,8 @@ export const cardDefinitions = {
     image: 'rough_kind_card',
     name: 'The Rough Kind',
     nonDraggable: true,
-    chatBubbleOrigin: { x: 80, y: 85 },
-    chatBubbleRightOffset: 42,
+    chatBubbleOrigin: { x: 68, y: 125 },
+    chatBubbleRightOffset: 30,
     spawnPhrases: ['Well hello there!', 'Now this place looks antiquish!'],
     idleZoneEffect: {
       streets: {
