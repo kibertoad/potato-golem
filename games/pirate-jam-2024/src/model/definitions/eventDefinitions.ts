@@ -8,7 +8,6 @@ import {
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   NextTurnActivation,
-  PlaySfxActivation,
   QueueActivation,
   SetActiveCardActivation,
 } from '../activations/card/cardActivations'
@@ -16,7 +15,6 @@ import { ConcludeEventActivation, type EventEventId } from '../activations/event
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import { SfxRegistry } from '../registries/sfxRegistry'
 
 export type EventOption = {
   text: string
@@ -171,7 +169,7 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'MEDICINE', // replace with explosives
                   description: 'Create 1 Medicine',
@@ -197,7 +195,7 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
@@ -235,7 +233,7 @@ You approach the basket with a mix of curiosity and caution. The Watching Flower
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'EXPLOSIVES', // replace with explosives
                   description: 'Create 1 Explosives',
@@ -261,7 +259,7 @@ You approach the basket with a mix of curiosity and caution. The Watching Flower
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'ABSINTHE', // replace with explosives
                   description: 'Create 1 Absinthe',
@@ -297,7 +295,7 @@ Today, your focus is on the newly acquired specimen: the Enlightened Mandrake. T
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'MEDICINE', // replace with explosives
                   description: 'Create 1 Medicine',
@@ -323,7 +321,7 @@ Today, your focus is on the newly acquired specimen: the Enlightened Mandrake. T
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'ABSINTHE', // replace with explosives
                   description: 'Create 1 Absinthe',

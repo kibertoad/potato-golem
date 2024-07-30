@@ -61,6 +61,7 @@ export type CardDefinition = {
   image?: ImageId
   activeImage?: ImageId
   activateSfx?: SfxId
+  deactivateSfx?: SfxId
   nonDraggable?: boolean
   chatBubbleOrigin?: Position
   chatBubbleRightOffset?: number
@@ -138,6 +139,7 @@ export const cardDefinitions = {
     image: 'workbench_card',
     activeImage: 'workbench_card_on',
     activateSfx: SfxRegistry.LIGHT_UP,
+    deactivateSfx: SfxRegistry.PUT_OUT,
     nonDraggable: true,
     cardCombinationEffect: {
       MOLD: {
@@ -154,7 +156,7 @@ export const cardDefinitions = {
               activatesIn: 1,
               activation: new MultiplexActivation([
                 new SetActiveCardActivation(false),
-                new PlaySfxActivation([SfxRegistry.POOF]),
+                // new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation(eventSink, {
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
@@ -345,7 +347,7 @@ export const cardDefinitions = {
               zone: 'home',
               cardId: 'GOLD',
               amount: 1,
-              description: "",
+              description: '',
             },
             0,
             'same_as_combined',

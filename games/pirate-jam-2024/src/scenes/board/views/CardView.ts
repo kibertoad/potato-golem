@@ -489,15 +489,22 @@ export class CardView extends Container implements IdHolder {
   }
 
   setActiveCard(active: boolean, skipSound = false) {
-    if (!this.model.definition.activeImage || this.isActive === active) {
+    if (this.isActive === active) {
       return
     }
     if (!skipSound && active && this.model.definition.activateSfx) {
       worldModel.musicScene.playSfx(this.model.definition.activateSfx)
     }
-    this.cardPictureSprite.setTexture(
-      active ? this.model.definition.activeImage : this.model.definition.image,
-    )
+    if (!skipSound && !active && this.model.definition.deactivateSfx) {
+      worldModel.musicScene.playSfx(this.model.definition.deactivateSfx)
+    }
+
+    if (this.model.definition.activeImage) {
+      this.cardPictureSprite.setTexture(
+        active ? this.model.definition.activeImage : this.model.definition.image,
+      )
+    }
+
     this.isActive = active
   }
 

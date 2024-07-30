@@ -120,6 +120,11 @@ export class MusicScene extends PotatoScene {
       [require('url:../../assets/sfx/light_up.ogg'), require('url:../../assets/sfx/light_up.aac')],
       0.5,
     )
+    this.loadSfx(
+      SfxRegistry.PUT_OUT,
+      [require('url:../../assets/sfx/put_out.ogg'), require('url:../../assets/sfx/put_out.aac')],
+      0.8,
+    )
   }
 
   public loadSfx(sfxId: SfxId, src: string | string[], volume = 1) {
