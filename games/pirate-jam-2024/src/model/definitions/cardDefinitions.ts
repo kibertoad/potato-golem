@@ -312,6 +312,26 @@ export const cardDefinitions = {
         ]),
       },
     },
+    cardCombinationEffect: {
+      THE_LAW: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'any',
+              cardId: 'CORPSE',
+              amount: 1,
+              description: "Maybe if I offer him a drink, he won't notice anything",
+            },
+            0,
+            'same_as_combined',
+          ),
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
+      },
+    },
   },
 
   GOLD: {
