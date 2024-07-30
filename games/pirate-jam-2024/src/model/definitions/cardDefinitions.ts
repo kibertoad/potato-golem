@@ -16,6 +16,7 @@ import {
   DamageActivation,
   DecomposeBothCardsActivation,
   DecomposeCardActivation,
+  DecomposeOtherCardActivation,
   DelayActivation,
   DestroyCardActivation,
   EatCardActivation,
@@ -116,24 +117,6 @@ export const cardDefinitions = {
           new NextTurnActivation(),
         ]),
       },
-
-      WORKBENCH: {
-        timeTillTrigger: 0,
-        tooltip: `I bet I can make something more potent with this`,
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
-          new SpawnCardActivation(
-            eventSink,
-            {
-              cardId: 'POISON', // replace with explosives
-              description: 'Create 1 Poison',
-              zone: 'lab',
-            },
-            0,
-          ),
-          new DecomposeCardActivation(),
-          new NextTurnActivation(),
-        ]),
-      },
     },
   },
 
@@ -148,6 +131,48 @@ export const cardDefinitions = {
     name: 'Workbench',
     image: 'workbench_card',
     nonDraggable: true,
+    cardCombinationEffect: {
+      MOLD: {
+        timeTillTrigger: 0,
+        tooltip: `I bet I can make something more potent with this`,
+        effect: new DescribedTargettedMultipleActivation<CardModel>([
+          new SpawnCardActivation(
+            eventSink,
+            {
+              cardId: 'POISON', // replace with explosives
+              description: 'Create 1 Poison',
+              zone: 'lab',
+            },
+            0,
+          ),
+          new DecomposeOtherCardActivation(),
+          new NextTurnActivation(),
+        ]),
+      },
+      SINGING_MUSHROOMS: {
+        timeTillTrigger: 0,
+        tooltip: `I think I can make something out of this`,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeOtherCardActivation('poof', 200),
+          new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
+          new NextTurnActivation(),
+        ]),
+      },
+      WATCHING_FLOWER: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeOtherCardActivation('poof', 200),
+          new StartEventActivation('CRAFT_FLOWERS', eventSink),
+        ]),
+      },
+      ENLIGHTENED_MANDRAKE: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new DecomposeOtherCardActivation('poof', 200),
+          new StartEventActivation('CRAFT_MANDRAKE', eventSink),
+        ]),
+      },
+    },
   },
 
   PORTAL: {
@@ -168,48 +193,18 @@ export const cardDefinitions = {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
     image: 'singing_mushrooms_card',
-    cardCombinationEffect: {
-      WORKBENCH: {
-        timeTillTrigger: 0,
-        tooltip: `I think I can make something out of this`,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
-          new NextTurnActivation(),
-        ]),
-      },
-    },
   },
 
   WATCHING_FLOWER: {
     id: 'WATCHING_FLOWER',
     name: 'Watching Flower',
     image: 'watching_flower_card',
-    cardCombinationEffect: {
-      WORKBENCH: {
-        timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeCardActivation(),
-          new StartEventActivation('CRAFT_FLOWERS', eventSink),
-        ]),
-      },
-    },
   },
 
   ENLIGHTENED_MANDRAKE: {
     id: 'ENLIGHTENED_MANDRAKE',
     name: 'Enlightened Mandrake',
     image: 'enlightened_mandrake_card',
-
-    cardCombinationEffect: {
-      WORKBENCH: {
-        timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
-          new DecomposeCardActivation(),
-          new StartEventActivation('CRAFT_MANDRAKE', eventSink),
-        ]),
-      },
-    },
   },
 
   SHADOW_MUSE: {

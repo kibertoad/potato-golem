@@ -463,7 +463,10 @@ export class QueueActivation implements Activation, StaticDescriptionHolder {
   }
 }
 
-export class StartEventActivation implements Activation, DynamicDescriptionHolder {
+export class StartEventActivation implements CardActivation, Activation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
   private readonly eventId: EventId
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
@@ -472,8 +475,9 @@ export class StartEventActivation implements Activation, DynamicDescriptionHolde
     this.eventSink = eventSink
   }
 
-  activate() {
-    this.eventSink.emit('START_EVENT', this.eventId)
+  activate(targetCard?: CardModel) {
+    console.log('Start event', targetCard)
+    this.eventSink.emit('START_EVENT', this.eventId, targetCard)
   }
 
   getDescription(): string {
