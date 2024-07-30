@@ -573,6 +573,16 @@ export class BoardScene extends PotatoScene {
       ],
       frameRate: 8,
     })
+    this.anims.create({
+      key: 'explosion',
+      frames: [
+        { key: ImageRegistry.EXPLOSION_1 },
+        { key: ImageRegistry.EXPLOSION_2 },
+        { key: ImageRegistry.EXPLOSION_3 },
+        { key: ImageRegistry.EXPLOSION_4 },
+      ],
+      frameRate: 8,
+    })
     this.backgroundImage = SpriteBuilder.instance(this)
       .setTextureKey(ImageRegistry.BOARD_BACKGROUND)
       .setPosition({

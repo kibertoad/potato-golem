@@ -9,7 +9,14 @@ import Phaser from 'phaser'
 import EventEmitter = Phaser.Events.EventEmitter
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 
-export type HomunculusEvents = 'HEAL' | 'DAMAGE' | 'FEED' | 'STARVE' | 'DEATH' | 'ATTACKED' | 'EVOLVE'
+export type HomunculusEvents =
+  | 'HEAL'
+  | 'DAMAGE'
+  | 'FEED'
+  | 'STARVE'
+  | 'DEATH'
+  | 'ATTACKED'
+  | 'EVOLVE'
 
 export class HomunculusModel implements EventReceiver, HPHolder {
   readonly eventSink: EventSource<HomunculusEvents> & EventSink<HomunculusEvents>
