@@ -89,6 +89,17 @@ export const cardDefinitions = {
           new GainHatredActivation(worldModel.homunculusModel, 1),
           new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'home',
+              cardId: 'GOLD',
+              amount: 1,
+              description: '',
+            },
+            0,
+            'same_as_combined',
+          ),
           new DecomposeCardActivation(),
           new NextTurnActivation(),
         ]),
@@ -345,7 +356,7 @@ export const cardDefinitions = {
             eventSink,
             {
               zone: 'home',
-              cardId: 'GOLD',
+              cardId: 'WATCHING_FLOWER',
               amount: 1,
               description: '',
             },
