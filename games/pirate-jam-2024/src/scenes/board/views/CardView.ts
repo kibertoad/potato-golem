@@ -107,6 +107,8 @@ export class CardView extends Container implements IdHolder {
   readonly model: CardModel
   private readonly endTurnProcessor: EndTurnProcessor
 
+  private isDragging = false
+
   public static readonly cardWidth: number = 230
   public static readonly cardHeight: number = 277
 
@@ -321,6 +323,7 @@ export class CardView extends Container implements IdHolder {
         useHandCursor: !this.model.definition.nonDraggable,
       })
       .on('dragstart', (pointer, _dragX, _dragY) => {
+        this.isDragging = true
         this.positionBeforeDrag.x = this.x
         this.positionBeforeDrag.y = this.y
 
@@ -358,6 +361,7 @@ export class CardView extends Container implements IdHolder {
         this.playRandomCardSound()
       })
       .on('drag', (pointer, dragX, dragY) => {
+        this.isDragging = true
         //Disable input events on the card so that it does not block pointer events for zones
         this.cardFrameSprite.input.enabled = false
         this.setPosition(pointer.x - this.dragDeltaX, pointer.y - this.dragDeltaY)
@@ -407,6 +411,7 @@ export class CardView extends Container implements IdHolder {
           //We want to play the sound only if card was not activated
           this.playRandomCardSound()
         }
+        this.isDragging = false
       })
       .on('pointerover', () => {
         console.log(this.model.id, 'card was hovered over')
@@ -423,6 +428,9 @@ export class CardView extends Container implements IdHolder {
   }
 
   cancelDrag() {
+    if (!this.isDragging) {
+      return
+    }
     this.scene.tweens.add({
       targets: this,
       x: this.positionBeforeDrag.x,

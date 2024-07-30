@@ -11,6 +11,7 @@ import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   AnimateCardActivation,
   AttackHomunculusCardActivation,
+  CancelDragCardActivation,
   ChatCardActivation,
   DamageActivation,
   DecomposeBothCardsActivation,
@@ -460,14 +461,15 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         tooltip: `This won't hurt a bit`,
         effect: new DescribedTargettedMultipleActivation([
-          //TODO: Fix ability to drag a heart to medicine causing the heart to dissapear
-          new DecomposeBothCardsActivation('poof', 300),
+          new CancelDragCardActivation('HEALTH'),
+          new AnimateCardActivation('poof', 0),
           new SpawnCardActivation(eventSink, {
             zone: 'home',
             cardId: 'HEALTH',
-            amount: 2,
+            amount: 1,
             description: 'Get 1 Health',
           }),
+          new DestroyCardActivation(),
           new NextTurnActivation(),
         ]),
       },

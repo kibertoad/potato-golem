@@ -61,6 +61,32 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
   }
 }
 
+export class CancelDragCardActivation implements CardActivation, DynamicDescriptionHolder {
+  isExclusive = true
+  priority = LOW_PRIORITY
+
+  private cardToCancel: CardId
+
+  constructor(cardToCancel: CardId) {
+    this.cardToCancel = cardToCancel
+  }
+
+  async activate(targetCard: CardModel) {
+    if (targetCard.definition.id === this.cardToCancel) {
+      targetCard.view.cancelDrag()
+      return
+    }
+
+    if (targetCard.combinedCard && targetCard.combinedCard.definition.id === this.cardToCancel) {
+      targetCard.combinedCard.view.cancelDrag()
+    }
+  }
+
+  getDescription(): string {
+    return `Bounce the card back to it's place`
+  }
+}
+
 export class DecomposeCardActivation
   extends AnimateCardActivation
   implements CardActivation, DynamicDescriptionHolder
