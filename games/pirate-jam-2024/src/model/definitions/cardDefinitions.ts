@@ -237,6 +237,17 @@ export const cardDefinitions = {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
     image: 'singing_mushrooms_card',
+
+    idleZoneEffect: {
+      homunculus: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new EatCardActivation(),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
+          new NextTurnActivation(),
+        ]),
+      },
+    }
   },
 
   WATCHING_FLOWER: {
@@ -346,10 +357,6 @@ export const cardDefinitions = {
     id: 'FOOD',
     name: 'Food',
     idleZoneEffect: {
-      any: {
-        timeTillTrigger: 3,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
-      },
       homunculus: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
