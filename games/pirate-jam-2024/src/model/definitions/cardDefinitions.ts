@@ -83,9 +83,10 @@ export const cardDefinitions = {
     image: 'booze_card',
     idleZoneEffect: {
       homunculus: {
-        timeTillTrigger: 1,
+        timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new GainHatredActivation(worldModel.homunculusModel, 1),
+          new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new DecomposeCardActivation(),
           new NextTurnActivation(),
@@ -346,11 +347,11 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_LAW: {
         timeTillTrigger: 0,
-        tooltip: `He is too nosy for hiw own good...`,
+        tooltip: `He is too nosy for his own good...`,
         preconditions: [
           new CombinedZonePrecondition(
             ['home', 'homunculus', 'lab'],
-            "Don't think it's wise to try this on the streets",
+            "Not sure it's wise to try this on the street",
           ),
         ],
         effect: new DescribedTargettedMultipleActivation([
@@ -655,5 +656,29 @@ export const cardDefinitions = {
     id: 'CORPSE',
     image: 'corpse_card',
     name: 'Corpse',
+
+    idleZoneEffect: {
+      homunculus: {
+        timeTillTrigger: 0,
+        tooltip: 'I need to get rid of the evidence',
+        effect: new DescribedTargettedMultipleActivation<CardModel>([
+          new GainHatredActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 1),
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'home',
+              cardId: 'GOLD',
+              amount: 2,
+              description: 'Get 2 Gold',
+              spawnAnimation: 'pop_in',
+            },
+            0,
+          ),
+          new DecomposeCardActivation(),
+          new NextTurnActivation(),
+        ]),
+      },
+    },
   },
 } as const satisfies Record<CardId, CardDefinition>
