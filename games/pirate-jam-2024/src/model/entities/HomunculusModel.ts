@@ -31,7 +31,7 @@ export class HomunculusModel implements EventReceiver, HPHolder {
     this.eventSink = new EventEmitter()
     this.hp = new LimitedNumber(3, 3)
     this.food = new LimitedNumber(3, 3)
-    this.evolution = new LimitedNumber(0, 20)
+    this.evolution = new LimitedNumber(0, 40)
 
     this.registerListeners()
   }

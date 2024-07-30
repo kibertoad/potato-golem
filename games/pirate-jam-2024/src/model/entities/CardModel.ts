@@ -28,6 +28,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
   // uuid of a specific instance, not a definition id
   id: string
+  isDestroyed = false
 
   zone: Zone
   view: CardView
@@ -62,8 +63,8 @@ export class CardModel implements TurnProcessor, CommonEntity {
     }
   }
 
-  changeZone(zone: Zone): boolean {
-    if (!this.definition.idleZoneEffect || !(zone in this.definition.idleZoneEffect)) {
+  changeZone(zone: Zone, forceMove = false): boolean {
+    if ((!forceMove) && (!this.definition.idleZoneEffect || !(zone in this.definition.idleZoneEffect))) {
       return false
     }
 
@@ -80,6 +81,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   }
 
   destroy() {
+    this.isDestroyed = true
     this.disconnectFromCard()
     this.parentEventSink.emit('DESTROY', this)
   }

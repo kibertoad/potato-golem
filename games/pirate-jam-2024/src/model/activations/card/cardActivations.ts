@@ -1,11 +1,11 @@
 import {
-  type Activation,
+  type Activation, DescribedTargettedMultipleActivation,
   type DynamicDescriptionHolder,
   type EventReceiver,
-  type EventSink,
+  type EventSink, getRandomNumber,
   LOW_PRIORITY,
   type QueuedActivation,
-  type StaticDescriptionHolder,
+  type StaticDescriptionHolder, TargettedMultiplexActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -13,10 +13,11 @@ import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import type { SfxId } from '../../registries/sfxRegistry'
+import { SfxId, SfxRegistry } from '../../registries/sfxRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import type { CardActivation } from './CardActivation'
+import { SpawnCardActivation } from '../event/extraEventActivations'
 
 export type ActivationArray = Array<Activation | CardActivation>
 
@@ -216,10 +217,102 @@ export class LawIsDeadActivation implements Activation {
   }
 }
 
-export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
+export class TheLawMoveActivation implements CardActivation {
+  getDescription() {
+    return ''
+  }
+  async activate(targetCard: CardModel) {
+    console.log('Activate TheLaw')
+    if (targetCard.zone === 'homunculus') {
+      console.log('Homunculus branch')
+      const activation = new DescribedTargettedMultipleActivation([
+        new ChatCardActivation([
+          'I will stop this ABOMINATION!',
+          'Take this!',
+          'In the name of the LAW!',
+        ]),
+        new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
+        new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+        new AnimateCardActivation('blood_splat', 0),
+        new FeedActivation(worldModel.homunculusModel, 1, true),
+        new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+          spawnAnimation: 'pop_in',
+          description: 'Spawn 1 Corpse',
+          cardId: 'CORPSE',
+          zone: 'homunculus',
+        }),
+        new DelayActivation(1100), //Allow blood splat animation to finish
+        new DestroyCardActivation(),
+      ])
+      await activation.activate(targetCard)
 
+      return
+    }
+
+    if (!(['homunculus', 'streets'].includes(targetCard.zone))) {
+    console.log('search branch')
+    const activation = new DescribedTargettedMultipleActivation([
+      new SearchAndDecideCardActivation(
+        'CORPSE',
+        'home',
+        [
+          new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
+          new ChatCardActivation([
+            'You will pay for this heresy!',
+            'I will stop you!',
+            'In the name of the LAW!',
+          ]),
+          new SearchAndDestroyCardActivation('HEALTH', 'home'),
+          new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+          new AnimateCardActivation('blood_splat', 0),
+          new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+            spawnAnimation: 'pop_in',
+            description: 'Spawn 1 Corpse',
+            cardId: 'CORPSE',
+            zone: 'home',
+          }),
+          new DelayActivation(1100), //Allow blood splat animation to finish
+          new DestroyCardActivation(),
+        ],
+        [],
+      ),
+    ])
+
+    await activation.activate(targetCard)
+
+    if (targetCard.isDestroyed) {
+      return
+    }
+
+    const diceRoll = getRandomNumber(10)
+    if (diceRoll <= 4) {
+      const leaveActivation = new TargettedMultiplexActivation([new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()])
+      await leaveActivation.activate(targetCard)
+      return
+    }
+  }
+    // end home block
+
+    console.log('Generic branch')
+
+    const possibleTargets: Zone[] = []
+    if (targetCard.zone === 'streets') {
+      possibleTargets.push('home')
+    } else
+    if (targetCard.zone === 'home') {
+      possibleTargets.push('lab')
+    } else if (targetCard.zone === 'lab') {
+      possibleTargets.push('homunculus')
+    } else {
+      return Promise.resolve()
+    }
+
+    const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
+    await moveActivation.activate(targetCard)
+  }
+}
+
+export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
   private readonly worldModel: WorldModel
   private readonly targetZone: Zone
 
@@ -233,7 +326,7 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
 
   async activate(targetCard: CardModel) {
     const targetZoneView = this.worldModel.zones[this.targetZone]
-    targetCard.changeZone(this.targetZone)
+    targetCard.changeZone(this.targetZone, true)
     const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
     targetZoneView.registerCard(targetCard.view, availableSpawnPont.index)
     targetZoneView.reorderStackedCardDepths()
@@ -249,9 +342,6 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
 }
 
 export class ChatCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
   private readonly chatPhrases: string[]
 
   constructor(chatPhrases: string[]) {
@@ -415,7 +505,10 @@ export class SearchAndDecideCardActivation implements CardActivation, DynamicDes
   }
 
   async activate(targetCard: CardModel) {
+    console.log(`Searching for ${targetCard.definition.id}`)
     const foundCard = worldModel.searchForCards(this.cardIdsToSearch, this.searchZone)
+    console.log(`Card was found: ${foundCard}`)
+
     const activations = foundCard ? this.successActivations : this.failureActivations
     for (const activation of activations) {
       await activation.activate(targetCard)

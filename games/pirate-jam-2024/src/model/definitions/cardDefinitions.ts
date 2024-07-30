@@ -34,7 +34,7 @@ import {
   SearchAndDecideCardActivation,
   SearchAndDestroyCardActivation,
   SetActiveCardActivation,
-  StartEventActivation,
+  StartEventActivation, TheLawMoveActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
@@ -237,6 +237,17 @@ export const cardDefinitions = {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
     image: 'singing_mushrooms_card',
+
+    idleZoneEffect: {
+      homunculus: {
+        timeTillTrigger: 0,
+        effect: new DescribedTargettedMultipleActivation([
+          new EatCardActivation(),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
+          new NextTurnActivation(),
+        ]),
+      },
+    }
   },
 
   WATCHING_FLOWER: {
@@ -346,10 +357,6 @@ export const cardDefinitions = {
     id: 'FOOD',
     name: 'Food',
     idleZoneEffect: {
-      any: {
-        timeTillTrigger: 3,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeCardActivation()]),
-      },
       homunculus: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
@@ -580,70 +587,19 @@ export const cardDefinitions = {
       'Stop right there!',
     ],
     idleZoneEffect: {
-      streets: {
+      any: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
           new ChatCardActivation([
-            'Hmmm...Interesting...',
+            'Hmmm... Interesting...',
             'What do we have here?',
-            "Don't mind if I take a look?",
+            "Do you mind if I take a look?",
           ]),
-          new MoveToZoneCardActivation(worldModel, ['home', 'homunculus']),
+          new TheLawMoveActivation(),
         ]),
       },
-      homunculus: {
-        timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
-          new ChatCardActivation([
-            'I will stop this ABOMINATION!',
-            'Take this!',
-            'In the name of the LAW!',
-          ]),
-          new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
-          new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
-          new AnimateCardActivation('blood_splat', 0),
-          new FeedActivation(worldModel.homunculusModel, 1, true),
-          new SpawnCardActivation(eventSink, {
-            spawnAnimation: 'pop_in',
-            description: 'Spawn 1 Corpse',
-            cardId: 'CORPSE',
-            zone: 'homunculus',
-          }),
-          new DelayActivation(1100), //Allow blood splat animation to finish
-          new DestroyCardActivation(),
-        ]),
-      },
-      home: {
-        timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
-          new SearchAndDecideCardActivation(
-            'CORPSE',
-            'home',
-            [
-              new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
-              new ChatCardActivation([
-                'You will pay for this heresy!',
-                'I will stop you!',
-                'In the name of the LAW!',
-              ]),
-              new SearchAndDestroyCardActivation('HEALTH', 'home'),
-              new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
-              new AnimateCardActivation('blood_splat', 0),
-              new SpawnCardActivation(eventSink, {
-                spawnAnimation: 'pop_in',
-                description: 'Spawn 1 Corpse',
-                cardId: 'CORPSE',
-                zone: 'home',
-              }),
-              new DelayActivation(1100), //Allow blood splat animation to finish
-              new DestroyCardActivation(),
-            ],
-            [new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()],
-          ),
-        ]),
       },
     },
-  },
 
   THE_ROUGH_KIND: {
     id: 'THE_ROUGH_KIND',
