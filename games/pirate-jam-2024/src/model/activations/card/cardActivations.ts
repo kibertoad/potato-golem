@@ -20,7 +20,7 @@ import type { CardActivation } from './CardActivation'
 
 export type ActivationArray = Array<Activation | CardActivation>
 
-export type AnimationType = 'none' | 'poof' | 'blood_splat'
+export type AnimationType = 'none' | 'poof' | 'blood_splat' | 'explosion'
 
 export class AnimateCardActivation implements CardActivation, DynamicDescriptionHolder {
   isExclusive = true
@@ -41,6 +41,9 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
         break
       case 'blood_splat':
         await targetCard.view.playBloodSplatAnimation()
+        break
+      case 'explosion':
+        await targetCard.view.playExplosionAnimation()
         break
       case 'none':
         break

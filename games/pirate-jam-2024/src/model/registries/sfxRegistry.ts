@@ -13,4 +13,5 @@ export const SfxRegistry = {
   POOF: 'poof',
   LIGHT_UP: 'light_up',
   PUT_OUT: 'put_out',
+  EXPLOSION: 'explosion',
 } as const

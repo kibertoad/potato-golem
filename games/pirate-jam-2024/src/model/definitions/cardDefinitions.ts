@@ -268,7 +268,8 @@ export const cardDefinitions = {
             },
             0,
           ),
-          new DecomposeBothCardsActivation(),
+          new DecomposeOtherCardActivation('none', 0),
+          new DecomposeCardActivation('explosion'),
           new NextTurnActivation(),
         ]),
       },
@@ -276,7 +277,8 @@ export const cardDefinitions = {
       THE_LAW: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
+          new DecomposeOtherCardActivation('none', 0),
+          new DecomposeCardActivation('explosion'),
           new LawIsDeadActivation(),
           new NextTurnActivation(),
         ]),
@@ -285,7 +287,8 @@ export const cardDefinitions = {
       THE_RAID: {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
-          new DecomposeBothCardsActivation(),
+          new DecomposeOtherCardActivation('none', 0),
+          new DecomposeCardActivation('explosion'),
           new NextTurnActivation(),
         ]),
       },
