@@ -29,9 +29,9 @@ import {
   SearchAndDestroyCardActivation,
   StartEventActivation,
 } from '../activations/card/cardActivations'
-import { CombinedZonePrecondition } from '../activations/card/cardPreconditions'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
+import { CombinedZonePrecondition } from '../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
