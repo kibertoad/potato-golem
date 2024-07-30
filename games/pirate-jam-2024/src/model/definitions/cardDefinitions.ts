@@ -420,6 +420,32 @@ export const cardDefinitions = {
           new NextTurnActivation(),
         ]),
       },
+
+      THE_ROUGH_KIND: {
+        timeTillTrigger: 0,
+        tooltip: `They are ruining my carpet.`,
+        preconditions: [
+          new CombinedZonePrecondition(
+            ['home', 'homunculus', 'lab'],
+            "Not sure it's wise to try this on the street",
+          ),
+        ],
+        effect: new DescribedTargettedMultipleActivation([
+          new SpawnCardActivation(
+            eventSink,
+            {
+              zone: 'any',
+              cardId: 'CORPSE',
+              amount: 1,
+              description: "",
+            },
+            0,
+            'same_as_combined',
+          ),
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ]),
+      },
     },
   },
 
