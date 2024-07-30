@@ -38,19 +38,19 @@ export class SingingMushroomActivation extends QueuedActivation {
 
   private async populateNeighbours(startingZone: Zone) {
     switch (startingZone) {
-      case 'homunculus': {
+      case 'alchemy': {
         if (await this.tryPopulate('lab')) {
           return
         }
         if (await this.tryPopulate('home')) {
           return
         }
-        await this.populate('homunculus')
+        await this.populate('alchemy')
         break
       }
 
       case 'lab': {
-        if (await this.tryPopulate('homunculus')) {
+        if (await this.tryPopulate('alchemy')) {
           return
         }
         await this.populate('lab')
@@ -58,7 +58,7 @@ export class SingingMushroomActivation extends QueuedActivation {
       }
 
       case 'home': {
-        if (await this.tryPopulate('homunculus')) {
+        if (await this.tryPopulate('alchemy')) {
           return
         }
         await this.populate('home')
@@ -71,13 +71,13 @@ export class SingingMushroomActivation extends QueuedActivation {
     const startingPoints = Object.values(zoneRegistry).filter((zone) => {
       return (
         zone !== 'any' &&
-        zone !== 'homunculus' &&
-        worldModel.zones.homunculus.hasCard('SINGING_MUSHROOMS')
+        zone !== 'alchemy' &&
+        worldModel.zones.alchemy.hasCard('SINGING_MUSHROOMS')
       )
     })
 
     if (startingPoints.length === 0) {
-      await this.populate('homunculus')
+      await this.populate('alchemy')
       return
     }
 

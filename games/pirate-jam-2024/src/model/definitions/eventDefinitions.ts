@@ -85,7 +85,7 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
     effect: new MultiplexActivation([
       new SpawnCardActivation(eventSink, {
         description: '',
-        zone: 'homunculus',
+        zone: 'alchemy',
         cardId: 'MOLD',
         spawnAnimation: 'pop_in',
       }),

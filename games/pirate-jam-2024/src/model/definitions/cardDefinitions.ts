@@ -19,7 +19,6 @@ import {
   DecomposeBothCardsActivation,
   DecomposeCardActivation,
   DecomposeOtherCardActivation,
-  DelayActivation,
   DestroyCardActivation,
   DestroyZoneCardsActivation,
   EatCardActivation,
@@ -29,12 +28,12 @@ import {
   LawIsDeadActivation,
   MoveToZoneCardActivation,
   NextTurnActivation,
-  PlaySfxActivation,
   QueueActivation,
   SearchAndDecideCardActivation,
   SearchAndDestroyCardActivation,
   SetActiveCardActivation,
-  StartEventActivation, TheLawMoveActivation,
+  StartEventActivation,
+  TheLawMoveActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
@@ -247,7 +246,7 @@ export const cardDefinitions = {
           new NextTurnActivation(),
         ]),
       },
-    }
+    },
   },
 
   WATCHING_FLOWER: {
@@ -401,7 +400,7 @@ export const cardDefinitions = {
         tooltip: `He is too nosy for his own good...`,
         preconditions: [
           new CombinedZonePrecondition(
-            ['home', 'homunculus', 'lab'],
+            ['home', 'alchemy', 'lab'],
             "Not sure it's wise to try this on the street",
           ),
         ],
@@ -593,13 +592,13 @@ export const cardDefinitions = {
           new ChatCardActivation([
             'Hmmm... Interesting...',
             'What do we have here?',
-            "Do you mind if I take a look?",
+            'Do you mind if I take a look?',
           ]),
           new TheLawMoveActivation(),
         ]),
       },
-      },
     },
+  },
 
   THE_ROUGH_KIND: {
     id: 'THE_ROUGH_KIND',
@@ -637,12 +636,12 @@ export const cardDefinitions = {
             ],
             [
               new ChatCardActivation(['Keep looking!', 'There has to be something...']),
-              new MoveToZoneCardActivation(worldModel, ['homunculus']),
+              new MoveToZoneCardActivation(worldModel, ['alchemy']),
             ],
           ),
         ]),
       },
-      homunculus: {
+      alchemy: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
           new ChatCardActivation(['What the hell is this?!', 'Get him boys!', 'Get it off me!']),
@@ -667,7 +666,7 @@ export const cardDefinitions = {
           new SpawnCardActivation(
             eventSink,
             {
-              zone: 'homunculus',
+              zone: 'alchemy',
               cardId: 'ENLIGHTENED_MANDRAKE',
               amount: 2,
               description: '',

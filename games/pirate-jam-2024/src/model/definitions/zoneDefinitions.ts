@@ -75,47 +75,6 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
       { x: 2560, y: 1440 },
     ],
   },
-  homunculus: {
-    id: 'homunculus',
-    name: 'homunculus',
-    debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
-    stackDirection: 'right',
-    spawnPoints: [
-      {
-        x: 150,
-        y: 340,
-      },
-      {
-        x: 150,
-        y: 340 + 390,
-      },
-      {
-        x: 150,
-        y: 340 + 390 * 2,
-      },
-      {
-        x: 150 + 310,
-        y: 524,
-      },
-      {
-        x: 150 + 310,
-        y: 524 + 390,
-      },
-      {
-        x: 150 + 310 * 2,
-        y: 524 + 184,
-      },
-    ],
-    cardStartingSpawnPoint: 1,
-    vertices: [
-      { x: 1088, y: 835 },
-      { x: 1088, y: 602 },
-      { x: 1285, y: 500 },
-      { x: 1472, y: 612 },
-      { x: 1472, y: 855 },
-      { x: 1282, y: 940 },
-    ],
-  },
 
   home: {
     id: 'home',
@@ -155,16 +114,58 @@ export const zones: Record<Exclude<Zone, 'any'>, Omit<ZoneViewParams, 'scene'>> 
     id: 'alchemy',
     name: 'alchemy',
     stackDirection: 'right',
+    cardStartingSpawnPoint: 1,
     spawnPoints: [
       {
-        x: 150 + 300 * 2,
+        x: 150,
+        y: 340,
+      },
+      {
+        x: 150,
         y: 340 + 390,
+      },
+      {
+        x: 150,
+        y: 340 + 390 * 2,
+      },
+      {
+        x: 150 + 310,
+        y: 524,
+      },
+      {
+        x: 150 + 310,
+        y: 524 + 390,
+      },
+      {
+        x: 150 + 310 * 2,
+        y: 524 + 184,
       },
     ],
     vertices: [
       { x: 0, y: 12 },
       { x: 1282, y: 720 },
       { x: 0, y: 1440 },
+    ],
+  },
+
+  homunculus: {
+    id: 'homunculus',
+    name: 'homunculus',
+    debugColor: Phaser.Display.Color.GetColor(255, 255, 0),
+    stackDirection: 'right',
+    spawnPoints: [
+      {
+        x: 1100,
+        y: 524 + 184,
+      },
+    ],
+    vertices: [
+      { x: 1088, y: 835 },
+      { x: 1088, y: 602 },
+      { x: 1285, y: 500 },
+      { x: 1472, y: 612 },
+      { x: 1472, y: 855 },
+      { x: 1282, y: 940 },
     ],
   },
 }

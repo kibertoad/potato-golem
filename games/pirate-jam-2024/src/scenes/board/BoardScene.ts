@@ -133,7 +133,7 @@ export class BoardScene extends PotatoScene {
           return
         }
 
-        const zone = randomOneOf(['home', 'homunculus', 'lab'] satisfies Zone[])
+        const zone = randomOneOf(['home', 'alchemy', 'lab'] satisfies Zone[])
         this.addCard('SHADOW_MUSE', zone, 'pop_in')
       })
 
@@ -224,8 +224,8 @@ export class BoardScene extends PotatoScene {
 
     this.initZones()
 
-    this.addCard('MOLD', 'homunculus', 'none')
-    this.addCard('MOLD', 'homunculus', 'none')
+    this.addCard('MOLD', 'alchemy', 'none')
+    this.addCard('SINGING_MUSHROOMS', 'alchemy', 'none')
 
     this.addCard('WORKBENCH', 'lab', 'none')
 

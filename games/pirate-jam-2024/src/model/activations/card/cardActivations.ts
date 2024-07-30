@@ -1,11 +1,14 @@
 import {
-  type Activation, DescribedTargettedMultipleActivation,
+  type Activation,
+  DescribedTargettedMultipleActivation,
   type DynamicDescriptionHolder,
   type EventReceiver,
-  type EventSink, getRandomNumber,
+  type EventSink,
   LOW_PRIORITY,
   type QueuedActivation,
-  type StaticDescriptionHolder, TargettedMultiplexActivation,
+  type StaticDescriptionHolder,
+  TargettedMultiplexActivation,
+  getRandomNumber,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -13,11 +16,11 @@ import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import { SfxId, SfxRegistry } from '../../registries/sfxRegistry'
+import { type SfxId, SfxRegistry } from '../../registries/sfxRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
-import type { CardActivation } from './CardActivation'
 import { SpawnCardActivation } from '../event/extraEventActivations'
+import type { CardActivation } from './CardActivation'
 
 export type ActivationArray = Array<Activation | CardActivation>
 
@@ -223,7 +226,7 @@ export class TheLawMoveActivation implements CardActivation {
   }
   async activate(targetCard: CardModel) {
     console.log('Activate TheLaw')
-    if (targetCard.zone === 'homunculus') {
+    if (targetCard.zone === 'alchemy') {
       console.log('Homunculus branch')
       const activation = new DescribedTargettedMultipleActivation([
         new ChatCardActivation([
@@ -239,7 +242,7 @@ export class TheLawMoveActivation implements CardActivation {
           spawnAnimation: 'pop_in',
           description: 'Spawn 1 Corpse',
           cardId: 'CORPSE',
-          zone: 'homunculus',
+          zone: 'alchemy',
         }),
         new DelayActivation(1100), //Allow blood splat animation to finish
         new DestroyCardActivation(),
@@ -249,48 +252,51 @@ export class TheLawMoveActivation implements CardActivation {
       return
     }
 
-    if (!(['homunculus', 'streets'].includes(targetCard.zone))) {
-    console.log('search branch')
-    const activation = new DescribedTargettedMultipleActivation([
-      new SearchAndDecideCardActivation(
-        'CORPSE',
-        'home',
-        [
-          new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
-          new ChatCardActivation([
-            'You will pay for this heresy!',
-            'I will stop you!',
-            'In the name of the LAW!',
-          ]),
-          new SearchAndDestroyCardActivation('HEALTH', 'home'),
-          new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
-          new AnimateCardActivation('blood_splat', 0),
-          new SpawnCardActivation(EventEmitters.boardEventEmitter, {
-            spawnAnimation: 'pop_in',
-            description: 'Spawn 1 Corpse',
-            cardId: 'CORPSE',
-            zone: 'home',
-          }),
-          new DelayActivation(1100), //Allow blood splat animation to finish
-          new DestroyCardActivation(),
-        ],
-        [],
-      ),
-    ])
+    if (!['alchemy', 'streets'].includes(targetCard.zone)) {
+      console.log('search branch')
+      const activation = new DescribedTargettedMultipleActivation([
+        new SearchAndDecideCardActivation(
+          'CORPSE',
+          'home',
+          [
+            new ChatCardActivation(['Is this...A CORPSE?!', 'A body?! I KNEW IT!']),
+            new ChatCardActivation([
+              'You will pay for this heresy!',
+              'I will stop you!',
+              'In the name of the LAW!',
+            ]),
+            new SearchAndDestroyCardActivation('HEALTH', 'home'),
+            new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+            new AnimateCardActivation('blood_splat', 0),
+            new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+              spawnAnimation: 'pop_in',
+              description: 'Spawn 1 Corpse',
+              cardId: 'CORPSE',
+              zone: 'home',
+            }),
+            new DelayActivation(1100), //Allow blood splat animation to finish
+            new DestroyCardActivation(),
+          ],
+          [],
+        ),
+      ])
 
-    await activation.activate(targetCard)
+      await activation.activate(targetCard)
 
-    if (targetCard.isDestroyed) {
-      return
+      if (targetCard.isDestroyed) {
+        return
+      }
+
+      const diceRoll = getRandomNumber(10)
+      if (diceRoll <= 4) {
+        const leaveActivation = new TargettedMultiplexActivation([
+          new ChatCardActivation(['Guess nothing to see here']),
+          new DecomposeCardActivation(),
+        ])
+        await leaveActivation.activate(targetCard)
+        return
+      }
     }
-
-    const diceRoll = getRandomNumber(10)
-    if (diceRoll <= 4) {
-      const leaveActivation = new TargettedMultiplexActivation([new ChatCardActivation(['Guess nothing to see here']), new DecomposeCardActivation()])
-      await leaveActivation.activate(targetCard)
-      return
-    }
-  }
     // end home block
 
     console.log('Generic branch')
@@ -298,11 +304,10 @@ export class TheLawMoveActivation implements CardActivation {
     const possibleTargets: Zone[] = []
     if (targetCard.zone === 'streets') {
       possibleTargets.push('home')
-    } else
-    if (targetCard.zone === 'home') {
+    } else if (targetCard.zone === 'home') {
       possibleTargets.push('lab')
     } else if (targetCard.zone === 'lab') {
-      possibleTargets.push('homunculus')
+      possibleTargets.push('alchemy')
     } else {
       return Promise.resolve()
     }
