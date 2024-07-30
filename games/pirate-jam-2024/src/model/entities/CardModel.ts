@@ -89,51 +89,53 @@ export class CardModel implements TurnProcessor, CommonEntity {
     includeCombined?: boolean,
     strict?: boolean,
   ): {
-    effect: CardEffectDefinition | undefined
+    effect?: CardEffectDefinition
     failReason?: boolean | string
   } {
     // nothing is highlighted
     if (!combinedCard) {
-      return {
-        effect: undefined,
-      }
+      return {}
     }
 
     // card is already busy
     if (!includeCombined && (combinedCard.combinedCard || this.combinedCard)) {
-      return {
-        effect: undefined,
-      }
+      return {}
     }
 
-    //Do not check combinations both ways in strict mode
-    const combinationEffect = !strict
-      ? this.definition.cardCombinationEffect?.[combinedCard.definition.id] ??
-        combinedCard.definition.cardCombinationEffect?.[this.definition.id]
-      : this.definition.cardCombinationEffect?.[combinedCard.definition.id]
+    let responsibleCard: CardModel = this
+    let actualCombinedCard: CardModel = combinedCard
 
+    let combinationEffect =
+      responsibleCard.definition.cardCombinationEffect?.[actualCombinedCard.definition.id]
     if (!combinationEffect) {
-      return {
-        effect: undefined,
+      if (strict) {
+        return {}
       }
+
+      responsibleCard = combinedCard
+      actualCombinedCard = this
+    }
+
+    combinationEffect =
+      responsibleCard.definition.cardCombinationEffect?.[actualCombinedCard.definition.id]
+    if (!combinationEffect) {
+      return {}
     }
 
     if (combinationEffect.preconditions) {
       //Temporarily set combined card to check preconditions
-      const currentCombinedCard = this.combinedCard
-      this.combinedCard = combinedCard
+      const currentCombinedCard = responsibleCard.combinedCard
+      responsibleCard.combinedCard = actualCombinedCard
+
       let preconditionResult: boolean | string
       for (const precondition of combinationEffect.preconditions) {
-        preconditionResult = precondition.isSatisfied(this)
+        preconditionResult = precondition.isSatisfied(responsibleCard)
         if (preconditionResult !== true) {
-          this.combinedCard = currentCombinedCard
-          return {
-            effect: undefined,
-            failReason: preconditionResult,
-          }
+          responsibleCard.combinedCard = currentCombinedCard
+          return { failReason: preconditionResult }
         }
       }
-      this.combinedCard = currentCombinedCard
+      responsibleCard.combinedCard = currentCombinedCard
     }
 
     return {

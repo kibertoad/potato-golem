@@ -109,6 +109,7 @@ export class CardView extends Container implements IdHolder {
   private readonly endTurnProcessor: EndTurnProcessor
 
   private isDragging = false
+  private isActive = false
 
   public static readonly cardWidth: number = 230
   public static readonly cardHeight: number = 277
@@ -485,6 +486,23 @@ export class CardView extends Container implements IdHolder {
     })
     this.cardEat2ShadowMaskImage.scaleX = this.cardShadowSprite.scaleX
     this.cardEat2ShadowMaskImage.scaleY = this.cardShadowSprite.scaleY
+  }
+
+  setActiveCard(active: boolean, skipSound = false) {
+    if (!this.model.definition.activeImage || this.isActive === active) {
+      return
+    }
+    if (!skipSound && active && this.model.definition.activateSfx) {
+      worldModel.musicScene.playSfx(this.model.definition.activateSfx)
+    }
+    this.cardPictureSprite.setTexture(
+      active ? this.model.definition.activeImage : this.model.definition.image,
+    )
+    this.isActive = active
+  }
+
+  isActiveCard(): boolean {
+    return this.isActive
   }
 
   async playPoofAnimation() {

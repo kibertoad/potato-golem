@@ -34,12 +34,13 @@ import {
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import type { CardModel } from '../entities/CardModel'
+import { CheckIfActiveCardPrecondition } from '../preconditions/CheckIfActiveCardPrecondition'
 import { CombinedZonePrecondition } from '../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import { SfxRegistry } from '../registries/sfxRegistry'
+import { type SfxId, SfxRegistry } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
 
@@ -56,6 +57,8 @@ export type CardDefinition = {
   id: CardId
   name: string
   image?: ImageId
+  activeImage?: ImageId
+  activateSfx?: SfxId
   nonDraggable?: boolean
   chatBubbleOrigin?: Position
   chatBubbleRightOffset?: number
@@ -130,10 +133,13 @@ export const cardDefinitions = {
     id: 'WORKBENCH',
     name: 'Workbench',
     image: 'workbench_card',
+    activeImage: 'workbench_card_on',
+    activateSfx: SfxRegistry.LIGHT_UP,
     nonDraggable: true,
     cardCombinationEffect: {
       MOLD: {
         timeTillTrigger: 0,
+        preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `I bet I can make something more potent with this`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(
@@ -151,6 +157,7 @@ export const cardDefinitions = {
       },
       SINGING_MUSHROOMS: {
         timeTillTrigger: 0,
+        preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `I think I can make something out of this`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
@@ -160,6 +167,7 @@ export const cardDefinitions = {
       },
       WATCHING_FLOWER: {
         timeTillTrigger: 0,
+        preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_FLOWERS', eventSink),
@@ -167,6 +175,7 @@ export const cardDefinitions = {
       },
       ENLIGHTENED_MANDRAKE: {
         timeTillTrigger: 0,
+        preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_MANDRAKE', eventSink),
