@@ -13,7 +13,13 @@ import type { WorldModel } from '../../model/state/WorldModel'
 import { Scenes } from '../SceneRegistry'
 import { CardView, type SpawnAnimation } from './views/CardView'
 import Sprite = Phaser.GameObjects.Sprite
-import { CommonEntity, EventSink, EventSource, QueuedActivation, randomOneOf } from '@potato-golem/core'
+import {
+  type CommonEntity,
+  type EventSink,
+  type EventSource,
+  type QueuedActivation,
+  randomOneOf,
+} from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
 import {
   type CardDefinition,

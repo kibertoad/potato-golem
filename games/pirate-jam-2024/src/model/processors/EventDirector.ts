@@ -41,7 +41,7 @@ export class EventDirector implements TurnProcessor {
 
     this.queuedActivations.push({
       activation,
-      arguments: [targetCard, 'test'],
+      arguments: [targetCard],
     })
   }
 
@@ -62,16 +62,18 @@ export class EventDirector implements TurnProcessor {
   }
 
   private async processQueuedActivations(): Promise<void> {
-    while (this.queuedActivations.length > 0) {
-      const nextActivation = this.queuedActivations[0]
-      const isReady = nextActivation.activation.processTime(1)
+    const activationsToProcess = [...this.queuedActivations]
+    let counter = 0
+    for (const queuedActivation of activationsToProcess) {
+      const isReady = queuedActivation.activation.processTime(1)
       if (isReady) {
-        await nextActivation.activation.activate.apply(
-          nextActivation.activation,
-          nextActivation.arguments,
+        await queuedActivation.activation.activate.apply(
+          queuedActivation.activation,
+          queuedActivation.arguments,
         )
-        this.queuedActivations.shift()
+        this.queuedActivations.splice(counter, 1)
       }
+      counter++
     }
   }
 
