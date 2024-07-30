@@ -36,10 +36,12 @@ export type BoardSupportedEvents =
   | 'START_EVENT'
   | 'QUEUE_ACTIVATION'
   | 'NEXT_TURN'
+  | 'HOMUNCULUS_EVOLVED'
 
 import { TextBuilder } from '@potato-golem/ui'
 import { ChangeSceneActivation } from '@potato-golem/ui'
 import {
+  EvolutionActivation,
   HungerActivation,
   SingingMushroomActivation,
   TheRaidActivation,
@@ -112,6 +114,10 @@ export class BoardScene extends PotatoScene {
       if (this.pointedCardView) {
         this.pointedCardView.unhighlight()
       }
+
+      this.eventSink.on('HOMUNCULUS_EVOLVED', () => {
+        this.gameOver(`Homunculus has evolved. \nIt's going to be OK now.`, 72)
+      })
 
       this.pointedCardView = card
 
@@ -243,6 +249,7 @@ export class BoardScene extends PotatoScene {
     this.eventDirector.addRecurringActivation(new SingingMushroomActivation())
     this.eventDirector.addRecurringActivation(new TheRaidActivation())
     this.eventDirector.addRecurringActivation(new HungerActivation())
+    this.eventDirector.addRecurringActivation(new EvolutionActivation())
   }
 
   initZones() {
@@ -446,7 +453,7 @@ export class BoardScene extends PotatoScene {
     await this.eventDirector.processTurn()
   }
 
-  async gameOver(text: string) {
+  async gameOver(text: string, fontSize = 120) {
     const container = new Phaser.GameObjects.Container(this)
     container.setDepth(DepthRegistry.GAME_OVER)
 
@@ -472,7 +479,7 @@ export class BoardScene extends PotatoScene {
       .build()
       .value.setDepth(DepthRegistry.CARD_MIN)
 
-    title.setFontSize(120)
+    title.setFontSize(fontSize)
     title.setColor('#FFFFFF')
     title.setAlign('center')
     title.setFontFamily('Arial')
