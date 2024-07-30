@@ -1,5 +1,5 @@
 import { removeFromArrayById } from '@potato-golem/core'
-import type Phaser from 'phaser'
+import type { MusicScene } from '../../scenes/MusicScene'
 import type { ZoneView } from '../../scenes/board/views/ZoneView'
 import { AlchemistModel } from '../entities/AlchemistModel'
 import type { CardModel } from '../entities/CardModel'
@@ -13,7 +13,7 @@ export class WorldModel {
   public readonly homunculusModel: HomunculusModel
   public readonly alchemistModel: AlchemistModel
   public theLawIsDead = false
-  public musicScene: Phaser.Scene
+  public musicScene: MusicScene
 
   constructor() {
     this.homunculusModel = new HomunculusModel()

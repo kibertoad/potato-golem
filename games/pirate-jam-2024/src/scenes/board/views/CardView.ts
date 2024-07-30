@@ -15,6 +15,7 @@ import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import { SfxRegistry } from '../../../model/registries/sfxRegistry'
+import { worldModel } from '../../../model/state/WorldModel'
 import { shuffleArray } from '../../../utils/arrayUtils'
 import { delay } from '../../../utils/timeUtils'
 import type { BoardSupportedEvents } from '../BoardScene'
@@ -422,9 +423,7 @@ export class CardView extends Container implements IdHolder {
   playRandomCardSound() {
     const cardSounds = [SfxRegistry.CARD_1, SfxRegistry.CARD_2, SfxRegistry.CARD_3]
 
-    this.scene.sound.play(cardSounds[Math.floor(Math.random() * cardSounds.length)], {
-      volume: 0.4,
-    })
+    worldModel.musicScene.playSfx(cardSounds[Math.floor(Math.random() * cardSounds.length)])
   }
 
   cancelDrag() {
@@ -498,7 +497,7 @@ export class CardView extends Container implements IdHolder {
     })
     this.cardPoofSprite.setAlpha(1)
     await this.cardPoofSprite.play('poof')
-    this.scene.sound.play(SfxRegistry.POOF)
+    worldModel.musicScene.playSfx(SfxRegistry.POOF)
     this.scene.tweens.add({
       targets: this,
       alpha: 0,
@@ -522,9 +521,7 @@ export class CardView extends Container implements IdHolder {
 
     const splatSounds = [SfxRegistry.SLASH_SPLAT_1, SfxRegistry.SLASH_SPLAT_2]
 
-    this.scene.sound.play(splatSounds[Math.floor(Math.random() * splatSounds.length)], {
-      volume: 0.6,
-    })
+    worldModel.musicScene.playSfx(splatSounds[Math.floor(Math.random() * splatSounds.length)])
     this.scene.tweens.add({
       targets: this,
       alpha: 0,
@@ -550,7 +547,7 @@ export class CardView extends Container implements IdHolder {
     let mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatMaskImage)
     let shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatShadowMaskImage)
 
-    this.scene.sound.play(biteSounds[0])
+    worldModel.musicScene.playSfx(biteSounds[0])
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
@@ -559,12 +556,12 @@ export class CardView extends Container implements IdHolder {
     mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2MaskImage)
     shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2ShadowMaskImage)
 
-    this.scene.sound.play(biteSounds[1])
+    worldModel.musicScene.playSfx(biteSounds[1])
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
     await delay(300)
-    this.scene.sound.play(biteSounds[2])
+    worldModel.musicScene.playSfx(biteSounds[2])
   }
 
   async animateMoveFrom(moveFromPosition: Position) {

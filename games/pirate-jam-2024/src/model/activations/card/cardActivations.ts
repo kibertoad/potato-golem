@@ -159,7 +159,7 @@ export class PlaySfxActivation implements Activation {
   }
 
   async activate() {
-    worldModel.musicScene.sound.play(this.sfx[Math.floor(Math.random() * this.sfx.length)])
+    worldModel.musicScene.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
   }
 }
 

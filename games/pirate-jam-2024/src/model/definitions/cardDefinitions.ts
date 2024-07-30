@@ -146,6 +146,7 @@ export const cardDefinitions = {
   WORKBENCH: {
     id: 'WORKBENCH',
     name: 'Workbench',
+    image: 'workbench_card',
     nonDraggable: true,
   },
 

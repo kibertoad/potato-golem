@@ -92,6 +92,14 @@ export class MainMenuScene extends PotatoScene {
       ImageRegistry.WATCHING_FLOWER_CARD,
       require('../../assets/img/watching_flower.png'),
     )
+    this.load.image(
+      ImageRegistry.WORKBENCH_CARD,
+      require('../../assets/img/alchemical_reaction_off.png'),
+    )
+    this.load.image(
+      ImageRegistry.WORKBENCH_CARD_ON,
+      require('../../assets/img/alchemical_reaction_on.png'),
+    )
 
     // explosions
     this.load.image(ImageRegistry.EXPLOSION_1, require('../../assets/img/1_explosion.png'))

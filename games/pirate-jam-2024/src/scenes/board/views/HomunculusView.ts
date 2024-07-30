@@ -5,6 +5,7 @@ import type { HomunculusModel } from '../../../model/entities/HomunculusModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import { SfxRegistry } from '../../../model/registries/sfxRegistry'
+import { worldModel } from '../../../model/state/WorldModel'
 import { delay } from '../../../utils/timeUtils'
 import { CardView } from './CardView'
 
@@ -118,9 +119,7 @@ export class HomunculusView extends Container {
 
     const splatSounds = [SfxRegistry.SLASH_SPLAT_1, SfxRegistry.SLASH_SPLAT_2]
 
-    this.scene.sound.play(splatSounds[Math.floor(Math.random() * splatSounds.length)], {
-      volume: 0.6,
-    })
+    worldModel.musicScene.playSfx(splatSounds[Math.floor(Math.random() * splatSounds.length)])
 
     this.scene.tweens.add({
       targets: this.cardBloodSplatSprite,

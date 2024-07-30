@@ -1,11 +1,11 @@
 import { PotatoScene } from '@potato-golem/ui'
 
 import { Howl } from 'howler'
-import { SfxRegistry } from '../model/registries/sfxRegistry'
+import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
 import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = false
+const isMusicEnabled = true
 
 const musicVolume = 0.4
 
@@ -14,6 +14,7 @@ export class MusicScene extends PotatoScene {
   private boardThemeIntro: Howl
   private boardThemeLoop: Howl
   private gameOver: Howl
+  private sfx: Record<SfxId, Howl> = {} as any
 
   constructor() {
     super({
@@ -58,49 +59,74 @@ export class MusicScene extends PotatoScene {
       volume: musicVolume,
     })
 
-    this.load.audio(
+    this.loadSfx(
       SfxRegistry.CARD_1,
       [require('url:../../assets/sfx/card_1.ogg'), require('url:../../assets/sfx/card_1.aac')],
-      {
-        volume: 0.5,
-      },
+      0.4,
     )
-    this.load.audio(SfxRegistry.CARD_2, [
-      require('url:../../assets/sfx/card_2.ogg'),
-      require('url:../../assets/sfx/card_2.aac'),
-    ])
-    this.load.audio(SfxRegistry.CARD_3, [
-      require('url:../../assets/sfx/card_3.ogg'),
-      require('url:../../assets/sfx/card_3.aac'),
-    ])
-    this.load.audio(SfxRegistry.CARD_4, [
-      require('url:../../assets/sfx/card_4.ogg'),
-      require('url:../../assets/sfx/card_4.aac'),
-    ])
-    this.load.audio(SfxRegistry.BITE_1, [
+    this.loadSfx(
+      SfxRegistry.CARD_2,
+      [
+        //0.4
+        require('url:../../assets/sfx/card_2.ogg'),
+        require('url:../../assets/sfx/card_2.aac'),
+      ],
+      0.4,
+    )
+    this.loadSfx(
+      SfxRegistry.CARD_3,
+      [require('url:../../assets/sfx/card_3.ogg'), require('url:../../assets/sfx/card_3.aac')],
+      0.4,
+    )
+    this.loadSfx(
+      SfxRegistry.CARD_4,
+      [require('url:../../assets/sfx/card_4.ogg'), require('url:../../assets/sfx/card_4.aac')],
+      0.4,
+    )
+    this.loadSfx(SfxRegistry.BITE_1, [
       require('url:../../assets/sfx/bite_1.ogg'),
       require('url:../../assets/sfx/bite_1.aac'),
     ])
-    this.load.audio(SfxRegistry.BITE_2, [
+    this.loadSfx(SfxRegistry.BITE_2, [
       require('url:../../assets/sfx/bite_2.ogg'),
       require('url:../../assets/sfx/bite_2.aac'),
     ])
-    this.load.audio(SfxRegistry.BITE_3, [
+    this.loadSfx(SfxRegistry.BITE_3, [
       require('url:../../assets/sfx/bite_3.ogg'),
       require('url:../../assets/sfx/bite_3.aac'),
     ])
-    this.load.audio(SfxRegistry.SLASH_SPLAT_1, [
-      require('url:../../assets/sfx/slash_splat_1.ogg'),
-      require('url:../../assets/sfx/slash_splat_1.aac'),
-    ])
-    this.load.audio(SfxRegistry.SLASH_SPLAT_2, [
-      require('url:../../assets/sfx/slash_splat_2.ogg'),
-      require('url:../../assets/sfx/slash_splat_2.aac'),
-    ])
-    this.load.audio(SfxRegistry.POOF, [
+    this.loadSfx(
+      SfxRegistry.SLASH_SPLAT_1,
+      [
+        require('url:../../assets/sfx/slash_splat_1.ogg'),
+        require('url:../../assets/sfx/slash_splat_1.aac'),
+      ],
+      0.6,
+    )
+    this.loadSfx(
+      SfxRegistry.SLASH_SPLAT_2,
+      [
+        require('url:../../assets/sfx/slash_splat_2.ogg'),
+        require('url:../../assets/sfx/slash_splat_2.aac'),
+      ],
+      0.6,
+    )
+    this.loadSfx(SfxRegistry.POOF, [
       require('url:../../assets/sfx/poof.ogg'),
       require('url:../../assets/sfx/poof.aac'),
     ])
+  }
+
+  public loadSfx(sfxId: SfxId, src: string | string[], volume = 1) {
+    this.sfx[sfxId] = new Howl({
+      preload: true,
+      src: src,
+      volume: volume,
+    })
+  }
+
+  public playSfx(sfxId: SfxId) {
+    this.sfx[sfxId]?.play()
   }
 
   public create() {

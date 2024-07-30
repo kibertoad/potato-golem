@@ -33,6 +33,8 @@ export const ImageRegistry = {
   THE_RAID_CARD: 'the_raid_card',
   ENLIGHTENED_MANDRAKE_CARD: 'enlightened_mandrake_card',
   WATCHING_FLOWER_CARD: 'watching_flower_card',
+  WORKBENCH_CARD: 'workbench_card',
+  WORKBENCH_CARD_ON: 'workbench_card_on',
 
   ROUGH_KIND_CARD: 'rough_kind_card',
   MERCHANT_CARD: 'merchant_card',
