@@ -104,6 +104,24 @@ export class HungerActivation extends QueuedActivation {
   }
 }
 
+export class EvolutionActivation extends QueuedActivation {
+  description: ''
+
+  constructor() {
+    super({
+      activatesIn: 1,
+      id: 'EvolutionActivation',
+      description: '',
+      unique: true,
+      activation: null, // activation method is overriden
+    })
+  }
+
+  activate(): void {
+    worldModel.homunculusModel.eventSink.emit('EVOLVE', 1)
+  }
+}
+
 export class TheRaidActivation extends QueuedActivation {
   description: ''
 
