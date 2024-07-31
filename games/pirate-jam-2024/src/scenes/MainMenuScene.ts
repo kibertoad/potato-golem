@@ -158,14 +158,14 @@ export class MainMenuScene extends PotatoScene {
 
     const creditTitles: string[] = []
     creditTitles.push(`Art and Animation`)
-    creditTitles.push(`Music and Sound`)
     creditTitles.push(`Programming`)
+    creditTitles.push(`Music and Sound`)
     creditTitles.push(`Game design and Testing`)
 
     const credits: string[] = []
     credits.push(`Anton Tamarin`)
-    credits.push(`Arturs Ziborovs`)
     credits.push(`Igor Savin, Arturs Ziborovs`)
+    credits.push(`Arturs Ziborovs`)
     credits.push(`Anton Tamarin, Igor Savin, Arturs Ziborovs, Fjodors Levkins`)
 
     let creditsY = 650
