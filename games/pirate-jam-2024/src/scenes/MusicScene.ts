@@ -8,8 +8,6 @@ import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
 import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
 
-const isMusicEnabled = true
-
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl
   private boardThemeIntro: Howl
@@ -182,10 +180,6 @@ export class MusicScene extends PotatoScene {
   }
 
   public playBoardTheme() {
-    if (!isMusicEnabled) {
-      return
-    }
-
     this.stopAll()
 
     this.boardThemeIntro.play()
@@ -196,19 +190,11 @@ export class MusicScene extends PotatoScene {
   }
 
   public playMainTheme() {
-    if (!isMusicEnabled) {
-      return
-    }
-
     this.stopAll()
     this.mainTheme.play()
   }
 
   public playGameOver() {
-    if (!isMusicEnabled) {
-      return
-    }
-
     this.stopAll()
     this.gameOver.play()
   }
