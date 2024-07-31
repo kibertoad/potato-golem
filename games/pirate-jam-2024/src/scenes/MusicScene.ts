@@ -1,13 +1,14 @@
 import { PotatoScene } from '@potato-golem/ui'
 
+import { SpriteBuilder } from '@potato-golem/ui'
 import { Howl } from 'howler'
+import { DepthRegistry } from '../model/registries/depthRegistry'
+import { ImageRegistry } from '../model/registries/imageRegistry'
 import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
 import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = true
-
-const musicVolume = 0.2
 
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl
@@ -15,6 +16,10 @@ export class MusicScene extends PotatoScene {
   private boardThemeLoop: Howl
   private gameOver: Howl
   private sfx: Record<SfxId, Howl> = {} as any
+
+  private toggleMusicSprite: Phaser.GameObjects.Sprite
+
+  private musicVolume = 0.2
 
   constructor() {
     super({
@@ -24,13 +29,15 @@ export class MusicScene extends PotatoScene {
   }
 
   preload() {
+    this.load.image(ImageRegistry.MUSIC, require('../../assets/img/music_light.png'))
+
     this.mainTheme = new Howl({
       preload: true,
       src: [
         require('url:../../assets/music/main_menu.ogg'),
         require('url:../../assets/music/main_menu.aac'),
       ],
-      volume: musicVolume,
+      volume: this.musicVolume,
       loop: true,
     })
     this.boardThemeIntro = new Howl({
@@ -39,7 +46,7 @@ export class MusicScene extends PotatoScene {
         require('url:../../assets/music/board_theme_intro.ogg'),
         require('url:../../assets/music/board_theme_intro.aac'),
       ],
-      volume: musicVolume,
+      volume: this.musicVolume,
     })
     this.boardThemeLoop = new Howl({
       preload: true,
@@ -48,7 +55,7 @@ export class MusicScene extends PotatoScene {
         require('url:../../assets/music/board_theme_loop.aac'),
       ],
       loop: true,
-      volume: musicVolume,
+      volume: this.musicVolume,
     })
     this.gameOver = new Howl({
       preload: true,
@@ -56,7 +63,7 @@ export class MusicScene extends PotatoScene {
         require('url:../../assets/music/game_over_short.ogg'),
         require('url:../../assets/music/game_over_short.aac'),
       ],
-      volume: musicVolume,
+      volume: this.musicVolume,
     })
 
     this.loadSfx(
@@ -135,6 +142,20 @@ export class MusicScene extends PotatoScene {
     )
   }
 
+  public changeMusicVolume(volume: number) {
+    this.musicVolume = volume
+    this.mainTheme.volume(this.musicVolume)
+    this.boardThemeIntro.volume(this.musicVolume)
+    this.boardThemeLoop.volume(this.musicVolume)
+    this.gameOver.volume(this.musicVolume)
+  }
+
+  public toggleMusic() {
+    this.musicVolume = this.musicVolume === 0 ? 0.2 : 0
+    this.changeMusicVolume(this.musicVolume)
+    this.toggleMusicSprite.setAlpha(this.musicVolume === 0 ? 0.5 : 1)
+  }
+
   public loadSfx(sfxId: SfxId, src: string | string[], volume = 1) {
     this.sfx[sfxId] = new Howl({
       preload: true,
@@ -145,10 +166,6 @@ export class MusicScene extends PotatoScene {
 
   public playSfx(sfxId: SfxId) {
     this.sfx[sfxId]?.play()
-  }
-
-  public create() {
-    worldModel.musicScene = this
   }
 
   public stopAll() {
@@ -169,7 +186,7 @@ export class MusicScene extends PotatoScene {
     this.boardThemeIntro.play()
     this.boardThemeIntro.once('end', () => {
       this.boardThemeLoop.play()
-      this.boardThemeLoop.volume(musicVolume)
+      this.boardThemeLoop.volume(this.musicVolume)
     })
   }
 
@@ -189,5 +206,30 @@ export class MusicScene extends PotatoScene {
 
     this.stopAll()
     this.gameOver.play()
+  }
+
+  public create() {
+    worldModel.musicScene = this
+
+    this.toggleMusicSprite = SpriteBuilder.instance(this)
+      .setTextureKey(ImageRegistry.MUSIC)
+      .setPosition({
+        x: 2510,
+        y: 40,
+      })
+      .setOrigin(0.5, 0.5)
+      .setWidth(45)
+      .setHeight(48)
+      .build()
+
+    this.toggleMusicSprite
+      .setInteractive({
+        useHandCursor: true,
+      })
+      .on('pointerdown', () => {
+        this.toggleMusic()
+      })
+    this.toggleMusicSprite.setDepth(DepthRegistry.GAME_OVER - 1)
+    this.add.existing(this.toggleMusicSprite)
   }
 }

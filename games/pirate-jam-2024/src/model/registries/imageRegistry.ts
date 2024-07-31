@@ -66,4 +66,5 @@ export const ImageRegistry = {
 
   // other
   CHAT_BUBBLE: 'chat_bubble',
+  MUSIC: 'music',
 } as const
