@@ -116,7 +116,7 @@ export class HomunculusView extends Container {
 
     // Create the text object with auto-wrap
     this.evolutionText = this.scene.add
-      .text(0, 0, this.model.evolution.value.toString(), textStyle)
+      .text(0, 0, ``, textStyle)
       .setPosition(1280, 833)
       .setDepth(DepthRegistry.HOMUNCULUS)
       .setAlign('center')
@@ -128,7 +128,9 @@ export class HomunculusView extends Container {
     this.model.eventSink.on('DAMAGE', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('FEED', (_amount: number) => this.updateFoodDisplay())
     this.model.eventSink.on('STARVE', (_amount: number) => this.updateFoodDisplay())
-    this.model.eventSink.on('EVOLVE', (amount: number) => this.updateEvolutionText())
+    this.model.eventSink.on('EVOLVE', (amount: number) =>
+      this.updateEvolutionText(),
+    )
     this.model.eventSink.on('ATTACKED', () => this.playBloodSplatAnimation())
   }
 
