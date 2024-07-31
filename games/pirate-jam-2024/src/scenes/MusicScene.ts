@@ -7,7 +7,7 @@ import { Scenes } from './SceneRegistry'
 
 const isMusicEnabled = true
 
-const musicVolume = 0.4
+const musicVolume = 0.2
 
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl

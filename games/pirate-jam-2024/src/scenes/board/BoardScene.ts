@@ -227,10 +227,6 @@ export class BoardScene extends PotatoScene {
     this.initZones()
 
     this.addCard('MOLD', 'alchemy', 'none')
-    this.addCard('SINGING_MUSHROOMS', 'alchemy', 'none')
-    this.addCard('POISON', 'alchemy', 'none')
-    this.addCard('POISON', 'alchemy', 'none')
-    this.addCard('POISON', 'alchemy', 'none')
 
     this.addCard('WORKBENCH', 'lab', 'none')
 
@@ -239,8 +235,6 @@ export class BoardScene extends PotatoScene {
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
     this.addCard('HEALTH', 'home', 'none')
-    this.addCard('CORPSE', 'home', 'none')
-    this.addCard('THE_LAW', 'streets', 'none')
 
     this.addCard('EXPLOSIVES', 'lab', 'none')
 
