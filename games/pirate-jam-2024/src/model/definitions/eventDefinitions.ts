@@ -95,9 +95,9 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
   SHOPKEEPER: {
     id: 'SHOPKEEPER',
     name: 'Shopkeeper',
-    description: `
-"Ah, good day to you, sir!" the shopkeeper exclaims, his voice rich and warm, carrying the 
-faintest trace of an accent from a bigger city than this. "Welcome to Woodley & Co., purveyors of the finest ingredients and curiosities. How may I assist you on this fine afternoon? Seeking something rare and potent, no doubt?"        
+    description: `"Ah, good day to you, sir!" the shopkeeper exclaims, his voice rich and warm, carrying the faintest trace of an accent from a bigger city than this.
+    
+    "Welcome to Woodley & Co., purveyors of the finest ingredients and curiosities. How may I assist you on this fine afternoon? Seeking something rare and potent, no doubt?"        
         `,
     image: 'medicine_card',
     options: [

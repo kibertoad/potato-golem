@@ -150,13 +150,13 @@ export class EventView extends Container {
         y: 30,
       },
       fontFamily: 'Arial', // Customize the font
-      fontSize: '30px', // Customize the text size
+      fontSize: '34px', // Customize the text size
       color: '#ffffff', // Customize the text color
       shadow: {
-        offsetX: 2,
-        offsetY: 2,
-        color: '#00000088',
-        blur: 3,
+        offsetX: 0,
+        offsetY: 0,
+        color: '#000000FF',
+        blur: 5,
         stroke: true,
         fill: true,
       },
