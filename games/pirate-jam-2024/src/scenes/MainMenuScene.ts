@@ -134,9 +134,13 @@ export class MainMenuScene extends PotatoScene {
 
     this.subTitle = new TextBuilder(this)
       .setText('Discount Store Alchemist')
-      .setDisplaySize(250, 150)
-      .setPosition({ x: width * 0.3, y: height * 0.2 })
+      .setDisplaySize(1000, 150)
+      .setPosition({
+        x: width / 2,
+        y: 350,
+      })
       .build()
+    this.subTitle.value.setFontSize(50)
 
     const buttonList = new ButtonListBuilder(this, {
       depth: 100,
@@ -146,18 +150,59 @@ export class MainMenuScene extends PotatoScene {
       orientation: 'vertical',
       hoverTint: 0x66ff7f,
       position: {
-        x: width / 2,
-        y: height / 2,
+        x: width / 2 - 300 / 2,
+        y: 450,
       },
       textureKey: ImageRegistry.GLASS_PANEL,
     })
+
+    const creditTitles: string[] = []
+    creditTitles.push(`Art and Animation`)
+    creditTitles.push(`Music and Sound`)
+    creditTitles.push(`Programming`)
+    creditTitles.push(`Game design and Testing`)
+
+    const credits: string[] = []
+    credits.push(`Anton Tamarin`)
+    credits.push(`Arturs Ziborovs`)
+    credits.push(`Igor Savin, Arturs Ziborovs`)
+    credits.push(`Anton Tamarin, Igor Savin, Arturs Ziborovs, Fjodors Levkins`)
+
+    let creditsY = 650
+    for (let i = 0; i < creditTitles.length; i++) {
+      new TextBuilder(this)
+        .setText(creditTitles[i])
+        .setDisplaySize(2000, 150)
+        .setPosition({
+          x: width / 2,
+          y: creditsY,
+        })
+        .build()
+        .value.setAlign('center')
+        .setFontSize(30)
+
+        .setLineSpacing(15)
+
+      new TextBuilder(this)
+        .setText(credits[i])
+        .setDisplaySize(2000, 150)
+        .setPosition({
+          x: width / 2,
+          y: creditsY + 35,
+        })
+        .build()
+        .value.setAlign('center')
+        .setFontSize(20)
+        .setLineSpacing(15)
+
+      creditsY += 130
+    }
 
     // this.centerButtonList(buttonList, 3, 50)
 
     buttonList.addButton('Play', () => {
       ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     })
-    buttonList.addButton('Credits')
 
     this.add.existing(buttonList.build())
     // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
