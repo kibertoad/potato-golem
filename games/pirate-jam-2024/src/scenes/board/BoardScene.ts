@@ -76,6 +76,7 @@ export class BoardScene extends PotatoScene {
   private globalTrackerLabel: Phaser.GameObjects.Text
 
   private backgroundImage: Sprite
+  private inputBlockRectangle: Phaser.GameObjects.Rectangle
 
   private readonly endTurnProcessor: EndTurnProcessor
   private eventDirector!: EventDirector
@@ -90,6 +91,8 @@ export class BoardScene extends PotatoScene {
 
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
+
+  private inputBlockCounter: number = 0
 
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
@@ -226,6 +229,9 @@ export class BoardScene extends PotatoScene {
 
     this.addCard('MOLD', 'alchemy', 'none')
     this.addCard('SINGING_MUSHROOMS', 'alchemy', 'none')
+    this.addCard('POISON', 'alchemy', 'none')
+    this.addCard('POISON', 'alchemy', 'none')
+    this.addCard('POISON', 'alchemy', 'none')
 
     this.addCard('WORKBENCH', 'lab', 'none')
 
@@ -377,6 +383,7 @@ export class BoardScene extends PotatoScene {
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   onCardDragEnd(cardView: CardView) {
+    this.blockInput()
     this.draggedCardView.unhighlight()
     this.draggedCardView = null
     this.cardEffectView.hide()
@@ -421,6 +428,8 @@ export class BoardScene extends PotatoScene {
       cardView.cancelDrag()
       this.worldModel.zones[cardView.model.zone].reorderStackedCardDepths()
     }
+
+    this.unblockInput()
 
     return wasCardActivated
   }
@@ -471,8 +480,25 @@ export class BoardScene extends PotatoScene {
       this.worldModel.cards.unshift(playedCard)
     }
      */
+    this.blockInput()
     await this.endTurnProcessor.processTurn()
     await this.eventDirector.processTurn()
+    this.unblockInput()
+  }
+
+  blockInput() {
+    this.inputBlockCounter++
+    console.log('Block input', this.inputBlockCounter)
+    this.inputBlockRectangle.setVisible(true)
+  }
+
+  unblockInput() {
+    this.inputBlockCounter--
+    console.log('Block input remove', this.inputBlockCounter)
+    if (this.inputBlockCounter <= 0) {
+      this.inputBlockCounter = 0
+      this.inputBlockRectangle.setVisible(false)
+    }
   }
 
   async gameOver(text: string, fontSize = 120) {
@@ -601,6 +627,17 @@ export class BoardScene extends PotatoScene {
         height: 1440,
       })
       .build()
+
+    this.inputBlockRectangle = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 0.001)
+    this.inputBlockRectangle.setInteractive({
+      draggable: false,
+      pixelPerfect: false,
+      alphaTolerance: undefined,
+      useHandCursor: false,
+    })
+    this.inputBlockRectangle.setVisible(false)
+    this.inputBlockRectangle.setDepth(DepthRegistry.INPUT_BLOCK)
+    this.add.existing(this.inputBlockRectangle)
 
     this.globalPositionLabel = createGlobalPositionLabel(this)
     this.globalTrackerLabel = createGlobalTrackerLabel(this)
