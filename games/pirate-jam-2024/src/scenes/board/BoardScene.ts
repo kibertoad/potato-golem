@@ -425,6 +425,7 @@ export class BoardScene extends PotatoScene {
     }
 
     if (this.pointedCardView) {
+      this.pointedCardView.unhighlight()
       console.log(
         `Dropped card ${cardView.model.definition.id} at ${this.pointedCardView.model.definition.id}`,
       )
