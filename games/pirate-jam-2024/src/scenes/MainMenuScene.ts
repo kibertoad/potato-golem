@@ -133,7 +133,7 @@ export class MainMenuScene extends PotatoScene {
     const { width, height } = this.scale
 
     this.subTitle = new TextBuilder(this)
-      .setText('Discount Store Alchemist')
+      .setText('We Have Homunculus at Home')
       .setDisplaySize(1000, 150)
       .setPosition({
         x: width / 2,

@@ -128,9 +128,7 @@ export class HomunculusView extends Container {
     this.model.eventSink.on('DAMAGE', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('FEED', (_amount: number) => this.updateFoodDisplay())
     this.model.eventSink.on('STARVE', (_amount: number) => this.updateFoodDisplay())
-    this.model.eventSink.on('EVOLVE', (amount: number) =>
-      this.updateEvolutionText(),
-    )
+    this.model.eventSink.on('EVOLVE', (amount: number) => this.updateEvolutionText())
     this.model.eventSink.on('ATTACKED', () => this.playBloodSplatAnimation())
   }
 
