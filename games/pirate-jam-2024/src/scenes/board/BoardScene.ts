@@ -47,7 +47,6 @@ export type BoardSupportedEvents =
   | 'SPAWN_ID'
 
 import { TextBuilder } from '@potato-golem/ui'
-import { ChangeSceneActivation } from '@potato-golem/ui'
 import {
   AlcoholismActivation,
   EvolutionActivation,
@@ -92,7 +91,7 @@ export class BoardScene extends PotatoScene {
   private pointedZoneView?: ZoneView
   private pointedCardView?: CardView
 
-  private inputBlockCounter: number = 0
+  private inputBlockCounter = 0
 
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
@@ -400,6 +399,15 @@ export class BoardScene extends PotatoScene {
         const activation = cardView.model.definition.idleZoneEffect[this.pointedZoneView.id]
         if (activation.timeTillTrigger === 0) {
           void activation.effect.activate(cardView.model)
+
+          //TODO: This is a HACK to compensate for homunculus eating animation
+          //Otherwise we have to deal with an unknown async system issue
+          if (this.pointedZoneView.id === 'homunculus') {
+            this.blockInput()
+            setTimeout(() => {
+              this.unblockInput()
+            }, 900)
+          }
         }
       }
 
@@ -494,7 +502,7 @@ export class BoardScene extends PotatoScene {
 
   unblockInput() {
     this.inputBlockCounter--
-    console.log('Block input remove', this.inputBlockCounter)
+    console.log('Block input', this.inputBlockCounter)
     if (this.inputBlockCounter <= 0) {
       this.inputBlockCounter = 0
       this.inputBlockRectangle.setVisible(false)
@@ -628,7 +636,15 @@ export class BoardScene extends PotatoScene {
       })
       .build()
 
-    this.inputBlockRectangle = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 0.001)
+    this.inputBlockRectangle = new Phaser.GameObjects.Rectangle(
+      this,
+      1280,
+      720,
+      2560,
+      1440,
+      0,
+      0.001,
+    )
     this.inputBlockRectangle.setInteractive({
       draggable: false,
       pixelPerfect: false,

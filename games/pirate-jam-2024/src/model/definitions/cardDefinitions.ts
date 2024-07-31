@@ -437,7 +437,7 @@ export const cardDefinitions = {
               zone: 'any',
               cardId: 'CORPSE',
               amount: 1,
-              description: "",
+              description: '',
             },
             0,
             'same_as_combined',
