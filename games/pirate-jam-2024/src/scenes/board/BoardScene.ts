@@ -547,7 +547,7 @@ export class BoardScene extends PotatoScene {
       ease: 'Cubic',
     })
     await delay(10000)
-    ChangeSceneActivation.build(this, Scenes.MAIN_MENU_SCENE)()
+    window.location.reload()
   }
 
   preload() {}
