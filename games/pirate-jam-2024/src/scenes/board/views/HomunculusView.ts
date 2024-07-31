@@ -52,8 +52,8 @@ export class HomunculusView extends Container {
           y: 668 + i * 55,
         })
         .setOrigin(0.5, 0.5)
-        .setWidth(50)
-        .setHeight(50)
+        .setWidth(40)
+        .setHeight(40)
         .setDepth(DepthRegistry.HOMUNCULUS)
         .build()
 
@@ -70,8 +70,8 @@ export class HomunculusView extends Container {
           y: 668 + i * 55,
         })
         .setOrigin(0.5, 0.5)
-        .setWidth(50)
-        .setHeight(50)
+        .setWidth(40)
+        .setHeight(40)
         .setDepth(DepthRegistry.HOMUNCULUS)
         .build()
 
