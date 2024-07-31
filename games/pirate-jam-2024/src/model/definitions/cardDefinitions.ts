@@ -86,7 +86,9 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
+        tooltip: `This stuff is expensive...I hope it will be worth it...`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
+          new EatCardActivation(),
           new GainHatredActivation(worldModel.homunculusModel, 1),
           new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
@@ -101,7 +103,6 @@ export const cardDefinitions = {
             0,
             'same_as_combined',
           ),
-          new DecomposeCardActivation(),
           new NextTurnActivation(),
         ]),
       },
