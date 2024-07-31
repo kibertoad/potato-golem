@@ -20,6 +20,7 @@ export class MusicScene extends PotatoScene {
   private toggleMusicSprite: Phaser.GameObjects.Sprite
 
   private musicVolume = 0.2
+  private muteMusic = false
 
   constructor() {
     super({
@@ -29,6 +30,8 @@ export class MusicScene extends PotatoScene {
   }
 
   preload() {
+    this.muteMusic = (localStorage.getItem('muteMusic') || 'on') === 'off'
+
     this.load.image(ImageRegistry.MUSIC, require('../../assets/img/music_light.png'))
 
     this.mainTheme = new Howl({
@@ -154,6 +157,8 @@ export class MusicScene extends PotatoScene {
     this.musicVolume = this.musicVolume === 0 ? 0.2 : 0
     this.changeMusicVolume(this.musicVolume)
     this.toggleMusicSprite.setAlpha(this.musicVolume === 0 ? 0.5 : 1)
+
+    localStorage.setItem('muteMusic', this.musicVolume === 0 ? 'off' : 'on')
   }
 
   public loadSfx(sfxId: SfxId, src: string | string[], volume = 1) {
@@ -221,6 +226,10 @@ export class MusicScene extends PotatoScene {
       .setWidth(45)
       .setHeight(48)
       .build()
+
+    if (this.muteMusic) {
+      this.toggleMusic()
+    }
 
     this.toggleMusicSprite
       .setInteractive({
