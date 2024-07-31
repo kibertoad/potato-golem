@@ -179,7 +179,7 @@ export class MainMenuScene extends PotatoScene {
         })
         .build()
         .value.setAlign('center')
-        .setFontSize(30)
+        .setFontSize(34)
 
         .setLineSpacing(15)
 
@@ -188,11 +188,11 @@ export class MainMenuScene extends PotatoScene {
         .setDisplaySize(2000, 150)
         .setPosition({
           x: width / 2,
-          y: creditsY + 35,
+          y: creditsY + 40,
         })
         .build()
         .value.setAlign('center')
-        .setFontSize(20)
+        .setFontSize(24)
         .setLineSpacing(15)
 
       creditsY += 130
