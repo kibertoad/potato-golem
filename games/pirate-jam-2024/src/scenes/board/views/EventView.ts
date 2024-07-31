@@ -119,6 +119,12 @@ export class EventView extends Container {
       this.hide()
     })
 
+    this.eventSink.on('next_event', (event: EventId) => {
+      this.buttonList.destroy()
+      this.eventText.destroy()
+      this.setToEvent(event)
+    })
+
     this.eventSink.on('spawn_card', (message: SpawnCardMessage) => {
       this.boardEventSink.emit('spawn_card', message)
     })

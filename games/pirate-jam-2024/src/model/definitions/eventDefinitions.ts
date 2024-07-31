@@ -11,7 +11,7 @@ import {
   QueueActivation,
   SetActiveCardActivation,
 } from '../activations/card/cardActivations'
-import { ConcludeEventActivation, type EventEventId } from '../activations/event/eventActivations'
+import { ConcludeEventActivation, type EventEventId, NextEventActivation } from '../activations/event/eventActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
@@ -57,7 +57,32 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
     options: [
       {
         text: 'Hello Darkness, my friend',
-        effect: new MultiplexActivation([new ConcludeEventActivation(eventSink)]),
+        effect: new MultiplexActivation([
+          //new ConcludeEventActivation(eventSink)
+          new NextEventActivation('TUTORIAL')
+        ]),
+      },
+    ],
+  },
+
+  TUTORIAL: {
+    id: 'TUTORIAL',
+    name: 'How to play',
+    description: `
+Your goal is to help Homunculus evolve by keeping them alive for 40 turns. 
+You need to feed Homunculus.
+Time passes when you do something. Workbench crafting happens in background after started.
+Some citizens are threats. Be careful to prevent them from seeing homunculus or something similarly suspicious.
+If you die, or homunculus dies, you lose.
+Drinking is unlikely to help, but probably won't hurt either. Who knows?  
+    `,
+    image: 'medicine_card',
+    options: [
+      {
+        text: 'I am ready',
+        effect: new MultiplexActivation([
+          new ConcludeEventActivation(eventSink)
+        ]),
       },
     ],
   },
