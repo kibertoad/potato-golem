@@ -14,6 +14,7 @@ export const ImageRegistry = {
   GLASS_PANEL: 'glass_panel',
   EVENTS_BACKGROUND: 'events_background',
   HOMUNCULUS: 'homunculus',
+  HOMUNCULUS_HUNGRY: 'homunculus_hungry',
 
   // cards
   HEALTH_CARD: 'health_card',

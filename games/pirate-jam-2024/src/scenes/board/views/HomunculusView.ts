@@ -22,6 +22,8 @@ export class HomunculusView extends Container {
   private readonly hearts: Phaser.GameObjects.Sprite[] = []
   private readonly food: Phaser.GameObjects.Sprite[] = []
 
+  private initialYPosition = 672
+
   constructor(scene: PotatoScene, dependencies: HomunculusDependencies) {
     super(scene)
 
@@ -107,8 +109,16 @@ export class HomunculusView extends Container {
   }
 
   updateFoodDisplay() {
-    for (let i = 0; i < this.hearts.length; i++) {
+    for (let i = 0; i < this.food.length; i++) {
       this.food[i].setVisible(i < this.model.food.value)
+    }
+
+    if (this.model.food.value > 0) {
+      this.homunculusSprite.setTexture(ImageRegistry.HOMUNCULUS)
+      this.homunculusSprite.y = this.initialYPosition
+    } else {
+      this.homunculusSprite.setTexture(ImageRegistry.HOMUNCULUS_HUNGRY)
+      this.homunculusSprite.y = this.initialYPosition + 40
     }
   }
 
