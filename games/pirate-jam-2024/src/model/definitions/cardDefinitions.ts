@@ -615,14 +615,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       any: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
-          new ChatCardActivation([
-            'Hmmm... Interesting...',
-            'What do we have here?',
-            'Do you mind if I take a look?',
-          ]),
-          new TheLawMoveActivation(),
-        ]),
+        effect: new DescribedTargettedMultipleActivation([new TheLawMoveActivation()]),
       },
     },
   },

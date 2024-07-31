@@ -312,6 +312,13 @@ export class TheLawMoveActivation implements CardActivation {
       return Promise.resolve()
     }
 
+    //Pre-move chat
+    await new ChatCardActivation([
+      'Hmmm... Interesting...',
+      'What do we have here?',
+      'Do you mind if I take a look?',
+    ]).activate(targetCard)
+
     const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
     await moveActivation.activate(targetCard)
   }
