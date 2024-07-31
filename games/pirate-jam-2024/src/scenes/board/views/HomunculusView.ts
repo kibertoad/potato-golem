@@ -21,6 +21,7 @@ export class HomunculusView extends Container {
 
   private readonly hearts: Phaser.GameObjects.Sprite[] = []
   private readonly food: Phaser.GameObjects.Sprite[] = []
+  private evolutionText: Phaser.GameObjects.Text
 
   private initialYPosition = 672
 
@@ -95,10 +96,45 @@ export class HomunculusView extends Container {
     this.add(this.cardBloodSplatSprite)
     scene.add.existing(this.cardBloodSplatSprite)
 
+
+    const textStyle = {
+      padding: {
+        x: 30,
+        y: 30,
+      },
+      fontFamily: 'Arial', // Customize the font
+      fontSize: '34px', // Customize the text size
+      color: '#ffffff', // Customize the text color
+      shadow: {
+        offsetX: 0,
+        offsetY: 0,
+        color: '#000000FF',
+        blur: 5,
+        stroke: true,
+        fill: true,
+      },
+    }
+
+    // Create the text object with auto-wrap
+    this.evolutionText = this.scene.add.text(
+      0,
+      0,
+      this.model.evolution.value.toString(),
+      textStyle,
+    )
+      .setPosition(
+        1240,
+      800,
+      )
+      .setDepth(DepthRegistry.HOMUNCULUS)
+    this.add(this.evolutionText)
+    scene.add.existing(this.evolutionText)
+
     this.model.eventSink.on('HEAL', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('DAMAGE', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('FEED', (_amount: number) => this.updateFoodDisplay())
     this.model.eventSink.on('STARVE', (_amount: number) => this.updateFoodDisplay())
+    this.model.eventSink.on('EVOLVE', (amount: number) => this.evolutionText.setText(this.model.evolution.value.toString()))
     this.model.eventSink.on('ATTACKED', () => this.playBloodSplatAnimation())
   }
 
