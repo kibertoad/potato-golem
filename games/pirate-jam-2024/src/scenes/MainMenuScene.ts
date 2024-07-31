@@ -207,6 +207,33 @@ export class MainMenuScene extends PotatoScene {
     this.add.existing(buttonList.build())
     // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     this.musicScene.playMainTheme()
+
+    const clickForSoundBg = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
+    clickForSoundBg.setInteractive({
+      draggable: false,
+      pixelPerfect: false,
+      alphaTolerance: undefined,
+      useHandCursor: false,
+    })
+    clickForSoundBg.setDepth(10000)
+
+    this.add.existing(clickForSoundBg)
+
+    const clickForSound = new TextBuilder(this)
+      .setText('Click for sound')
+      .setDisplaySize(2560, 400)
+      .setPosition({
+        x: 1280,
+        y: 600,
+      })
+      .build()
+    clickForSound.value.setFontSize(50)
+    clickForSound.value.setDepth(10000 + 100)
+
+    clickForSoundBg.on('pointerdown', () => {
+      clickForSoundBg.destroy()
+      clickForSound.value.destroy()
+    })
   }
 
   centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
