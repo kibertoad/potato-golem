@@ -294,9 +294,9 @@ export const cardDefinitions = {
             eventSink,
             {
               zone: 'home',
-              cardId: 'GOLD',
+              cardId: 'MONEY',
               amount: 2,
-              description: 'Get 2 Gold',
+              description: 'Get some money',
               spawnAnimation: 'pop_in',
             },
             0,
