@@ -852,5 +852,6 @@ export class CardView extends Container implements IdHolder {
       duration: 200,
       ease: 'Cubic',
     })
+    await delay(410)
   }
 }
