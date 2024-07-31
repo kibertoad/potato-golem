@@ -19,8 +19,8 @@ import type { CardModel } from '../../../model/entities/CardModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EventEmitters } from '../../../model/registries/eventEmitterRegistry'
 
-const EVENT_WINDOW_WIDTH = 1280
-const EVENT_WINDOW_HEIGHT = 660
+const EVENT_WINDOW_WIDTH = 1700
+const EVENT_WINDOW_HEIGHT = 800
 
 export type EventViewDependencies = {
   worldModel: WorldModel

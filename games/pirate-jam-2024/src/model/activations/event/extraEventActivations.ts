@@ -37,6 +37,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
   private readonly amount: number
   private readonly customDelay: number
   private readonly precondition?: Precondition
+  private readonly ignoreTargetCard: boolean
 
   //Allows to dynamically set the spawn zzone based on the card location
   private readonly spawnLocation: SpawnActivationLocation
@@ -46,6 +47,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     params: SpawnCardMessage,
     customDelay = -1,
     spawnLocation: SpawnActivationLocation = 'zone',
+    ignoreTargetCard = false,
   ) {
     this.eventSink = worldEventSink
     this.cardId = params.cardId
@@ -56,6 +58,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     this.customDelay = customDelay
     this.precondition = params.precondition
     this.spawnLocation = spawnLocation
+    this.ignoreTargetCard = ignoreTargetCard
   }
 
   async activate(targetCard?: CardModel) {
@@ -69,7 +72,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
 
       this.eventSink.emit('spawn_card', {
         cardId: this.cardId,
-        sourceCard: targetCard,
+        sourceCard: this.ignoreTargetCard ? undefined : targetCard,
         zone: this.zone,
         spawnAnimation: this.spawnAnimation,
         description: this.description,
