@@ -96,7 +96,6 @@ export class HomunculusView extends Container {
     this.add(this.cardBloodSplatSprite)
     scene.add.existing(this.cardBloodSplatSprite)
 
-
     const textStyle = {
       padding: {
         x: 30,
@@ -116,16 +115,9 @@ export class HomunculusView extends Container {
     }
 
     // Create the text object with auto-wrap
-    this.evolutionText = this.scene.add.text(
-      0,
-      0,
-      `${this.model.evolution.value.toString()}/40`,
-      textStyle,
-    )
-      .setPosition(
-        1240,
-      800,
-      )
+    this.evolutionText = this.scene.add
+      .text(0, 0, this.model.evolution.value.toString(), textStyle)
+      .setPosition(1240, 833)
       .setDepth(DepthRegistry.HOMUNCULUS)
     this.add(this.evolutionText)
     scene.add.existing(this.evolutionText)
@@ -134,9 +126,9 @@ export class HomunculusView extends Container {
     this.model.eventSink.on('DAMAGE', (_hp: number) => this.updateHpDisplay())
     this.model.eventSink.on('FEED', (_amount: number) => this.updateFoodDisplay())
     this.model.eventSink.on('STARVE', (_amount: number) => this.updateFoodDisplay())
-    this.model.eventSink.on('EVOLVE', (amount: number) => this.evolutionText.setText(
-      `${this.model.evolution.value.toString()}/40`
-    ))
+    this.model.eventSink.on('EVOLVE', (amount: number) =>
+      this.evolutionText.setText(this.model.evolution.value.toString()),
+    )
     this.model.eventSink.on('ATTACKED', () => this.playBloodSplatAnimation())
   }
 

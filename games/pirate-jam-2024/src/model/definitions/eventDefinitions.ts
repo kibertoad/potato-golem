@@ -11,7 +11,11 @@ import {
   QueueActivation,
   SetActiveCardActivation,
 } from '../activations/card/cardActivations'
-import { ConcludeEventActivation, type EventEventId, NextEventActivation } from '../activations/event/eventActivations'
+import {
+  ConcludeEventActivation,
+  type EventEventId,
+  NextEventActivation,
+} from '../activations/event/eventActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
@@ -59,7 +63,7 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
         text: 'Hello Darkness, my friend',
         effect: new MultiplexActivation([
           //new ConcludeEventActivation(eventSink)
-          new NextEventActivation('TUTORIAL')
+          new NextEventActivation('TUTORIAL'),
         ]),
       },
     ],
@@ -80,9 +84,7 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     options: [
       {
         text: 'I am ready',
-        effect: new MultiplexActivation([
-          new ConcludeEventActivation(eventSink)
-        ]),
+        effect: new MultiplexActivation([new ConcludeEventActivation(eventSink)]),
       },
     ],
   },

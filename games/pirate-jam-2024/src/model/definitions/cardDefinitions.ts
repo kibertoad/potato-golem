@@ -639,31 +639,51 @@ export const cardDefinitions = {
       streets: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new ChatCardActivation([
-            'Okay boys, turn this place upside down!',
-            "Let's check this place out!",
-          ]),
-          new MoveToZoneCardActivation(worldModel, ['home']),
+          new SearchAndDecideCardActivation(
+            ['THE_LAW', 'THE_RAID'],
+            'any',
+            [
+              new ChatCardActivation(['Cops! Run!', 'Oh no, not the cops!']),
+              new DecomposeCardActivation(),
+            ],
+            [
+              new ChatCardActivation([
+                'Okay boys, turn this place upside down!',
+                "Let's check this place out!",
+              ]),
+              new MoveToZoneCardActivation(worldModel, ['home']),
+            ],
+          ),
         ]),
       },
       home: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
           new SearchAndDecideCardActivation(
-            ['GOLD', 'MONEY'],
-            'home',
+            ['THE_LAW', 'THE_RAID'],
+            'any',
             [
-              new ChatCardActivation([
-                "Now that's what I'm talking about!",
-                'Cha-ching!',
-                'Oooo...shiny!',
-                'If it sparkles or glows, it goes in the bag!',
-              ]),
-              new SearchAndDestroyCardActivation(['GOLD', 'MONEY'], 'home', false),
+              new ChatCardActivation(['Cops! Run!', `Oh no, it's the cops!`]),
+              new DecomposeCardActivation(),
             ],
             [
-              new ChatCardActivation(['Keep looking!', 'There has to be something...']),
-              new MoveToZoneCardActivation(worldModel, ['alchemy']),
+              new SearchAndDecideCardActivation(
+                ['GOLD', 'MONEY'],
+                'home',
+                [
+                  new ChatCardActivation([
+                    "Now that's what I'm talking about!",
+                    'Cha-ching!',
+                    'Oooo...shiny!',
+                    'If it sparkles or glows, it goes in the bag!',
+                  ]),
+                  new SearchAndDestroyCardActivation(['GOLD', 'MONEY'], 'home', false),
+                ],
+                [
+                  new ChatCardActivation(['Keep looking!', 'There has to be something...']),
+                  new MoveToZoneCardActivation(worldModel, ['alchemy']),
+                ],
+              ),
             ],
           ),
         ]),
@@ -671,8 +691,22 @@ export const cardDefinitions = {
       alchemy: {
         timeTillTrigger: 1,
         effect: new DescribedTargettedMultipleActivation([
-          new ChatCardActivation(['What the hell is this?!', 'Get him boys!', 'Get it off me!']),
-          new AttackHomunculusCardActivation(worldModel.homunculusModel, 1, false),
+          new SearchAndDecideCardActivation(
+            ['THE_LAW', 'THE_RAID'],
+            'any',
+            [
+              new ChatCardActivation(['Cops! Run!', `Oh no, it's the cops!`]),
+              new DecomposeCardActivation(),
+            ],
+            [
+              new ChatCardActivation([
+                'What the hell is this?!',
+                'Get him boys!',
+                'Get it off me!',
+              ]),
+              new AttackHomunculusCardActivation(worldModel.homunculusModel, 1, false),
+            ],
+          ),
         ]),
       },
     },
