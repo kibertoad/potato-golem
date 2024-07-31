@@ -356,6 +356,7 @@ export const cardDefinitions = {
   FOOD: {
     id: 'FOOD',
     name: 'Food',
+    image: 'food_card',
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,

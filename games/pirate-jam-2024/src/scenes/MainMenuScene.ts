@@ -23,6 +23,7 @@ export class MainMenuScene extends PotatoScene {
 
   preload() {
     this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
+    this.load.image(ImageRegistry.FOOD_CARD, require('../../assets/img/food.png'))
     this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
     this.load.image(ImageRegistry.GLASS_PANEL, require('../../assets/img/glass_panel.png'))
     this.load.image(ImageRegistry.CARD_GLOW, require('../../assets/img/card_glow.png'))

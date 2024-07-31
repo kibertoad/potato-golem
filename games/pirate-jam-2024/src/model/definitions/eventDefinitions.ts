@@ -102,7 +102,7 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
     image: 'medicine_card',
     options: [
       {
-        text: 'Buy cured beef',
+        text: 'Buy food',
         effect: new MultiplexActivation([
           new SpawnCardActivation(eventSink, {
             description: '',
