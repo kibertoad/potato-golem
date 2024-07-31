@@ -504,7 +504,12 @@ export class BoardScene extends PotatoScene {
     }
   }
 
+  private gameOverPlayed = false
   async gameOver(text: string, fontSize = 120) {
+    if (this.gameOverPlayed) {
+      return
+    }
+    this.gameOverPlayed = true
     const container = new Phaser.GameObjects.Container(this)
     container.setDepth(DepthRegistry.GAME_OVER)
 
