@@ -176,11 +176,11 @@ export class EventView extends Container {
       distance: 20,
       height: 50,
       width: 400,
-      orientation: 'vertical',
+      orientation: 'horizontal',
       hoverTint: 0x66ff7f,
       position: {
-        x: EVENT_WINDOW_WIDTH - 450,
-        y: EVENT_WINDOW_HEIGHT - 275,
+        x: 20,
+        y: EVENT_WINDOW_HEIGHT - 90,
       },
       textureKey: ImageRegistry.GLASS_PANEL,
     })

@@ -155,11 +155,10 @@ export class MainMenuScene extends PotatoScene {
     buttonList.addButton('Play', () => {
       ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     })
-    buttonList.addButton('Settings')
     buttonList.addButton('Credits')
 
     this.add.existing(buttonList.build())
-    ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
+    // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     this.musicScene.playMainTheme()
   }
 
