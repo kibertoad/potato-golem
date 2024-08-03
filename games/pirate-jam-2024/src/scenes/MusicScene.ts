@@ -7,6 +7,7 @@ import { ImageRegistry } from '../model/registries/imageRegistry'
 import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
 import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
+import { FMODStudio } from '..'
 
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl
@@ -226,5 +227,9 @@ export class MusicScene extends PotatoScene {
       })
     this.toggleMusicSprite.setDepth(DepthRegistry.GAME_OVER - 1)
     this.add.existing(this.toggleMusicSprite)
+  }
+
+  update() {
+    FMODStudio.update()
   }
 }

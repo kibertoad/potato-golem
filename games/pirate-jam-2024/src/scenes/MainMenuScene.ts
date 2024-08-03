@@ -6,6 +6,7 @@ import type { MusicScene } from './MusicScene'
 import { Scenes } from './SceneRegistry'
 import Container = Phaser.GameObjects.Container
 import { ButtonListBuilder } from '../builders/ButtonListBuilder'
+import { FMODStudio } from '..'
 
 export class MainMenuScene extends PotatoScene {
   private buttons: Container[] = []
@@ -127,7 +128,17 @@ export class MainMenuScene extends PotatoScene {
 
     //other
     this.load.image(ImageRegistry.CHAT_BUBBLE, require('../../assets/img/chat_bubble.png'))
+
+    const musicDesc = {val: null}
+    const music = {val: null}
+
+    console.log(FMODStudio.getEvent('event:/board_theme', musicDesc))
+    musicDesc.val.createInstance(music)
+
+    this.music = music.val
   }
+
+  music = null
 
   create() {
     const { width, height } = this.scale
@@ -206,7 +217,7 @@ export class MainMenuScene extends PotatoScene {
 
     this.add.existing(buttonList.build())
     // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
-    this.musicScene.playMainTheme()
+    // this.musicScene.playMainTheme()
 
     const clickForSoundBg = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
     clickForSoundBg.setInteractive({
@@ -234,6 +245,8 @@ export class MainMenuScene extends PotatoScene {
       clickForSoundBg.destroy()
       clickForSound.value.destroy()
     })
+
+    this.music.start()
   }
 
   centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
@@ -247,5 +260,7 @@ export class MainMenuScene extends PotatoScene {
      */
   }
 
-  update() {}
+  update() {
+    // FMODStudio.update()
+  }
 }
