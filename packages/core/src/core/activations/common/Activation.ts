@@ -14,11 +14,17 @@ export type PrioritizedActivation = Prioritized & Activation
  */
 export type ActivationCallback = () => void
 
+export type AsyncActivationCallback = () => Promise<void>
+
 /**
  * Class wrapper for ActivationCallback
  */
 export type Activation = {
   activate: ActivationCallback
+}
+
+export type AsyncActivation = {
+  activate: AsyncActivationCallback
 }
 
 /**

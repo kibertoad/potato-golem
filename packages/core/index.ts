@@ -41,3 +41,5 @@ export type {
   CommonEntity,
 } from './src/core/interfaces/Entities'
 export { QueuedActivation, QueuedTargettedActivation, type QueuedTargettedActivationParams, type QueuedActivationParams } from './src/core/activations/prefabs/QueuedActivation'
+export { ActivationContainer } from './src/core/activations/common/ActivationContainer'
+export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, isActivation, AbstractTargettedActivation, AbstractActivation, AbstractAsyncActivation, AbstractTargettedAsyncActivation} from './src/core/activations/common/AbstractActivation'

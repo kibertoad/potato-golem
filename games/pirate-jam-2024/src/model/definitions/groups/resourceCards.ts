@@ -27,7 +27,6 @@ export const resourceCardDefinitions = {
           new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'home',
               cardId: 'GOLD',
@@ -43,7 +42,7 @@ export const resourceCardDefinitions = {
     },
     cardCombinationEffect: {
       THE_ROUGH_KIND: {
-        effect: [new DecomposeBothCardsActivation()],
+        effects: [new DecomposeBothCardsActivation()],
       },
     },
   },
@@ -55,9 +54,8 @@ export const resourceCardDefinitions = {
     cardCombinationEffect: {
       ALCHEMICAL_SUPPLIES: {
         tooltip: `Make sure to keep fire away from this stuff`,
-        effect: [
+        effects: [
           new SpawnCardActivation(
-            eventSink,
             {
               cardId: 'EXPLOSIVES', // replace with explosives
               description: 'Create 1 Explosives',

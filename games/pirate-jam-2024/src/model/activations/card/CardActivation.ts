@@ -1,26 +1,21 @@
-import type { TargettedActivation, TargettedAsyncActivation } from '@potato-golem/core'
-import type { ActivationContextCard, ActivationContextCards } from '../common/ActivationContext'
+import {
+  AbstractTargettedAsyncActivation, type DynamicDescriptionHolder,
+} from '@potato-golem/core'
+import type { ActivationContextSingleCard, ActivationContextCardCombo } from '../common/ActivationContext'
+import { AbstractTargettedActivation } from '@potato-golem/core'
 
-export abstract class CardActivation implements TargettedActivation<ActivationContextCard> {
-  abstract activate(context: ActivationContextCard): void
-
+export abstract class CardActivation extends AbstractTargettedActivation<ActivationContextSingleCard> implements DynamicDescriptionHolder {
   abstract getDescription(): string
 }
 
-export abstract class CardsActivation implements TargettedActivation<ActivationContextCards> {
-  abstract activate(context: ActivationContextCards): void
-
+export abstract class CardComboActivation extends AbstractTargettedActivation<ActivationContextCardCombo> implements DynamicDescriptionHolder {
   abstract getDescription(): string
 }
 
-export abstract class AsyncCardActivation implements TargettedAsyncActivation<ActivationContextCard> {
-  abstract activate(context: ActivationContextCard): Promise<void>
-
+export abstract class AsyncCardActivation extends AbstractTargettedAsyncActivation<ActivationContextSingleCard> implements DynamicDescriptionHolder {
   abstract getDescription(): string
 }
 
-export abstract class AsyncCardsActivation implements TargettedActivation<ActivationContextCards> {
-  abstract activate(context: ActivationContextCards): Promise<void>
-
+export abstract class AsyncCardComboActivation extends AbstractTargettedAsyncActivation<ActivationContextCardCombo> implements DynamicDescriptionHolder {
   abstract getDescription(): string
 }

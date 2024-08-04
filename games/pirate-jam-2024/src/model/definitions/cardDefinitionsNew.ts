@@ -1,10 +1,15 @@
 import {
+  AbstractTargettedActivation, AbstractTargettedAsyncActivation,
   DescribedTargettedAsyncMultiplexActivation,
   EventSink,
   ReasonedPrecondition, TargettedActivation, TargettedAsyncActivation,
   TargettedReasonedPrecondition,
 } from '@potato-golem/core'
-import type { ActivationContext, ActivationContextCards } from '../activations/common/ActivationContext'
+import type {
+  ActivationContext,
+  ActivationContextCardCombo,
+  ActivationContextSingleCard,
+} from '../activations/common/ActivationContext'
 import type { CardId } from '../registries/cardRegistry'
 import type { ImageId } from '../registries/imageRegistry'
 import type { SfxId } from '../registries/sfxRegistry'
@@ -22,8 +27,11 @@ export type CardActivationDefinitionNew = {
 
 export type CardActivationDefinitionNewCards = {
   tooltip?: string
-  preconditions?: readonly (ReasonedPrecondition | TargettedReasonedPrecondition<ActivationContextCards>)[]
-  effect: (TargettedActivation<ActivationContextCards> | TargettedAsyncActivation<ActivationContextCards>)[]
+  preconditions?: readonly (ReasonedPrecondition | TargettedReasonedPrecondition<ActivationContextCardCombo>)[]
+  effects: (
+    AbstractTargettedActivation<ActivationContextCardCombo> | AbstractTargettedAsyncActivation<ActivationContextCardCombo> |
+    AbstractTargettedActivation<ActivationContextSingleCard> | AbstractTargettedAsyncActivation<ActivationContextSingleCard>
+    )[]
 }
 
 export type CardPrettyEffectsDefinition = {

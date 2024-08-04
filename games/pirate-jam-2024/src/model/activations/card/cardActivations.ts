@@ -21,18 +21,18 @@ import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
 import { AsyncCardActivation, CardActivation } from './CardActivation'
-import { ActivationContext, ActivationContextCard, ActivationContextCards } from '../common/ActivationContext'
+import { ActivationContext, ActivationContextSingleCard, ActivationContextCardCombo } from '../common/ActivationContext'
 
 export type ActivationArray = Array<Activation | CardActivation>
 
 export type AnimationType = 'none' | 'poof' | 'blood_splat' | 'explosion'
 
-export class AnimateCardActivation implements CardActivation, DynamicDescriptionHolder {
-
+export class AnimateCardActivation extends AsyncCardActivation {
   private readonly customDelay: number
   private readonly animationType: AnimationType
 
   constructor(animationType: AnimationType = 'poof', customDelay = -1) {
+    super()
     this.customDelay = customDelay
     this.animationType = animationType
   }
@@ -53,12 +53,12 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
     }
   }
 
-  async activate(context: ActivationContextCard) {
+  async activate(context: ActivationContextSingleCard) {
     if (this.customDelay >= 0) {
-      this.playAnimation(context.sourceCard)
+      this.playAnimation(context.targetCard)
       await delay(this.customDelay)
     } else {
-      await this.playAnimation(context.sourceCard)
+      await this.playAnimation(context.targetCard)
     }
   }
 
@@ -68,9 +68,6 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
 }
 
 export class CancelDragCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
   private cardToCancel: CardId
 
   constructor(cardToCancel: CardId) {
@@ -97,9 +94,9 @@ export class DecomposeCardActivation
   extends AnimateCardActivation
   implements AsyncCardActivation, DynamicDescriptionHolder
 {
-  async activate(context: ActivationContextCard) {
+  async activate(context: ActivationContextSingleCard) {
     await super.activate(context)
-    context.sourceCard.destroy()
+    context.targetCard.destroy()
   }
 
   getDescription(): string {
@@ -130,9 +127,9 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
 }
 
 export class DecomposeOtherCardActivation extends DecomposeCardActivation {
-  async activate(context: ActivationContextCard) {
+  async activate(context: ActivationContextSingleCard) {
     await super.activate({
-      sourceCard: context.sourceCard.combinedCard
+      targetCard: context.targetCard.combinedCard
     })
   }
 
@@ -142,9 +139,9 @@ export class DecomposeOtherCardActivation extends DecomposeCardActivation {
 }
 
 export class DecomposeBothCardsActivation extends DecomposeCardActivation {
-  async activate(context: ActivationContextCard) {
+  async activate(context: ActivationContextSingleCard) {
     await Promise.all([super.activate(context), super.activate({
-      sourceCard: context.sourceCard.combinedCard
+      targetCard: context.targetCard.combinedCard
     })])
   }
 
@@ -154,7 +151,7 @@ export class DecomposeBothCardsActivation extends DecomposeCardActivation {
 }
 
 export class DestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
-  activate(target: ActivationContextCard) {
+  activate(target: ActivationContextSingleCard) {
     target.card.destroy()
   }
 
@@ -186,9 +183,9 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
 }
 
 export class EatCardActivation implements AsyncCardActivation, DynamicDescriptionHolder {
-  async activate(context: ActivationContextCard) {
-    await context.sourceCard.view.playEatAnimation()
-    context.sourceCard.destroy()
+  async activate(context: ActivationContextSingleCard) {
+    await context.targetCard.view.playEatAnimation()
+    context.targetCard.destroy()
   }
 
   getDescription(): string {
@@ -402,7 +399,7 @@ export class DamageActivation implements CardActivation, DynamicDescriptionHolde
     this.target = target
   }
 
-  activate(_context: ActivationContextCard) {
+  activate(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('DAMAGE', this.amount)
   }
 
@@ -526,13 +523,13 @@ export class SearchAndDecideCardActivation implements CardActivation, DynamicDes
   }
 }
 
-export class NextTurnActivation implements CardActivation, DynamicDescriptionHolder {
+export class NextTurnActivation extends CardActivation {
   activate(_context: ActivationContext) {
     console.log('emit next turn')
     EventEmitters.boardEventEmitter.emit('NEXT_TURN')
   }
 
-  getDescription(): string {
+  override getDescription(): string {
     return `Time passes`
   }
 }
@@ -566,7 +563,7 @@ export class FeedActivation implements CardActivation, DynamicDescriptionHolder 
     this.starveProtection = starveProtection
   }
 
-  activate(_context: ActivationContextCard) {
+  activate(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('FEED', this.amount, this.starveProtection)
   }
 
@@ -575,22 +572,19 @@ export class FeedActivation implements CardActivation, DynamicDescriptionHolder 
   }
 }
 
-export class QueueActivation implements Activation, CardActivation, StaticDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class QueueActivation implements CardActivation, StaticDescriptionHolder {
   private readonly activation: QueuedTargettedActivation<CardModel>
   private readonly eventSink: EventSink<BoardSupportedEvents>
   readonly description: string
 
-  constructor(eventSink: EventSink<BoardSupportedEvents>, activation: QueuedTargettedActivation<CardModel>) {
+  constructor(activation: QueuedTargettedActivation<CardModel>) {
+    this.eventSink = EventEmitters.boardEventEmitter
     this.activation = activation
-    this.eventSink = eventSink
     this.description = activation.description ?? ''
   }
 
-  activate(targetCard?: CardModel) {
-    this.eventSink.emit('QUEUE_ACTIVATION', this.activation, targetCard)
+  activate(context: ActivationContextSingleCard) {
+    this.eventSink.emit('QUEUE_ACTIVATION', this.activation, context.targetCard)
   }
 
   getDescription(): string {
@@ -605,8 +599,8 @@ export class SetActiveCardActivation implements CardActivation, DynamicDescripti
     this.active = active
   }
 
-  activate(context: ActivationContextCard) {
-    context.sourceCard.view.setActiveCard(this.active)
+  activate(context: ActivationContextSingleCard) {
+    context.targetCard.view.setActiveCard(this.active)
   }
 
   getDescription(): string {

@@ -41,11 +41,11 @@ import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import { type SfxId, SfxRegistry } from '../registries/sfxRegistry'
+import { type SfxId } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
 import { QueuedTargettedActivation } from '@potato-golem/core'
-import { ActivationContext, ActivationContextCard } from '../activations/common/ActivationContext'
+import { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -53,7 +53,7 @@ export type CardEffectDefinition = {
   preconditions?: Array<
     Precondition | TargettedPrecondition<CardModel> | TargettedReasonedPrecondition<CardModel>
   >
-  effect: DescribedTargettedAsyncMultiplexActivation<ActivationContextCard>
+  effect: DescribedTargettedAsyncMultiplexActivation<ActivationContextSingleCard>
 }
 
 export type CardDefinition = {

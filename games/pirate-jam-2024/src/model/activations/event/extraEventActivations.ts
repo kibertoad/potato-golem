@@ -1,10 +1,7 @@
-import {
-  type EventSink,
-  LOW_PRIORITY,
-  type Precondition,
-  type StaticDescriptionHolder,
+import type {
+  EventSink,
+  Precondition,
 } from '@potato-golem/core'
-import type { Activation } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import { delay } from '../../../utils/timeUtils'
 import { cardDefinitions } from '../../definitions/cardDefinitions'
@@ -13,7 +10,8 @@ import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { AsyncCardActivation, CardActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
-import { ActivationContext, ActivationContextCard } from '../common/ActivationContext'
+import { ActivationContext, ActivationContextSingleCard } from '../common/ActivationContext'
+import { EventEmitters } from '../../registries/eventEmitterRegistry'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 
@@ -27,7 +25,7 @@ export type SpawnCardMessage = {
   precondition?: Precondition
 }
 
-export class SpawnCardActivation implements AsyncCardActivation, StaticDescriptionHolder {
+export class SpawnCardActivation extends AsyncCardActivation {
   private readonly cardId: CardId
   private zone: Zone
   private readonly spawnAnimation?: SpawnAnimation
@@ -42,13 +40,13 @@ export class SpawnCardActivation implements AsyncCardActivation, StaticDescripti
   private readonly spawnLocation: SpawnActivationLocation
 
   constructor(
-    worldEventSink: EventSink<typeof SpawnCardEventId>,
     params: SpawnCardMessage,
     customDelay = -1,
     spawnLocation: SpawnActivationLocation = 'zone',
     ignoreTargetCard = false,
   ) {
-    this.eventSink = worldEventSink
+    super()
+    this.eventSink = EventEmitters.boardEventEmitter
     this.cardId = params.cardId
     this.zone = params.zone
     this.spawnAnimation = params.spawnAnimation
@@ -60,18 +58,18 @@ export class SpawnCardActivation implements AsyncCardActivation, StaticDescripti
     this.ignoreTargetCard = ignoreTargetCard
   }
 
-  async activate(context: ActivationContextCard): Promise<void> {
+  async activate(context: ActivationContextSingleCard): Promise<void> {
     if (!this.precondition || this.precondition.isSatisfied()) {
-      if (this.spawnLocation === 'same_as_target' && context.sourceCard) {
-        this.zone = context.sourceCard.zone
+      if (this.spawnLocation === 'same_as_target' && context.targetCard) {
+        this.zone = context.targetCard.zone
       }
-      if (this.spawnLocation === 'same_as_combined' && context.sourceCard?.combinedCard) {
-        this.zone = context.sourceCard.combinedCard.zone
+      if (this.spawnLocation === 'same_as_combined' && context.targetCard?.combinedCard) {
+        this.zone = context.targetCard.combinedCard.zone
       }
 
       this.eventSink.emit('spawn_card', {
         cardId: this.cardId,
-        sourceCard: this.ignoreTargetCard ? undefined : context.sourceCard,
+        sourceCard: this.ignoreTargetCard ? undefined : context.targetCard,
         zone: this.zone,
         spawnAnimation: this.spawnAnimation,
         description: this.description,

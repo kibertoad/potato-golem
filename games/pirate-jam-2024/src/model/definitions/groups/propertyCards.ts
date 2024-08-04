@@ -4,7 +4,7 @@ import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
   DescribedTargettedAsyncMultiplexActivation, type EventSink,
-  QueuedTargettedActivation,
+  QueuedTargettedActivation, TargettedAsyncMultiplexActivation,
   TargettedMultiplexActivation,
 } from '@potato-golem/core'
 import type { CardModel } from '../../entities/CardModel'
@@ -36,16 +36,18 @@ export const propertyCards = {
         tooltip: `I bet I can make something more potent with this`,
         effect: [
           new QueueActivation(
-            eventSink,
             new QueuedTargettedActivation({
               id: 'WORKBENCH_COOK_POISON',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new TargettedMultiplexActivation([
-                new SetActiveCardActivation(false),
+              activation: new TargettedAsyncMultiplexActivation([
+
+                // ToDo restore this effect
+                //new SetActiveCardActivation(false),
+
                 // new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
                   zone: 'lab',

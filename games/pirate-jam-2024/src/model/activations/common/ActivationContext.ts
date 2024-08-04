@@ -3,17 +3,23 @@ import type { CardModel } from '../../entities/CardModel'
 
 export type ActivationContext = {
   fromEvent?: EventDefinition
-  sourceCard?: CardModel
+  sourceCard?: never
   targetCard?: CardModel
 }
 
-export type ActivationContextCard = {
+export type ActivationContextEvent = {
   fromEvent?: EventDefinition
-  sourceCard: CardModel
+  sourceCard?: never
+  targetCard?: never
 }
 
-export type ActivationContextCards = {
+export type ActivationContextSingleCard = {
   fromEvent?: EventDefinition
+  targetCard: CardModel
+}
+
+export type ActivationContextCardCombo = {
+  fromEvent?: never
   sourceCard: CardModel
   targetCard: CardModel
 }

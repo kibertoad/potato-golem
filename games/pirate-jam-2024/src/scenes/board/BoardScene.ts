@@ -390,9 +390,13 @@ export class BoardScene extends PotatoScene {
       wasCardActivated = cardView.model.changeZone(this.pointedZoneView.id)
 
       if (cardView.model.hasActivationForZone(this.pointedZoneView.id)) {
-        const activation = cardView.model.definition.idleZoneEffect[this.pointedZoneView.id]
-        if (activation.timeTillTrigger === 0) {
-          void activation.effect.activate(cardView.model)
+        const activation = cardView.model.definition.zoneCombinationEffect[this.pointedZoneView.id]
+        for (const effect of activation.effect) {
+          // ToDo add and fix await here later
+          void effect.activate({
+            sourceCard: cardView.model
+          })
+        }
 
           //TODO: This is a HACK to compensate for homunculus eating animation
           //Otherwise we have to deal with an unknown async system issue
@@ -402,7 +406,6 @@ export class BoardScene extends PotatoScene {
               this.unblockInput()
             }, 900)
           }
-        }
       }
 
       // ToDo replace with more generic logic
@@ -466,7 +469,10 @@ export class BoardScene extends PotatoScene {
       combinationOwnerCard.model.combineWithCard(combinationChildCard.model)
 
       if (combinationEffect.timeTillTrigger === 0) {
-        combinationEffect.effect.activate(combinationOwnerCard.model)
+        // ToDo fix later
+        void combinationEffect.effect.activate({
+          targetCard: combinationOwnerCard.model
+        })
       }
       return true
     }

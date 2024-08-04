@@ -1,18 +1,17 @@
 import {
-  type DescribedTargettedAsyncMultiplexActivation,
   type EventSink,
   type TurnProcessor,
   generateUuid,
-  sortAndFilterActivations,
 } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
 import type { CardView } from '../../scenes/board/views/CardView'
-import type { CardDefinition, CardEffectDefinition } from '../definitions/cardDefinitions'
+import type { CardEffectDefinition } from '../definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
+import type { CardDefinitionNew } from '../definitions/cardDefinitionsNew'
 
 export type CardModelParams = {
-  definition: CardDefinition
+  definition: CardDefinitionNew
   zone: Zone
   parentEventSink: EventSink
 }
@@ -22,7 +21,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
   private readonly parentEventSink: EventSink
   readonly name: string
-  readonly definition: CardDefinition
+  readonly definition: CardDefinitionNew
 
   combinedCard?: CardModel
 
@@ -66,7 +65,7 @@ export class CardModel implements TurnProcessor, CommonEntity {
   changeZone(zone: Zone, forceMove = false): boolean {
     if (
       !forceMove &&
-      (!this.definition.idleZoneEffect || !(zone in this.definition.idleZoneEffect))
+      (!this.definition.zoneCombinationEffect || !(zone in this.definition.zoneCombinationEffect))
     ) {
       return false
     }
@@ -149,34 +148,47 @@ export class CardModel implements TurnProcessor, CommonEntity {
   }
 
   hasActivationForZone(zone: Zone): boolean {
-    return this.definition.idleZoneEffect?.[zone] !== undefined
+    return this.definition.zoneCombinationEffect?.[zone] !== undefined
   }
 
-  async processTurn(): Promise<void> {
+  processTurn(): Promise<void> {
     console.log(`Processing turn for card "${this.definition.id}"`)
     this.turnsExisted++
     this.turnsStayedInZone++
     this.turnsCombinedToCard++
 
+    return Promise.resolve()
+
+    // No relevant effects are left, revise after we have any
+
+    /*
     const allApplicableActivations = this.findTriggeredActivations()
     const activationsTriggered = sortAndFilterActivations(allApplicableActivations)
 
     for (const activation of activationsTriggered) {
       await activation.activate(this)
     }
+
+     */
   }
 
-  private findTriggeredActivations(): DescribedTargettedAsyncMultiplexActivation<CardModel>[] {
-    const relevantActivations: DescribedTargettedAsyncMultiplexActivation<CardModel>[] = []
+  private findTriggeredActivations(): CardEffectDefinition[] {
+    const relevantActivations: CardEffectDefinition[] = []
 
-    if (this.definition.idleZoneEffect?.any?.timeTillTrigger <= this.turnsExisted) {
+    // ToDo think about idle zone activations later, we don't really have any relevant ones now
+    /*
+    if (this.definition.zoneCombinationEffect?.any?.timeTillTrigger <= this.turnsExisted) {
       relevantActivations.push(this.definition.idleZoneEffect.any.effect)
     }
 
-    if (this.definition.idleZoneEffect?.[this.zone]?.timeTillTrigger <= this.turnsStayedInZone) {
+    if (this.definition.zoneCombinationEffect?.[this.zone]?.timeTillTrigger <= this.turnsStayedInZone) {
       relevantActivations.push(this.definition.idleZoneEffect[this.zone].effect)
     }
 
+     */
+
+    // ToDo use queued activations instead
+    /*
     if (this.combinedCard) {
       const activation = this.getActivationForCombinedCard(this.combinedCard, true, true)
       if (activation?.effect && activation?.effect?.timeTillTrigger <= this.turnsCombinedToCard) {
@@ -184,6 +196,8 @@ export class CardModel implements TurnProcessor, CommonEntity {
         this.disconnectFromCard()
       }
     }
+
+     */
 
     return relevantActivations
   }
