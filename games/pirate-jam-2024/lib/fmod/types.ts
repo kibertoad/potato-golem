@@ -14,7 +14,7 @@ interface Out<T> {
 /**
  * FMOD Object Interface. Make sure to only call functions at and after onRuntimeInitialized.
  */
-declare interface FMOD {
+export interface FMOD {
   TOTAL_MEMORY?: number
   preRun?: () => void
   onRuntimeInitialized?: () => void
@@ -424,7 +424,7 @@ declare interface FMOD {
   STUDIO_USER_PROPERTY?(): FMOD.STUDIO_USER_PROPERTY
 }
 
-declare namespace FMOD {
+export namespace FMOD {
   // #region System Objects /////////////////////////////////////////////////////////////////////////////////////////////////
   export interface System {
     attachChannelGroupToPort(portType, portIndex, channelgroup: Out<ChannelGroup>): RESULT
@@ -4090,199 +4090,199 @@ Also defines the number of channels in the unit that a read callback will proces
   // #region LOW LEVEL SYSTEM ENUMERATIONS ///////////////////////////////////////////////////////////////////////////////////////
   /** These callback types are used with Channel::setCallback. */
   export enum CHANNELCONTROL_CALLBACK_TYPE {
-    END,
-    VIRTUALVOICE,
-    SYNCPOINT,
-    OCCLUSION,
-    MAX,
-    FORCEINT,
+    END = 0,
+    VIRTUALVOICE = 1,
+    SYNCPOINT = 2,
+    OCCLUSION = 3,
+    MAX = 4,
+    FORCEINT = 5,
   }
 
   /** These enums denote special types of node within a DSP chain. */
   export enum CHANNELCONTROL_DSP_INDEX {
-    HEAD,
-    FADER,
-    TAIL,
-    INDEX,
-    FORCEINT,
+    HEAD = 0,
+    FADER = 1,
+    TAIL = 2,
+    INDEX = 3,
+    FORCEINT = 4,
   }
 
   /** Used to distinguish if a FMOD_CHANNELCONTROL parameter is actually a channel
    * or a channelgroup. */
   export enum CHANNELCONTROL_TYPE {
-    CHANNEL,
-    CHANNELGROUP,
-    FORCEINT,
+    CHANNEL = 0,
+    CHANNELGROUP = 1,
+    FORCEINT = 2,
   }
 
   /** When creating a multichannel sound, FMOD will pan them to their default speaker
    * locations, for example a 6 channel sound will default to one channel per 5.1 output
    * speaker. Another example is a stereo sound. It will default to left = front left, right = front right. */
   export enum CHANNELORDER {
-    DEFAULT,
-    WAVEFORMAT,
-    PROTOOLS,
-    ALLMONO,
-    ALLSTEREO,
-    ALSA,
-    MAX,
-    FORCEINT,
+    DEFAULT = 0,
+    WAVEFORMAT = 1,
+    PROTOOLS = 2,
+    ALLMONO = 3,
+    ALLSTEREO = 4,
+    ALSA = 5,
+    MAX = 6,
+    FORCEINT = 7,
   }
 
   /** Specify the destination of log output when using the logging version of FMOD. */
   export enum DEBUG_MODE {
     /** Default log location per platform, i.e. Visual Studio output window, stderr, LogCat, etc. */
-    TTY,
+    TTY = 0,
     /** Write log to specified file path */
-    FILE,
+    FILE = 1,
     /** Call specified callback with log information */
-    CALLBACK,
-    FORCEINT,
+    CALLBACK = 2,
+    FORCEINT = 3,
   }
 
   /** List of connection types between 2 DSP nodes. */
   export enum DSPCONNECTION_TYPE {
-    STANDARD,
-    SIDECHAIN,
-    SEND,
-    SEND_SIDECHAIN,
-    MAX,
-    FORCEINT,
+    STANDARD = 0,
+    SIDECHAIN = 1,
+    SEND = 2,
+    SEND_SIDECHAIN = 3,
+    MAX = 4,
+    FORCEINT = 5,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_CHANNELMIX filter. */
   export enum DSP_CHANNELMIX {
-    OUTPUTGROUPING,
-    GAIN_CH0,
-    GAIN_CH1,
-    GAIN_CH2,
-    GAIN_CH3,
-    GAIN_CH4,
-    GAIN_CH5,
-    GAIN_CH6,
-    GAIN_CH7,
-    GAIN_CH8,
-    GAIN_CH9,
-    GAIN_CH10,
-    GAIN_CH11,
-    GAIN_CH12,
-    GAIN_CH13,
-    GAIN_CH14,
-    GAIN_CH15,
-    GAIN_CH16,
-    GAIN_CH17,
-    GAIN_CH18,
-    GAIN_CH19,
-    GAIN_CH20,
-    GAIN_CH21,
-    GAIN_CH22,
-    GAIN_CH23,
-    GAIN_CH24,
-    GAIN_CH25,
-    GAIN_CH26,
-    GAIN_CH27,
-    GAIN_CH28,
-    GAIN_CH29,
-    GAIN_CH30,
-    GAIN_CH31,
+    OUTPUTGROUPING = 0,
+    GAIN_CH0 = 1,
+    GAIN_CH1 = 2,
+    GAIN_CH2 = 3,
+    GAIN_CH3 = 4,
+    GAIN_CH4 = 5,
+    GAIN_CH5 = 6,
+    GAIN_CH6 = 7,
+    GAIN_CH7 = 8,
+    GAIN_CH8 = 9,
+    GAIN_CH9 = 10,
+    GAIN_CH10 = 11,
+    GAIN_CH11 = 12,
+    GAIN_CH12 = 13,
+    GAIN_CH13 = 14,
+    GAIN_CH14 = 15,
+    GAIN_CH15 = 16,
+    GAIN_CH16 = 17,
+    GAIN_CH17 = 18,
+    GAIN_CH18 = 19,
+    GAIN_CH19 = 20,
+    GAIN_CH20 = 21,
+    GAIN_CH21 = 22,
+    GAIN_CH22 = 23,
+    GAIN_CH23 = 24,
+    GAIN_CH24 = 25,
+    GAIN_CH25 = 26,
+    GAIN_CH26 = 27,
+    GAIN_CH27 = 28,
+    GAIN_CH28 = 29,
+    GAIN_CH29 = 30,
+    GAIN_CH30 = 31,
+    GAIN_CH31 = 32,
   }
 
   /** Parameter types for the FMOD_DSP_CHANNELMIX_OUTPUTGROUPING parameter for
    * FMOD_DSP_TYPE_CHANNELMIX effect. */
   export enum DSP_CHANNELMIX_OUTPUT {
-    DEFAULT,
-    ALLMONO,
-    ALLSTEREO,
-    ALLQUAD,
-    ALL5POINT1,
-    ALL7POINT1,
-    ALLFE,
+    DEFAULT = 0,
+    ALLMONO = 1,
+    ALLSTEREO = 2,
+    ALLQUAD = 3,
+    ALL5POINT1 = 4,
+    ALL7POINT1 = 5,
+    ALLFE = 6,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_CHORUS filter. */
   export enum DSP_CHORUS {
-    MIX,
-    RATE,
-    DEPTH,
+    MIX = 0,
+    RATE = 1,
+    DEPTH = 2,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_COMPRESSOR unit.
    * This is a multichannel software limiter that is uniform across the whole spectrum. */
   export enum DSP_COMPRESSOR {
-    THRESHOLD,
-    RATIO,
-    ATTACK,
-    RELEASE,
-    GAINMAKEUP,
-    USESIDECHAIN,
-    LINKED,
+    THRESHOLD = 0,
+    RATIO = 1,
+    ATTACK = 2,
+    RELEASE = 3,
+    GAINMAKEUP = 4,
+    USESIDECHAIN = 5,
+    LINKED = 6,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_CONVOLUTIONREVERB filter. */
   export enum DSP_CONVOLUTION_REVERB {
-    PARAM_IR,
-    PARAM_WET,
-    PARAM_DRY,
-    PARAM_LINKED,
+    PARAM_IR = 0,
+    PARAM_WET = 1,
+    PARAM_DRY = 2,
+    PARAM_LINKED = 3,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_DELAY filter. */
   export enum DSP_DELAY {
-    CH0,
-    CH1,
-    CH2,
-    CH3,
-    CH4,
-    CH5,
-    CH6,
-    CH7,
-    CH8,
-    CH9,
-    CH10,
-    CH11,
-    CH12,
-    CH13,
-    CH14,
-    CH15,
-    MAXDELAY,
+    CH0 = 0,
+    CH1 = 1,
+    CH2 = 2,
+    CH3 = 3,
+    CH4 = 4,
+    CH5 = 5,
+    CH6 = 6,
+    CH7 = 7,
+    CH8 = 8,
+    CH9 = 9,
+    CH10 = 10,
+    CH11 = 11,
+    CH12 = 12,
+    CH13 = 13,
+    CH14 = 14,
+    CH15 = 15,
+    MAXDELAY = 16,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_DISTORTION filter. */
   export enum DSP_DISTORTION {
-    LEVEL,
+    LEVEL = 0,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_ECHO filter. */
   export enum DSP_ECHO {
-    DELAY,
-    FEEDBACK,
-    DRYLEVEL,
-    WETLEVEL,
-    FORCEINT,
+    DELAY = 0,
+    FEEDBACK = 1,
+    DRYLEVEL = 2,
+    WETLEVEL = 3,
+    FORCEINT = 4,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_ENVELOPEFOLLOWER unit.
    * This is a simple envelope follower for tracking the signal level.
    * @deprecated */
   export enum DSP_EVELOPEFOLLOWER {
-    ATTACK,
-    RELEASE,
-    ENVELOPE,
-    USESIDECHAIN,
+    ATTACK = 0,
+    RELEASE = 1,
+    ENVELOPE = 2,
+    USESIDECHAIN = 3,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_FADER filter. */
   export enum DSP_FADER {
-    GAIN,
-    OVERALL_GAIN,
+    GAIN = 0,
+    OVERALL_GAIN = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_FFT dsp effect. */
   export enum DSP_FFT {
-    WINDOWSIZE,
-    WINDOWTYPE,
-    SPECTRUMDATA,
-    DOMINANT_FREQ,
+    WINDOWSIZE = 0,
+    WINDOWTYPE = 1,
+    SPECTRUMDATA = 2,
+    DOMINANT_FREQ = 3,
   }
 
   /** List of windowing methods for the FMOD_DSP_TYPE_FFT unit.
@@ -4293,30 +4293,30 @@ Also defines the number of channels in the unit that a read callback will proces
    * Windowing the signal with a curve or triangle tapers the sides of the fft window
    * to help alleviate this problem. */
   export enum DSP_FFT_WINDOW {
-    RECT,
-    TRIANGLE,
-    HAMMING,
-    HANNING,
-    BLACKMAN,
-    BLACKMANHARRIS,
+    RECT = 0,
+    TRIANGLE = 1,
+    HAMMING = 2,
+    HANNING = 3,
+    BLACKMAN = 4,
+    BLACKMANHARRIS = 5,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_FLANGE filter. */
   export enum DSP_FLANGE {
-    MIX,
-    DEPTH,
-    RATE,
+    MIX = 0,
+    DEPTH = 1,
+    RATE = 2,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_HIGHPASS filter. */
   export enum DSP_HIGHPASS {
-    CUTOFF,
-    RESONANCE,
+    CUTOFF = 0,
+    RESONANCE = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_HIGHPASS_SIMPLE filter. */
   export enum DSP_HIGHPASS_SIMPLE {
-    CUTOFF,
+    CUTOFF = 0,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_ITECHO filter.
@@ -4325,11 +4325,11 @@ Also defines the number of channels in the unit that a read callback will proces
    *  this, and FMOD will produce the effect on ANY platform, not just those
    *  that support DirectX effects! */
   export enum DSP_ITECHO {
-    WETDRYMIX,
-    FEEDBACK,
-    LEFTDELAY,
-    RIGHTDELAY,
-    PANDELAY,
+    WETDRYMIX = 0,
+    FEEDBACK = 1,
+    LEFTDELAY = 2,
+    RIGHTDELAY = 3,
+    PANDELAY = 4,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_ITLOWPASS filter.
@@ -4338,75 +4338,75 @@ Also defines the number of channels in the unit that a read callback will proces
    *  used to produce the correct sounding playback in .IT files. FMOD Studio's .IT
    *  playback uses this filter. */
   export enum DSP_ITLOWPASS {
-    CUTOFF,
-    RESONANCE,
+    CUTOFF = 0,
+    RESONANCE = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_LIMITER filter. */
   export enum DSP_LIMITER {
-    RELEASETIME,
-    CEILING,
-    MAXIMIZERGAIN,
-    MODE,
+    RELEASETIME = 0,
+    CEILING = 1,
+    MAXIMIZERGAIN = 2,
+    MODE = 3,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_LOWPASS filter. */
   export enum DSP_LOWPASS {
-    CUTOFF,
-    RESONANCE,
+    CUTOFF = 0,
+    RESONANCE = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_LOWPASS_SIMPLE filter. */
   export enum DSP_LOWPASS_SIMPLE {
-    CUTOFF,
+    CUTOFF = 0,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_MULTIBAND_EQ filter. */
   export enum DSP_MULTIBAND_EQ {
-    A_FILTER,
-    A_FREQUENCY,
-    A_Q,
-    A_GAIN,
-    B_FILTER,
-    B_FREQUENCY,
-    B_Q,
-    B_GAIN,
-    C_FILTER,
-    C_FREQUENCY,
-    C_Q,
-    C_GAIN,
-    D_FILTER,
-    D_FREQUENCY,
-    D_Q,
-    D_GAIN,
-    E_FILTER,
-    E_FREQUENCY,
-    E_Q,
-    E_GAIN,
+    A_FILTER = 0,
+    A_FREQUENCY = 1,
+    A_Q = 2,
+    A_GAIN = 3,
+    B_FILTER = 4,
+    B_FREQUENCY = 5,
+    B_Q = 6,
+    B_GAIN = 7,
+    C_FILTER = 8,
+    C_FREQUENCY = 9,
+    C_Q = 10,
+    C_GAIN = 11,
+    D_FILTER = 12,
+    D_FREQUENCY = 13,
+    D_Q = 14,
+    D_GAIN = 15,
+    E_FILTER = 16,
+    E_FREQUENCY = 17,
+    E_Q = 18,
+    E_GAIN = 19,
   }
 
   /** Filter types for FMOD_DSP_MULTIBAND_EQ. */
   export enum DSP_MULTIBAND_EQ_FILTER_TYPE {
-    DISABLED,
-    LOWPASS_12DB,
-    LOWPASS_24DB,
-    LOWPASS_48DB,
-    HIGHPASS_12DB,
-    HIGHPASS_24DB,
-    HIGHPASS_48DB,
-    LOWSHELF,
-    HIGHSHELF,
-    PEAKING,
-    BANDPASS,
-    NOTCH,
-    ALLPASS,
+    DISABLED = 0,
+    LOWPASS_12DB = 1,
+    LOWPASS_24DB = 2,
+    LOWPASS_48DB = 3,
+    HIGHPASS_12DB = 4,
+    HIGHPASS_24DB = 5,
+    HIGHPASS_48DB = 6,
+    LOWSHELF = 7,
+    HIGHSHELF = 8,
+    PEAKING = 9,
+    BANDPASS = 10,
+    NOTCH = 11,
+    ALLPASS = 12,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_NORMALIZE filter. */
   export enum DSP_NORMALIZE {
-    FADETIME,
-    THRESHHOLD,
-    MAXAMP,
+    FADETIME = 0,
+    THRESHHOLD = 1,
+    MAXAMP = 2,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_OBJECTPAN DSP.
@@ -4415,541 +4415,541 @@ Also defines the number of channels in the unit that a read callback will proces
    *  and send it to the 7.1 bed, but do not send the signal further down the
    *  DSP chain (the output of the dsp is silence). */
   export enum DSP_OBJECTPAN {
-    _3D_POSITION,
-    _3D_ROLLOFF,
-    _3D_MIN_DISTANCE,
-    _3D_MAX_DISTANCE,
-    _3D_EXTENT_MODE,
-    _3D_SOUND_SIZE,
-    _3D_MIN_EXTENT,
-    OVERALL_GAIN,
-    OUTPUTGAIN,
+    _3D_POSITION = 0,
+    _3D_ROLLOFF = 1,
+    _3D_MIN_DISTANCE = 2,
+    _3D_MAX_DISTANCE = 3,
+    _3D_EXTENT_MODE = 4,
+    _3D_SOUND_SIZE = 5,
+    _3D_MIN_EXTENT = 6,
+    OVERALL_GAIN = 7,
+    OUTPUTGAIN = 8,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_OSCILLATOR filter. */
   export enum DSP_OSCILLATOR {
-    TYPE,
-    RATE,
+    TYPE = 0,
+    RATE = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_PAN DSP. */
   export enum DSP_PAN {
-    MODE,
-    _2D_STEREO_POSITION,
-    _2D_DIRECTION,
-    _2D_EXTENT,
-    _2D_ROTATION,
-    _2D_LFE_LEVEL,
-    _2D_STEREO_MODE,
-    _2D_STEREO_SEPARATION,
-    _2D_STEREO_AXIS,
-    ENABLED_SPEAKERS,
-    _3D_POSITION,
-    _3D_ROLLOFF,
-    _3D_MIN_DISTANCE,
-    _3D_MAX_DISTANCE,
-    _3D_EXTENT_MODE,
-    _3D_SOUND_SIZE,
-    _3D_MIN_EXTENT,
-    _3D_PAN_BLEND,
-    LFE_UPMIX_ENABLED,
-    OVERALL_GAIN,
-    SURROUND_SPEAKER_MODE,
-    _2D_HEIGHT_BLEND,
+    MODE = 0,
+    _2D_STEREO_POSITION = 1,
+    _2D_DIRECTION = 2,
+    _2D_EXTENT = 3,
+    _2D_ROTATION = 4,
+    _2D_LFE_LEVEL = 5,
+    _2D_STEREO_MODE = 6,
+    _2D_STEREO_SEPARATION = 7,
+    _2D_STEREO_AXIS = 8,
+    ENABLED_SPEAKERS = 9,
+    _3D_POSITION = 10,
+    _3D_ROLLOFF = 11,
+    _3D_MIN_DISTANCE = 12,
+    _3D_MAX_DISTANCE = 13,
+    _3D_EXTENT_MODE = 14,
+    _3D_SOUND_SIZE = 15,
+    _3D_MIN_EXTENT = 16,
+    _3D_PAN_BLEND = 17,
+    LFE_UPMIX_ENABLED = 18,
+    OVERALL_GAIN = 19,
+    SURROUND_SPEAKER_MODE = 20,
+    _2D_HEIGHT_BLEND = 21,
   }
 
   /** Parameter values for the FMOD_DSP_PAN_2D_STEREO_MODE parameter
    *  of the FMOD_DSP_TYPE_PAN DSP. */
   export enum DSP_PAN_2D_STEREO_MODE_TYPE {
-    DISTRIBUTED,
-    DISCRETE,
+    DISTRIBUTED = 0,
+    DISCRETE = 1,
   }
 
   /** Parameter values for the FMOD_DSP_PAN_3D_EXTENT_MODE parameter
    * of the FMOD_DSP_TYPE_PAN DSP */
   export enum DSP_PAN_3D_EXTENT_MODE_TYPE {
-    AUTO,
-    USER,
-    OFF,
+    AUTO = 0,
+    USER = 1,
+    OFF = 2,
   }
 
   /** Parameter values for the FMOD_DSP_PAN_3D_ROLLOFF parameter of
    * the FMOD_DSP_TYPE_PAN DSP. */
   export enum DSP_PAN_3D_ROLLOFF_TYPE {
-    LINEARSQUARED,
-    LINEAR,
-    INVERSE,
-    INVERSETAPERED,
-    CUSTOM,
+    LINEARSQUARED = 0,
+    LINEAR = 1,
+    INVERSE = 2,
+    INVERSETAPERED = 3,
+    CUSTOM = 4,
   }
 
   /** Parameter values for the FMOD_DSP_PAN_MODE parameter of the
    * FMOD_DSP_TYPE_PAN DSP. */
   export enum DSP_PAN_MODE_TYPE {
-    MONO,
-    STEREO,
-    SURROUND,
+    MONO = 0,
+    STEREO = 1,
+    SURROUND = 2,
   }
 
   /** Flags for the FMOD_DSP_PAN_SUMSURROUNDMATRIX_FUNC function. */
   export enum DSP_PAN_SURROUND_FLAGS {
-    DEFAULT,
-    ROTATION_NOT_BIASED,
+    DEFAULT = 0,
+    ROTATION_NOT_BIASED = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_PARAMEQ filter. */
   export enum DSP_PARAMEQ {
-    CENTER,
-    BANDWIDTH,
-    GAIN,
+    CENTER = 0,
+    BANDWIDTH = 1,
+    GAIN = 2,
   }
 
   /** Built-in types for the 'datatype' member of FMOD_DSP_PARAMETER_DESC_DATA.
    * Data parameters of type other than FMOD_DSP_PARAMETER_DATA_TYPE_USER will be
    * treated specially by the system. */
   export enum DSP_PARAMETER_DATA_TYPE {
-    USER,
-    OVERALLGAIN,
-    _3DATTRIBUTES,
-    SIDECHAIN,
-    FFT,
-    _3DATTRIBUTES_MULTI,
+    USER = 0,
+    OVERALLGAIN = 1,
+    _3DATTRIBUTES = 2,
+    SIDECHAIN = 3,
+    FFT = 4,
+    _3DATTRIBUTES_MULTI = 5,
   }
 
   /** DSP float parameter mappings. These determine how values are mapped across
    * dials and automation curves. */
   export enum DSP_PARAMETER_FLOAT_MAPPING_TYPE {
-    LINEAR,
-    AUTO,
-    PIECEWISE_LINEAR,
+    LINEAR = 0,
+    AUTO = 1,
+    PIECEWISE_LINEAR = 2,
   }
 
   /** DSP parameter types */
   export enum DSP_PARAMETER_TYPE {
-    FLOAT,
-    INT,
-    BOOL,
-    DATA,
-    MAX,
+    FLOAT = 0,
+    INT = 1,
+    BOOL = 2,
+    DATA = 3,
+    MAX = 4,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_PITCHSHIFT filter */
   export enum DSP_PITCHSHIFT {
-    PITCH,
-    FFTSIZE,
-    OVERLAP,
-    MAXCHANNELS,
+    PITCH = 0,
+    FFTSIZE = 1,
+    OVERLAP = 2,
+    MAXCHANNELS = 3,
   }
 
   /** Operation type for FMOD_DSP_PROCESS_CALLBACK. */
   export enum DSP_PROCESS_OPERATION {
-    PERFORM,
-    QUERY,
+    PERFORM = 0,
+    QUERY = 1,
   }
 
   /** List of interpolation types that the FMOD Studio software mixer supports. */
   export enum DSP_RESAMPLER {
-    DEFAULT,
-    NOINTERP,
-    LINEAR,
-    CUBIC,
-    SPLINE,
-    MAX,
+    DEFAULT = 0,
+    NOINTERP = 1,
+    LINEAR = 2,
+    CUBIC = 3,
+    SPLINE = 4,
+    MAX = 5,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_RETURN */
   export enum DSP_RETURN {
-    ID,
-    INPUT_SPEAKER_MODE,
+    ID = 0,
+    INPUT_SPEAKER_MODE = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_SEND DSP. */
   export enum DSP_SEND {
-    RETURNID,
-    LEVEL,
+    RETURNID = 0,
+    LEVEL = 1,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_SFXREVERB unit. */
   export enum DSP_SFXREVERB {
-    DECAYTIME,
-    EARLYDELAY,
-    LATEDELAY,
-    HFREFERENCE,
-    HFDECAYRATIO,
-    DIFFUSION,
-    DENSITY,
-    LOWSHELFFREQUENCY,
-    LOWSHELFGAIN,
-    HIGHCUT,
-    EARLYLATEMIX,
-    WETLEVEL,
-    DRYLEVEL,
+    DECAYTIME = 0,
+    EARLYDELAY = 1,
+    LATEDELAY = 2,
+    HFREFERENCE = 3,
+    HFDECAYRATIO = 4,
+    DIFFUSION = 5,
+    DENSITY = 6,
+    LOWSHELFFREQUENCY = 7,
+    LOWSHELFGAIN = 8,
+    HIGHCUT = 9,
+    EARLYLATEMIX = 10,
+    WETLEVEL = 11,
+    DRYLEVEL = 12,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_THREE_EQ filter. */
   export enum DSP_THREE_EQ {
-    LOWGAIN,
-    MIDGAIN,
-    HIGHGAIN,
-    LOWCROSSOVER,
-    HIGHCROSSOVER,
-    CROSSOVERSLOPE,
+    LOWGAIN = 0,
+    MIDGAIN = 1,
+    HIGHGAIN = 2,
+    LOWCROSSOVER = 3,
+    HIGHCROSSOVER = 4,
+    CROSSOVERSLOPE = 5,
   }
 
   /** Parameter values for the FMOD_DSP_THREE_EQ_CROSSOVERSLOPE parameter
    * of the FMOD_DSP_TYPE_THREE_EQ DSP. */
   export enum DSP_THREE_EQ_CROSSOVERSLOPE_TYPE {
-    _12DB,
-    _24DB,
-    _48DB,
+    _12DB = 0,
+    _24DB = 1,
+    _48DB = 2,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_TRANSCEIVER filter */
   export enum DSP_TRANSCEIVER {
-    TRANSMIT,
-    GAIN,
-    CHANNEL,
-    TRANSMITSPEAKERMODE,
+    TRANSMIT = 0,
+    GAIN = 1,
+    CHANNEL = 2,
+    TRANSMITSPEAKERMODE = 3,
   }
 
   /** Parameter types for the FMOD_DSP_TRANSCEIVER_SPEAKERMODE parameter for
    * FMOD_DSP_TYPE_TRANSCEIVER effect. */
   export enum DSP_TRANSCEIVER_SPEAKERMODE {
-    AUTO,
-    MONO,
-    STEREO,
-    SURROUND,
+    AUTO = 0,
+    MONO = 1,
+    STEREO = 2,
+    SURROUND = 3,
   }
 
   /** Parameter types for the FMOD_DSP_TYPE_TREMOLO filter. */
   export enum DSP_TREMOLO {
-    FREQUENCY,
-    DEPTH,
-    SHAPE,
-    SKEW,
-    DUTY,
-    SQUARE,
-    PHASE,
-    SPREAD,
+    FREQUENCY = 0,
+    DEPTH = 1,
+    SHAPE = 2,
+    SKEW = 3,
+    DUTY = 4,
+    SQUARE = 5,
+    PHASE = 6,
+    SPREAD = 7,
   }
   /** These definitions can be used for creating FMOD defined special effects
    * or DSP units. */
   export enum DSP_TYPE {
-    UNKNOWN,
-    MIXER,
-    OSCILLATOR,
-    LOWPASS,
-    ITLOWPASS,
-    HIGHPASS,
-    ECHO,
-    FADER,
-    FLANGE,
-    DISTORTION,
-    NORMALIZE,
-    LIMITER,
-    PARAMEQ,
-    PITCHSHIFT,
-    CHORUS,
-    VSTPLUGIN,
-    WINAMPPLUGIN,
-    ITECHO,
-    COMPRESSOR,
-    SFXREVERB,
-    LOWPASS_SIMPLE,
-    DELAY,
-    TREMOLO,
-    LADSPAPLUGIN,
-    SEND,
-    RETURN,
-    HIGHPASS_SIMPLE,
-    PAN,
-    THREE_EQ,
-    FFT,
-    LOUDNESS_METER,
-    ENVELOPEFOLLOWER,
-    CONVOLUTIONREVERB,
-    CHANNELMIX,
-    TRANSCEIVER,
-    OBJECTPAN,
-    MULTIBAND_EQ,
-    MAX,
+    UNKNOWN = 0,
+    MIXER = 1,
+    OSCILLATOR = 2,
+    LOWPASS = 3,
+    ITLOWPASS = 4,
+    HIGHPASS = 5,
+    ECHO = 6,
+    FADER = 7,
+    FLANGE = 8,
+    DISTORTION = 9,
+    NORMALIZE = 10,
+    LIMITER = 11,
+    PARAMEQ = 12,
+    PITCHSHIFT = 13,
+    CHORUS = 14,
+    VSTPLUGIN = 15,
+    WINAMPPLUGIN = 16,
+    ITECHO = 17,
+    COMPRESSOR = 18,
+    SFXREVERB = 19,
+    LOWPASS_SIMPLE = 20,
+    DELAY = 21,
+    TREMOLO = 22,
+    LADSPAPLUGIN = 23,
+    SEND = 24,
+    RETURN = 25,
+    HIGHPASS_SIMPLE = 26,
+    PAN = 27,
+    THREE_EQ = 28,
+    FFT = 29,
+    LOUDNESS_METER = 30,
+    ENVELOPEFOLLOWER = 31,
+    CONVOLUTIONREVERB = 32,
+    CHANNELMIX = 33,
+    TRANSCEIVER = 34,
+    OBJECTPAN = 35,
+    MULTIBAND_EQ = 36,
+    MAX = 37,
   }
 
   /** Used to distinguish the instance type passed into FMOD_ERROR_CALLBACK */
   export enum ERRORCALLBACK_INSTANCETYPE {
-    NONE,
-    SYSTEM,
-    CHANNEL,
-    CHANNELGROUP,
-    CHANNELCONTROL,
-    SOUND,
-    SOUNDGROUP,
-    DSP,
-    DSPCONNECTION,
-    GEOMETRY,
-    REVERB3D,
-    STUDIO_SYSTEM,
-    STUDIO_EVENTDESCRIPTION,
-    STUDIO_EVENTINSTANCE,
-    STUDIO_PARAMETERINSTANCE,
-    STUDIO_BUS,
-    STUDIO_VCA,
-    STUDIO_BANK,
-    STUDIO_COMMANDREPLAY,
+    NONE = 0,
+    SYSTEM = 1,
+    CHANNEL = 2,
+    CHANNELGROUP = 3,
+    CHANNELCONTROL = 4,
+    SOUND = 5,
+    SOUNDGROUP = 6,
+    DSP = 7,
+    DSPCONNECTION = 8,
+    GEOMETRY = 9,
+    REVERB3D = 10,
+    STUDIO_SYSTEM = 11,
+    STUDIO_EVENTDESCRIPTION = 12,
+    STUDIO_EVENTINSTANCE = 13,
+    STUDIO_PARAMETERINSTANCE = 14,
+    STUDIO_BUS = 15,
+    STUDIO_VCA = 16,
+    STUDIO_BANK = 17,
+    STUDIO_COMMANDREPLAY = 18,
   }
 
   /** These values describe what state a sound is in after FMOD_NONBLOCKING
    *  has been used to open it. */
   export enum OPENSTATE {
-    READY,
-    LOADING,
-    ERROR,
-    CONNECTING,
-    BUFFERING,
-    SEEKING,
-    PLAYING,
-    SETPOSITION,
-    MAX,
+    READY = 0,
+    LOADING = 1,
+    ERROR = 2,
+    CONNECTING = 3,
+    BUFFERING = 4,
+    SEEKING = 5,
+    PLAYING = 6,
+    SETPOSITION = 7,
+    MAX = 8,
   }
 
   /** These output types are used with System::setOutput / System::getOutput,
    * to choose which output method to use. */
   export enum OUTPUTTYPE {
-    AUTODETECT,
-    UNKNOWN,
-    NOSOUND,
-    WAVWRITER,
-    NOSOUND_NRT,
-    WAVWRITER_NRT,
-    DSOUND,
-    WINMM,
-    WASAPI,
-    ASIO,
-    PULSEAUDIO,
-    ALSA,
-    COREAUDIO,
-    XAUDIO,
-    PS3,
-    AUDIOTRACK,
-    OPENSL,
-    WIIU,
-    AUDIOOUT,
-    AUDIO3D,
-    ATMOS,
-    WEBAUDIO,
-    NNAUDIO,
-    WINSONIC,
-    MAX,
+    AUTODETECT = 0,
+    UNKNOWN = 1,
+    NOSOUND = 2,
+    WAVWRITER = 3,
+    NOSOUND_NRT = 4,
+    WAVWRITER_NRT = 5,
+    DSOUND = 6,
+    WINMM = 7,
+    WASAPI = 8,
+    ASIO = 9,
+    PULSEAUDIO = 10,
+    ALSA = 11,
+    COREAUDIO = 12,
+    XAUDIO = 13,
+    PS3 = 14,
+    AUDIOTRACK = 15,
+    OPENSL = 16,
+    WIIU = 17,
+    AUDIOOUT = 18,
+    AUDIO3D = 19,
+    ATMOS = 20,
+    WEBAUDIO = 21,
+    NNAUDIO = 22,
+    WINSONIC = 23,
+    MAX = 24,
   }
 
   /** These are plugin types defined for use with the System::getNumPlugins,
    * System::getPluginInfo and System::unloadPlugin functions. */
   export enum PLUGINTYPE {
-    OUTPUT,
-    CODEC,
-    DSP,
-    MAX,
+    OUTPUT = 0,
+    CODEC = 1,
+    DSP = 2,
+    MAX = 3,
   }
 
   /** Error codes. Returned from every function. */
   export enum RESULT {
-    OK,
-    ERR_BADCOMMAND,
-    ERR_CHANNEL_ALLOC,
-    ERR_CHANNEL_STOLEN,
-    ERR_DMA,
-    ERR_DSP_CONNECTION,
-    ERR_DSP_DONTPROCESS,
-    ERR_DSP_FORMAT,
-    ERR_DSP_INUSE,
-    ERR_DSP_NOTFOUND,
-    ERR_DSP_RESERVED,
-    ERR_DSP_SILENCE,
-    ERR_DSP_TYPE,
-    ERR_FILE_BAD,
-    ERR_FILE_COULDNOTSEEK,
-    ERR_FILE_DISKEJECTED,
-    ERR_FILE_EOF,
-    ERR_FILE_ENDOFDATA,
-    ERR_FILE_NOTFOUND,
-    ERR_FORMAT,
-    ERR_HEADER_MISMATCH,
-    ERR_HTTP,
-    ERR_HTTP_ACCESS,
-    ERR_HTTP_PROXY_AUTH,
-    ERR_HTTP_SERVER_ERROR,
-    ERR_HTTP_TIMEOUT,
-    ERR_INITIALIZATION,
-    ERR_INITIALIZED,
-    ERR_INTERNAL,
-    ERR_INVALID_FLOAT,
-    ERR_INVALID_HANDLE,
-    ERR_INVALID_PARAM,
-    ERR_INVALID_POSITION,
-    ERR_INVALID_SPEAKER,
-    ERR_INVALID_SYNCPOINT,
-    ERR_INVALID_THREAD,
-    ERR_INVALID_VECTOR,
-    ERR_MAXAUDIBLE,
-    ERR_MEMORY,
-    ERR_MEMORY_CANTPOINT,
-    ERR_NEEDS3D,
-    ERR_NEEDSHARDWARE,
-    ERR_NET_CONNECT,
-    ERR_NET_SOCKET_ERROR,
-    ERR_NET_URL,
-    ERR_NET_WOULD_BLOCK,
-    ERR_NOTREADY,
-    ERR_OUTPUT_ALLOCATED,
-    ERR_OUTPUT_CREATEBUFFER,
-    ERR_OUTPUT_DRIVERCALL,
-    ERR_OUTPUT_FORMAT,
-    ERR_OUTPUT_INIT,
-    ERR_OUTPUT_NODRIVERS,
-    ERR_PLUGIN,
-    ERR_PLUGIN_MISSING,
-    ERR_PLUGIN_RESOURCE,
-    ERR_PLUGIN_VERSION,
-    ERR_RECORD,
-    ERR_REVERB_CHANNELGROUP,
-    ERR_REVERB_INSTANCE,
-    ERR_SUBSOUNDS,
-    ERR_SUBSOUND_ALLOCATED,
-    ERR_SUBSOUND_CANTMOVE,
-    ERR_TAGNOTFOUND,
-    ERR_TOOMANYCHANNELS,
-    ERR_TRUNCATED,
-    ERR_UNIMPLEMENTED,
-    ERR_UNINITIALIZED,
-    ERR_UNSUPPORTED,
-    ERR_VERSION,
-    ERR_EVENT_ALREADY_LOADED,
-    ERR_EVENT_LIVEUPDATE_BUSY,
-    ERR_EVENT_LIVEUPDATE_MISMATCH,
-    ERR_EVENT_LIVEUPDATE_TIMEOUT,
-    ERR_EVENT_NOTFOUND,
-    ERR_STUDIO_UNINITIALIZED,
-    ERR_STUDIO_NOT_LOADED,
-    ERR_INVALID_STRING,
-    ERR_ALREADY_LOCKED,
-    ERR_NOT_LOCKED,
-    ERR_RECORD_DISCONNECTED,
-    ERR_TOOMANYSAMPLES,
+    OK = 0,
+    ERR_BADCOMMAND = 1,
+    ERR_CHANNEL_ALLOC = 2,
+    ERR_CHANNEL_STOLEN = 3,
+    ERR_DMA = 4,
+    ERR_DSP_CONNECTION = 5,
+    ERR_DSP_DONTPROCESS = 6,
+    ERR_DSP_FORMAT = 7,
+    ERR_DSP_INUSE = 8,
+    ERR_DSP_NOTFOUND = 9,
+    ERR_DSP_RESERVED = 10,
+    ERR_DSP_SILENCE = 11,
+    ERR_DSP_TYPE = 12,
+    ERR_FILE_BAD = 13,
+    ERR_FILE_COULDNOTSEEK = 14,
+    ERR_FILE_DISKEJECTED = 15,
+    ERR_FILE_EOF = 16,
+    ERR_FILE_ENDOFDATA = 17,
+    ERR_FILE_NOTFOUND = 18,
+    ERR_FORMAT = 19,
+    ERR_HEADER_MISMATCH = 20,
+    ERR_HTTP = 21,
+    ERR_HTTP_ACCESS = 22,
+    ERR_HTTP_PROXY_AUTH = 23,
+    ERR_HTTP_SERVER_ERROR = 24,
+    ERR_HTTP_TIMEOUT = 25,
+    ERR_INITIALIZATION = 26,
+    ERR_INITIALIZED = 27,
+    ERR_INTERNAL = 28,
+    ERR_INVALID_FLOAT = 29,
+    ERR_INVALID_HANDLE = 30,
+    ERR_INVALID_PARAM = 31,
+    ERR_INVALID_POSITION = 32,
+    ERR_INVALID_SPEAKER = 33,
+    ERR_INVALID_SYNCPOINT = 34,
+    ERR_INVALID_THREAD = 35,
+    ERR_INVALID_VECTOR = 36,
+    ERR_MAXAUDIBLE = 37,
+    ERR_MEMORY = 38,
+    ERR_MEMORY_CANTPOINT = 39,
+    ERR_NEEDS3D = 40,
+    ERR_NEEDSHARDWARE = 41,
+    ERR_NET_CONNECT = 42,
+    ERR_NET_SOCKET_ERROR = 43,
+    ERR_NET_URL = 44,
+    ERR_NET_WOULD_BLOCK = 45,
+    ERR_NOTREADY = 46,
+    ERR_OUTPUT_ALLOCATED = 47,
+    ERR_OUTPUT_CREATEBUFFER = 48,
+    ERR_OUTPUT_DRIVERCALL = 49,
+    ERR_OUTPUT_FORMAT = 50,
+    ERR_OUTPUT_INIT = 51,
+    ERR_OUTPUT_NODRIVERS = 52,
+    ERR_PLUGIN = 53,
+    ERR_PLUGIN_MISSING = 54,
+    ERR_PLUGIN_RESOURCE = 55,
+    ERR_PLUGIN_VERSION = 56,
+    ERR_RECORD = 57,
+    ERR_REVERB_CHANNELGROUP = 58,
+    ERR_REVERB_INSTANCE = 59,
+    ERR_SUBSOUNDS = 60,
+    ERR_SUBSOUND_ALLOCATED = 61,
+    ERR_SUBSOUND_CANTMOVE = 62,
+    ERR_TAGNOTFOUND = 63,
+    ERR_TOOMANYCHANNELS = 64,
+    ERR_TRUNCATED = 65,
+    ERR_UNIMPLEMENTED = 66,
+    ERR_UNINITIALIZED = 67,
+    ERR_UNSUPPORTED = 68,
+    ERR_VERSION = 69,
+    ERR_EVENT_ALREADY_LOADED = 70,
+    ERR_EVENT_LIVEUPDATE_BUSY = 71,
+    ERR_EVENT_LIVEUPDATE_MISMATCH = 72,
+    ERR_EVENT_LIVEUPDATE_TIMEOUT = 73,
+    ERR_EVENT_NOTFOUND = 74,
+    ERR_STUDIO_UNINITIALIZED = 75,
+    ERR_STUDIO_NOT_LOADED = 76,
+    ERR_INVALID_STRING = 77,
+    ERR_ALREADY_LOCKED = 78,
+    ERR_NOT_LOCKED = 79,
+    ERR_RECORD_DISCONNECTED = 80,
+    ERR_TOOMANYSAMPLES = 81,
   }
 
   /** These values are used with SoundGroup::setMaxAudibleBehavior to determine
    *  what happens when more sounds are played than are specified with
    *  SoundGroup::setMaxAudible. */
   export enum SOUNDGROUP_BEHAVIOR {
-    FAIL,
-    MUTE,
-    STEALLOWEST,
-    MAX,
-    FORCEINT,
+    FAIL = 0,
+    MUTE = 1,
+    STEALLOWEST = 2,
+    MAX = 3,
+    FORCEINT = 4,
   }
 
   /** These definitions describe the native format of the hardware or software
    * buffer that will be used */
   export enum SOUND_FORMAT {
-    NONE,
-    PCM8,
-    PCM16,
-    PCM24,
-    PCM32,
-    PCMFLOAT,
-    BITSTREAM,
-    MAX,
-    FORCEINT,
+    NONE = 0,
+    PCM8 = 1,
+    PCM16 = 2,
+    PCM24 = 3,
+    PCM32 = 4,
+    PCMFLOAT = 5,
+    BITSTREAM = 6,
+    MAX = 7,
+    FORCEINT = 8,
   }
 
   /** These definitions describe the type of sound being played */
   export enum SOUND_TYPE {
-    UNKNOWN,
-    AIFF,
-    ASF,
-    DLS,
-    FLAC,
-    FSB,
-    IT,
-    MIDI,
-    MOD,
-    MPEG,
-    OGGVORBIS,
-    PLAYLIST,
-    RAW,
-    S3M,
-    USER,
-    WAV,
-    XM,
-    XMA,
-    AUDIOQUEUE,
-    AT9,
-    VORBIS,
-    MEDIA_FOUNDATION,
-    MEDIACODEC,
-    FADPCM,
-    MAX,
+    UNKNOWN = 0,
+    AIFF = 1,
+    ASF = 2,
+    DLS = 3,
+    FLAC = 4,
+    FSB = 5,
+    IT = 6,
+    MIDI = 7,
+    MOD = 8,
+    MPEG = 9,
+    OGGVORBIS = 10,
+    PLAYLIST = 11,
+    RAW = 12,
+    S3M = 13,
+    USER = 14,
+    WAV = 15,
+    XM = 16,
+    XMA = 17,
+    AUDIOQUEUE = 18,
+    AT9 = 19,
+    VORBIS = 20,
+    MEDIA_FOUNDATION = 21,
+    MEDIACODEC = 22,
+    FADPCM = 23,
+    MAX = 24,
   }
 
   /** Assigns an enumeration for a speaker index. */
   export enum SPEAKER {
-    FRONT_LEFT,
-    FRONT_RIGHT,
-    FRONT_CENTER,
-    LOW_FREQUENCY,
-    SURROUND_LEFT,
-    SURROUND_RIGHT,
-    BACK_LEFT,
-    BACK_RIGHT,
-    TOP_FRONT_LEFT,
-    TOP_FRONT_RIGHT,
-    TOP_BACK_LEFT,
-    TOP_BACK_RIGHT,
-    MAX,
+    FRONT_LEFT = 0,
+    FRONT_RIGHT = 1,
+    FRONT_CENTER = 2,
+    LOW_FREQUENCY = 3,
+    SURROUND_LEFT = 4,
+    SURROUND_RIGHT = 5,
+    BACK_LEFT = 6,
+    BACK_RIGHT = 7,
+    TOP_FRONT_LEFT = 8,
+    TOP_FRONT_RIGHT = 9,
+    TOP_BACK_LEFT = 10,
+    TOP_BACK_RIGHT = 11,
+    MAX = 12,
   }
 
   /** These are speaker types defined for use with the System::setSoftwareFormat command */
   export enum SPEAKERMODE {
-    DEFAULT,
-    RAW,
-    MONO,
-    STEREO,
-    QUAD,
-    SURROUND,
-    _5POINT1,
-    _7POINT1,
-    _7POINT1POINT4,
-    MAX,
+    DEFAULT = 0,
+    RAW = 1,
+    MONO = 2,
+    STEREO = 3,
+    QUAD = 4,
+    SURROUND = 5,
+    _5POINT1 = 6,
+    _7POINT1 = 7,
+    _7POINT1POINT4 = 8,
+    MAX = 9,
   }
 
   /** List of data types that can be returned by Sound::getTag  */
   export enum TAGDATATYPE {
-    BINARY,
-    INT,
-    FLOAT,
-    STRING,
-    STRING_UTF16,
-    STRING_UTF16BE,
-    STRING_UTF8,
-    CDTOC,
-    MAX,
+    BINARY = 0,
+    INT = 1,
+    FLOAT = 2,
+    STRING = 3,
+    STRING_UTF16 = 4,
+    STRING_UTF16BE = 5,
+    STRING_UTF8 = 6,
+    CDTOC = 7,
+    MAX = 8,
   }
 
   /** List of tag types that could be stored within a sound.
    * These include id3 tags, metadata from netstreams and vorbis/asf data. */
   export enum TAGTYPE {
-    UNKNOWN,
-    ID3V1,
-    ID3V2,
-    VORBISCOMMENT,
-    SHOUTCAST,
-    ICECAST,
-    ASF,
-    MIDI,
-    PLAYLIST,
-    FMOD,
-    USER,
-    MAX,
+    UNKNOWN = 0,
+    ID3V1 = 1,
+    ID3V2 = 2,
+    VORBISCOMMENT = 3,
+    SHOUTCAST = 4,
+    ICECAST = 5,
+    ASF = 6,
+    MIDI = 7,
+    PLAYLIST = 8,
+    FMOD = 9,
+    USER = 10,
+    MAX = 11,
   }
   // #endregion LOW LEVEL SYSTEM ENUMERATIONS
 
@@ -5318,53 +5318,53 @@ Also defines the number of channels in the unit that a read callback will proces
   // #region Studio Enumerations //////////////////////////////////////////////////////
 
   export enum STUDIO_EVENT_PROPERTY {
-    CHANNELPRIORITY,
+    CHANNELPRIORITY = 0,
     /** Priority to set on low-level channels created by this event instance (-1 to 256).  */
-    SCHEDULE_DELAY,
+    SCHEDULE_DELAY = 1,
     /** Schedule look-ahead on the timeline in DSP clocks, or -1 for default. */
-    SCHEDULE_LOOKAHEAD,
+    SCHEDULE_LOOKAHEAD = 2,
     /** Override the event's 3D minimum distance, or -1 for default.  */
-    MINIMUM_DISTANCE,
+    MINIMUM_DISTANCE = 3,
     /**  Override the event's 3D maximum distance, or -1 for default. */
-    MAXIMUM_DISTANCE,
+    MAXIMUM_DISTANCE = 4,
     /** Maximum number of event properties supported. */
-    MAX,
+    MAX = 5,
   }
 
   /**  */
   export enum STUDIO_INSTANCETYPE {
-    NONE,
-    SYSTEM,
-    EVENTDESCRIPTION,
-    EVENTINSTANCE,
-    PARAMETERINSTANCE,
-    BUS,
-    VCA,
-    BANK,
-    COMMANDREPLAY,
+    NONE = 0,
+    SYSTEM = 1,
+    EVENTDESCRIPTION = 2,
+    EVENTINSTANCE = 3,
+    PARAMETERINSTANCE = 4,
+    BUS = 5,
+    VCA = 6,
+    BANK = 7,
+    COMMANDREPLAY = 8,
   }
 
   /** These values describe the loading status of various objects.  */
   export enum STUDIO_LOADING_STATE {
     /** Currently unloading */
-    UNLOADING,
+    UNLOADING = 0,
     /** Not loaded */
-    UNLOADED,
+    UNLOADED = 1,
     /** Loading in progress */
-    LOADING,
+    LOADING = 2,
     /** Loaded and ready to play */
-    LOADED,
+    LOADED = 3,
     /** Failed to load and is now in error state */
-    ERROR,
+    ERROR = 4,
   }
 
   /** Specifies how to use the memory buffer passed to Studio::System::loadBankMemory. */
   export enum STUDIO_LOAD_MEMORY_MODE {
     /** Duplicates the memory into its own buffers, memory can be freed after Studio::System::loadBankMemory returns.  */
-    MEMORY,
+    MEMORY = 0,
     /** Copies the memory pointer without duplicating the memory into its own buffers,
      * memory can be freed after receiving a FMOD_STUDIO_SYSTEM_CALLBACK_BANK_UNLOAD callback.  */
-    MEMORY_POINT,
+    MEMORY_POINT = 1,
   }
   export interface STUDIO_PARAMETER_ID {
     /**
@@ -5379,21 +5379,21 @@ Also defines the number of channels in the unit that a read callback will proces
   /** Describes the type of a parameter. */
   export enum STUDIO_PARAMETER_TYPE {
     /** Controlled via the API using Studio::EventInstance::setParameterValue.  */
-    GAME_CONTROLLED,
+    GAME_CONTROLLED = 0,
     /** Distance between the event and the listener.  */
-    AUTOMATIC_DISTANCE,
+    AUTOMATIC_DISTANCE = 1,
     /** Angle between the event's forward vector and the vector pointing from the event to the listener (0 to 180 degrees).  */
-    AUTOMATIC_EVENT_CONE_ANGLE,
+    AUTOMATIC_EVENT_CONE_ANGLE = 2,
     /** Horizontal angle between the event's forward vector and listener's forward vector (-180 to 180 degrees).  */
-    AUTOMATIC_EVENT_ORIENTATION,
+    AUTOMATIC_EVENT_ORIENTATION = 3,
     /** Horizontal angle between the listener's forward vector and the vector pointing from the listener to the event (-180 to 180 degrees).  */
-    AUTOMATIC_DIRECTION,
+    AUTOMATIC_DIRECTION = 4,
     /** Angle between the listener's XZ plane and the vector pointing from the listener to the event (-90 to 90 degrees).  */
-    AUTOMATIC_ELEVATION,
+    AUTOMATIC_ELEVATION = 5,
     /** Horizontal angle between the listener's forward vector and the global positive Z axis (-180 to 180 degrees).  */
-    AUTOMATIC_LISTENER_ORIENTATION,
+    AUTOMATIC_LISTENER_ORIENTATION = 6,
     /** Maximum number of parameter types supported */
-    MAX,
+    MAX = 7,
   }
 
   export enum STUDIO_PARAMETER_FLAGS {
@@ -5406,30 +5406,30 @@ Also defines the number of channels in the unit that a read callback will proces
   /** These values describe the playback state of an event instance. */
   export enum STUDIO_PLAYBACK_STATE {
     /** Currently playing. */
-    PLAYING,
+    PLAYING = 0,
     /** The timeline cursor is paused on a sustain point. */
-    SUSTAINING,
+    SUSTAINING = 1,
     /** Not playing.  */
-    STOPPED,
+    STOPPED = 2,
     /** Start has been called but the instance is not fully started yet.  */
-    STARTING,
+    STARTING = 3,
     /** Stop has been called but the instance is not fully stopped yet. */
-    STOPPING,
+    STOPPING = 4,
   }
 
   /** Controls how to stop playback of an event instance. */
   export enum STUDIO_STOP_MODE {
     /** Allows AHDSR modulators to complete their release, and DSP effect tails to play out. */
-    ALLOWFADEOUT,
+    ALLOWFADEOUT = 0,
     /** Stops the event instance immediately.  */
-    IMMEDIATE,
+    IMMEDIATE = 1,
   }
 
   /** These definitions describe a user property's type. */
   export enum STUDIO_USER_PROPERTY_TYPE {
-    INTEGER,
-    BOOLEAN,
-    FLOAT,
-    STRING,
+    INTEGER = 0,
+    BOOLEAN = 1,
+    FLOAT = 2,
+    STRING = 3,
   }
 }
