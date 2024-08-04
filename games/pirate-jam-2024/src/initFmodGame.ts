@@ -1,6 +1,7 @@
 import type Phaser from 'phaser'
 import { Game } from 'phaser'
 import FMODModule from '../lib/fmod/fmodstudio'
+import { FMOD } from '../lib/fmod/types'
 require('url:../lib/fmod/fmodstudio.js.mem') // Important for fmod to function
 
 /*** FMOD setup ***/
