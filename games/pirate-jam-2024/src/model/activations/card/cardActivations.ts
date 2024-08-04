@@ -572,12 +572,13 @@ export class FeedActivation implements CardActivation, DynamicDescriptionHolder 
   }
 }
 
-export class QueueActivation implements CardActivation, StaticDescriptionHolder {
-  private readonly activation: QueuedTargettedActivation<CardModel>
+export class QueueActivation extends CardActivation implements StaticDescriptionHolder {
+  private readonly activation: QueuedTargettedActivation<ActivationContextSingleCard>
   private readonly eventSink: EventSink<BoardSupportedEvents>
   readonly description: string
 
-  constructor(activation: QueuedTargettedActivation<CardModel>) {
+  constructor(activation: QueuedTargettedActivation<ActivationContextSingleCard>) {
+    super()
     this.eventSink = EventEmitters.boardEventEmitter
     this.activation = activation
     this.description = activation.description ?? ''
@@ -592,10 +593,11 @@ export class QueueActivation implements CardActivation, StaticDescriptionHolder 
   }
 }
 
-export class SetActiveCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class SetActiveCardActivation extends CardActivation {
   private active: boolean
 
   constructor(active: boolean) {
+    super()
     this.active = active
   }
 
@@ -608,13 +610,14 @@ export class SetActiveCardActivation implements CardActivation, DynamicDescripti
   }
 }
 
-export class StartEventActivation implements CardActivation, DynamicDescriptionHolder {
+export class StartEventActivation extends CardActivation {
   private readonly eventId: EventId
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
-  constructor(eventId: EventId, eventSink: EventSink<BoardSupportedEvents>) {
+  constructor(eventId: EventId) {
+    super()
     this.eventId = eventId
-    this.eventSink = eventSink
+    this.eventSink = EventEmitters.eventViewEmitter
   }
 
   activate(context: ActivationContext) {

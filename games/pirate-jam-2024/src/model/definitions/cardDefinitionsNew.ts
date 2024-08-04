@@ -1,6 +1,5 @@
-import {
+import type {
   AbstractTargettedActivation, AbstractTargettedAsyncActivation,
-  DescribedTargettedAsyncMultiplexActivation,
   EventSink,
   ReasonedPrecondition, TargettedActivation, TargettedAsyncActivation,
   TargettedReasonedPrecondition,
