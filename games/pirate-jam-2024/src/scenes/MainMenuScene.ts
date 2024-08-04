@@ -6,7 +6,7 @@ import type { MusicScene } from './MusicScene'
 import { Scenes } from './SceneRegistry'
 import Container = Phaser.GameObjects.Container
 import { ButtonListBuilder } from '../builders/ButtonListBuilder'
-import { FMODStudio } from '..'
+import { FMODStudio } from '../initFmodGame'
 
 export class MainMenuScene extends PotatoScene {
   private buttons: Container[] = []
@@ -129,10 +129,10 @@ export class MainMenuScene extends PotatoScene {
     //other
     this.load.image(ImageRegistry.CHAT_BUBBLE, require('../../assets/img/chat_bubble.png'))
 
-    const musicDesc = {val: null}
-    const music = {val: null}
+    const musicDesc = { val: null }
+    const music = { val: null }
 
-    console.log(FMODStudio.getEvent('event:/board_theme', musicDesc))
+    console.log(FMODStudio.getEvent('event:/Music/main_menu_theme', musicDesc))
     musicDesc.val.createInstance(music)
 
     this.music = music.val
@@ -247,6 +247,11 @@ export class MainMenuScene extends PotatoScene {
     })
 
     this.music.start()
+
+    setTimeout(() => {
+      console.log('Release')
+      // this.music.stop()
+    }, 3000)
   }
 
   centerButtonList(buttonList: ButtonListBuilder, buttonCount: number, spacingOffsetY = 0) {
@@ -258,9 +263,5 @@ export class MainMenuScene extends PotatoScene {
     )
 
      */
-  }
-
-  update() {
-    // FMODStudio.update()
   }
 }

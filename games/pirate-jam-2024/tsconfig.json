@@ -10,5 +10,6 @@
     },
     "skipLibCheck": true
   },
-  "exclude": ["vitest.config.mts"]
+  "exclude": ["vitest.config.mts"],
+  "include": ["src/**/*", "lib/**/*"]
 }
