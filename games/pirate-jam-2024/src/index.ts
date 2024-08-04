@@ -1,4 +1,7 @@
-import { initFmodGame } from './initFmodGame'
+import { Game } from 'phaser'
+import type { FMOD } from '../lib/fmod/types'
+import { AudioSystem } from './core/AudioSystem'
+import { initFmod } from './initFmod'
 import { instantiateContainer } from './model/diConfig'
 
 const GameResolutions = {
@@ -25,4 +28,10 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [container.cradle.mainMenuScene, container.cradle.boardScene, container.cradle.musicScene],
 }
 
-initFmodGame(config)
+export let game: Phaser.Game
+export let audioSystem: AudioSystem
+
+initFmod((fmodStudio: FMOD.StudioSystem) => {
+  game = new Game(config)
+  audioSystem = new AudioSystem(game, fmodStudio)
+})

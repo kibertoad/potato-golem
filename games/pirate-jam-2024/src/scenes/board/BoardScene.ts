@@ -31,7 +31,6 @@ import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../model/registries/imageRegistry'
 import type { Zone } from '../../model/registries/zoneRegistry'
-import type { MusicScene } from '../MusicScene'
 import { EventView } from './views/EventView'
 
 export type BoardSupportedEvents =
@@ -47,6 +46,7 @@ export type BoardSupportedEvents =
   | 'SPAWN_ID'
 
 import { TextBuilder } from '@potato-golem/ui'
+import { audioSystem } from '../..'
 import {
   AlcoholismActivation,
   EvolutionActivation,
@@ -60,6 +60,7 @@ import { EventDirector } from '../../model/processors/EventDirector'
 import type { CardId } from '../../model/registries/cardRegistry'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EventEmitters } from '../../model/registries/eventEmitterRegistry'
+import { MusicEventRegistry } from '../../model/registries/musicEventRegistry'
 import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
@@ -68,7 +69,6 @@ import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 const debug = true
 
 export class BoardScene extends PotatoScene {
-  private readonly musicScene: MusicScene
   private readonly worldModel: WorldModel
 
   private globalPositionLabel: Phaser.GameObjects.Text
@@ -95,10 +95,9 @@ export class BoardScene extends PotatoScene {
 
   private readonly eventSink: EventSink<BoardSupportedEvents> & EventSource<BoardSupportedEvents>
 
-  constructor({ musicScene, worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ worldModel, endTurnProcessor }: Dependencies) {
     super(Scenes.BOARD_SCENE)
 
-    this.musicScene = musicScene
     this.worldModel = worldModel
 
     this.eventSink = EventEmitters.boardEventEmitter
@@ -549,7 +548,7 @@ export class BoardScene extends PotatoScene {
 
     this.add.existing(container)
 
-    this.musicScene.playGameOver()
+    audioSystem.playMusic(MusicEventRegistry.GAME_OVER)
 
     this.tweens.add({
       targets: backdrop,
@@ -661,6 +660,6 @@ export class BoardScene extends PotatoScene {
     this.worldModel.homunculusModel.eventSink.on('DEATH', () => {
       this.gameOver('Homunculus\nis dead')
     })
-    this.musicScene.playBoardTheme()
+    audioSystem.playMusic(MusicEventRegistry.BOARD_THEME)
   }
 }

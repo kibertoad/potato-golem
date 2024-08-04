@@ -1,5 +1,3 @@
-import type Phaser from 'phaser'
-import { Game } from 'phaser'
 import FMODModule from '../lib/fmod/fmodstudio'
 import { FMOD } from '../lib/fmod/types'
 require('url:../lib/fmod/fmodstudio.js.mem') // Important for fmod to function
@@ -29,22 +27,15 @@ const fmod: FMOD = {
   },
 }
 
-// Exporting FMOD so as to have it around as a global object
-export let FMODStudio: FMOD.StudioSystem = null
-export let FMODStudioCore: FMOD.System = null
-
-export const initFmodGame = (gameConfig: Phaser.Types.Core.GameConfig) => {
+export const initFmod = (onInitialized: (fmodStudio: FMOD.StudioSystem) => void) => {
   fmod['onRuntimeInitialized'] = () => {
     const out = { val: null }
 
     fmod.Studio_System_Create(out)
-    FMODStudio = out.val
-
-    FMODStudio.getCoreSystem(out)
-    FMODStudioCore = out.val
+    const fmodStudio: FMOD.StudioSystem = out.val
 
     // More advanced settings to tweak the memory gestion
-    FMODStudio.setAdvancedSettings({
+    fmodStudio.setAdvancedSettings({
       //Command queue size for studio async processing.
       commandqueuesize: 32768,
 
@@ -62,32 +53,20 @@ export const initFmodGame = (gameConfig: Phaser.Types.Core.GameConfig) => {
 
       encryptionkey: '',
     })
-    FMODStudio.initialize(1024, FMOD.STUDIO_INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, null)
+    fmodStudio.initialize(1024, FMOD.STUDIO_INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, null)
 
     // Loading banks, so that we can use getEvent normally after
     bankUrls.map((bankUrl) => {
       const filename = getBankFilename(bankUrl)
-      FMODStudio.loadBankFile(
+      fmodStudio.loadBankFile(
         filename,
         FMOD.STUDIO_LOAD_BANK_FLAGS.NORMAL | FMOD.STUDIO_LOAD_BANK_FLAGS.DECOMPRESS_SAMPLES,
-        {},
+        out,
       )
     })
 
-    const game = new Game(gameConfig)
-    setUpEvents(game)
+    onInitialized(fmodStudio)
   }
 
   FMODModule(fmod)
-}
-
-const setUpEvents = (game: Game) => {
-  game.events.on('blur', () => {
-    console.log('Suspending FMOD mixer')
-    FMODStudioCore.mixerSuspend()
-  })
-  game.events.on('focus', () => {
-    console.log('Resuming FMOD mixer')
-    FMODStudioCore.mixerResume()
-  })
 }
