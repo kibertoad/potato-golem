@@ -25,11 +25,11 @@ export class AudioSystem {
   }
 
   private setupLifecycleEvents() {
-    this.game.events.on('blur', () => {
+    this.game.events.on('pause', () => {
       console.log('Suspending FMOD mixer')
       this.fmodStudioCore.mixerSuspend()
     })
-    this.game.events.on('focus', () => {
+    this.game.events.on('resume', () => {
       console.log('Resuming FMOD mixer')
       this.fmodStudioCore.mixerResume()
     })
