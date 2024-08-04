@@ -298,4 +298,12 @@ export class ZoneView implements IdHolder, Destroyable {
   destroy(): void {
     this.zone.destroy()
   }
+
+  getAllCards() {
+    const cards: CardView[] = []
+    for (const spawnPoint of this.spawnPointCards) {
+      cards.push(...spawnPoint)
+    }
+    return cards
+  }
 }

@@ -41,11 +41,11 @@ import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
 import type { CardId } from '../registries/cardRegistry'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import { type SfxId } from '../registries/sfxRegistry'
+import type { SfxId } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
 import { QueuedTargettedActivation } from '@potato-golem/core'
-import { ActivationContextSingleCard } from '../activations/common/ActivationContext'
+import type { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -79,22 +79,6 @@ export type CardDefinitions = typeof cardDefinitions
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const cardDefinitions = {
-
-
-  PORTAL: {
-    id: 'PORTAL',
-    name: 'Portal',
-    image: 'portal_card',
-    nonDraggable: true,
-  },
-
-  THE_ID: {
-    id: 'THE_ID',
-    image: 'the_id_card',
-    name: 'The Id',
-    nonDraggable: true,
-  },
-
   SINGING_MUSHROOMS: {
     id: 'SINGING_MUSHROOMS',
     name: 'Singing Mushrooms',
@@ -106,91 +90,6 @@ export const cardDefinitions = {
         effect: new DescribedTargettedAsyncMultiplexActivation([
           new EatCardActivation(),
           new FeedActivation(worldModel.homunculusModel, 1, true),
-          new NextTurnActivation(),
-        ]),
-      },
-    },
-  },
-
-  WATCHING_FLOWER: {
-    id: 'WATCHING_FLOWER',
-    name: 'Watching Flower',
-    image: 'watching_flower_card',
-  },
-
-  ENLIGHTENED_MANDRAKE: {
-    id: 'ENLIGHTENED_MANDRAKE',
-    name: 'Enlightened Mandrake',
-    image: 'enlightened_mandrake_card',
-  },
-
-  SHADOW_MUSE: {
-    id: 'SHADOW_MUSE',
-    image: 'shadow_muse_card',
-    name: 'Shadow Muse',
-    nonDraggable: true,
-  },
-
-  SONECHKA: {
-    id: 'SONECHKA',
-    name: 'Sonechka',
-    image: 'sonechka_card',
-    nonDraggable: true,
-  },
-
-  DAYDREAM: {
-    id: 'DAYDREAM',
-    name: 'Daydream',
-  },
-
-  EXPLOSIVES: {
-    id: 'EXPLOSIVES',
-    name: 'Explosives',
-    image: 'explosives_card',
-    cardCombinationEffect: {
-      THE_ROUGH_KIND: {
-        timeTillTrigger: 0,
-        tooltip: `Hopefully they will use it wisely`,
-        effect: new DescribedTargettedAsyncMultiplexActivation([
-          new SpawnCardActivation(
-            eventSink,
-            {
-              zone: 'home',
-              cardId: 'MONEY',
-              amount: 2,
-              description: 'Get some money',
-              spawnAnimation: 'pop_in',
-            },
-            0,
-          ),
-          new DecomposeBothCardsActivation(),
-          new NextTurnActivation(),
-        ]),
-      },
-
-      THE_LAW: {
-        timeTillTrigger: 0,
-        preconditions: [
-          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
-        ],
-        effect: new DescribedTargettedAsyncMultiplexActivation([
-          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
-          new DecomposeCardActivation('explosion'),
-          new DestroyZoneCardsActivation('streets'),
-          new LawIsDeadActivation(),
-          new NextTurnActivation(),
-        ]),
-      },
-
-      THE_RAID: {
-        timeTillTrigger: 0,
-        preconditions: [
-          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
-        ],
-        effect: new DescribedTargettedAsyncMultiplexActivation([
-          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
-          new DecomposeCardActivation('explosion'),
-          new DestroyZoneCardsActivation('streets'),
           new NextTurnActivation(),
         ]),
       },

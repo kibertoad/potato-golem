@@ -18,7 +18,7 @@ import { createMultiOptionCraftingActivation } from '../definitionGenerators/cra
 
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
-export const propertyCards = {
+export const propertyCardDefinitions = {
   WORKBENCH: {
     id: 'WORKBENCH',
     name: 'Workbench',
@@ -87,5 +87,10 @@ export const propertyCards = {
     },
   },
 
-
+  PORTAL: {
+    id: 'PORTAL',
+    name: 'Portal',
+    image: 'portal_card',
+    nonDraggable: true,
+  },
 } as const satisfies Partial<Record<CardId, CardDefinitionNew>>

@@ -112,11 +112,15 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
     this.zone = zone
   }
 
-  async activate(targetCard: CardModel) {
-    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+  async activate(_context: ActivationContextSingleCard): Promise<void> {
+    const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activate(card))
+      promises.push(
+        super.activate({
+          targetCard: card.model
+        })
+      )
     }
     await Promise.all(promises)
   }
@@ -150,9 +154,10 @@ export class DecomposeBothCardsActivation extends DecomposeCardActivation {
   }
 }
 
-export class DestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
-  activate(target: ActivationContextSingleCard) {
-    target.card.destroy()
+export class DestroyCardActivation extends AsyncCardActivation, DynamicDescriptionHolder {
+  activate(context: ActivationContextSingleCard): Promise<void> {
+    context.targetCard.destroy()
+    return Promise.resolve()
   }
 
   getDescription(): string {
@@ -168,11 +173,13 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
     this.zone = zone
   }
 
-  async activate(targetCard: CardModel) {
-    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+  async activate(_context: ActivationContextSingleCard) {
+    const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activate(card))
+      promises.push(super.activate({
+        targetCard: card.model,
+      }))
     }
     await Promise.all(promises)
   }
@@ -205,9 +212,13 @@ export class PlaySfxActivation implements Activation {
   }
 }
 
-export class LawIsDeadActivation implements Activation {
+export class LawIsDeadActivation extends CardActivation {
   activate() {
     worldModel.theLawIsDead = true
+  }
+
+  getDescription(): string {
+    return ''
   }
 }
 

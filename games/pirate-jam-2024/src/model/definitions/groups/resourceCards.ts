@@ -1,7 +1,8 @@
 import {
-  DamageActivation, DecomposeBothCardsActivation,
+  AnimateZoneCardsActivation,
+  DamageActivation, DecomposeBothCardsActivation, DecomposeCardActivation, DestroyZoneCardsActivation,
   EatCardActivation,
-  FeedActivation,
+  FeedActivation, LawIsDeadActivation,
   NextTurnActivation,
 } from '../../activations/card/cardActivations'
 import { worldModel } from '../../state/WorldModel'
@@ -10,7 +11,8 @@ import type { CardId } from '../../registries/cardRegistry'
 import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import type { EventSink } from '@potato-golem/core'
+import { DescribedTargettedAsyncMultiplexActivation, EventSink } from '@potato-golem/core'
+import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
 
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
@@ -76,5 +78,71 @@ export const resourceCardDefinitions = {
     name: 'Alchemical supplies',
   },
 
+  WATCHING_FLOWER: {
+    id: 'WATCHING_FLOWER',
+    name: 'Watching Flower',
+    image: 'watching_flower_card',
+  },
 
+  ENLIGHTENED_MANDRAKE: {
+    id: 'ENLIGHTENED_MANDRAKE',
+    name: 'Enlightened Mandrake',
+    image: 'enlightened_mandrake_card',
+  },
+
+  DAYDREAM: {
+    id: 'DAYDREAM',
+    name: 'Daydream',
+  },
+
+  EXPLOSIVES: {
+    id: 'EXPLOSIVES',
+    name: 'Explosives',
+    image: 'explosives_card',
+    cardCombinationEffect: {
+      THE_ROUGH_KIND: {
+        tooltip: `Hopefully they will use it wisely`,
+        effects: [
+          new SpawnCardActivation(
+            {
+              zone: 'home',
+              cardId: 'MONEY',
+              amount: 2,
+              description: 'Get some money',
+              spawnAnimation: 'pop_in',
+            },
+            0,
+          ),
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+
+      THE_LAW: {
+        preconditions: [
+          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
+        ],
+        effects: [
+          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
+          new DecomposeCardActivation('explosion'),
+          new DestroyZoneCardsActivation('streets'),
+          new LawIsDeadActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+
+      THE_RAID: {
+        timeTillTrigger: 0,
+        preconditions: [
+          new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
+        ],
+        effect: new DescribedTargettedAsyncMultiplexActivation([
+          new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
+          new DecomposeCardActivation('explosion'),
+          new DestroyZoneCardsActivation('streets'),
+          new NextTurnActivation(),
+        ]),
+      },
+    },
+  },
 } as const satisfies Partial<Record<CardId, CardDefinitionNew>>

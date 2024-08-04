@@ -17,6 +17,8 @@ import type { Zone } from '../registries/zoneRegistry'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import { resourceCardDefinitions } from './groups/resourceCards'
+import { propertyCardDefinitions } from './groups/propertyCards'
+import { creatureCardDefinitions } from './groups/creaturesCards'
 
 export type CardActivationDefinitionNew = {
   tooltip?: string
@@ -60,6 +62,7 @@ export type CardDefinitions = typeof cardDefinitions
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const cardDefinitions = {
-  ...{resourceCardDefinitions}
-
+  ...resourceCardDefinitions,
+  ...propertyCardDefinitions,
+  ...creatureCardDefinitions
 } as const satisfies Record<CardId, CardDefinitionNew>
