@@ -1,9 +1,8 @@
 import {
-  type Activation,
   type EventSink,
   MultiplexActivation,
   type Precondition,
-  QueuedActivation,
+  QueuedActivation, type TargettedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
@@ -19,10 +18,11 @@ import {
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
+import type { ActivationContext } from '../activations/common/ActivationContext'
 
 export type EventOption = {
   text: string
-  effect: Activation
+  effect: TargettedActivation<ActivationContext>
   conditions?: Precondition
 }
 
@@ -32,7 +32,7 @@ export type EventDefinition = {
   name: string
   description: string
   image: ImageId
-  effect?: Activation
+  effect?: TargettedActivation<ActivationContext>
   options?: EventOption[]
 }
 

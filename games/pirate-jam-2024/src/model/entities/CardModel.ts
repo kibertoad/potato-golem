@@ -1,5 +1,5 @@
 import {
-  type DescribedTargettedMultipleActivation,
+  type DescribedTargettedAsyncMultiplexActivation,
   type EventSink,
   type TurnProcessor,
   generateUuid,
@@ -166,8 +166,8 @@ export class CardModel implements TurnProcessor, CommonEntity {
     }
   }
 
-  private findTriggeredActivations(): DescribedTargettedMultipleActivation<CardModel>[] {
-    const relevantActivations: DescribedTargettedMultipleActivation<CardModel>[] = []
+  private findTriggeredActivations(): DescribedTargettedAsyncMultiplexActivation<CardModel>[] {
+    const relevantActivations: DescribedTargettedAsyncMultiplexActivation<CardModel>[] = []
 
     if (this.definition.idleZoneEffect?.any?.timeTillTrigger <= this.turnsExisted) {
       relevantActivations.push(this.definition.idleZoneEffect.any.effect)

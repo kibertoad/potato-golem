@@ -1,4 +1,4 @@
-import { AVERAGE_PRIORITY, type TargettedActivation, type TargettedActivationCallback } from './Activation'
+import { AVERAGE_PRIORITY, type TargettedActivation, type TargettedActivationCallback } from '../common/Activation'
 
 /**
  * Activation with a single target, which invokes other activations in bulk
@@ -12,11 +12,11 @@ export class TargettedMultiplexActivation<Target> implements TargettedActivation
     this.priority = priority ?? AVERAGE_PRIORITY
   }
 
-  async activate(target: Target) {
+  activate(target: Target): void {
     for (const activation of this.activations) {
-      console.log('Activating', activation)
-      await activation.activate(target)
-      console.log('Activated', activation)
+      // console.log('Activating', activation)
+      activation.activate(target)
+      // console.log('Activated', activation)
     }
   }
 

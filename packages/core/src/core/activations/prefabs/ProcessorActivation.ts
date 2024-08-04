@@ -1,5 +1,5 @@
 import { validateNotNil } from 'validation-utils'
-import type { Activation, ActivationCallback, Processor } from '../../../index'
+import type { Activation, ActivationCallback, Processor } from '../../../../index'
 
 /**
  * Activation which triggers specified processor

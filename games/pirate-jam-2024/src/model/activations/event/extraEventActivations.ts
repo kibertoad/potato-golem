@@ -11,8 +11,9 @@ import { cardDefinitions } from '../../definitions/cardDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import type { CardActivation } from '../card/CardActivation'
+import { AsyncCardActivation, CardActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
+import { ActivationContext, ActivationContextCard } from '../common/ActivationContext'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 
@@ -26,9 +27,7 @@ export type SpawnCardMessage = {
   precondition?: Precondition
 }
 
-export class SpawnCardActivation implements Activation, CardActivation, StaticDescriptionHolder {
-  priority: number = LOW_PRIORITY
-
+export class SpawnCardActivation implements AsyncCardActivation, StaticDescriptionHolder {
   private readonly cardId: CardId
   private zone: Zone
   private readonly spawnAnimation?: SpawnAnimation
@@ -61,18 +60,18 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     this.ignoreTargetCard = ignoreTargetCard
   }
 
-  async activate(targetCard?: CardModel) {
+  async activate(context: ActivationContextCard): Promise<void> {
     if (!this.precondition || this.precondition.isSatisfied()) {
-      if (this.spawnLocation === 'same_as_target' && targetCard) {
-        this.zone = targetCard.zone
+      if (this.spawnLocation === 'same_as_target' && context.sourceCard) {
+        this.zone = context.sourceCard.zone
       }
-      if (this.spawnLocation === 'same_as_combined' && targetCard?.combinedCard) {
-        this.zone = targetCard.combinedCard.zone
+      if (this.spawnLocation === 'same_as_combined' && context.sourceCard?.combinedCard) {
+        this.zone = context.sourceCard.combinedCard.zone
       }
 
       this.eventSink.emit('spawn_card', {
         cardId: this.cardId,
-        sourceCard: this.ignoreTargetCard ? undefined : targetCard,
+        sourceCard: this.ignoreTargetCard ? undefined : context.sourceCard,
         zone: this.zone,
         spawnAnimation: this.spawnAnimation,
         description: this.description,

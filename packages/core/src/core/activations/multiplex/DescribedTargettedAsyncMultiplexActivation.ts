@@ -1,17 +1,15 @@
-import { TargettedMultiplexActivation } from './TargettedMultiplexActivation'
-import type { DynamicDescriptionHolder, DynamicDescriptionsHolder, StaticDescriptionHolder } from '../interfaces/Entities'
+import { TargettedAsyncMultiplexActivation } from './TargettedAsyncMultiplexActivation'
+import type { DynamicDescriptionHolder, DynamicDescriptionsHolder, StaticDescriptionHolder } from '../../interfaces/Entities'
 
 function isDynamicDescriptionHolder (entity: unknown): entity is DynamicDescriptionHolder {
-  // @ts-ignore
-  return 'getDescription' in entity
+  return 'getDescription' in (entity as DynamicDescriptionHolder)
 }
 
 function isStaticDescriptionHolder (entity: unknown): entity is StaticDescriptionHolder {
-  // @ts-ignore
-  return 'description' in entity
+  return 'description' in (entity as StaticDescriptionHolder)
 }
 
-export class DescribedTargettedMultipleActivation<T> extends TargettedMultiplexActivation<T> implements DynamicDescriptionsHolder{
+export class DescribedTargettedAsyncMultiplexActivation<T> extends TargettedAsyncMultiplexActivation<T> implements DynamicDescriptionsHolder{
 
   getDescriptions(): string[] {
     const descriptions: string[] = []

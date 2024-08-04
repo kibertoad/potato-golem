@@ -1,4 +1,4 @@
-import type { Activation, ActivationCallback } from './Activation'
+import type { Activation, ActivationCallback } from '../common/Activation'
 
 /**
  * Activation which invokes other activations in bulk
@@ -10,6 +10,7 @@ export class MultiplexActivation implements Activation {
     this.activations = activations
   }
 
+  // ToDo revise this logic
   activate(...args: []): void {
     for (const activation of this.activations) {
       activation.activate.apply(activation, args)

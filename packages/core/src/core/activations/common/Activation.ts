@@ -26,9 +26,15 @@ export type Activation = {
  */
 export type TargettedActivationCallback<Target> = (target: Target) => void
 
+export type TargettedAsyncActivationCallback<Target> = (target: Target) => Promise<void>
+
 /**
  * Class wrapper for TargettedActivationCallback
  */
 export type TargettedActivation<Target> = {
   activate: TargettedActivationCallback<Target>
+}
+
+export type TargettedAsyncActivation<Target> = {
+  activate: TargettedAsyncActivationCallback<Target>
 }

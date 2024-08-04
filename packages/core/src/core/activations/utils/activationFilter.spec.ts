@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { PrioritizedActivation } from './Activation'
+import type { PrioritizedActivation } from '../common/Activation'
 import { sortAndFilterActivations } from './activationFilter'
 
 describe('activationFilter', () => {
