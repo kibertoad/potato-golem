@@ -24,13 +24,15 @@ export type CardActivationDefinitionNew = {
   effect: (TargettedActivation<ActivationContext> | TargettedAsyncActivation<ActivationContext>)[]
 }
 
+export type PossibleCardEffects = readonly (
+  AbstractTargettedActivation<ActivationContextCardCombo> | AbstractTargettedAsyncActivation<ActivationContextCardCombo> |
+  AbstractTargettedActivation<ActivationContextSingleCard> | AbstractTargettedAsyncActivation<ActivationContextSingleCard>
+  )[]
+
 export type CardActivationDefinitionNewCards = {
   tooltip?: string
   preconditions?: readonly (ReasonedPrecondition | TargettedReasonedPrecondition<ActivationContextCardCombo>)[]
-  effects: (
-    AbstractTargettedActivation<ActivationContextCardCombo> | AbstractTargettedAsyncActivation<ActivationContextCardCombo> |
-    AbstractTargettedActivation<ActivationContextSingleCard> | AbstractTargettedAsyncActivation<ActivationContextSingleCard>
-    )[]
+  effects: PossibleCardEffects
 }
 
 export type CardPrettyEffectsDefinition = {

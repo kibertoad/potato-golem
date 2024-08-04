@@ -3,11 +3,9 @@ import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
-  DescribedTargettedAsyncMultiplexActivation, type EventSink,
+  type EventSink,
   QueuedTargettedActivation, TargettedAsyncMultiplexActivation,
-  TargettedMultiplexActivation,
 } from '@potato-golem/core'
-import type { CardModel } from '../../entities/CardModel'
 import {
   DecomposeOtherCardActivation,
   QueueActivation,
@@ -16,6 +14,7 @@ import {
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
+import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
 
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
@@ -69,24 +68,21 @@ export const propertyCards = {
       ALCHEMICAL_SUPPLIES: {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `Options are limitless`,
-        effects: [
-          new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_SUPPLIES')
-        ],
+        effects: createMultiOptionCraftingActivation({
+          eventName: 'CRAFT_SUPPLIES'
+        })
       },
       WATCHING_FLOWER: {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
-        effects: [
-          new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_FLOWERS'),
-        ],
+        effects: createMultiOptionCraftingActivation({
+          eventName: 'CRAFT_FLOWERS'
+        })
       },
       ENLIGHTENED_MANDRAKE: {
         preconditions: [new CheckIfActiveCardPrecondition(false, "It's already cooking")],
-        effects: [
-          new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_MANDRAKE'),
-        ],
+        effects: createMultiOptionCraftingActivation({
+          eventName: 'CRAFT_MANDRAKE'
+        })
       },
     },
   },
