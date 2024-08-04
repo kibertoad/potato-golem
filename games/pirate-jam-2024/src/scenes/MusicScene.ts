@@ -2,12 +2,12 @@ import { PotatoScene } from '@potato-golem/ui'
 
 import { SpriteBuilder } from '@potato-golem/ui'
 import { Howl } from 'howler'
+import { FMODStudio } from '../initFmodGame'
 import { DepthRegistry } from '../model/registries/depthRegistry'
 import { ImageRegistry } from '../model/registries/imageRegistry'
 import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
 import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
-import { FMODStudio } from '..'
 
 export class MusicScene extends PotatoScene {
   private mainTheme: Howl
