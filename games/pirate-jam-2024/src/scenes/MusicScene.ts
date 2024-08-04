@@ -2,7 +2,7 @@ import { PotatoScene } from '@potato-golem/ui'
 
 import { SpriteBuilder } from '@potato-golem/ui'
 import { Howl } from 'howler'
-import { FMODStudio } from '../initFmodGame'
+import { audioSystem } from '..'
 import { DepthRegistry } from '../model/registries/depthRegistry'
 import { ImageRegistry } from '../model/registries/imageRegistry'
 import { type SfxId, SfxRegistry } from '../model/registries/sfxRegistry'
@@ -10,10 +10,6 @@ import { worldModel } from '../model/state/WorldModel'
 import { Scenes } from './SceneRegistry'
 
 export class MusicScene extends PotatoScene {
-  private mainTheme: Howl
-  private boardThemeIntro: Howl
-  private boardThemeLoop: Howl
-  private gameOver: Howl
   private sfx: Record<SfxId, Howl> = {} as any
 
   private toggleMusicSprite: Phaser.GameObjects.Sprite
@@ -32,41 +28,6 @@ export class MusicScene extends PotatoScene {
     this.muteMusic = (localStorage.getItem('muteMusic') || 'on') === 'off'
 
     this.load.image(ImageRegistry.MUSIC, require('../../assets/img/music_light.png'))
-
-    this.mainTheme = new Howl({
-      preload: true,
-      src: [
-        require('url:../../assets/music/main_menu.ogg'),
-        require('url:../../assets/music/main_menu.aac'),
-      ],
-      volume: this.musicVolume,
-      loop: true,
-    })
-    this.boardThemeIntro = new Howl({
-      preload: true,
-      src: [
-        require('url:../../assets/music/board_theme_intro.ogg'),
-        require('url:../../assets/music/board_theme_intro.aac'),
-      ],
-      volume: this.musicVolume,
-    })
-    this.boardThemeLoop = new Howl({
-      preload: true,
-      src: [
-        require('url:../../assets/music/board_theme_loop.ogg'),
-        require('url:../../assets/music/board_theme_loop.aac'),
-      ],
-      loop: true,
-      volume: this.musicVolume,
-    })
-    this.gameOver = new Howl({
-      preload: true,
-      src: [
-        require('url:../../assets/music/game_over_short.ogg'),
-        require('url:../../assets/music/game_over_short.aac'),
-      ],
-      volume: this.musicVolume,
-    })
 
     this.loadSfx(
       SfxRegistry.CARD_1,
@@ -146,10 +107,7 @@ export class MusicScene extends PotatoScene {
 
   public changeMusicVolume(volume: number) {
     this.musicVolume = volume
-    this.mainTheme.volume(this.musicVolume)
-    this.boardThemeIntro.volume(this.musicVolume)
-    this.boardThemeLoop.volume(this.musicVolume)
-    this.gameOver.volume(this.musicVolume)
+    audioSystem.setMusicVolume(volume)
   }
 
   public toggleMusic() {
@@ -170,34 +128,6 @@ export class MusicScene extends PotatoScene {
 
   public playSfx(sfxId: SfxId) {
     this.sfx[sfxId]?.play()
-  }
-
-  public stopAll() {
-    this.boardThemeLoop.stop()
-    this.boardThemeIntro.stop()
-    this.boardThemeIntro.off()
-    this.mainTheme.stop()
-    this.gameOver.stop()
-  }
-
-  public playBoardTheme() {
-    this.stopAll()
-
-    this.boardThemeIntro.play()
-    this.boardThemeIntro.once('end', () => {
-      this.boardThemeLoop.play()
-      this.boardThemeLoop.volume(this.musicVolume)
-    })
-  }
-
-  public playMainTheme() {
-    this.stopAll()
-    this.mainTheme.play()
-  }
-
-  public playGameOver() {
-    this.stopAll()
-    this.gameOver.play()
   }
 
   public create() {
@@ -230,6 +160,6 @@ export class MusicScene extends PotatoScene {
   }
 
   update() {
-    FMODStudio.update()
+    audioSystem.update()
   }
 }

@@ -7,7 +7,7 @@
  */
 declare function FMODModule(fmodObject: FMOD): void
 
-interface Out<T> {
+export interface Out<T> {
   val: T
 }
 
