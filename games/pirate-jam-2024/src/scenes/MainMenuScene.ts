@@ -209,7 +209,7 @@ export class MainMenuScene extends PotatoScene {
     this.add.existing(buttonList.build())
     // ChangeSceneActivation.build(this, Scenes.BOARD_SCENE)()
     // this.musicScene.playMainTheme()
-    audioSystem.playMusic(MusicEventRegistry.MAIN_MENU_THEME)
+    audioSystem.playMusic(MusicEventRegistry.ALL)
 
     const clickForSoundBg = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
     clickForSoundBg.setInteractive({

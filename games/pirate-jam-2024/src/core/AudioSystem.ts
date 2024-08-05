@@ -1,6 +1,11 @@
 import type { Game } from 'phaser'
 import { FMOD, type Out } from '../../lib/fmod/types'
-import type { MusicEventId } from '../model/registries/musicEventRegistry'
+import type {
+  MusicEvent,
+  MusicEventId,
+  MusicEventParameterId,
+  MusicEventParameterValueId,
+} from '../model/registries/musicEventRegistry'
 
 export class AudioSystem {
   private readonly game: Game
@@ -68,10 +73,11 @@ export class AudioSystem {
     this.currentMusicEventId = null
   }
 
-  public playMusic(eventId: MusicEventId) {
-    const musicEvent = this.prepareEventInstance(eventId)
+  // Preffer using parameters to switch music tracks
+  public playMusic(eventDefinition: MusicEvent) {
+    const musicEvent = this.prepareEventInstance(eventDefinition.id)
 
-    if (this.currentMusicEventId === eventId) {
+    if (this.currentMusicEventId === eventDefinition.id) {
       return
     }
 
@@ -79,9 +85,21 @@ export class AudioSystem {
       this.musicEvents[this.currentMusicEventId].stop(FMOD.STUDIO_STOP_MODE.ALLOWFADEOUT)
     }
 
-    this.currentMusicEventId = eventId
+    this.currentMusicEventId = eventDefinition.id
     musicEvent.setVolume(this.musicVolume)
     musicEvent.start()
+  }
+
+  public setMusicParameter<T extends MusicEvent>(
+    eventDefinition: T,
+    parameterName: MusicEventParameterId<T>,
+    valueId: MusicEventParameterValueId<T>,
+  ) {
+    const value = eventDefinition.parameters[parameterName as string][valueId]
+
+    console.log('Setting parameter', eventDefinition.id, parameterName, 'to', valueId, ':', value)
+    const musicEvent = this.prepareEventInstance(eventDefinition.id)
+    musicEvent.setParameterByName(parameterName as string, value as number, false)
   }
 
   public update() {
