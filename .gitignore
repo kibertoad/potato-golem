@@ -107,6 +107,5 @@ dist
 /.idea/
 /packages/extras/package-lock.json
 /.parcel-cache/
-*.js
 
 !games/**/parcel/rewrite-relativepath.js
