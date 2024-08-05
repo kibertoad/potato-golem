@@ -21,6 +21,8 @@ export class AudioSystem {
     this.fmodStudio.getCoreSystem(out)
     this.fmodStudioCore = out.val
 
+    this.fmodStudioCore.setDSPBufferSize(2048, 2)
+
     this.setupLifecycleEvents()
   }
 
@@ -53,6 +55,17 @@ export class AudioSystem {
     for (const musicEventId in this.musicEvents) {
       this.musicEvents[musicEventId].setVolume(this.musicVolume)
     }
+  }
+
+  public stopMusic() {
+    if (this.currentMusicEventId === null) {
+      return
+    }
+
+    const musicEvent = this.prepareEventInstance(this.currentMusicEventId)
+    musicEvent.stop(FMOD.STUDIO_STOP_MODE.ALLOWFADEOUT)
+
+    this.currentMusicEventId = null
   }
 
   public playMusic(eventId: MusicEventId) {

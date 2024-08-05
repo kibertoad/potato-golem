@@ -7,7 +7,7 @@
         "parcel-reporter-clean-dist"
     ],
     "namers": [
-        "./namer-mem.js", 
+        "./namer.js", 
         "..."
     ]
 }
