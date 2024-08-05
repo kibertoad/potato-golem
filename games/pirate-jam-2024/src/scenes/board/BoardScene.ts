@@ -556,7 +556,7 @@ export class BoardScene extends PotatoScene {
 
     this.add.existing(container)
 
-    audioSystem.playMusic(MusicEventRegistry.GAME_OVER)
+    audioSystem.setMusicParameter(MusicEventRegistry.ALL, 'MusicScene', 'Game Over')
 
     this.tweens.add({
       targets: backdrop,
@@ -668,6 +668,6 @@ export class BoardScene extends PotatoScene {
     this.worldModel.homunculusModel.eventSink.on('DEATH', () => {
       this.gameOver('Homunculus\nis dead')
     })
-    audioSystem.playMusic(MusicEventRegistry.BOARD_THEME)
+    audioSystem.setMusicParameter(MusicEventRegistry.ALL, 'MusicScene', 'Board')
   }
 }

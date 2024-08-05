@@ -53,7 +53,7 @@ export const initFmod = (onInitialized: (fmodStudio: FMOD.StudioSystem) => void)
 
       encryptionkey: '',
     })
-    fmodStudio.initialize(256, FMOD.STUDIO_INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, null)
+    fmodStudio.initialize(256, FMOD.STUDIO_INITFLAGS.LIVEUPDATE, FMOD.INITFLAGS.NORMAL, null)
 
     // Loading banks, so that we can use getEvent normally after
     const outBank: Out<FMOD.Bank> = { val: null }
