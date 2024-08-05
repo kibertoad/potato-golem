@@ -8,7 +8,7 @@ import {
   DestroyCardActivation,
   DestroyZoneCardsActivation,
   EatCardActivation,
-  FeedActivation,
+  FeedActivation, GainHatredActivation,
   GainHealthActivation,
   LawIsDeadActivation,
   NextTurnActivation,
@@ -24,6 +24,7 @@ import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { DescribedTargettedAsyncMultiplexActivation, EventSink, QueuedTargettedActivation } from '@potato-golem/core'
 import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../../preconditions/RoughKindPrecondition'
+import type { CardModel } from '../../entities/CardModel'
 
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
@@ -398,4 +399,31 @@ export const resourceCardDefinitions = {
     },
   },
 
+  CORPSE: {
+    id: 'CORPSE',
+    image: 'corpse_card',
+    name: 'Corpse',
+
+    zoneCombinationEffect: {
+      homunculus: {
+        tooltip: 'I need to get rid of the evidence',
+        effect: [
+          new EatCardActivation(),
+          new GainHatredActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 1),
+          new SpawnCardActivation(
+            {
+              zone: 'alchemy',
+              cardId: 'ENLIGHTENED_MANDRAKE',
+              amount: 2,
+              description: '',
+              spawnAnimation: 'pop_in',
+            },
+            0,
+          ),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
 } as const satisfies Partial<Record<CardId, CardDefinitionNew>>

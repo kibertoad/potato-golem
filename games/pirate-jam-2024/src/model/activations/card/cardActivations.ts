@@ -223,13 +223,13 @@ export class LawIsDeadActivation extends CardActivation {
   }
 }
 
-export class TheLawMoveActivation implements CardActivation {
+export class TheLawMoveActivation extends AsyncCardActivation {
   getDescription() {
     return ''
   }
-  async activate(targetCard: CardModel) {
+  async activate(context: ActivationContextSingleCard) {
     console.log('Activate TheLaw')
-    if (targetCard.zone === 'alchemy') {
+    if (context.targetCard.zone === 'alchemy') {
       console.log('Homunculus branch')
       const activation = new DescribedTargettedAsyncMultiplexActivation([
         new ChatCardActivation([
@@ -250,12 +250,12 @@ export class TheLawMoveActivation implements CardActivation {
         new DelayActivation(1100), //Allow blood splat animation to finish
         new DestroyCardActivation(),
       ])
-      await activation.activate(targetCard)
+      await activation.activate(context)
 
       return
     }
 
-    if (!['alchemy', 'streets'].includes(targetCard.zone)) {
+    if (!['alchemy', 'streets'].includes(context.targetCard.zone)) {
       console.log('search branch')
       const activation = new DescribedTargettedAsyncMultiplexActivation([
         new SearchAndDecideCardActivation(
@@ -284,9 +284,9 @@ export class TheLawMoveActivation implements CardActivation {
         ),
       ])
 
-      await activation.activate(targetCard)
+      await activation.activate(context)
 
-      if (targetCard.isDestroyed) {
+      if (context.targetCard.isDestroyed) {
         return
       }
 
@@ -296,7 +296,7 @@ export class TheLawMoveActivation implements CardActivation {
           new ChatCardActivation(['Guess nothing to see here']),
           new DecomposeCardActivation(),
         ])
-        await leaveActivation.activate(targetCard)
+        await leaveActivation.activate(context)
         return
       }
     }
@@ -305,11 +305,11 @@ export class TheLawMoveActivation implements CardActivation {
     console.log('Generic branch')
 
     const possibleTargets: Zone[] = []
-    if (targetCard.zone === 'streets') {
+    if (context.targetCard.zone === 'streets') {
       possibleTargets.push('home')
-    } else if (targetCard.zone === 'home') {
+    } else if (context.targetCard.zone === 'home') {
       possibleTargets.push('lab')
-    } else if (targetCard.zone === 'lab') {
+    } else if (context.targetCard.zone === 'lab') {
       possibleTargets.push('alchemy')
     } else {
       return Promise.resolve()
@@ -320,10 +320,10 @@ export class TheLawMoveActivation implements CardActivation {
       'Hmmm... Interesting...',
       'What do we have here?',
       'Do you mind if I take a look?',
-    ]).activate(targetCard)
+    ]).activate(context.targetCard)
 
     const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
-    await moveActivation.activate(targetCard)
+    await moveActivation.activate(context.targetCard)
   }
 }
 

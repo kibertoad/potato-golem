@@ -26,6 +26,10 @@ export type CardActivationDefinitionNew = {
   effect: (TargettedActivation<ActivationContext> | TargettedAsyncActivation<ActivationContext>)[]
 }
 
+export type IdleCardActivationDefinition = CardActivationDefinitionNew & {
+  timeTillTrigger: number
+}
+
 export type PossibleCardEffects = readonly (
   AbstractTargettedActivation<ActivationContextCardCombo> | AbstractTargettedAsyncActivation<ActivationContextCardCombo> |
   AbstractTargettedActivation<ActivationContextSingleCard> | AbstractTargettedAsyncActivation<ActivationContextSingleCard>
@@ -53,6 +57,7 @@ export type CardDefinitionNew = {
   nonDraggable?: boolean
   prettyEffects?: CardPrettyEffectsDefinition
 
+  idleZoneEffect?: Partial<Record<Zone, IdleCardActivationDefinition>>
   zoneCombinationEffect?: Partial<Record<Zone, CardActivationDefinitionNew>>
   cardCombinationEffect?: Partial<Record<CardId, CardActivationDefinitionNewCards>>
 }
