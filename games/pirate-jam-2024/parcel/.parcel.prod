@@ -8,7 +8,7 @@
         "./rewrite-relativepath.js"
     ],
     "namers": [
-        "./namer-mem.js", 
+        "./namer.js", 
         "..."
     ]
 }

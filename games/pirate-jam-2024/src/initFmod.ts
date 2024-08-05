@@ -1,6 +1,6 @@
 import FMODModule from '../lib/fmod/fmodstudio'
-import { FMOD } from '../lib/fmod/types'
-require('url:../lib/fmod/fmodstudio.js.mem') // Important for fmod to function
+import { FMOD, type Out } from '../lib/fmod/types'
+require('url:../lib/fmod/fmodstudio.wasm') // Important for fmod to function
 
 /*** FMOD setup ***/
 // Do NOT forget to include Master to have sound
@@ -15,7 +15,7 @@ const getBankFilename = (bankUrl: string) => {
 }
 
 const fmod: FMOD = {
-  TOTAL_MEMORY: 64 * 1024 * 1024,
+  TOTAL_MEMORY: 128 * 1024 * 1024,
   preRun: () => {
     // We need to preload files before accessing them later!
     console.log('FMOD Banks', bankUrls)
@@ -53,16 +53,20 @@ export const initFmod = (onInitialized: (fmodStudio: FMOD.StudioSystem) => void)
 
       encryptionkey: '',
     })
-    fmodStudio.initialize(1024, FMOD.STUDIO_INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, null)
+    fmodStudio.initialize(256, FMOD.STUDIO_INITFLAGS.NORMAL, FMOD.INITFLAGS.NORMAL, null)
 
     // Loading banks, so that we can use getEvent normally after
+    const outBank: Out<FMOD.Bank> = { val: null }
     bankUrls.map((bankUrl) => {
       const filename = getBankFilename(bankUrl)
       fmodStudio.loadBankFile(
         filename,
         FMOD.STUDIO_LOAD_BANK_FLAGS.NORMAL | FMOD.STUDIO_LOAD_BANK_FLAGS.DECOMPRESS_SAMPLES,
-        out,
+        outBank,
       )
+
+      // Pre-load sample data
+      outBank.val.loadSampleData()
     })
 
     onInitialized(fmodStudio)
