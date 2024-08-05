@@ -1,9 +1,19 @@
 import {
+  AnimateCardActivation,
   AnimateZoneCardsActivation,
-  DamageActivation, DecomposeBothCardsActivation, DecomposeCardActivation, DestroyZoneCardsActivation,
+  CancelDragCardActivation,
+  DamageActivation,
+  DecomposeBothCardsActivation,
+  DecomposeCardActivation,
+  DestroyCardActivation,
+  DestroyZoneCardsActivation,
   EatCardActivation,
-  FeedActivation, LawIsDeadActivation,
+  FeedActivation,
+  GainHealthActivation,
+  LawIsDeadActivation,
   NextTurnActivation,
+  QueueActivation,
+  StartEventActivation,
 } from '../../activations/card/cardActivations'
 import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
@@ -11,8 +21,9 @@ import type { CardId } from '../../registries/cardRegistry'
 import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import { DescribedTargettedAsyncMultiplexActivation, EventSink } from '@potato-golem/core'
+import { DescribedTargettedAsyncMultiplexActivation, EventSink, QueuedTargettedActivation } from '@potato-golem/core'
 import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
+import { RoughKindPrecondition } from '../../preconditions/RoughKindPrecondition'
 
 const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
@@ -145,4 +156,246 @@ export const resourceCardDefinitions = {
       },
     },
   },
+
+  HEALTH: {
+    id: 'HEALTH',
+    name: 'Health',
+    image: 'health_card',
+    zoneCombinationEffect: {
+      homunculus: {
+        tooltip: `Sacrifices must be made...`,
+        effect: [
+          new EatCardActivation(),
+          new GainHealthActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 3, true),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  FOOD: {
+    id: 'FOOD',
+    name: 'Food',
+    image: 'food_card',
+    zoneCombinationEffect: {
+      homunculus: {
+        effect: [
+          new EatCardActivation(),
+          new GainHealthActivation(worldModel.homunculusModel, 1),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  POISON: {
+    id: 'POISON',
+    name: 'Poison',
+    image: 'poison_card',
+    zoneCombinationEffect: {
+      homunculus: {
+        tooltip: `I wonder if it is immune...`,
+        effect: [
+          new EatCardActivation(),
+          new DamageActivation(worldModel.homunculusModel, 1),
+          new SpawnCardActivation(
+            {
+              zone: 'home',
+              cardId: 'WATCHING_FLOWER',
+              amount: 1,
+              description: '',
+            },
+            0,
+            'same_as_combined',
+          ),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+    cardCombinationEffect: {
+      THE_LAW: {
+        tooltip: `He is too nosy for his own good...`,
+        preconditions: [
+          new CombinedZonePrecondition(
+            ['home', 'alchemy', 'lab'],
+            "Not sure it's wise to try this on the street",
+          ),
+        ],
+        effect: [
+          new SpawnCardActivation(
+            {
+              zone: 'any',
+              cardId: 'CORPSE',
+              amount: 1,
+              description: "Maybe if I offer him a drink, he won't notice anything",
+            },
+            0,
+            'same_as_combined',
+          ),
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+
+      THE_ROUGH_KIND: {
+        tooltip: `They are ruining my carpet.`,
+        preconditions: [
+          new CombinedZonePrecondition(
+            ['home', 'alchemy', 'lab'],
+            "Not sure it's wise to try this on the street",
+          ),
+        ],
+        effect: [
+          new SpawnCardActivation(
+            {
+              zone: 'any',
+              cardId: 'CORPSE',
+              amount: 1,
+              description: '',
+            },
+            0,
+            'same_as_combined',
+          ),
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  GOLD: {
+    id: 'GOLD',
+    name: 'Gold',
+    image: 'gold_card',
+    cardCombinationEffect: {
+      MERCHANT: {
+        effect: [
+          new DecomposeCardActivation(),
+          new StartEventActivation('SHOPKEEPER'),
+          new QueueActivation(
+            new QueuedTargettedActivation({
+              id: 'SPAWN_ROUGH_KIND',
+              unique: true,
+              description: 'May attract attention',
+              activatesIn: 1,
+              activation: new SpawnCardActivation(
+                {
+                  zone: 'streets',
+                  precondition: new RoughKindPrecondition(),
+                  cardId: 'THE_ROUGH_KIND',
+                  description: '',
+                  spawnAnimation: 'fly_in_left',
+                },
+                -1,
+                'zone',
+                true,
+              ),
+            }),
+          ),
+        ],
+      },
+
+      THE_LAW: {
+        tooltip: `It's not a bribe if it's a donation...`,
+        effects: [
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+
+      THE_ROUGH_KIND: {
+        tooltip: `Take it and leave me alone already!`,
+        effects: [
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  SINGING_MUSHROOMS: {
+    id: 'SINGING_MUSHROOMS',
+    name: 'Singing Mushrooms',
+    image: 'singing_mushrooms_card',
+
+    zoneCombinationEffect: {
+      homunculus: {
+        effect: [
+          new EatCardActivation(),
+          new FeedActivation(worldModel.homunculusModel, 1, true),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  MONEY: {
+    id: 'MONEY',
+    name: 'Money',
+    image: 'money_card',
+    cardCombinationEffect: {
+      MERCHANT: {
+        effects: [
+          new DecomposeCardActivation(),
+          new StartEventActivation('SHOPKEEPER'),
+        ],
+      },
+
+      THE_LAW: {
+        tooltip: `It's not a bribe if it's a donation...`,
+        effects: [
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+
+      THE_ROUGH_KIND: {
+        tooltip: `Take it and leave me alone already!`,
+        effects: [
+          new DecomposeBothCardsActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
+  MEDICINE: {
+    id: 'MEDICINE',
+    name: 'Medicne',
+    image: 'medicine_card',
+    // idleZoneEffect: {
+    //   home: {
+    //     timeTillTrigger: 1,
+    //     effect: new DescribedTargettedAsyncMultiplexActivation([
+    //       new SpawnCardActivation(eventSink, {
+    //         spawnAnimation: 'pop_in',
+    //         description: 'Spawn 1 Health',
+    //         cardId: 'HEALTH',
+    //         zone: 'home',
+    //       }),
+    //       new DecomposeCardActivation(),
+    //     ]),
+    //   },
+    // },
+    cardCombinationEffect: {
+      HEALTH: {
+        tooltip: `This won't hurt a bit`,
+        effects: [
+          new CancelDragCardActivation('HEALTH'),
+          new AnimateCardActivation('poof', 0),
+          new SpawnCardActivation( {
+            zone: 'home',
+            cardId: 'HEALTH',
+            amount: 1,
+            description: 'Get 1 Health',
+          }),
+          new DestroyCardActivation(),
+          new NextTurnActivation(),
+        ],
+      },
+    },
+  },
+
 } as const satisfies Partial<Record<CardId, CardDefinitionNew>>

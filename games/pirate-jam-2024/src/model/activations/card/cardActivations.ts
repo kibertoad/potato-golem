@@ -67,21 +67,22 @@ export class AnimateCardActivation extends AsyncCardActivation {
   }
 }
 
-export class CancelDragCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class CancelDragCardActivation extends CardActivation {
   private cardToCancel: CardId
 
   constructor(cardToCancel: CardId) {
+    super()
     this.cardToCancel = cardToCancel
   }
 
-  async activate(targetCard: CardModel) {
-    if (targetCard.definition.id === this.cardToCancel) {
-      targetCard.view.cancelDrag()
+  override activate(context: ActivationContextSingleCard) {
+    if (context.targetCard.definition.id === this.cardToCancel) {
+      context.targetCard.view.cancelDrag()
       return
     }
 
-    if (targetCard.combinedCard && targetCard.combinedCard.definition.id === this.cardToCancel) {
-      targetCard.combinedCard.view.cancelDrag()
+    if (context.targetCard.combinedCard && context.targetCard.combinedCard.definition.id === this.cardToCancel) {
+      context.targetCard.combinedCard.view.cancelDrag()
     }
   }
 
