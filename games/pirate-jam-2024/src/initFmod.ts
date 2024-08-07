@@ -15,7 +15,7 @@ const getBankFilename = (bankUrl: string) => {
 }
 
 const fmod: FMOD = {
-  TOTAL_MEMORY: 128 * 1024 * 1024,
+  TOTAL_MEMORY: 256 * 1024 * 1024,
   preRun: () => {
     // We need to preload files before accessing them later!
     console.log('FMOD Banks', bankUrls)
