@@ -8,7 +8,7 @@ import {
   DestroyCardActivation,
   DestroyZoneCardsActivation,
   EatCardActivation,
-  FeedActivation, GainHatredActivation,
+  FeedActivation,
   GainHealthActivation,
   LawIsDeadActivation,
   NextTurnActivation,
@@ -19,14 +19,9 @@ import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
 import type { CardId } from '../../registries/cardRegistry'
 import type { CardDefinitionNew } from '../cardDefinitionsNew'
-import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
-import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import { DescribedTargettedAsyncMultiplexActivation, EventSink, QueuedTargettedActivation } from '@potato-golem/core'
+import { QueuedTargettedActivation } from '@potato-golem/core'
 import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../../preconditions/RoughKindPrecondition'
-import type { CardModel } from '../../entities/CardModel'
-
-const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const resourceCardDefinitions = {
   ABSINTHE: {
@@ -144,16 +139,15 @@ export const resourceCardDefinitions = {
       },
 
       THE_RAID: {
-        timeTillTrigger: 0,
         preconditions: [
           new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
         ],
-        effect: new DescribedTargettedAsyncMultiplexActivation([
+        effects: [
           new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
           new DecomposeCardActivation('explosion'),
           new DestroyZoneCardsActivation('streets'),
           new NextTurnActivation(),
-        ]),
+        ],
       },
     },
   },
@@ -224,7 +218,7 @@ export const resourceCardDefinitions = {
             "Not sure it's wise to try this on the street",
           ),
         ],
-        effect: [
+        effects: [
           new SpawnCardActivation(
             {
               zone: 'any',
@@ -248,7 +242,7 @@ export const resourceCardDefinitions = {
             "Not sure it's wise to try this on the street",
           ),
         ],
-        effect: [
+        effects: [
           new SpawnCardActivation(
             {
               zone: 'any',
@@ -272,7 +266,7 @@ export const resourceCardDefinitions = {
     image: 'gold_card',
     cardCombinationEffect: {
       MERCHANT: {
-        effect: [
+        effects: [
           new DecomposeCardActivation(),
           new StartEventActivation('SHOPKEEPER'),
           new QueueActivation(
@@ -409,7 +403,6 @@ export const resourceCardDefinitions = {
         tooltip: 'I need to get rid of the evidence',
         effect: [
           new EatCardActivation(),
-          new GainHatredActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
             {

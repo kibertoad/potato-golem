@@ -5,10 +5,9 @@ import {
   type EventReceiver,
   type EventSink,
   LOW_PRIORITY,
-  type QueuedActivation,
   type StaticDescriptionHolder,
   TargettedAsyncMultiplexActivation,
-  getRandomNumber, QueuedTargettedActivation,
+  getRandomNumber, type QueuedTargettedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -21,9 +20,9 @@ import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
 import { AsyncCardActivation, CardActivation } from './CardActivation'
-import { ActivationContext, ActivationContextSingleCard, ActivationContextCardCombo } from '../common/ActivationContext'
+import type { ActivationContext, ActivationContextSingleCard } from '../common/ActivationContext'
 
-export type ActivationArray = Array<Activation | CardActivation>
+export type ActivationArray = Array<Activation | CardActivation | AsyncCardActivation>
 
 export type AnimationType = 'none' | 'poof' | 'blood_splat' | 'explosion'
 
@@ -155,7 +154,7 @@ export class DecomposeBothCardsActivation extends DecomposeCardActivation {
   }
 }
 
-export class DestroyCardActivation extends AsyncCardActivation, DynamicDescriptionHolder {
+export class DestroyCardActivation extends AsyncCardActivation {
   activate(context: ActivationContextSingleCard): Promise<void> {
     context.targetCard.destroy()
     return Promise.resolve()
@@ -190,7 +189,7 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
   }
 }
 
-export class EatCardActivation implements AsyncCardActivation, DynamicDescriptionHolder {
+export class EatCardActivation extends AsyncCardActivation {
   async activate(context: ActivationContextSingleCard) {
     await context.targetCard.view.playEatAnimation()
     context.targetCard.destroy()
@@ -201,15 +200,20 @@ export class EatCardActivation implements AsyncCardActivation, DynamicDescriptio
   }
 }
 
-export class PlaySfxActivation implements Activation {
+export class PlaySfxActivation extends CardActivation {
   private readonly sfx: Array<SfxId>
 
   constructor(sfx: Array<SfxId>) {
+    super()
     this.sfx = sfx
   }
 
-  async activate() {
+  activate(_context: ActivationContextSingleCard) {
     worldModel.musicScene.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
+  }
+
+  getDescription(): string {
+    return ''
   }
 }
 
@@ -327,11 +331,12 @@ export class TheLawMoveActivation extends AsyncCardActivation {
   }
 }
 
-export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class MoveToZoneCardActivation extends CardActivation {
   private readonly worldModel: WorldModel
   private readonly targetZone: Zone
 
   constructor(worldModel: WorldModel, targetZones: Zone | Zone[]) {
+    super()
     this.worldModel = worldModel
 
     this.targetZone = Array.isArray(targetZones)
@@ -339,13 +344,13 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
       : targetZones
   }
 
-  async activate(targetCard: CardModel) {
+  async activate(context: ActivationContextSingleCard) {
     const targetZoneView = this.worldModel.zones[this.targetZone]
-    targetCard.changeZone(this.targetZone, true)
+    context.targetCard.changeZone(this.targetZone, true)
     const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
-    targetZoneView.registerCard(targetCard.view, availableSpawnPont.index)
+    targetZoneView.registerCard(context.targetCard.view, availableSpawnPont.index)
     targetZoneView.reorderStackedCardDepths()
-    await targetCard.view.animateMoveTo({
+    await context.targetCard.view.animateMoveTo({
       x: availableSpawnPont.x,
       y: availableSpawnPont.y,
     })
@@ -356,15 +361,16 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
   }
 }
 
-export class ChatCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class ChatCardActivation extends AsyncCardActivation {
   private readonly chatPhrases: string[]
 
   constructor(chatPhrases: string[]) {
+    super()
     this.chatPhrases = chatPhrases
   }
 
-  async activate(targetCard: CardModel) {
-    await targetCard.view.say(this.chatPhrases)
+  async activate(context: ActivationContextSingleCard) {
+    await context.targetCard.view.say(this.chatPhrases)
   }
 
   getDescription(): string {
@@ -421,9 +427,6 @@ export class DamageActivation implements CardActivation, DynamicDescriptionHolde
 }
 
 export class AttackHomunculusCardActivation extends DamageActivation implements CardActivation {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
   private readonly kamikaze: boolean
 
   constructor(target: EventReceiver, amount: number, kamikaze = true) {
@@ -455,22 +458,21 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
   }
 }
 
-export class SearchAndDestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class SearchAndDestroyCardActivation extends AsyncCardActivation {
   private readonly cardIdsToAttack: CardId | CardId[]
   private readonly searchZone: Zone
   private readonly kamikaze: boolean
   private readonly decompozeAcivation: DecomposeCardActivation = new DecomposeCardActivation()
 
   constructor(cardIdsToAttack: CardId | CardId[], searchZone: Zone = 'any', kamikaze = true) {
+    super()
     this.cardIdsToAttack = cardIdsToAttack
     this.searchZone = searchZone
     this.kamikaze = kamikaze
   }
 
-  async activate(targetCard: CardModel) {
+  async activate(context: ActivationContextSingleCard) {
+    const { targetCard } = context
     const foundCard = worldModel.searchForCards(this.cardIdsToAttack, this.searchZone)
 
     if (!foundCard) {
@@ -486,7 +488,9 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
       foundCard.destroy()
       return
     }
-    this.decompozeAcivation.activate(foundCard)
+    await this.decompozeAcivation.activate({
+      targetCard: foundCard
+    })
     await targetCard.view.animateRushTo({
       x: currentX,
       y: currentY,
@@ -498,9 +502,7 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
   }
 }
 
-export class SearchAndDecideCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
+export class SearchAndDecideCardActivation extends AsyncCardActivation {
 
   private readonly cardIdsToSearch: CardId | CardId[]
   private readonly searchZone: Zone
@@ -509,24 +511,25 @@ export class SearchAndDecideCardActivation implements CardActivation, DynamicDes
 
   constructor(
     cardIdsToSearch: CardId | CardId[],
-    searchZone: Zone = 'any',
+    searchZone: Zone, // = 'any',
     successActivations: ActivationArray,
     failureActivations: ActivationArray,
   ) {
+    super()
     this.cardIdsToSearch = cardIdsToSearch
     this.searchZone = searchZone
     this.successActivations = successActivations
     this.failureActivations = failureActivations
   }
 
-  async activate(targetCard: CardModel) {
-    console.log(`Searching for ${targetCard.definition.id}`)
+  async activate(context: ActivationContextSingleCard) {
+    console.log(`Searching for ${context.targetCard.definition.id}`)
     const foundCard = worldModel.searchForCards(this.cardIdsToSearch, this.searchZone)
     console.log(`Card was found: ${foundCard}`)
 
     const activations = foundCard ? this.successActivations : this.failureActivations
     for (const activation of activations) {
-      await activation.activate(targetCard)
+      await activation.activate(context)
     }
   }
 
@@ -564,12 +567,13 @@ export class GainConscienceActivation implements Activation, DynamicDescriptionH
   }
 }
 
-export class FeedActivation implements CardActivation, DynamicDescriptionHolder {
+export class FeedActivation extends CardActivation {
   private readonly amount: number
   private readonly target: EventReceiver
   private readonly starveProtection: boolean
 
   constructor(target: EventReceiver, amount: number, starveProtection = false) {
+    super()
     this.amount = amount
     this.target = target
     this.starveProtection = starveProtection

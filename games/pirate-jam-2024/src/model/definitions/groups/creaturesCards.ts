@@ -1,6 +1,3 @@
-import { DescribedTargettedAsyncMultiplexActivation, EventSink } from '@potato-golem/core'
-import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
-import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { CardId } from '../../registries/cardRegistry'
 import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import {
@@ -10,8 +7,6 @@ import {
   TheLawMoveActivation,
 } from '../../activations/card/cardActivations'
 import { worldModel } from '../../state/WorldModel'
-
-const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const creatureCardDefinitions = {
   THE_ID: {
@@ -92,13 +87,15 @@ export const creatureCardDefinitions = {
     image: 'rough_kind_card',
     name: 'The Rough Kind',
     nonDraggable: true,
-    chatBubbleOrigin: { x: 68, y: 125 },
-    chatBubbleRightOffset: 30,
-    spawnPhrases: ['Well hello there!', 'Now this place looks antiquish!'],
+    prettyEffects: {
+      chatBubbleOrigin: { x: 68, y: 125 },
+      chatBubbleRightOffset: 30,
+      spawnPhrases: ['Well hello there!', 'Now this place looks antiquish!'],
+    },
     idleZoneEffect: {
       streets: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedAsyncMultiplexActivation([
+        effect: [
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -114,11 +111,11 @@ export const creatureCardDefinitions = {
               new MoveToZoneCardActivation(worldModel, ['home']),
             ],
           ),
-        ]),
+        ],
       },
       home: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedAsyncMultiplexActivation([
+        effect: [
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -146,11 +143,11 @@ export const creatureCardDefinitions = {
               ),
             ],
           ),
-        ]),
+        ],
       },
       alchemy: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedAsyncMultiplexActivation([
+        effect: [
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -167,7 +164,7 @@ export const creatureCardDefinitions = {
               new AttackHomunculusCardActivation(worldModel.homunculusModel, 1, false),
             ],
           ),
-        ]),
+        ],
       },
     },
   },

@@ -1,11 +1,12 @@
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
 import type { CardModel } from '../entities/CardModel'
 import type { Zone } from '../registries/zoneRegistry'
+import { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 
 /**
  * Can only be applied in a specified zone
  */
-export class CombinedZonePrecondition implements TargettedReasonedPrecondition<CardModel> {
+export class CombinedZonePrecondition implements TargettedReasonedPrecondition<ActivationContextSingleCard> {
   private readonly zones: Zone[]
   private readonly notSatisfiedReason: string
 
@@ -14,12 +15,12 @@ export class CombinedZonePrecondition implements TargettedReasonedPrecondition<C
     this.notSatisfiedReason = notSatisfiedReason
   }
 
-  isSatisfied(targetCard: CardModel): true | string {
-    if (!targetCard.combinedCard) {
+  isSatisfied(context: ActivationContextSingleCard): true | string {
+    if (!context.targetCard.combinedCard) {
       return ''
     }
 
-    if (this.zones.includes('any') || this.zones.includes(targetCard.combinedCard.zone)) {
+    if (this.zones.includes('any') || this.zones.includes(context.targetCard.combinedCard.zone)) {
       return true
     }
 

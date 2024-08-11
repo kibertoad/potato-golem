@@ -3,7 +3,6 @@ import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
-  type EventSink,
   QueuedTargettedActivation, TargettedAsyncMultiplexActivation,
 } from '@potato-golem/core'
 import {
@@ -12,11 +11,7 @@ import {
   SetActiveCardActivation, StartEventActivation,
 } from '../../activations/card/cardActivations'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
-import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
-import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
-
-const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const propertyCardDefinitions = {
   WORKBENCH: {
