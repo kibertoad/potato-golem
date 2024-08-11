@@ -1,7 +1,6 @@
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
-import type { CardModel } from '../entities/CardModel'
 import type { Zone } from '../registries/zoneRegistry'
-import { ActivationContextSingleCard } from '../activations/common/ActivationContext'
+import type { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 
 /**
  * Can only be applied in a specified zone

@@ -4,7 +4,6 @@ import {
   type DynamicDescriptionHolder,
   type EventReceiver,
   type EventSink,
-  LOW_PRIORITY,
   type StaticDescriptionHolder,
   TargettedAsyncMultiplexActivation,
   getRandomNumber, type QueuedTargettedActivation,
@@ -245,7 +244,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
         new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
         new AnimateCardActivation('blood_splat', 0),
         new FeedActivation(worldModel.homunculusModel, 1, true),
-        new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+        new SpawnCardActivation({
           spawnAnimation: 'pop_in',
           description: 'Spawn 1 Corpse',
           cardId: 'CORPSE',
@@ -275,7 +274,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
             new SearchAndDestroyCardActivation('HEALTH', 'home'),
             new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
             new AnimateCardActivation('blood_splat', 0),
-            new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+            new SpawnCardActivation({
               spawnAnimation: 'pop_in',
               description: 'Spawn 1 Corpse',
               cardId: 'CORPSE',
@@ -324,10 +323,10 @@ export class TheLawMoveActivation extends AsyncCardActivation {
       'Hmmm... Interesting...',
       'What do we have here?',
       'Do you mind if I take a look?',
-    ]).activate(context.targetCard)
+    ]).activate(context)
 
     const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
-    await moveActivation.activate(context.targetCard)
+    await moveActivation.activate(context)
   }
 }
 
@@ -347,7 +346,7 @@ export class MoveToZoneCardActivation extends CardActivation {
   async activate(context: ActivationContextSingleCard) {
     const targetZoneView = this.worldModel.zones[this.targetZone]
     context.targetCard.changeZone(this.targetZone, true)
-    const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
+    const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(context.targetCard.view)
     targetZoneView.registerCard(context.targetCard.view, availableSpawnPont.index)
     targetZoneView.reorderStackedCardDepths()
     await context.targetCard.view.animateMoveTo({
@@ -408,11 +407,12 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
   }
 }
 
-export class DamageActivation implements CardActivation, DynamicDescriptionHolder {
+export class DamageActivation extends CardActivation {
   protected readonly amount: number
   protected readonly target: EventReceiver
 
   constructor(target: EventReceiver, amount: number) {
+    super()
     this.amount = amount
     this.target = target
   }
@@ -426,15 +426,20 @@ export class DamageActivation implements CardActivation, DynamicDescriptionHolde
   }
 }
 
-export class AttackHomunculusCardActivation extends DamageActivation implements CardActivation {
+export class AttackHomunculusCardActivation extends AsyncCardActivation {
   private readonly kamikaze: boolean
+  private readonly damageActivation: DamageActivation
+  private readonly target: EventReceiver
 
   constructor(target: EventReceiver, amount: number, kamikaze = true) {
-    super(target, amount)
+    super()
+    this.damageActivation = new DamageActivation(target, amount)
     this.kamikaze = kamikaze
+    this.target = target
   }
 
-  async activate(targetCard?: CardModel) {
+  async activate(context: ActivationContextSingleCard) {
+    const { targetCard } = context
     const currentX = targetCard.view.x
     const currentY = targetCard.view.y
 
@@ -442,7 +447,7 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
       x: 1280,
       y: 720,
     })
-    await super.activate()
+    this.damageActivation.activate(context)
     if (this.kamikaze) {
       return
     }
