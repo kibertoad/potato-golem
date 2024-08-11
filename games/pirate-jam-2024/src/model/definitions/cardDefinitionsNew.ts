@@ -1,6 +1,4 @@
 import type {
-  AbstractTargettedActivation, AbstractTargettedAsyncActivation,
-  EventSink,
   ReasonedPrecondition, TargettedActivation, TargettedAsyncActivation,
   TargettedReasonedPrecondition,
 } from '@potato-golem/core'
@@ -14,8 +12,6 @@ import type { ImageId } from '../registries/imageRegistry'
 import type { SfxId } from '../registries/sfxRegistry'
 import type { Position } from '@potato-golem/ui'
 import type { Zone } from '../registries/zoneRegistry'
-import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
-import { EventEmitters } from '../registries/eventEmitterRegistry'
 import { resourceCardDefinitions } from './groups/resourceCards'
 import { propertyCardDefinitions } from './groups/propertyCards'
 import { creatureCardDefinitions } from './groups/creaturesCards'
@@ -30,9 +26,10 @@ export type IdleCardActivationDefinition = CardActivationDefinitionNew & {
   timeTillTrigger: number
 }
 
+
 export type PossibleCardEffects = readonly (
-  AbstractTargettedActivation<ActivationContextCardCombo> | AbstractTargettedAsyncActivation<ActivationContextCardCombo> |
-  AbstractTargettedActivation<ActivationContextSingleCard> | AbstractTargettedAsyncActivation<ActivationContextSingleCard>
+  TargettedActivation<ActivationContextCardCombo> | TargettedAsyncActivation<ActivationContextCardCombo> |
+  TargettedActivation<ActivationContextSingleCard> | TargettedAsyncActivation<ActivationContextSingleCard>
   )[]
 
 export type CardActivationDefinitionNewCards = {
@@ -63,8 +60,6 @@ export type CardDefinitionNew = {
 }
 
 export type CardDefinitions = typeof cardDefinitions
-
-const eventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const cardDefinitions = {
   ...resourceCardDefinitions,
