@@ -3,6 +3,9 @@ export { getRandomNumber, randomOneOf, normalizedRandom, generateUuid } from './
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor, ParameterlessProcessor } from './src/core/interfaces/Processor'
 export type {
+  AsyncActivation,
+  AsyncActivationCallback,
+  Activations,
   Prioritized,
   PrioritizedActivation,
   Activation,
@@ -10,6 +13,7 @@ export type {
   TargettedActivationCallback,
   TargettedActivation,
   TargettedAsyncActivation,
+  TargettedActivations,
   TargettedAsyncActivationCallback,
 } from './src/core/activations/common/Activation'
 export type { Precondition, ReasonedPrecondition, TargettedPrecondition, TargettedReasonedPrecondition } from './src/core/preconditions/Precondition'
@@ -42,4 +46,4 @@ export type {
 } from './src/core/interfaces/Entities'
 export { QueuedActivation, QueuedTargettedActivation, type QueuedTargettedActivationParams, type QueuedActivationParams } from './src/core/activations/prefabs/QueuedActivation'
 export { ActivationContainer } from './src/core/activations/common/ActivationContainer'
-export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, isActivation, AbstractTargettedActivation, AbstractActivation, AbstractAsyncActivation, AbstractTargettedAsyncActivation} from './src/core/activations/common/AbstractActivation'
+export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, isActivation } from './src/core/activations/common/AbstractActivation'

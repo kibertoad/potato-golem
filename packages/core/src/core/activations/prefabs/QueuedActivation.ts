@@ -1,26 +1,33 @@
-import type { Activation, TargettedActivation } from '../common/Activation'
+import type {
+  Activation,
+  Activations,
+  AsyncActivation,
+  TargettedActivation,
+  TargettedActivations, TargettedAsyncActivation,
+} from '../common/Activation'
 import { LimitedNumber } from '../../primitives/LimitedNumber'
+import { ActivationContainer } from '../common/ActivationContainer'
 
 export type QueuedActivationParams = {
   id: string
-  activation: Activation
+  activations: Activations
   activatesIn: number // how many time units before activation is triggered
   unique?: boolean // if true, no more than one can be queued at a time
   description?: string
 }
 
-export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activation'> & { activation: TargettedActivation<Target>}
+export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activation'> & { activations: TargettedActivations<Target>}
 
-export class QueuedActivation implements Activation {
+export class QueuedActivation<Target = unknown> implements Activation, AsyncActivation{
   private activatesIn: LimitedNumber
-  private readonly activation: Activation
+  private readonly activations: ActivationContainer<Target>
   public readonly unique: boolean
   public readonly id: string
   public readonly description?: string
 
   constructor(params: QueuedActivationParams) {
     this.activatesIn = new LimitedNumber(params.activatesIn, params.activatesIn)
-    this.activation = params.activation
+    this.activations = new ActivationContainer(params.activations)
     this.unique = params.unique ?? false
     this.id = params.id
     this.description = params.description
@@ -36,20 +43,24 @@ export class QueuedActivation implements Activation {
   }
 
   activate(): void {
-    this.activation.activate()
+    this.activations.activateOnlySync()
+  }
+
+  async activateAsync(): Promise<void> {
+    await this.activations.activateAsync()
   }
 }
 
-export class QueuedTargettedActivation<Target> implements TargettedActivation<Target> {
+export class QueuedTargettedActivation<Target> implements TargettedActivation<Target>, TargettedAsyncActivation<Target> {
   private activatesIn: LimitedNumber
-  private readonly activation: TargettedActivation<Target>
+  private readonly activations: ActivationContainer<Target>
   public readonly unique: boolean
   public readonly id: string
   public readonly description?: string
 
   constructor(params: QueuedTargettedActivationParams<Target>) {
     this.activatesIn = new LimitedNumber(params.activatesIn, params.activatesIn)
-    this.activation = params.activation
+    this.activations = new ActivationContainer(params.activations)
     this.unique = params.unique ?? false
     this.id = params.id
     this.description = params.description
@@ -64,7 +75,11 @@ export class QueuedTargettedActivation<Target> implements TargettedActivation<Ta
     this.activatesIn.setToMax()
   }
 
-  activate(params: Target): void {
-    this.activation.activate(params)
+  activateTargetted(target: Target): void {
+    this.activations.activateOnlySyncWithTarget(target)
+  }
+
+  async activateTargettedAsync(target: Target): Promise<void> {
+    await this.activations.activateAsyncWithTarget(target)
   }
 }

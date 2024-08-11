@@ -5,46 +5,18 @@ import type {
   TargettedAsyncActivation,
 } from './Activation'
 
-export abstract class AbstractActivation implements Activation {
-  readonly isAsync = false
-  readonly isTargetted = false
-
-  abstract activate(): void
-}
-
 export function isActivation(entity: unknown): entity is Activation {
-  return (entity as AbstractActivation).isAsync === false && (entity as AbstractActivation).isTargetted === false
-}
-
-export abstract class AbstractAsyncActivation implements AsyncActivation {
-  readonly isAsync = true
-  readonly isTargetted = false
-
-  abstract activate(): Promise<void>
+  return ('activate' in (entity as Activation))
 }
 
 export function isAsyncActivation(entity: unknown): entity is AsyncActivation {
-  return (entity as AbstractAsyncActivation).isAsync === true && (entity as AbstractAsyncActivation).isTargetted === false
-}
-
-export abstract class AbstractTargettedActivation<Target> implements TargettedActivation<Target> {
-  readonly isAsync = false
-  readonly isTargetted = true
-
-  abstract activate(target: Target): void
+  return ('activateAsync' in (entity as AsyncActivation))
 }
 
 export function isTargettedActivation<Target>(entity: unknown): entity is TargettedActivation<Target> {
-  return (entity as AbstractTargettedActivation<Target>).isAsync === false && (entity as AbstractTargettedActivation<Target>).isTargetted === true
-}
-
-export abstract class AbstractTargettedAsyncActivation<Target> implements TargettedAsyncActivation<Target> {
-  readonly isAsync = true
-  readonly isTargetted = true
-
-  abstract activate(target: Target): Promise<void>
+  return ('activateTargetted' in (entity as TargettedActivation<unknown>))
 }
 
 export function isTargettedAsyncActivation<Target>(entity: unknown): entity is TargettedAsyncActivation<Target> {
-  return (entity as AbstractTargettedAsyncActivation<Target>).isAsync === true && (entity as AbstractTargettedAsyncActivation<Target>).isTargetted === true
+  return ('activateTargettedAsync' in (entity as TargettedAsyncActivation<unknown>))
 }

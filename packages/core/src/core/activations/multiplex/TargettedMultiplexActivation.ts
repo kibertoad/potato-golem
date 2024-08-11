@@ -12,10 +12,10 @@ export class TargettedMultiplexActivation<Target> implements TargettedActivation
     this.priority = priority ?? AVERAGE_PRIORITY
   }
 
-  activate(target: Target): void {
+  activateTargetted(target: Target): void {
     for (const activation of this.activations) {
       // console.log('Activating', activation)
-      activation.activate(target)
+      activation.activateTargetted(target)
       // console.log('Activated', activation)
     }
   }
@@ -23,7 +23,7 @@ export class TargettedMultiplexActivation<Target> implements TargettedActivation
   public static build<Target>(activations: TargettedActivationCallback<Target>[]): TargettedActivation<Target> {
     const activationObjects = activations.map((activation) => {
       return {
-        activate: (target) => activation(target)
+        activateTargetted: (target) => activation(target)
       } satisfies TargettedActivation<Target>
     })
     return new TargettedMultiplexActivation(activationObjects)

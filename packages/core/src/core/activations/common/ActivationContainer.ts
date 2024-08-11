@@ -1,4 +1,10 @@
-import type { Activation, AsyncActivation, TargettedActivation, TargettedAsyncActivation } from './Activation'
+import type {
+  Activation,
+  Activations,
+  AsyncActivation,
+  TargettedActivation, TargettedActivations,
+  TargettedAsyncActivation,
+} from './Activation'
 import {
   isActivation,
   isAsyncActivation,
@@ -12,6 +18,12 @@ export class ActivationContainer<Target> {
   private readonly asyncActivations: AsyncActivation[] = []
   private readonly targettedActivations: TargettedActivation<Target>[] = []
   private readonly targettedAsyncActivations: TargettedAsyncActivation<Target>[] = []
+
+  constructor(activations?: Activations | TargettedActivations<Target>) {
+    if (activations) {
+      this.addBulk(activations as (Activation | AsyncActivation)[])
+    }
+  }
 
   addBulk(activations: (Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>)[]) {
     for (const activation of activations) {
@@ -53,7 +65,7 @@ export class ActivationContainer<Target> {
     this.activateOnlySync()
 
     for (const activation of this.targettedActivations) {
-      activation.activate(target)
+      activation.activateTargetted(target)
     }
   }
 
@@ -63,7 +75,7 @@ export class ActivationContainer<Target> {
     }
 
     for (const activation of this.asyncActivations) {
-      await activation.activate()
+      await activation.activateAsync()
     }
   }
 
@@ -73,15 +85,15 @@ export class ActivationContainer<Target> {
     }
 
     for (const activation of this.targettedActivations) {
-      activation.activate(target)
+      activation.activateTargetted(target)
     }
 
     for (const activation of this.asyncActivations) {
-      await activation.activate()
+      await activation.activateAsync()
     }
 
     for (const activation of this.targettedAsyncActivations) {
-      await activation.activate(target)
+      await activation.activateTargettedAsync(target)
     }
   }
 

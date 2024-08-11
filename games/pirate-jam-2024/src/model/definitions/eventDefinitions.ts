@@ -2,7 +2,7 @@ import {
   type EventSink,
   MultiplexActivation,
   type Precondition,
-  QueuedActivation, type TargettedActivation,
+  QueuedActivation, QueuedTargettedActivation, type TargettedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
@@ -84,7 +84,7 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     options: [
       {
         text: 'I am ready',
-        effect: [new ConcludeEventActivation(eventSink)],
+        effect: [new ConcludeEventActivation()],
       },
     ],
   },
@@ -109,14 +109,14 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     playableByDirector: true,
     description: 'Mold grows in Homunculus room.',
     image: 'poison_card',
-    effect: new MultiplexActivation([
-      new SpawnCardActivation(eventSink, {
+    effect: [
+      new SpawnCardActivation({
         description: '',
         zone: 'alchemy',
         cardId: 'MOLD',
         spawnAnimation: 'pop_in',
       }),
-    ]),
+    ],
   },
 
   SHOPKEEPER: {
@@ -154,7 +154,7 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
             zone: 'home',
             cardId: 'ABSINTHE',
           }),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new NextTurnActivation(),
         ],
       },
@@ -188,12 +188,12 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
         text: 'Create a life-saving medicine',
         effect: [
           new QueueActivation(
-            new QueuedActivation({
+            new QueuedTargettedActivation({
               id: 'WORKBENCH_COOK_MEDICINE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: [
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
                 new SpawnCardActivation({

@@ -6,7 +6,7 @@ import {
   type EventSink,
   type StaticDescriptionHolder,
   TargettedAsyncMultiplexActivation,
-  getRandomNumber, type QueuedTargettedActivation,
+  getRandomNumber, type QueuedTargettedActivation, ActivationContainer,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -21,7 +21,7 @@ import { SpawnCardActivation } from '../event/extraEventActivations'
 import { AsyncCardActivation, CardActivation } from './CardActivation'
 import type { ActivationContext, ActivationContextSingleCard } from '../common/ActivationContext'
 
-export type ActivationArray = Array<Activation | CardActivation | AsyncCardActivation>
+export type ActivationArrayNew = Array<CardActivation | AsyncCardActivation>
 
 export type AnimationType = 'none' | 'poof' | 'blood_splat' | 'explosion'
 
@@ -511,31 +511,29 @@ export class SearchAndDecideCardActivation extends AsyncCardActivation {
 
   private readonly cardIdsToSearch: CardId | CardId[]
   private readonly searchZone: Zone
-  private readonly successActivations: ActivationArray
-  private readonly failureActivations: ActivationArray
+  private readonly successActivations: ActivationContainer<ActivationContextSingleCard>
+  private readonly failureActivations: ActivationContainer<ActivationContextSingleCard>
 
   constructor(
     cardIdsToSearch: CardId | CardId[],
     searchZone: Zone, // = 'any',
-    successActivations: ActivationArray,
-    failureActivations: ActivationArray,
+    successActivations: ActivationArrayNew,
+    failureActivations: ActivationArrayNew,
   ) {
     super()
     this.cardIdsToSearch = cardIdsToSearch
     this.searchZone = searchZone
-    this.successActivations = successActivations
-    this.failureActivations = failureActivations
+    this.successActivations = new ActivationContainer(successActivations)
+    this.failureActivations = new ActivationContainer<ActivationContextSingleCard>(failureActivations)
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     console.log(`Searching for ${context.targetCard.definition.id}`)
     const foundCard = worldModel.searchForCards(this.cardIdsToSearch, this.searchZone)
     console.log(`Card was found: ${foundCard}`)
 
     const activations = foundCard ? this.successActivations : this.failureActivations
-    for (const activation of activations) {
-      await activation.activate(context)
-    }
+    await activations.activateAsyncWithTarget(context)
   }
 
   getDescription(): string {
@@ -544,7 +542,7 @@ export class SearchAndDecideCardActivation extends AsyncCardActivation {
 }
 
 export class NextTurnActivation extends CardActivation {
-  activate(_context: ActivationContext) {
+  activateTargetted(_context: ActivationContext) {
     console.log('emit next turn')
     EventEmitters.boardEventEmitter.emit('NEXT_TURN')
   }
@@ -584,7 +582,7 @@ export class FeedActivation extends CardActivation {
     this.starveProtection = starveProtection
   }
 
-  activate(_context: ActivationContextSingleCard) {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('FEED', this.amount, this.starveProtection)
   }
 
@@ -605,7 +603,7 @@ export class QueueActivation extends CardActivation implements StaticDescription
     this.description = activation.description ?? ''
   }
 
-  activate(context: ActivationContextSingleCard) {
+  activateTargetted(context: ActivationContextSingleCard) {
     this.eventSink.emit('QUEUE_ACTIVATION', this.activation, context.targetCard)
   }
 
@@ -622,7 +620,7 @@ export class SetActiveCardActivation extends CardActivation {
     this.active = active
   }
 
-  activate(context: ActivationContextSingleCard) {
+  activateTargetted(context: ActivationContextSingleCard) {
     context.targetCard.view.setActiveCard(this.active)
   }
 
@@ -641,7 +639,7 @@ export class StartEventActivation extends CardActivation {
     this.eventSink = EventEmitters.eventViewEmitter
   }
 
-  activate(context: ActivationContext) {
+  activateTargetted(context: ActivationContext) {
     console.log('Start event', context.sourceCard)
     this.eventSink.emit('START_EVENT', this.eventId, context.sourceCard)
   }
