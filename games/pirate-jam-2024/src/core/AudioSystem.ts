@@ -58,6 +58,7 @@ export class AudioSystem {
   public playSfx(eventDefinition: SfxEvent) {
     const sfxEvent = this.prepareEventInstance(eventDefinition.id)
 
+    sfxEvent.setVolume(eventDefinition.volume)
     sfxEvent.start()
   }
 
