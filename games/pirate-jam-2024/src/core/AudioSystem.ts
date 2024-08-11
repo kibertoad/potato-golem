@@ -61,13 +61,6 @@ export class AudioSystem {
     sfxEvent.start()
   }
 
-  public setMusicVolume(volume: number) {
-    this.musicVolume = volume
-    for (const musicEventId in this.fmodEvents) {
-      this.fmodEvents[musicEventId].setVolume(this.musicVolume)
-    }
-  }
-
   public stopMusic() {
     if (this.currentMusicEventId === null) {
       return
@@ -94,6 +87,13 @@ export class AudioSystem {
     this.currentMusicEventId = eventDefinition.id
     musicEvent.setVolume(this.musicVolume)
     musicEvent.start()
+  }
+
+  public setMusicVolume(volume: number) {
+    this.musicVolume = volume
+    if (this.currentMusicEventId) {
+      this.fmodEvents[this.currentMusicEventId].setVolume(this.musicVolume)
+    }
   }
 
   public setMusicParameter<T extends MusicEvent>(
