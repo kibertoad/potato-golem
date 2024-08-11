@@ -12,8 +12,8 @@ export const EVENT_EVENTS = {
 
 export abstract class EventActivation implements Activation {
   protected readonly eventSink: EventSink<EventEventId>
-  constructor(worldEventSink: EventSink<EventEventId>) {
-    this.eventSink = worldEventSink
+  constructor() {
+    this.eventSink = EventEmitters.eventViewEmitter
   }
 
   abstract activate()
@@ -28,7 +28,7 @@ export class ConcludeEventActivation extends EventActivation {
 export class NextEventActivation extends EventActivation {
   private readonly nextEventId: string
   constructor(nextEventId: string) {
-    super(EventEmitters.eventViewEmitter)
+    super()
     this.nextEventId = nextEventId
   }
 
