@@ -13,7 +13,7 @@ export class DescribedTargettedAsyncMultiplexActivation<T> extends TargettedAsyn
 
   getDescriptions(): string[] {
     const descriptions: string[] = []
-    for (const activation of this.activations) {
+    for (const activation of this.activations.getAllActivations()) {
       if (isDynamicDescriptionHolder(activation)) {
         descriptions.push(activation.getDescription())
       } else if (isStaticDescriptionHolder(activation)) {

@@ -3,11 +3,11 @@ import {
   type QueuedActivation,
   type TurnProcessor,
   normalizedRandom,
-  randomOneOf,
+  randomOneOf, type QueuedTargettedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
-import type { CardModel } from '../entities/CardModel'
+import type { ActivationContextCardOrEvent } from '../activations/common/ActivationContext'
 
 export class EventDirector implements TurnProcessor {
   private readonly eventsPlayed: Partial<Record<EventId, number>> = {}
@@ -15,8 +15,8 @@ export class EventDirector implements TurnProcessor {
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
   private readonly queuedActivations: Array<{
-    activation: QueuedActivation
-    arguments: Array<any>
+    activation: QueuedTargettedActivation<ActivationContextCardOrEvent>
+    context: ActivationContextCardOrEvent
   }> = []
   private readonly recurringActivations: QueuedActivation[] = []
 
@@ -32,7 +32,7 @@ export class EventDirector implements TurnProcessor {
     this.counterTillNextEvent = normalizedRandom(5)
   }
 
-  addQueuedActivation(activation: QueuedActivation, targetCard?: CardModel) {
+  addQueuedActivation(activation: QueuedTargettedActivation<ActivationContextCardOrEvent>, context: ActivationContextCardOrEvent) {
     if (activation.unique) {
       if (this.queuedActivations.some((entry) => entry.activation.id === activation.id)) {
         return
@@ -41,7 +41,7 @@ export class EventDirector implements TurnProcessor {
 
     this.queuedActivations.push({
       activation,
-      arguments: [targetCard],
+      context,
     })
   }
 
@@ -67,10 +67,7 @@ export class EventDirector implements TurnProcessor {
     for (const queuedActivation of activationsToProcess) {
       const isReady = queuedActivation.activation.processTime(1)
       if (isReady) {
-        await queuedActivation.activation.activate.apply(
-          queuedActivation.activation,
-          queuedActivation.arguments,
-        )
+        await queuedActivation.activation.activateTargettedAsync(queuedActivation.context)
         this.queuedActivations.splice(counter, 1)
       }
       counter++
@@ -81,7 +78,7 @@ export class EventDirector implements TurnProcessor {
     for (const activation of this.recurringActivations) {
       const isReady = activation.processTime(1)
       if (isReady) {
-        await activation.activate()
+        await activation.activateAsync()
         activation.resetTime()
       }
     }

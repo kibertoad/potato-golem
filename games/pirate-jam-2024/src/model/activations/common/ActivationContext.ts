@@ -1,6 +1,8 @@
 import type { EventDefinition } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 
+export type ActivationContextCardOrEvent = ActivationContextEvent | ActivationContextSingleCard
+
 export type ActivationContext = {
   fromEvent?: EventDefinition
   sourceCard?: never

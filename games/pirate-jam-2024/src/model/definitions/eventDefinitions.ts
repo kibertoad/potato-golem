@@ -18,11 +18,13 @@ import {
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import type { ActivationContext } from '../activations/common/ActivationContext'
+import type {
+  ActivationContextEvent,
+} from '../activations/common/ActivationContext'
 
 export type EventOption = {
   text: string
-  effect: TargettedActivation<ActivationContext>[]
+  effect: TargettedActivation<ActivationContextEvent>[]
   conditions?: Precondition
 }
 
@@ -32,7 +34,7 @@ export type EventDefinition = {
   name: string
   description: string
   image: ImageId
-  effect?: TargettedActivation<ActivationContext>[]
+  effect?: TargettedActivation<ActivationContextEvent>[]
   options?: EventOption[]
 }
 

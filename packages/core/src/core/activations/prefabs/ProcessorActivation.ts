@@ -19,7 +19,7 @@ export class ProcessorActivation<ProcessorType extends Processor<InputType>, Inp
     this.params = params
   }
 
-  activate() {
+  activateTargetted() {
     this.processor.process(this.params)
   }
 
@@ -31,7 +31,7 @@ export class ProcessorActivation<ProcessorType extends Processor<InputType>, Inp
     // @ts-ignore
     const activation = new ProcessorActivation(processor, params)
     return () => {
-      activation.activate()
+      activation.activateTargetted()
     }
   }
 }

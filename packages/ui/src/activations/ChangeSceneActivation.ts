@@ -9,7 +9,7 @@ export class ChangeSceneActivation implements Activation {
     this.#newScene = newScene
   }
 
-  activate() {
+  activateTargetted() {
     this.#currentScene.scene.start(this.#newScene)
   }
 
@@ -19,7 +19,7 @@ export class ChangeSceneActivation implements Activation {
   ): ActivationCallback {
     const activation = new ChangeSceneActivation(currentScene, newScene)
     return () => {
-      activation.activate()
+      activation.activateTargetted()
     }
   }
 }

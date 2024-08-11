@@ -19,6 +19,8 @@ export class ActivationContainer<Target> {
   private readonly targettedActivations: TargettedActivation<Target>[] = []
   private readonly targettedAsyncActivations: TargettedAsyncActivation<Target>[] = []
 
+  private allActivations: Array<Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>> = []
+
   constructor(activations?: Activations | TargettedActivations<Target>) {
     if (activations) {
       this.addBulk(activations as (Activation | AsyncActivation)[])
@@ -32,6 +34,8 @@ export class ActivationContainer<Target> {
   }
 
   add(activation: Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>) {
+    this.allActivations.push(activation)
+
     if (isActivation(activation)) {
       this.activations.push(activation)
       return
@@ -57,7 +61,7 @@ export class ActivationContainer<Target> {
 
   activateOnlySync() {
     for (const activation of this.activations) {
-      activation.activate()
+      activation.activateTargetted()
     }
   }
 
@@ -71,7 +75,7 @@ export class ActivationContainer<Target> {
 
   async activateAsync(): Promise<void> {
     for (const activation of this.activations) {
-      activation.activate()
+      activation.activateTargetted()
     }
 
     for (const activation of this.asyncActivations) {
@@ -81,7 +85,7 @@ export class ActivationContainer<Target> {
 
   async activateAsyncWithTarget(target: Target): Promise<void> {
     for (const activation of this.activations) {
-      activation.activate()
+      activation.activateTargetted()
     }
 
     for (const activation of this.targettedActivations) {
@@ -99,5 +103,18 @@ export class ActivationContainer<Target> {
 
   static instance() {
     return new ActivationContainer()
+  }
+
+  private rebuildAllActivations() {
+    this.allActivations = [
+    ...this.activations,
+    ...this.asyncActivations,
+    ...this.targettedActivations,
+    ...this.targettedAsyncActivations
+    ]
+  }
+
+  getAllActivations() {
+    return this.allActivations
   }
 }

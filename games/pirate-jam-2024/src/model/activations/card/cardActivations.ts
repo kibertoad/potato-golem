@@ -19,7 +19,11 @@ import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
 import { AsyncCardActivation, CardActivation } from './CardActivation'
-import type { ActivationContext, ActivationContextSingleCard } from '../common/ActivationContext'
+import type {
+  ActivationContext,
+  ActivationContextEvent,
+  ActivationContextSingleCard,
+} from '../common/ActivationContext'
 
 export type ActivationArrayNew = Array<CardActivation | AsyncCardActivation>
 
@@ -403,7 +407,7 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
     this.target = target
   }
 
-  activate() {
+  activateTargetted() {
     this.target.eventSink.emit('HEAL', this.amount)
   }
 
@@ -566,7 +570,7 @@ export class GainConscienceActivation implements Activation, DynamicDescriptionH
     this.target = target
   }
 
-  activate() {
+  activateTargetted() {
     this.target.eventSink.emit('GAIN_CONSCIENCE', this.amount)
   }
 
@@ -597,11 +601,11 @@ export class FeedActivation extends CardActivation {
 }
 
 export class QueueActivation extends CardActivation implements StaticDescriptionHolder {
-  private readonly activation: QueuedTargettedActivation<ActivationContextSingleCard>
+  private readonly activation: QueuedTargettedActivation<ActivationContextSingleCard | ActivationContextEvent>
   private readonly eventSink: EventSink<BoardSupportedEvents>
   readonly description: string
 
-  constructor(activation: QueuedTargettedActivation<ActivationContextSingleCard>) {
+  constructor(activation: QueuedTargettedActivation<ActivationContextSingleCard | ActivationContextEvent>) {
     super()
     this.eventSink = EventEmitters.boardEventEmitter
     this.activation = activation

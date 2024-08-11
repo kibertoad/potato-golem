@@ -16,7 +16,7 @@ export type QueuedActivationParams = {
   description?: string
 }
 
-export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activation'> & { activations: TargettedActivations<Target>}
+export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activations'> & { activations: TargettedActivations<Target>}
 
 export class QueuedActivation<Target = unknown> implements Activation, AsyncActivation{
   private activatesIn: LimitedNumber
@@ -42,10 +42,16 @@ export class QueuedActivation<Target = unknown> implements Activation, AsyncActi
     this.activatesIn.setToMax()
   }
 
+  /**
+   * Activates only sync activations
+   */
   activate(): void {
     this.activations.activateOnlySync()
   }
 
+  /**
+   * Activates both sync and async activations
+   */
   async activateAsync(): Promise<void> {
     await this.activations.activateAsync()
   }
@@ -75,10 +81,16 @@ export class QueuedTargettedActivation<Target> implements TargettedActivation<Ta
     this.activatesIn.setToMax()
   }
 
+  /**
+   * Activates only sync activations
+   */
   activateTargetted(target: Target): void {
     this.activations.activateOnlySyncWithTarget(target)
   }
 
+  /**
+   * Activates both sync and async activations
+   */
   async activateTargettedAsync(target: Target): Promise<void> {
     await this.activations.activateAsyncWithTarget(target)
   }

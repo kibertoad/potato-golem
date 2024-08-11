@@ -64,6 +64,7 @@ import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
+import { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
 
 const debug = true
 
@@ -180,8 +181,8 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on(
       'QUEUE_ACTIVATION',
-      (activation: QueuedActivation, targetCard?: CardModel) => {
-        this.eventDirector.addQueuedActivation(activation, targetCard)
+      (activation: QueuedActivation, context: ActivationContextCardOrEvent) => {
+        this.eventDirector.addQueuedActivation(activation, context)
       },
     )
 

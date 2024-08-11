@@ -11,7 +11,7 @@ export class SetTextActivation implements Activation {
     this.newText = newText
   }
 
-  activate() {
+  activateTargetted() {
     this.targetObject.value.text = this.newText
   }
 
@@ -22,7 +22,7 @@ export class SetTextActivation implements Activation {
     validateNotNil(targetObject, 'targetObject cannot be null')
     const activation = new SetTextActivation(targetObject, newText)
     return () => {
-      activation.activate()
+      activation.activateTargetted()
     }
   }
 }

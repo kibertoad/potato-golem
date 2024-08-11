@@ -67,7 +67,7 @@ export class SingingMushroomActivation extends QueuedActivation {
     }
   }
 
-  async activate(): Promise<void> {
+  async activateTargetted(): Promise<void> {
     const startingPoints = Object.values(zoneRegistry).filter((zone) => {
       return (
         zone !== 'any' &&
@@ -100,7 +100,7 @@ export class HungerActivation extends QueuedActivation {
     })
   }
 
-  activate(): void {
+  activateTargetted(): void {
     worldModel.homunculusModel.eventSink.emit('STARVE', 1)
   }
 }
@@ -118,7 +118,7 @@ export class AlcoholismActivation extends QueuedActivation {
     })
   }
 
-  activate(): void {
+  activateTargetted(): void {
     if (worldModel.zones.home.hasCard('ABSINTHE')) {
       console.log('have booze, will drink')
       const boozeCard = worldModel.zones.home.findCardByID('ABSINTHE')
@@ -153,7 +153,7 @@ export class EvolutionActivation extends QueuedActivation {
     })
   }
 
-  activate(): void {
+  activateTargetted(): void {
     worldModel.homunculusModel.eventSink.emit('EVOLVE', 1)
   }
 }
@@ -171,7 +171,7 @@ export class TheRaidActivation extends QueuedActivation {
     })
   }
 
-  async activate() {
+  async activateTargetted() {
     if (worldModel.hasCard('THE_RAID')) {
       return
     }
