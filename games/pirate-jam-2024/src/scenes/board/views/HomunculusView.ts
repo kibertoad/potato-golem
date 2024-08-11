@@ -1,11 +1,11 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
+import { audioSystem } from '../../..'
 import type { HomunculusModel } from '../../../model/entities/HomunculusModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
-import { SfxRegistry } from '../../../model/registries/sfxRegistry'
-import { worldModel } from '../../../model/state/WorldModel'
+import { SfxEventRegistry } from '../../../model/registries/sfxEventRegistry'
 import { delay } from '../../../utils/timeUtils'
 import { CardView } from './CardView'
 
@@ -165,9 +165,7 @@ export class HomunculusView extends Container {
     this.cardBloodSplatSprite.setAlpha(1)
     await this.cardBloodSplatSprite.play('blood_splat')
 
-    const splatSounds = [SfxRegistry.SLASH_SPLAT_1, SfxRegistry.SLASH_SPLAT_2]
-
-    worldModel.musicScene.playSfx(splatSounds[Math.floor(Math.random() * splatSounds.length)])
+    audioSystem.playSfx(SfxEventRegistry.SLASH_SPLAT)
 
     this.scene.tweens.add({
       targets: this.cardBloodSplatSprite,

@@ -7,13 +7,14 @@ import {
   TargettedAsyncMultiplexActivation,
   getRandomNumber, type QueuedTargettedActivation, ActivationContainer,
 } from '@potato-golem/core'
+import { audioSystem } from '../../..'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import { type SfxId, SfxRegistry } from '../../registries/sfxRegistry'
+import { type SfxEvent, SfxEventRegistry } from '../../registries/sfxEventRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
@@ -200,16 +201,17 @@ export class EatCardActivation extends AsyncCardActivation {
   }
 }
 
-export class PlaySfxActivation extends CardActivation {
-  private readonly sfx: Array<SfxId>
 
-  constructor(sfx: Array<SfxId>) {
+export class PlaySfxActivation extends CardActivation {
+  private readonly sfx: Array<SfxEvent>
+
+  constructor(sfx: Array<SfxEvent>) {
     super()
     this.sfx = sfx
   }
 
   activateTargetted(_context: ActivationContextSingleCard) {
-    worldModel.musicScene.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
+    audioSystem.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
   }
 
   getDescription(): string {
@@ -243,7 +245,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
           'In the name of the LAW!',
         ]),
         new AttackHomunculusCardActivation(worldModel.homunculusModel, 1),
-        new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+        new PlaySfxActivation([SfxEventRegistry.POOF]), //This is for the CORPSE appearence
         new AnimateCardActivation('blood_splat', 0),
         new FeedActivation(worldModel.homunculusModel, 1, true),
         new SpawnCardActivation({
@@ -274,7 +276,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
               'In the name of the LAW!',
             ]),
             new SearchAndDestroyCardActivation('HEALTH', 'home'),
-            new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
+            new PlaySfxActivation([SfxEventRegistry.POOF]), //This is for the CORPSE appearence
             new AnimateCardActivation('blood_splat', 0),
             new SpawnCardActivation({
               spawnAnimation: 'pop_in',

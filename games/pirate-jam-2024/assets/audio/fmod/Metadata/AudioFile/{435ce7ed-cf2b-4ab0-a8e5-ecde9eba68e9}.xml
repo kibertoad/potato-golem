@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{435ce7ed-cf2b-4ab0-a8e5-ecde9eba68e9}">
+		<property name="assetPath">
+			<value>Sfx/slash_splat_2.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.48471655328798186</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{e7ed36ca-5776-4c7f-9e6d-020f1623afa4}</destination>
+		</relationship>
+	</object>
+</objects>

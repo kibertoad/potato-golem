@@ -2,17 +2,17 @@ import type { Game } from 'phaser'
 import { FMOD, type Out } from '../../lib/fmod/types'
 import type {
   MusicEvent,
-  MusicEventId,
   MusicEventParameterId,
   MusicEventParameterValueId,
 } from '../model/registries/musicEventRegistry'
+import type { SfxEvent } from '../model/registries/sfxEventRegistry'
 
 export class AudioSystem {
   private readonly game: Game
   private readonly fmodStudio: FMOD.StudioSystem
   private readonly fmodStudioCore: FMOD.System
 
-  private readonly musicEvents: Record<MusicEventId, FMOD.EventInstance> = {}
+  private readonly fmodEvents: Record<string, FMOD.EventInstance> = {}
   private musicVolume = 0.2
   private currentMusicEventId: string = null
   private outMusicDescription: Out<FMOD.EventDescription> = { val: null }
@@ -43,22 +43,28 @@ export class AudioSystem {
   }
 
   private prepareEventInstance(eventId: string): FMOD.EventInstance {
-    if (this.musicEvents[eventId]) {
-      return this.musicEvents[eventId]
+    if (this.fmodEvents[eventId]) {
+      return this.fmodEvents[eventId]
     }
 
     this.fmodStudio.getEvent(eventId, this.outMusicDescription)
     this.outMusicDescription.val.createInstance(this.outMusicInstance)
 
-    this.musicEvents[eventId] = this.outMusicInstance.val
+    this.fmodEvents[eventId] = this.outMusicInstance.val
 
-    return this.musicEvents[eventId]
+    return this.fmodEvents[eventId]
+  }
+
+  public playSfx(eventDefinition: SfxEvent) {
+    const sfxEvent = this.prepareEventInstance(eventDefinition.id)
+
+    sfxEvent.start()
   }
 
   public setMusicVolume(volume: number) {
     this.musicVolume = volume
-    for (const musicEventId in this.musicEvents) {
-      this.musicEvents[musicEventId].setVolume(this.musicVolume)
+    for (const musicEventId in this.fmodEvents) {
+      this.fmodEvents[musicEventId].setVolume(this.musicVolume)
     }
   }
 
@@ -82,7 +88,7 @@ export class AudioSystem {
     }
 
     if (this.currentMusicEventId) {
-      this.musicEvents[this.currentMusicEventId].stop(FMOD.STUDIO_STOP_MODE.ALLOWFADEOUT)
+      this.fmodEvents[this.currentMusicEventId].stop(FMOD.STUDIO_STOP_MODE.ALLOWFADEOUT)
     }
 
     this.currentMusicEventId = eventDefinition.id

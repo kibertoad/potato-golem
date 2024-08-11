@@ -8,6 +8,7 @@ const bankUrls = [
   require('url:../assets/audio/fmod/Build/HTML5/Master.bank'),
   require('url:../assets/audio/fmod/Build/HTML5/Master.strings.bank'),
   require('url:../assets/audio/fmod/Build/HTML5/Music.bank'),
+  require('url:../assets/audio/fmod/Build/HTML5/Sfx.bank'),
 ]
 
 const getBankFilename = (bankUrl: string) => {
