@@ -61,7 +61,7 @@ export class ActivationContainer<Target> {
 
   activateOnlySync() {
     for (const activation of this.activations) {
-      activation.activateTargetted()
+      activation.activate()
     }
   }
 
@@ -75,7 +75,7 @@ export class ActivationContainer<Target> {
 
   async activateAsync(): Promise<void> {
     for (const activation of this.activations) {
-      activation.activateTargetted()
+      activation.activate()
     }
 
     for (const activation of this.asyncActivations) {
@@ -85,7 +85,7 @@ export class ActivationContainer<Target> {
 
   async activateAsyncWithTarget(target: Target): Promise<void> {
     for (const activation of this.activations) {
-      activation.activateTargetted()
+      activation.activate()
     }
 
     for (const activation of this.targettedActivations) {

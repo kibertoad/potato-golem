@@ -3,6 +3,7 @@ export { getRandomNumber, randomOneOf, normalizedRandom, generateUuid } from './
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor, ParameterlessProcessor } from './src/core/interfaces/Processor'
 export type {
+  executeTargettedActivation,
   AsyncActivation,
   AsyncActivationCallback,
   Activations,

@@ -21,11 +21,6 @@ import {
   randomOneOf,
 } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
-import {
-  type CardDefinition,
-  type CardDefinitions,
-  cardDefinitions,
-} from '../../model/definitions/cardDefinitions'
 import type { EventId } from '../../model/definitions/eventDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
@@ -65,6 +60,7 @@ import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 import { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
+import { CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
 
 const debug = true
 

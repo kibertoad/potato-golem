@@ -3,7 +3,7 @@ import {
   type QueuedActivation,
   type TurnProcessor,
   normalizedRandom,
-  randomOneOf, type QueuedTargettedActivation,
+  randomOneOf, type QueuedTargettedActivation, executeTargettedActivation,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
@@ -101,7 +101,11 @@ export class EventDirector implements TurnProcessor {
       this.eventSink.emit('START_EVENT', eventToPlay.id)
     }
     if (eventToPlay.effect) {
-      await eventToPlay.effect.activate()
+      for (const effect of eventToPlay.effect) {
+        await executeTargettedActivation(effect, {
+          fromEvent: eventToPlay
+        })
+      }
     }
     this.resetCounter()
   }

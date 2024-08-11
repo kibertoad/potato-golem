@@ -1,3 +1,5 @@
+import { isTargettedActivation } from './AbstractActivation'
+
 export const LOW_PRIORITY = 10
 export const AVERAGE_PRIORITY = 50
 export const HIGH_PRIORITY = 100
@@ -46,4 +48,12 @@ export type TargettedActivation<Target> = {
 
 export type TargettedAsyncActivation<Target> = {
   activateTargettedAsync: TargettedAsyncActivationCallback<Target>
+}
+
+export function executeTargettedActivation<T>(activation: TargettedActivation<T> | TargettedAsyncActivation<T>, target: T): Promise<void> {
+  if (isTargettedActivation(activation)) {
+    activation.activateTargetted(target)
+    return Promise.resolve()
+  }
+    return (activation as TargettedAsyncActivation<T>).activateTargettedAsync(target)
 }

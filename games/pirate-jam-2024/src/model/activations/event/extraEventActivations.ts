@@ -7,9 +7,9 @@ import { delay } from '../../../utils/timeUtils'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import { AsyncCardActivation } from '../card/CardActivation'
+import { AsyncCardOrEventActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
-import type { ActivationContextSingleCard } from '../common/ActivationContext'
+import type { ActivationContextCardOrEvent } from '../common/ActivationContext'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { cardDefinitions } from '../../definitions/cardDefinitionsNew'
 
@@ -25,7 +25,7 @@ export type SpawnCardMessage = {
   precondition?: Precondition
 }
 
-export class SpawnCardActivation extends AsyncCardActivation {
+export class SpawnCardActivation extends AsyncCardOrEventActivation {
   private readonly cardId: CardId
   private zone: Zone
   private readonly spawnAnimation?: SpawnAnimation
@@ -58,7 +58,7 @@ export class SpawnCardActivation extends AsyncCardActivation {
     this.ignoreTargetCard = ignoreTargetCard
   }
 
-  async activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
+  async activateTargettedAsync(context: ActivationContextCardOrEvent): Promise<void> {
     if (!this.precondition || this.precondition.isSatisfied()) {
       if (this.spawnLocation === 'same_as_target' && context.targetCard) {
         this.zone = context.targetCard.zone

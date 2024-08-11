@@ -16,7 +16,9 @@ export type QueuedActivationParams = {
   description?: string
 }
 
-export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activations'> & { activations: TargettedActivations<Target>}
+export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activations'> & {
+  activations: TargettedActivations<Target>
+}
 
 export class QueuedActivation<Target = unknown> implements Activation, AsyncActivation{
   private activatesIn: LimitedNumber
