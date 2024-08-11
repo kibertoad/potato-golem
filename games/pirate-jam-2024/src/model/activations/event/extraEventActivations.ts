@@ -4,14 +4,14 @@ import type {
 } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import { delay } from '../../../utils/timeUtils'
-import { cardDefinitions } from '../../definitions/cardDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import { AsyncCardActivation, CardActivation } from '../card/CardActivation'
+import { AsyncCardActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
-import { ActivationContext, ActivationContextSingleCard } from '../common/ActivationContext'
+import type { ActivationContextSingleCard } from '../common/ActivationContext'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
+import { cardDefinitions } from '../../definitions/cardDefinitionsNew'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 
@@ -58,7 +58,7 @@ export class SpawnCardActivation extends AsyncCardActivation {
     this.ignoreTargetCard = ignoreTargetCard
   }
 
-  async activate(context: ActivationContextSingleCard): Promise<void> {
+  async activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
     if (!this.precondition || this.precondition.isSatisfied()) {
       if (this.spawnLocation === 'same_as_target' && context.targetCard) {
         this.zone = context.targetCard.zone

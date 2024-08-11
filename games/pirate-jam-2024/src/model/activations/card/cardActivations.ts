@@ -51,7 +51,7 @@ export class AnimateCardActivation extends AsyncCardActivation {
     }
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     if (this.customDelay >= 0) {
       this.playAnimation(context.targetCard)
       await delay(this.customDelay)
@@ -73,7 +73,7 @@ export class CancelDragCardActivation extends CardActivation {
     this.cardToCancel = cardToCancel
   }
 
-  override activate(context: ActivationContextSingleCard) {
+  activateTargetted(context: ActivationContextSingleCard) {
     if (context.targetCard.definition.id === this.cardToCancel) {
       context.targetCard.view.cancelDrag()
       return
@@ -93,8 +93,8 @@ export class DecomposeCardActivation
   extends AnimateCardActivation
   implements AsyncCardActivation, DynamicDescriptionHolder
 {
-  async activate(context: ActivationContextSingleCard) {
-    await super.activate(context)
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await super.activateTargettedAsync(context)
     context.targetCard.destroy()
   }
 
@@ -111,12 +111,12 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
     this.zone = zone
   }
 
-  async activate(_context: ActivationContextSingleCard): Promise<void> {
+  async activateTargettedAsync(_context: ActivationContextSingleCard): Promise<void> {
     const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
       promises.push(
-        super.activate({
+        super.activateTargettedAsync({
           targetCard: card.model
         })
       )
@@ -131,7 +131,7 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
 
 export class DecomposeOtherCardActivation extends DecomposeCardActivation {
   async activate(context: ActivationContextSingleCard) {
-    await super.activate({
+    await super.activateTargettedAsync({
       targetCard: context.targetCard.combinedCard
     })
   }
@@ -142,8 +142,8 @@ export class DecomposeOtherCardActivation extends DecomposeCardActivation {
 }
 
 export class DecomposeBothCardsActivation extends DecomposeCardActivation {
-  async activate(context: ActivationContextSingleCard) {
-    await Promise.all([super.activate(context), super.activate({
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await Promise.all([super.activateTargettedAsync(context), super.activateTargettedAsync({
       targetCard: context.targetCard.combinedCard
     })])
   }
@@ -154,7 +154,7 @@ export class DecomposeBothCardsActivation extends DecomposeCardActivation {
 }
 
 export class DestroyCardActivation extends AsyncCardActivation {
-  activate(context: ActivationContextSingleCard): Promise<void> {
+  activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
     context.targetCard.destroy()
     return Promise.resolve()
   }
@@ -172,11 +172,11 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
     this.zone = zone
   }
 
-  async activate(_context: ActivationContextSingleCard) {
+  async activateTargettedAsync(_context: ActivationContextSingleCard) {
     const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activate({
+      promises.push(super.activateTargettedAsync({
         targetCard: card.model,
       }))
     }
@@ -189,7 +189,7 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
 }
 
 export class EatCardActivation extends AsyncCardActivation {
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     await context.targetCard.view.playEatAnimation()
     context.targetCard.destroy()
   }
@@ -207,7 +207,7 @@ export class PlaySfxActivation extends CardActivation {
     this.sfx = sfx
   }
 
-  activate(_context: ActivationContextSingleCard) {
+  activateTargetted(_context: ActivationContextSingleCard) {
     worldModel.musicScene.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
   }
 
@@ -217,7 +217,7 @@ export class PlaySfxActivation extends CardActivation {
 }
 
 export class LawIsDeadActivation extends CardActivation {
-  activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     worldModel.theLawIsDead = true
   }
 
@@ -230,7 +230,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
   getDescription() {
     return ''
   }
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     console.log('Activate TheLaw')
     if (context.targetCard.zone === 'alchemy') {
       console.log('Homunculus branch')
@@ -253,7 +253,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
         new DelayActivation(1100), //Allow blood splat animation to finish
         new DestroyCardActivation(),
       ])
-      await activation.activate(context)
+      await activation.activateTargettedAsync(context)
 
       return
     }
@@ -287,7 +287,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
         ),
       ])
 
-      await activation.activate(context)
+      await activation.activateTargettedAsync(context)
 
       if (context.targetCard.isDestroyed) {
         return
@@ -299,7 +299,7 @@ export class TheLawMoveActivation extends AsyncCardActivation {
           new ChatCardActivation(['Guess nothing to see here']),
           new DecomposeCardActivation(),
         ])
-        await leaveActivation.activate(context)
+        await leaveActivation.activateTargettedAsync(context)
         return
       }
     }
@@ -323,14 +323,14 @@ export class TheLawMoveActivation extends AsyncCardActivation {
       'Hmmm... Interesting...',
       'What do we have here?',
       'Do you mind if I take a look?',
-    ]).activate(context)
+    ]).activateTargettedAsync(context)
 
     const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
-    await moveActivation.activate(context)
+    await moveActivation.activateTargettedAsync(context)
   }
 }
 
-export class MoveToZoneCardActivation extends CardActivation {
+export class MoveToZoneCardActivation extends AsyncCardActivation {
   private readonly worldModel: WorldModel
   private readonly targetZone: Zone
 
@@ -343,7 +343,7 @@ export class MoveToZoneCardActivation extends CardActivation {
       : targetZones
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
     const targetZoneView = this.worldModel.zones[this.targetZone]
     context.targetCard.changeZone(this.targetZone, true)
     const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(context.targetCard.view)
@@ -368,7 +368,7 @@ export class ChatCardActivation extends AsyncCardActivation {
     this.chatPhrases = chatPhrases
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     await context.targetCard.view.say(this.chatPhrases)
   }
 
@@ -377,15 +377,20 @@ export class ChatCardActivation extends AsyncCardActivation {
   }
 }
 
-export class DelayActivation implements Activation {
+export class DelayActivation extends AsyncCardActivation {
   private readonly delay: number
 
   constructor(delay: number) {
+    super()
     this.delay = delay
   }
 
-  async activate() {
+  async activateTargettedAsync(_context: ActivationContextSingleCard) {
     await delay(this.delay)
+  }
+
+  getDescription(): string {
+    return ''
   }
 }
 
@@ -417,7 +422,7 @@ export class DamageActivation extends CardActivation {
     this.target = target
   }
 
-  activate(_context: ActivationContextSingleCard) {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('DAMAGE', this.amount)
   }
 
@@ -438,7 +443,7 @@ export class AttackHomunculusCardActivation extends AsyncCardActivation {
     this.target = target
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     const { targetCard } = context
     const currentX = targetCard.view.x
     const currentY = targetCard.view.y
@@ -447,7 +452,7 @@ export class AttackHomunculusCardActivation extends AsyncCardActivation {
       x: 1280,
       y: 720,
     })
-    this.damageActivation.activate(context)
+    this.damageActivation.activateTargetted(context)
     if (this.kamikaze) {
       return
     }
@@ -476,7 +481,7 @@ export class SearchAndDestroyCardActivation extends AsyncCardActivation {
     this.kamikaze = kamikaze
   }
 
-  async activate(context: ActivationContextSingleCard) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     const { targetCard } = context
     const foundCard = worldModel.searchForCards(this.cardIdsToAttack, this.searchZone)
 
@@ -493,7 +498,7 @@ export class SearchAndDestroyCardActivation extends AsyncCardActivation {
       foundCard.destroy()
       return
     }
-    await this.decompozeAcivation.activate({
+    await this.decompozeAcivation.activateTargettedAsync({
       targetCard: foundCard
     })
     await targetCard.view.animateRushTo({

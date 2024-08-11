@@ -1,23 +1,25 @@
-import { AVERAGE_PRIORITY, type TargettedActivation, type TargettedActivationCallback } from '../common/Activation'
+import {
+  AVERAGE_PRIORITY,
+  type TargettedActivation,
+  type TargettedActivationCallback, type TargettedActivations,
+  type TargettedAsyncActivation,
+} from '../common/Activation'
+import { ActivationContainer } from '../common/ActivationContainer'
 
 /**
  * Activation with a single target, which invokes other activations in bulk
  */
-export class TargettedAsyncMultiplexActivation<Target> implements TargettedActivation<Target> {
-  protected readonly activations: TargettedActivation<Target>[]
+export class TargettedAsyncMultiplexActivation<Target> implements TargettedAsyncActivation<Target> {
+  protected readonly activations: ActivationContainer<Target>
   public priority: number
 
-  constructor(activations: TargettedActivation<Target>[], priority?: number) {
-    this.activations = activations
+  constructor(activations: TargettedActivations<Target>, priority?: number) {
+    this.activations = new ActivationContainer(activations)
     this.priority = priority ?? AVERAGE_PRIORITY
   }
 
-  activateTargetted(target: Target): void {
-    for (const activation of this.activations) {
-      // console.log('Activating', activation)
-      activation.activateTargetted(target)
-      // console.log('Activated', activation)
-    }
+  async activateTargettedAsync(target: Target): Promise<void> {
+    await this.activations.activateAsyncWithTarget(target)
   }
 
   public static build<Target>(activations: TargettedActivationCallback<Target>[]): TargettedActivation<Target> {
