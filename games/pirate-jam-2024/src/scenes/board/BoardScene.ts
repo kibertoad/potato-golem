@@ -60,7 +60,8 @@ import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
 import type { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
-import { type CardDefinitionNew, cardDefinitions, type CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
+import { cardDefinitions, type CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
+import { CardDefinitionNew } from '../../model/definitions/cardDefinitionTypes'
 
 const debug = true
 

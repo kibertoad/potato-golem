@@ -6,10 +6,10 @@ import {
 
 import type { CommonEntity } from '@potato-golem/core'
 import type { CardView } from '../../scenes/board/views/CardView'
-import type { CardEffectDefinition } from '../definitions/cardDefinitions'
+import type { CardEffectDefinition } from '../definitions/cardDefinitionsOld'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import type { CardActivationDefinitionNewCards, CardDefinitionNew } from '../definitions/cardDefinitionsNew'
+import { CardActivationDefinitionNewCards, CardDefinitionNew } from '../definitions/cardDefinitionTypes'
 
 export type CardModelParams = {
   definition: CardDefinitionNew

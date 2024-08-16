@@ -1,5 +1,4 @@
 import {
-  type Activation,
   DescribedTargettedAsyncMultiplexActivation,
   type DynamicDescriptionHolder,
   type EventReceiver,
@@ -10,7 +9,7 @@ import {
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
-import type { EventId, TargettedMixedContextActivationType } from '../../definitions/eventDefinitions'
+import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'

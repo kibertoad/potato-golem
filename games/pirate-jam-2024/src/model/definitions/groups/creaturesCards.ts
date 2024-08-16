@@ -1,5 +1,4 @@
 import type { CardId } from '../../registries/cardRegistry'
-import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import {
   AttackHomunculusCardActivation,
   ChatCardActivation, DecomposeCardActivation, MoveToZoneCardActivation,
@@ -7,6 +6,7 @@ import {
   TheLawMoveActivation,
 } from '../../activations/card/cardActivations'
 import { worldModel } from '../../state/WorldModel'
+import { CardDefinitionNew } from '../cardDefinitionTypes'
 
 export const creatureCardDefinitions = {
   THE_ID: {

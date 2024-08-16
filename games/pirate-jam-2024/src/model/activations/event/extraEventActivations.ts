@@ -11,7 +11,6 @@ import { AsyncCardOrEventActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
 import type { ActivationContextCardOrEvent } from '../common/ActivationContext'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
-import { cardDefinitions } from '../../definitions/cardDefinitionsNew'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 
@@ -80,6 +79,7 @@ export class SpawnCardActivation extends AsyncCardOrEventActivation {
   }
 
   getDescription(): string {
-    return `Get 1 ${cardDefinitions[this.cardId].name}`
+    //return `Get 1 ${cardDefinitions[this.cardId].name}`
+    return `Get 1 card (ToDo resolve name)`
   }
 }

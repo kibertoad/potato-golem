@@ -1,5 +1,4 @@
 import type { CardId } from '../../registries/cardRegistry'
-import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
@@ -12,6 +11,7 @@ import {
 } from '../../activations/card/cardActivations'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
 import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
+import { CardDefinitionNew } from '../cardDefinitionTypes'
 
 export const propertyCardDefinitions = {
   WORKBENCH: {

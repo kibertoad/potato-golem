@@ -18,10 +18,10 @@ import {
 import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
 import type { CardId } from '../../registries/cardRegistry'
-import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import { QueuedTargettedActivation } from '@potato-golem/core'
 import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../../preconditions/RoughKindPrecondition'
+import { CardDefinitionNew } from '../cardDefinitionTypes'
 
 export const resourceCardDefinitions = {
   ABSINTHE: {

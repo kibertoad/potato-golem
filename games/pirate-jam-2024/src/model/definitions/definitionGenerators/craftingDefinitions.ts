@@ -1,6 +1,6 @@
-import { PossibleCardEffects } from '../cardDefinitionsNew'
 import { DecomposeOtherCardActivation, StartEventActivation } from '../../activations/card/cardActivations'
 import type { EventId } from '../eventDefinitions'
+import { PossibleCardEffects } from '../cardDefinitionTypes'
 
 export type MultiOptionCraftingActivationParams = {
   eventName: EventId
