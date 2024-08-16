@@ -48,6 +48,7 @@ export type {
   CommonView,
   CommonEntity,
 } from './src/core/interfaces/Entities'
+export { isDynamicDescriptionsHolder } from './src/core/interfaces/Entities'
 export { QueuedActivation, QueuedTargettedActivation, type QueuedTargettedActivationParams, type QueuedActivationParams } from './src/core/activations/prefabs/QueuedActivation'
 export { ActivationContainer } from './src/core/activations/common/ActivationContainer'
 export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, isActivation } from './src/core/activations/common/AbstractActivation'

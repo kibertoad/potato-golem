@@ -7,7 +7,7 @@ import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { CardView, type DirectionResult } from './CardView'
 import type { ZoneView } from './ZoneView'
 import type { CardDefinitions } from '../../../model/definitions/cardDefinitionsNew'
-import { DynamicDescriptionsHolder } from '@potato-golem/core'
+import { type DynamicDescriptionsHolder, isDynamicDescriptionsHolder } from '@potato-golem/core'
 
 export type CardEffectViewDependencies = {
   cardDefinitions: CardDefinitions
@@ -126,7 +126,9 @@ export class CardEffectView extends Container {
       } else {
         resolvedText = `${timeString}`
         for (const effect of combinationResult.effect.effects) {
-          resolvedText += (effect as unknown as DynamicDescriptionsHolder).getDescriptions()
+          if (isDynamicDescriptionsHolder(effect)) {
+            resolvedText += effect.getDescription()
+          }
         }
       }
     }
