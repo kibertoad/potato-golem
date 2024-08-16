@@ -14,7 +14,7 @@ export class CombinedZonePrecondition implements TargettedReasonedPrecondition<A
     this.notSatisfiedReason = notSatisfiedReason
   }
 
-  isSatisfied(context: ActivationContextSingleCard): true | string {
+  isSatisfiedForTarget(context: ActivationContextSingleCard): true | string {
     if (!context.targetCard.combinedCard) {
       return ''
     }

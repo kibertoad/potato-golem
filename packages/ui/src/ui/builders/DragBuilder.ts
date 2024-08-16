@@ -207,7 +207,7 @@ export function buildDragWithActivations<
       if (typeof activation === 'function') {
         activation(overlappingObject)
       } else {
-        activation.activate(overlappingObject)
+        activation.activateTargetted(overlappingObject)
       }
     },
 

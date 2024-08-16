@@ -16,8 +16,8 @@ import Sprite = Phaser.GameObjects.Sprite
 import {
   type CommonEntity,
   type EventSink,
-  type EventSource,
-  type QueuedActivation,
+  type EventSource, executeTargettedActivation,
+  type QueuedActivation, QueuedTargettedActivation,
   randomOneOf,
 } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
@@ -59,8 +59,8 @@ import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
-import { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
-import { CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
+import type { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
+import { type CardDefinitionNew, cardDefinitions, type CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
 
 const debug = true
 
@@ -177,7 +177,7 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on(
       'QUEUE_ACTIVATION',
-      (activation: QueuedActivation, context: ActivationContextCardOrEvent) => {
+      (activation: QueuedTargettedActivation<ActivationContextCardOrEvent>, context: ActivationContextCardOrEvent) => {
         this.eventDirector.addQueuedActivation(activation, context)
       },
     )
@@ -308,7 +308,7 @@ export class BoardScene extends PotatoScene {
     spawnAnimation?: SpawnAnimation,
     sourceCard?: CardModel,
   ) {
-    const cardDefinition: CardDefinition = this.cardDefinitions[cardId]
+    const cardDefinition: CardDefinitionNew = this.cardDefinitions[cardId]
     const cardModel = new CardModel({
       parentEventSink: this.eventBus,
       zone: zone,
@@ -324,8 +324,8 @@ export class BoardScene extends PotatoScene {
         model: cardModel,
         x: 0,
         y: 0,
-        chatBubbleOrigin: cardDefinition.chatBubbleOrigin,
-        chatBubbleRightOffset: cardDefinition.chatBubbleRightOffset,
+        chatBubbleOrigin: cardDefinition.prettyEffects.chatBubbleOrigin,
+        chatBubbleRightOffset: cardDefinition.prettyEffects.chatBubbleRightOffset,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
         onDrag: (cardView: CardView) => this.onCardDrag(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
@@ -348,8 +348,8 @@ export class BoardScene extends PotatoScene {
       })
     }
     await cardView.playAnimation(spawnAnimation)
-    if (cardDefinition.spawnPhrases && spawnAnimation !== 'none') {
-      cardView.say(cardDefinition.spawnPhrases)
+    if (cardDefinition.prettyEffects.spawnPhrases && spawnAnimation !== 'none') {
+      cardView.say(cardDefinition.prettyEffects.spawnPhrases)
     }
   }
 
@@ -390,8 +390,8 @@ export class BoardScene extends PotatoScene {
         const activation = cardView.model.definition.zoneCombinationEffect[this.pointedZoneView.id]
         for (const effect of activation.effect) {
           // ToDo add and fix await here later
-          void effect.activate({
-            sourceCard: cardView.model
+          void executeTargettedActivation(effect, {
+            targetCard: cardView.model
           })
         }
 
@@ -465,12 +465,16 @@ export class BoardScene extends PotatoScene {
     if (combinationEffect) {
       combinationOwnerCard.model.combineWithCard(combinationChildCard.model)
 
-      if (combinationEffect.timeTillTrigger === 0) {
-        // ToDo fix later
-        void combinationEffect.effect.activate({
-          targetCard: combinationOwnerCard.model
-        })
+      // ToDo maybe condition is necessary
+      //if (combinationEffect.timeTillTrigger === 0) {
+      // ToDo fix later
+
+      for (const effect of combinationEffect.effects) {
+      void executeTargettedActivation(effect, {
+        targetCard: combinationOwnerCard.model
+      })
       }
+      //}
       return true
     }
 

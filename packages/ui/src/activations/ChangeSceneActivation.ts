@@ -1,4 +1,5 @@
 import type { Activation, ActivationCallback } from '@potato-golem/core'
+import type Phaser from 'phaser'
 
 export class ChangeSceneActivation implements Activation {
   readonly #newScene: Phaser.Scene | string
@@ -9,7 +10,7 @@ export class ChangeSceneActivation implements Activation {
     this.#newScene = newScene
   }
 
-  activateTargetted() {
+  activate() {
     this.#currentScene.scene.start(this.#newScene)
   }
 
@@ -19,7 +20,7 @@ export class ChangeSceneActivation implements Activation {
   ): ActivationCallback {
     const activation = new ChangeSceneActivation(currentScene, newScene)
     return () => {
-      activation.activateTargetted()
+      activation.activate()
     }
   }
 }

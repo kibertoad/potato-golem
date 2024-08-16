@@ -3,7 +3,7 @@ import type { CardDefinitionNew } from '../cardDefinitionsNew'
 import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
-  QueuedTargettedActivation, TargettedAsyncMultiplexActivation,
+  QueuedTargettedActivation,
 } from '@potato-golem/core'
 import {
   DecomposeOtherCardActivation,
@@ -35,7 +35,7 @@ export const propertyCardDefinitions = {
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new TargettedAsyncMultiplexActivation([
+              activations: [
                 // ToDo restore this effect
                 new SetActiveCardActivation(false),
 
@@ -45,7 +45,7 @@ export const propertyCardDefinitions = {
                   description: 'Create 1 Poison',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
           new DecomposeOtherCardActivation('poof', 300),

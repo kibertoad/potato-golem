@@ -397,7 +397,7 @@ export class DelayActivation extends AsyncCardActivation {
   }
 }
 
-export class GainHealthActivation implements Activation, DynamicDescriptionHolder {
+export class GainHealthActivation implements CardActivation {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -406,7 +406,7 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
     this.target = target
   }
 
-  activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('HEAL', this.amount)
   }
 

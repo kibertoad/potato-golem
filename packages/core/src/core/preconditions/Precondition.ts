@@ -3,7 +3,7 @@ export type Precondition = {
 }
 
 export type TargettedPrecondition<T> = {
-  isSatisfied(target: T): boolean
+  isSatisfiedForTarget(target: T): boolean
 }
 
 export type TargettedReasonedPrecondition<T> = {
@@ -14,9 +14,17 @@ export type TargettedReasonedPrecondition<T> = {
    * @returns true if the precondition is satisfied, false otherwise.
    * If false, a string should be returned explaining why the precondition is not satisfied.
    */
-  isSatisfied(target: T): true | string
+  isSatisfiedForTarget(target: T): true | string
 }
 
 export type ReasonedPrecondition = {
   isSatisfied(): true | string
+}
+
+export function isPrecondition(entity: unknown): entity is Precondition {
+  return 'isSatisfied' in (entity as Precondition)
+}
+
+export function isTargettedPrecondition<T>(entity: unknown): entity is TargettedPrecondition<T> {
+  return 'isSatisfiedForTarget' in (entity as TargettedPrecondition<T>)
 }

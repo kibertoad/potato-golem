@@ -1,14 +1,15 @@
 import {
   type EventSink,
   type TurnProcessor,
-  generateUuid,
+  generateUuid, isPrecondition, isTargettedPrecondition,
 } from '@potato-golem/core'
+
 import type { CommonEntity } from '@potato-golem/core'
 import type { CardView } from '../../scenes/board/views/CardView'
 import type { CardEffectDefinition } from '../definitions/cardDefinitions'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import type { CardDefinitionNew } from '../definitions/cardDefinitionsNew'
+import type { CardActivationDefinitionNewCards, CardDefinitionNew } from '../definitions/cardDefinitionsNew'
 
 export type CardModelParams = {
   definition: CardDefinitionNew
@@ -88,12 +89,13 @@ export class CardModel implements TurnProcessor, CommonEntity {
     this.parentEventSink.emit('DESTROY', this)
   }
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   getActivationForCombinedCard(
     combinedCard: CardModel,
     includeCombined?: boolean,
     strict?: boolean,
   ): {
-    effect?: CardEffectDefinition
+    effect?: CardActivationDefinitionNewCards
     failReason?: boolean | string
   } {
     // nothing is highlighted
@@ -133,7 +135,14 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
       let preconditionResult: boolean | string
       for (const precondition of combinationEffect.preconditions) {
-        preconditionResult = precondition.isSatisfied(responsibleCard)
+
+        let preconditionResult: string | boolean
+        if (isPrecondition(precondition)) {
+          preconditionResult = precondition.isSatisfied()
+        } else if (isTargettedPrecondition(precondition)) {
+          preconditionResult = precondition.isSatisfiedForTarget(responsibleCard)
+        }
+
         if (preconditionResult !== true) {
           responsibleCard.combinedCard = currentCombinedCard
           return { failReason: preconditionResult }

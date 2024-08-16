@@ -14,18 +14,20 @@ export class SingingMushroomActivation extends QueuedActivation {
       id: 'SingingMushroomActivation',
       description: '',
       unique: true,
-      activation: null, // activation method is overriden
+      activations: [], // activation method is overriden
     })
   }
 
   private async populate(targetZone: Zone) {
-    const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+    const spawnActivation = new SpawnCardActivation({
       amount: 1,
       description: '',
       cardId: 'SINGING_MUSHROOMS',
       zone: targetZone,
     })
-    await spawnActivation.activate()
+    await spawnActivation.activateTargettedAsync({
+      fromEvent: null
+    })
   }
 
   private async tryPopulate(targetZone: Zone): Promise<boolean> {
@@ -96,7 +98,7 @@ export class HungerActivation extends QueuedActivation {
       id: 'HungerActivation',
       description: '',
       unique: true,
-      activation: null, // activation method is overriden
+      activations: [], // activation method is overriden
     })
   }
 
@@ -114,16 +116,18 @@ export class AlcoholismActivation extends QueuedActivation {
       id: 'AlcoholismActivation',
       description: '',
       unique: true,
-      activation: null, // activation method is overriden
+      activations: [], // activation method is overriden
     })
   }
 
-  activateTargetted(): void {
+  async activateTargetted(): Promise<void> {
     if (worldModel.zones.home.hasCard('ABSINTHE')) {
       console.log('have booze, will drink')
       const boozeCard = worldModel.zones.home.findCardByID('ABSINTHE')
       const decomposeActivation = new DecomposeCardActivation()
-      decomposeActivation.activate(boozeCard.card.model)
+      await decomposeActivation.activateTargettedAsync({
+        targetCard: boozeCard.card.model
+      })
       //EventEmitters.boardEventEmitter.emit('DESTROY', boozeCard.card)
 
       worldModel.alchemistModel.alcoholism.increase(1)
@@ -149,7 +153,7 @@ export class EvolutionActivation extends QueuedActivation {
       id: 'EvolutionActivation',
       description: '',
       unique: true,
-      activation: null, // activation method is overriden
+      activations: [], // activation method is overriden
     })
   }
 
@@ -167,7 +171,7 @@ export class TheRaidActivation extends QueuedActivation {
       id: 'TheRaidActivation',
       description: '',
       unique: true,
-      activation: null, // activation method is overriden
+      activations: [], // activation method is overriden
     })
   }
 
@@ -177,13 +181,15 @@ export class TheRaidActivation extends QueuedActivation {
     }
 
     if (worldModel.theLawIsDead) {
-      const spawnActivation = new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+      const spawnActivation = new SpawnCardActivation({
         amount: 1,
         description: '',
         cardId: 'THE_RAID',
         zone: 'streets',
       })
-      await spawnActivation.activate()
+      await spawnActivation.activateTargettedAsync({
+        fromEvent: null
+      })
     }
   }
 }

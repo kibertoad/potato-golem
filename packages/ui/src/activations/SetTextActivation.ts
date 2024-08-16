@@ -1,6 +1,7 @@
 import type { Activation, ActivationCallback } from '@potato-golem/core'
 import { validateNotNil } from 'validation-utils'
 import type { UIContainer } from '../ui/elements/UIContainer'
+import type Phaser from 'phaser'
 
 export class SetTextActivation implements Activation {
   private newText: string
@@ -11,7 +12,7 @@ export class SetTextActivation implements Activation {
     this.newText = newText
   }
 
-  activateTargetted() {
+  activate() {
     this.targetObject.value.text = this.newText
   }
 
@@ -22,7 +23,7 @@ export class SetTextActivation implements Activation {
     validateNotNil(targetObject, 'targetObject cannot be null')
     const activation = new SetTextActivation(targetObject, newText)
     return () => {
-      activation.activateTargetted()
+      activation.activate()
     }
   }
 }

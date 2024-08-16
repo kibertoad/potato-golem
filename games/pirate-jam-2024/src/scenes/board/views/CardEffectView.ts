@@ -1,12 +1,13 @@
 import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CardDefinitions } from '../../../model/definitions/cardDefinitions'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import Container = Phaser.GameObjects.Container
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { CardView, type DirectionResult } from './CardView'
 import type { ZoneView } from './ZoneView'
+import type { CardDefinitions } from '../../../model/definitions/cardDefinitionsNew'
+import { DynamicDescriptionsHolder } from '@potato-golem/core'
 
 export type CardEffectViewDependencies = {
   cardDefinitions: CardDefinitions
@@ -79,9 +80,21 @@ export class CardEffectView extends Container {
     const idleZoneEffect = cardView.model.definition.idleZoneEffect?.[zoneView.id]
     if (idleZoneEffect) {
       const timeString = this.resolveTimeString(idleZoneEffect.timeTillTrigger)
+      /*
       resolvedText =
         idleZoneEffect.tooltip ||
         `${timeString}${idleZoneEffect.effect.getDescriptions().join(' \n')}`
+
+       */
+
+      if (idleZoneEffect.tooltip) {
+        resolvedText = idleZoneEffect.tooltip
+      } else {
+        resolvedText = `${timeString}`
+        for (const effect of idleZoneEffect.effect) {
+          resolvedText += (effect as unknown as DynamicDescriptionsHolder).getDescriptions()
+        }
+      }
     }
 
     this.setText(resolvedText)
@@ -102,10 +115,20 @@ export class CardEffectView extends Container {
     )
     console.log(combinationResult)
     if (combinationResult.effect) {
-      const timeString = this.resolveTimeString(combinationResult.effect.timeTillTrigger)
-      resolvedText =
-        combinationResult.effect.tooltip ||
-        `${timeString}${combinationResult.effect.effect.getDescriptions().join(' \n')}`
+      //const timeString = this.resolveTimeString(combinationResult.effect.timeTillTrigger)
+      const timeString = 'dummy value, fix later'
+      //resolvedText =
+      //  combinationResult.effect.tooltip ||
+      //  `${timeString}${combinationResult.effect.effect.getDescriptions().join(' \n')}`
+
+      if (combinationResult.effect.tooltip) {
+        resolvedText = combinationResult.effect.tooltip
+      } else {
+        resolvedText = `${timeString}`
+        for (const effect of combinationResult.effect.effects) {
+          resolvedText += (effect as unknown as DynamicDescriptionsHolder).getDescriptions()
+        }
+      }
     }
 
     if (typeof combinationResult.failReason === 'string') {

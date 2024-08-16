@@ -2,8 +2,10 @@ export { LimitedNumber } from './src/core/primitives/LimitedNumber'
 export { getRandomNumber, randomOneOf, normalizedRandom, generateUuid } from './src/core/utils/randomUtils'
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor, ParameterlessProcessor } from './src/core/interfaces/Processor'
-export type {
+export {
   executeTargettedActivation,
+} from './src/core/activations/common/Activation'
+export type {
   AsyncActivation,
   AsyncActivationCallback,
   Activations,
@@ -18,6 +20,7 @@ export type {
   TargettedAsyncActivationCallback,
 } from './src/core/activations/common/Activation'
 export type { Precondition, ReasonedPrecondition, TargettedPrecondition, TargettedReasonedPrecondition } from './src/core/preconditions/Precondition'
+export { isPrecondition, isTargettedPrecondition } from './src/core/preconditions/Precondition'
 export { HIGH_PRIORITY, AVERAGE_PRIORITY, LOW_PRIORITY } from './src/core/activations/common/Activation'
 export { sortAndFilterActivations } from './src/core/activations/utils/activationFilter'
 export { ProcessorActivation } from './src/core/activations/prefabs/ProcessorActivation'

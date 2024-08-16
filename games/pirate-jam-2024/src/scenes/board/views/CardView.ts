@@ -506,11 +506,11 @@ export class CardView extends Container implements IdHolder {
     if (this.isActive === active) {
       return
     }
-    if (!skipSound && active && this.model.definition.activateSfx) {
-      worldModel.musicScene.playSfx(this.model.definition.activateSfx)
+    if (!skipSound && active && this.model.definition.prettyEffects.activateSfx) {
+      worldModel.musicScene.playSfx(this.model.definition.prettyEffects.activateSfx)
     }
-    if (!skipSound && !active && this.model.definition.deactivateSfx) {
-      worldModel.musicScene.playSfx(this.model.definition.deactivateSfx)
+    if (!skipSound && !active && this.model.definition.prettyEffects.deactivateSfx) {
+      worldModel.musicScene.playSfx(this.model.definition.prettyEffects.deactivateSfx)
     }
 
     if (this.model.definition.activeImage) {

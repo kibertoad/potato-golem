@@ -275,7 +275,7 @@ export const resourceCardDefinitions = {
               unique: true,
               description: 'May attract attention',
               activatesIn: 1,
-              activation: new SpawnCardActivation(
+              activations: [new SpawnCardActivation(
                 {
                   zone: 'streets',
                   precondition: new RoughKindPrecondition(),
@@ -286,7 +286,7 @@ export const resourceCardDefinitions = {
                 -1,
                 'zone',
                 true,
-              ),
+              )],
             }),
           ),
         ],
