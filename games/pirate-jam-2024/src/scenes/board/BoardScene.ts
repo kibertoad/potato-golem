@@ -325,8 +325,8 @@ export class BoardScene extends PotatoScene {
         model: cardModel,
         x: 0,
         y: 0,
-        chatBubbleOrigin: cardDefinition.prettyEffects.chatBubbleOrigin,
-        chatBubbleRightOffset: cardDefinition.prettyEffects.chatBubbleRightOffset,
+        chatBubbleOrigin: cardDefinition.prettyEffects?.chatBubbleOrigin,
+        chatBubbleRightOffset: cardDefinition.prettyEffects?.chatBubbleRightOffset,
         onDragStart: (cardView: CardView) => this.onCardDragStart(cardView),
         onDrag: (cardView: CardView) => this.onCardDrag(cardView),
         onDragEnd: (cardView: CardView) => this.onCardDragEnd(cardView),
@@ -349,7 +349,7 @@ export class BoardScene extends PotatoScene {
       })
     }
     await cardView.playAnimation(spawnAnimation)
-    if (cardDefinition.prettyEffects.spawnPhrases && spawnAnimation !== 'none') {
+    if (cardDefinition.prettyEffects?.spawnPhrases && spawnAnimation !== 'none') {
       cardView.say(cardDefinition.prettyEffects.spawnPhrases)
     }
   }
