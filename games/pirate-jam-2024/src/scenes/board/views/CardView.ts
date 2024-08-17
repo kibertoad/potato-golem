@@ -9,14 +9,13 @@ import {
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
+import { audioSystem } from '../../..'
 import type { CardModel } from '../../../model/entities/CardModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
-import { SfxRegistry } from '../../../model/registries/sfxRegistry'
-import { worldModel } from '../../../model/state/WorldModel'
-import { shuffleArray } from '../../../utils/arrayUtils'
+import { SfxEventRegistry } from '../../../model/registries/sfxEventRegistry'
 import { delay } from '../../../utils/timeUtils'
 import type { BoardSupportedEvents } from '../BoardScene'
 
@@ -374,7 +373,7 @@ export class CardView extends Container implements IdHolder {
         if (params.onDragStart) {
           params.onDragStart(this)
         }
-        this.playRandomCardSound()
+        audioSystem.playSfx(SfxEventRegistry.CARD)
       })
       .on('drag', (pointer, dragX, dragY) => {
         this.isDragging = true
@@ -425,7 +424,7 @@ export class CardView extends Container implements IdHolder {
         })
         if (params.onDragEnd && params.onDragEnd(this) !== true) {
           //We want to play the sound only if card was not activated
-          this.playRandomCardSound()
+          audioSystem.playSfx(SfxEventRegistry.CARD)
         }
         this.isDragging = false
       })
@@ -433,12 +432,6 @@ export class CardView extends Container implements IdHolder {
         // console.log(this.model.id, 'card was hovered over')
         this.boardEventSink.emit('CARD_HOVERED', this)
       })
-  }
-
-  playRandomCardSound() {
-    const cardSounds = [SfxRegistry.CARD_1, SfxRegistry.CARD_2, SfxRegistry.CARD_3]
-
-    worldModel.musicScene.playSfx(cardSounds[Math.floor(Math.random() * cardSounds.length)])
   }
 
   cancelDrag() {
@@ -507,10 +500,10 @@ export class CardView extends Container implements IdHolder {
       return
     }
     if (!skipSound && active && this.model.definition.prettyEffects.activateSfx) {
-      worldModel.musicScene.playSfx(this.model.definition.prettyEffects.activateSfx)
+      audioSystem.playSfx(this.model.definition.prettyEffects.activateSfx)
     }
     if (!skipSound && !active && this.model.definition.prettyEffects.deactivateSfx) {
-      worldModel.musicScene.playSfx(this.model.definition.prettyEffects.deactivateSfx)
+      audioSystem.playSfx(this.model.definition.prettyEffects.deactivateSfx)
     }
 
     if (this.model.definition.activeImage) {
@@ -536,7 +529,7 @@ export class CardView extends Container implements IdHolder {
     })
     this.cardPoofSprite.setAlpha(1)
     await this.cardPoofSprite.play('poof')
-    worldModel.musicScene.playSfx(SfxRegistry.POOF)
+    audioSystem.playSfx(SfxEventRegistry.POOF)
     this.scene.tweens.add({
       targets: this,
       alpha: 0,
@@ -558,9 +551,7 @@ export class CardView extends Container implements IdHolder {
     this.cardBloodSplatSprite.setAlpha(1)
     await this.cardBloodSplatSprite.play('blood_splat')
 
-    const splatSounds = [SfxRegistry.SLASH_SPLAT_1, SfxRegistry.SLASH_SPLAT_2]
-
-    worldModel.musicScene.playSfx(splatSounds[Math.floor(Math.random() * splatSounds.length)])
+    audioSystem.playSfx(SfxEventRegistry.SLASH_SPLAT)
     this.scene.tweens.add({
       targets: this,
       alpha: 0,
@@ -587,7 +578,7 @@ export class CardView extends Container implements IdHolder {
     this.cardExplosionSprite.setAlpha(1)
     await this.cardExplosionSprite.play('explosion')
 
-    worldModel.musicScene.playSfx(SfxRegistry.EXPLOSION)
+    audioSystem.playSfx(SfxEventRegistry.EXPLOSION)
 
     this.cardExplosionSprite.once('animationcomplete', () => {
       this.scene.tweens.add({
@@ -603,14 +594,13 @@ export class CardView extends Container implements IdHolder {
   }
 
   async playEatAnimation(onEatenCallback?: () => void) {
-    const biteSounds = shuffleArray([SfxRegistry.BITE_1, SfxRegistry.BITE_2, SfxRegistry.BITE_3])
     this.cardFrameSprite.setInteractive(false).removeAllListeners()
     await delay(200)
     this.createEatMasks()
     let mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatMaskImage)
     let shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEatShadowMaskImage)
 
-    worldModel.musicScene.playSfx(biteSounds[0])
+    audioSystem.playSfx(SfxEventRegistry.BITE)
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
@@ -619,12 +609,12 @@ export class CardView extends Container implements IdHolder {
     mask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2MaskImage)
     shadowMask = new Phaser.Display.Masks.BitmapMask(this.scene, this.cardEat2ShadowMaskImage)
 
-    worldModel.musicScene.playSfx(biteSounds[1])
+    audioSystem.playSfx(SfxEventRegistry.BITE)
     this.cardMainSpriteContainer.setMask(mask)
     this.cardShadowSprite.setMask(shadowMask)
 
     await delay(300)
-    worldModel.musicScene.playSfx(biteSounds[2])
+    audioSystem.playSfx(SfxEventRegistry.BITE)
   }
 
   async animateMoveFrom(moveFromPosition: Position) {

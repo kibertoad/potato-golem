@@ -6,5 +6,9 @@
         "...",
         "parcel-reporter-clean-dist",
         "./rewrite-relativepath.js"
+    ],
+    "namers": [
+        "./namer.js", 
+        "..."
     ]
 }

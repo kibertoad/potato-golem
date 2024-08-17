@@ -1,5 +1,4 @@
 import type { CardId } from '../../registries/cardRegistry'
-import { SfxRegistry } from '../../registries/sfxRegistry'
 import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
 import {
   QueuedTargettedActivation,
@@ -12,6 +11,7 @@ import {
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
 import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
 import { CardDefinitionNew } from '../cardDefinitionTypes'
+import { SfxEventRegistry } from '../../registries/sfxEventRegistry'
 
 export const propertyCardDefinitions = {
   WORKBENCH: {
@@ -19,8 +19,8 @@ export const propertyCardDefinitions = {
     name: 'Workbench',
     image: 'workbench_card',
     prettyEffects: {
-      activateSfx: SfxRegistry.LIGHT_UP,
-      deactivateSfx: SfxRegistry.PUT_OUT,
+      activateSfx: SfxEventRegistry.LIGHT_UP,
+      deactivateSfx: SfxEventRegistry.PUT_OUT,
     },
     activeImage: 'workbench_card_on',
     nonDraggable: true,
