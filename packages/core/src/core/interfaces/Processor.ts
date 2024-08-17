@@ -1,3 +1,6 @@
+/**
+ * Entity is capable to react to turn being over
+ */
 export interface TurnProcessor {
   processTurn(): void
 }
@@ -7,4 +10,8 @@ export interface TurnProcessor {
  */
 export interface Processor<InputType = undefined, OutputType = void> {
   process(params: InputType): OutputType
+}
+
+export interface ParameterlessProcessor<OutputType = void> {
+  process(): OutputType
 }

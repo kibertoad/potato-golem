@@ -1,18 +1,16 @@
-import {
-  type EventSink,
-  LOW_PRIORITY,
-  type Precondition,
-  type StaticDescriptionHolder,
+import type {
+  EventSink,
+  Precondition,
 } from '@potato-golem/core'
-import type { Activation } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import { delay } from '../../../utils/timeUtils'
-import { cardDefinitions } from '../../definitions/cardDefinitions'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
-import type { CardActivation } from '../card/CardActivation'
+import { AsyncCardOrEventActivation } from '../card/CardActivation'
 import type { SpawnCardEventId } from './eventActivations'
+import type { ActivationContextCardOrEvent } from '../common/ActivationContext'
+import { EventEmitters } from '../../registries/eventEmitterRegistry'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 
@@ -26,9 +24,7 @@ export type SpawnCardMessage = {
   precondition?: Precondition
 }
 
-export class SpawnCardActivation implements Activation, CardActivation, StaticDescriptionHolder {
-  priority: number = LOW_PRIORITY
-
+export class SpawnCardActivation extends AsyncCardOrEventActivation {
   private readonly cardId: CardId
   private zone: Zone
   private readonly spawnAnimation?: SpawnAnimation
@@ -43,13 +39,13 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
   private readonly spawnLocation: SpawnActivationLocation
 
   constructor(
-    worldEventSink: EventSink<typeof SpawnCardEventId>,
     params: SpawnCardMessage,
     customDelay = -1,
     spawnLocation: SpawnActivationLocation = 'zone',
     ignoreTargetCard = false,
   ) {
-    this.eventSink = worldEventSink
+    super()
+    this.eventSink = EventEmitters.boardEventEmitter
     this.cardId = params.cardId
     this.zone = params.zone
     this.spawnAnimation = params.spawnAnimation
@@ -61,18 +57,18 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
     this.ignoreTargetCard = ignoreTargetCard
   }
 
-  async activate(targetCard?: CardModel) {
+  async activateTargettedAsync(context: ActivationContextCardOrEvent): Promise<void> {
     if (!this.precondition || this.precondition.isSatisfied()) {
-      if (this.spawnLocation === 'same_as_target' && targetCard) {
-        this.zone = targetCard.zone
+      if (this.spawnLocation === 'same_as_target' && context.targetCard) {
+        this.zone = context.targetCard.zone
       }
-      if (this.spawnLocation === 'same_as_combined' && targetCard?.combinedCard) {
-        this.zone = targetCard.combinedCard.zone
+      if (this.spawnLocation === 'same_as_combined' && context.targetCard?.combinedCard) {
+        this.zone = context.targetCard.combinedCard.zone
       }
 
       this.eventSink.emit('spawn_card', {
         cardId: this.cardId,
-        sourceCard: this.ignoreTargetCard ? undefined : targetCard,
+        sourceCard: this.ignoreTargetCard ? undefined : context.targetCard,
         zone: this.zone,
         spawnAnimation: this.spawnAnimation,
         description: this.description,
@@ -83,6 +79,7 @@ export class SpawnCardActivation implements Activation, CardActivation, StaticDe
   }
 
   getDescription(): string {
-    return `Get 1 ${cardDefinitions[this.cardId].name}`
+    //return `Get 1 ${cardDefinitions[this.cardId].name}`
+    return `Get 1 card (ToDo resolve name)`
   }
 }

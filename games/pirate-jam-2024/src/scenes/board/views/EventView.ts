@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
-import type { EventSink, EventSource } from '@potato-golem/core'
+import { EventSink, EventSource, executeTargettedActivation } from '@potato-golem/core'
 import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
 import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
 import type { EventEventId } from '../../../model/activations/event/eventActivations'
@@ -194,7 +194,12 @@ export class EventView extends Container {
     for (const option of this.currentEvent.options) {
       const optionButton = this.buttonList.addButton(option.text, () => {
         console.log('clickety click')
-        option.effect.activate.apply(option.effect, [targetCard])
+        for (const effect of option.effect) {
+          void executeTargettedActivation(effect, {
+            targetCard,
+          })
+          //effect.activate.apply(option.effect, [targetCard])
+        }
       })
     }
 

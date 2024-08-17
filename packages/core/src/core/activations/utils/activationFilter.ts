@@ -1,4 +1,4 @@
-import type { Prioritized } from './Activation'
+import type { Prioritized } from '../common/Activation'
 
 /**
  * Sort possible activations by priority and apply exclusivity filter

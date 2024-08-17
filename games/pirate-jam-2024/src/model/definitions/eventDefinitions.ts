@@ -1,11 +1,8 @@
 import {
-  type Activation,
   type EventSink,
-  MultiplexActivation,
   type Precondition,
-  QueuedActivation,
+  QueuedTargettedActivation, type TargettedActivation, type TargettedAsyncActivation,
 } from '@potato-golem/core'
-import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
 import {
   NextTurnActivation,
   QueueActivation,
@@ -19,10 +16,15 @@ import {
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
+import type {
+  ActivationContextCardOrEvent,
+} from '../activations/common/ActivationContext'
+
+export type TargettedMixedContextActivationType = TargettedActivation<ActivationContextCardOrEvent> | TargettedAsyncActivation<ActivationContextCardOrEvent>
 
 export type EventOption = {
   text: string
-  effect: Activation
+  effect: TargettedMixedContextActivationType[]
   conditions?: Precondition
 }
 
@@ -32,7 +34,7 @@ export type EventDefinition = {
   name: string
   description: string
   image: ImageId
-  effect?: Activation
+  effect?: TargettedMixedContextActivationType[]
   options?: EventOption[]
 }
 
@@ -41,7 +43,6 @@ export type EventDefinitions = typeof eventDefinitions
 export type EventId = keyof EventDefinitions
 
 const eventSink: EventSink<EventEventId> = EventEmitters.eventViewEmitter
-const boardEventSink: EventSink<BoardSupportedEvents> = EventEmitters.boardEventEmitter
 
 export const eventDefinitions = {
   INTRO: {
@@ -61,10 +62,10 @@ It needs quite a lot of blood. You keep holding your hand. And then you black ou
     options: [
       {
         text: 'Hello Darkness, my friend',
-        effect: new MultiplexActivation([
+        effect: [
           //new ConcludeEventActivation(eventSink)
           new NextEventActivation('TUTORIAL'),
-        ]),
+        ],
       },
     ],
   },
@@ -84,7 +85,7 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     options: [
       {
         text: 'I am ready',
-        effect: new MultiplexActivation([new ConcludeEventActivation(eventSink)]),
+        effect: [new ConcludeEventActivation()],
       },
     ],
   },
@@ -95,12 +96,12 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     playableByDirector: true,
     description: 'Suddenly a random group of law enforcement folks appear.',
     image: 'merchant_card',
-    effect: new SpawnCardActivation(eventSink, {
+    effect: [new SpawnCardActivation({
       description: '',
       zone: 'streets',
       cardId: 'THE_LAW',
       spawnAnimation: 'fly_in_left',
-    }),
+    })],
   },
 
   MOLD_GROWS: {
@@ -109,14 +110,14 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     playableByDirector: true,
     description: 'Mold grows in Homunculus room.',
     image: 'poison_card',
-    effect: new MultiplexActivation([
-      new SpawnCardActivation(eventSink, {
+    effect: [
+      new SpawnCardActivation({
         description: '',
         zone: 'alchemy',
         cardId: 'MOLD',
         spawnAnimation: 'pop_in',
       }),
-    ]),
+    ],
   },
 
   SHOPKEEPER: {
@@ -130,46 +131,46 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     options: [
       {
         text: 'Buy food',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
+        effect: [
+          new SpawnCardActivation({
             description: '',
             zone: 'home',
             cardId: 'FOOD',
           }),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new NextTurnActivation(),
-        ]),
+        ],
       },
 
       {
         text: 'Buy absinthe',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
+        effect: [
+          new SpawnCardActivation({
             description: '',
             zone: 'home',
             cardId: 'ABSINTHE',
           }),
-          new SpawnCardActivation(eventSink, {
+          new SpawnCardActivation({
             description: '',
             zone: 'home',
             cardId: 'ABSINTHE',
           }),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new NextTurnActivation(),
-        ]),
+        ],
       },
 
       {
         text: 'Buy some alchemical supplies',
-        effect: new MultiplexActivation([
-          new SpawnCardActivation(eventSink, {
+        effect: [
+          new SpawnCardActivation({
             description: '',
             zone: 'home',
             cardId: 'ALCHEMICAL_SUPPLIES',
           }),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new NextTurnActivation(),
-        ]),
+        ],
       },
     ],
   },
@@ -186,54 +187,52 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
     options: [
       {
         text: 'Create a life-saving medicine',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_MEDICINE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'MEDICINE', // replace with explosives
                   description: 'Create 1 Medicine',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Prepare deadly poison',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_POISON',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
     ],
   },
@@ -248,106 +247,102 @@ The lab is bathed in the soft glow of gaslights, their flickering flames casting
     options: [
       {
         text: 'Create a life-saving medicine',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_MEDICINE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'MEDICINE',
                   description: 'Create 1 Medicine',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Prepare deadly poison',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_POISON',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Create explosives',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_EXPLOSIVES',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'EXPLOSIVES',
                   description: 'Create 1 Explosives',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Brew booze',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_ABSINTHE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'ABSINTHE',
                   amount: 3,
                   description: 'Create 3 Absinthe',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
     ],
   },
@@ -364,54 +359,52 @@ You approach the basket with a mix of curiosity and caution. The Watching Flower
     options: [
       {
         text: 'Create explosives',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_EXPLOSIVES',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'EXPLOSIVES', // replace with explosives
                   description: 'Create 1 Explosives',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Brew booze',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_ABSINTHE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'ABSINTHE', // replace with explosives
                   description: 'Create 1 Absinthe',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
     ],
   },
@@ -426,54 +419,52 @@ Today, your focus is on the newly acquired specimen: the Enlightened Mandrake. T
     options: [
       {
         text: 'Create a medicine',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_MEDICINE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'MEDICINE', // replace with explosives
                   description: 'Create 1 Medicine',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
 
       {
         text: 'Prepare brew',
-        effect: new MultiplexActivation([
+        effect: [
           new QueueActivation(
-            boardEventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation<ActivationContextCardOrEvent>({
               id: 'WORKBENCH_COOK_ABSINTHE',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 //new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'ABSINTHE', // replace with explosives
                   description: 'Create 1 Absinthe',
                   zone: 'lab',
                 }),
-              ]),
+              ],
             }),
           ),
-          new ConcludeEventActivation(eventSink),
+          new ConcludeEventActivation(),
           new SetActiveCardActivation(true),
-        ]),
+        ],
       },
     ],
   },

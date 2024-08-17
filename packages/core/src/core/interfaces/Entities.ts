@@ -21,6 +21,10 @@ export interface DynamicDescriptionsHolder {
   getDescriptions(): string[]
 }
 
+export function isDynamicDescriptionsHolder(entity: unknown): entity is DynamicDescriptionHolder {
+  return 'getDescriptions' in (entity as DynamicDescriptionHolder)
+}
+
 export interface EventReceiver<T extends string = string> {
   eventSink: EventSink<T>
 }

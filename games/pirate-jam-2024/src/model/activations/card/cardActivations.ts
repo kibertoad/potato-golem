@@ -1,14 +1,11 @@
 import {
-  type Activation,
-  DescribedTargettedMultipleActivation,
+  DescribedTargettedAsyncMultiplexActivation,
   type DynamicDescriptionHolder,
   type EventReceiver,
   type EventSink,
-  LOW_PRIORITY,
-  type QueuedActivation,
   type StaticDescriptionHolder,
-  TargettedMultiplexActivation,
-  getRandomNumber,
+  TargettedAsyncMultiplexActivation,
+  getRandomNumber, type QueuedTargettedActivation, ActivationContainer,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -20,20 +17,22 @@ import { type SfxId, SfxRegistry } from '../../registries/sfxRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../event/extraEventActivations'
-import type { CardActivation } from './CardActivation'
+import { AsyncCardActivation, CardActivation, CardOrEventActivation } from './CardActivation'
+import type {
+  ActivationContext, ActivationContextCardOrEvent,
+  ActivationContextSingleCard,
+} from '../common/ActivationContext'
 
-export type ActivationArray = Array<Activation | CardActivation>
+export type ActivationArrayNew = Array<CardActivation | AsyncCardActivation>
 
 export type AnimationType = 'none' | 'poof' | 'blood_splat' | 'explosion'
 
-export class AnimateCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class AnimateCardActivation extends AsyncCardActivation {
   private readonly customDelay: number
   private readonly animationType: AnimationType
 
   constructor(animationType: AnimationType = 'poof', customDelay = -1) {
+    super()
     this.customDelay = customDelay
     this.animationType = animationType
   }
@@ -54,12 +53,12 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
     }
   }
 
-  async activate(targetCard: CardModel) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     if (this.customDelay >= 0) {
-      this.playAnimation(targetCard)
+      this.playAnimation(context.targetCard)
       await delay(this.customDelay)
     } else {
-      await this.playAnimation(targetCard)
+      await this.playAnimation(context.targetCard)
     }
   }
 
@@ -68,24 +67,22 @@ export class AnimateCardActivation implements CardActivation, DynamicDescription
   }
 }
 
-export class CancelDragCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class CancelDragCardActivation extends CardActivation {
   private cardToCancel: CardId
 
   constructor(cardToCancel: CardId) {
+    super()
     this.cardToCancel = cardToCancel
   }
 
-  async activate(targetCard: CardModel) {
-    if (targetCard.definition.id === this.cardToCancel) {
-      targetCard.view.cancelDrag()
+  activateTargetted(context: ActivationContextSingleCard) {
+    if (context.targetCard.definition.id === this.cardToCancel) {
+      context.targetCard.view.cancelDrag()
       return
     }
 
-    if (targetCard.combinedCard && targetCard.combinedCard.definition.id === this.cardToCancel) {
-      targetCard.combinedCard.view.cancelDrag()
+    if (context.targetCard.combinedCard && context.targetCard.combinedCard.definition.id === this.cardToCancel) {
+      context.targetCard.combinedCard.view.cancelDrag()
     }
   }
 
@@ -96,14 +93,10 @@ export class CancelDragCardActivation implements CardActivation, DynamicDescript
 
 export class DecomposeCardActivation
   extends AnimateCardActivation
-  implements CardActivation, DynamicDescriptionHolder
-{
-  isExclusive = true
-  priority = LOW_PRIORITY
-
-  async activate(targetCard: CardModel) {
-    await super.activate(targetCard)
-    targetCard.destroy()
+  implements AsyncCardActivation, DynamicDescriptionHolder {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await super.activateTargettedAsync(context)
+    context.targetCard.destroy()
   }
 
   getDescription(): string {
@@ -119,11 +112,15 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
     this.zone = zone
   }
 
-  async activate(targetCard: CardModel) {
-    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+  async activateTargettedAsync(_context: ActivationContextSingleCard): Promise<void> {
+    const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activate(card))
+      promises.push(
+        super.activateTargettedAsync({
+          targetCard: card.model,
+        }),
+      )
     }
     await Promise.all(promises)
   }
@@ -134,8 +131,10 @@ export class AnimateZoneCardsActivation extends AnimateCardActivation {
 }
 
 export class DecomposeOtherCardActivation extends DecomposeCardActivation {
-  async activate(targetCard: CardModel) {
-    await super.activate(targetCard.combinedCard)
+  async activate(context: ActivationContextSingleCard) {
+    await super.activateTargettedAsync({
+      targetCard: context.targetCard.combinedCard,
+    })
   }
 
   getDescription(): string {
@@ -144,8 +143,10 @@ export class DecomposeOtherCardActivation extends DecomposeCardActivation {
 }
 
 export class DecomposeBothCardsActivation extends DecomposeCardActivation {
-  async activate(targetCard: CardModel) {
-    await Promise.all([super.activate(targetCard), super.activate(targetCard.combinedCard)])
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await Promise.all([super.activateTargettedAsync(context), super.activateTargettedAsync({
+      targetCard: context.targetCard.combinedCard,
+    })])
   }
 
   getDescription(): string {
@@ -153,12 +154,10 @@ export class DecomposeBothCardsActivation extends DecomposeCardActivation {
   }
 }
 
-export class DestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
-  async activate(targetCard: CardModel) {
-    targetCard.destroy()
+export class DestroyCardActivation extends AsyncCardActivation {
+  activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
+    context.targetCard.destroy()
+    return Promise.resolve()
   }
 
   getDescription(): string {
@@ -174,11 +173,13 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
     this.zone = zone
   }
 
-  async activate(targetCard: CardModel) {
-    const cards = worldModel.cards.filter((card) => card.zone === this.zone)
+  async activateTargettedAsync(_context: ActivationContextSingleCard) {
+    const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activate(card))
+      promises.push(super.activateTargettedAsync({
+        targetCard: card.model,
+      }))
     }
     await Promise.all(promises)
   }
@@ -188,13 +189,10 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
   }
 }
 
-export class EatCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
-  async activate(targetCard: CardModel) {
-    await targetCard.view.playEatAnimation()
-    targetCard.destroy()
+export class EatCardActivation extends AsyncCardActivation {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await context.targetCard.view.playEatAnimation()
+    context.targetCard.destroy()
   }
 
   getDescription(): string {
@@ -202,33 +200,43 @@ export class EatCardActivation implements CardActivation, DynamicDescriptionHold
   }
 }
 
-export class PlaySfxActivation implements Activation {
+export class PlaySfxActivation extends CardActivation {
   private readonly sfx: Array<SfxId>
 
   constructor(sfx: Array<SfxId>) {
+    super()
     this.sfx = sfx
   }
 
-  async activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     worldModel.musicScene.playSfx(this.sfx[Math.floor(Math.random() * this.sfx.length)])
   }
-}
 
-export class LawIsDeadActivation implements Activation {
-  activate() {
-    worldModel.theLawIsDead = true
+  getDescription(): string {
+    return ''
   }
 }
 
-export class TheLawMoveActivation implements CardActivation {
+export class LawIsDeadActivation extends CardActivation {
+  activateTargetted(_context: ActivationContextSingleCard) {
+    worldModel.theLawIsDead = true
+  }
+
+  getDescription(): string {
+    return ''
+  }
+}
+
+export class TheLawMoveActivation extends AsyncCardActivation {
   getDescription() {
     return ''
   }
-  async activate(targetCard: CardModel) {
+
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
     console.log('Activate TheLaw')
-    if (targetCard.zone === 'alchemy') {
+    if (context.targetCard.zone === 'alchemy') {
       console.log('Homunculus branch')
-      const activation = new DescribedTargettedMultipleActivation([
+      const activation = new DescribedTargettedAsyncMultiplexActivation([
         new ChatCardActivation([
           'I will stop this ABOMINATION!',
           'Take this!',
@@ -238,7 +246,7 @@ export class TheLawMoveActivation implements CardActivation {
         new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
         new AnimateCardActivation('blood_splat', 0),
         new FeedActivation(worldModel.homunculusModel, 1, true),
-        new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+        new SpawnCardActivation({
           spawnAnimation: 'pop_in',
           description: 'Spawn 1 Corpse',
           cardId: 'CORPSE',
@@ -247,14 +255,14 @@ export class TheLawMoveActivation implements CardActivation {
         new DelayActivation(1100), //Allow blood splat animation to finish
         new DestroyCardActivation(),
       ])
-      await activation.activate(targetCard)
+      await activation.activateTargettedAsync(context)
 
       return
     }
 
-    if (!['alchemy', 'streets'].includes(targetCard.zone)) {
+    if (!['alchemy', 'streets'].includes(context.targetCard.zone)) {
       console.log('search branch')
-      const activation = new DescribedTargettedMultipleActivation([
+      const activation = new DescribedTargettedAsyncMultiplexActivation([
         new SearchAndDecideCardActivation(
           'CORPSE',
           'home',
@@ -268,7 +276,7 @@ export class TheLawMoveActivation implements CardActivation {
             new SearchAndDestroyCardActivation('HEALTH', 'home'),
             new PlaySfxActivation([SfxRegistry.POOF]), //This is for the CORPSE appearence
             new AnimateCardActivation('blood_splat', 0),
-            new SpawnCardActivation(EventEmitters.boardEventEmitter, {
+            new SpawnCardActivation({
               spawnAnimation: 'pop_in',
               description: 'Spawn 1 Corpse',
               cardId: 'CORPSE',
@@ -281,19 +289,19 @@ export class TheLawMoveActivation implements CardActivation {
         ),
       ])
 
-      await activation.activate(targetCard)
+      await activation.activateTargettedAsync(context)
 
-      if (targetCard.isDestroyed) {
+      if (context.targetCard.isDestroyed) {
         return
       }
 
       const diceRoll = getRandomNumber(10)
       if (diceRoll <= 4) {
-        const leaveActivation = new TargettedMultiplexActivation([
+        const leaveActivation = new TargettedAsyncMultiplexActivation([
           new ChatCardActivation(['Guess nothing to see here']),
           new DecomposeCardActivation(),
         ])
-        await leaveActivation.activate(targetCard)
+        await leaveActivation.activateTargettedAsync(context)
         return
       }
     }
@@ -302,11 +310,11 @@ export class TheLawMoveActivation implements CardActivation {
     console.log('Generic branch')
 
     const possibleTargets: Zone[] = []
-    if (targetCard.zone === 'streets') {
+    if (context.targetCard.zone === 'streets') {
       possibleTargets.push('home')
-    } else if (targetCard.zone === 'home') {
+    } else if (context.targetCard.zone === 'home') {
       possibleTargets.push('lab')
-    } else if (targetCard.zone === 'lab') {
+    } else if (context.targetCard.zone === 'lab') {
       possibleTargets.push('alchemy')
     } else {
       return Promise.resolve()
@@ -317,18 +325,19 @@ export class TheLawMoveActivation implements CardActivation {
       'Hmmm... Interesting...',
       'What do we have here?',
       'Do you mind if I take a look?',
-    ]).activate(targetCard)
+    ]).activateTargettedAsync(context)
 
     const moveActivation = new MoveToZoneCardActivation(worldModel, possibleTargets)
-    await moveActivation.activate(targetCard)
+    await moveActivation.activateTargettedAsync(context)
   }
 }
 
-export class MoveToZoneCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class MoveToZoneCardActivation extends AsyncCardActivation {
   private readonly worldModel: WorldModel
   private readonly targetZone: Zone
 
   constructor(worldModel: WorldModel, targetZones: Zone | Zone[]) {
+    super()
     this.worldModel = worldModel
 
     this.targetZone = Array.isArray(targetZones)
@@ -336,13 +345,13 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
       : targetZones
   }
 
-  async activate(targetCard: CardModel) {
+  async activateTargettedAsync(context: ActivationContextSingleCard): Promise<void> {
     const targetZoneView = this.worldModel.zones[this.targetZone]
-    targetCard.changeZone(this.targetZone, true)
-    const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(targetCard.view)
-    targetZoneView.registerCard(targetCard.view, availableSpawnPont.index)
+    context.targetCard.changeZone(this.targetZone, true)
+    const availableSpawnPont = targetZoneView.findAvailableSpawnPoint(context.targetCard.view)
+    targetZoneView.registerCard(context.targetCard.view, availableSpawnPont.index)
     targetZoneView.reorderStackedCardDepths()
-    await targetCard.view.animateMoveTo({
+    await context.targetCard.view.animateMoveTo({
       x: availableSpawnPont.x,
       y: availableSpawnPont.y,
     })
@@ -353,15 +362,16 @@ export class MoveToZoneCardActivation implements CardActivation, DynamicDescript
   }
 }
 
-export class ChatCardActivation implements CardActivation, DynamicDescriptionHolder {
+export class ChatCardActivation extends AsyncCardActivation {
   private readonly chatPhrases: string[]
 
   constructor(chatPhrases: string[]) {
+    super()
     this.chatPhrases = chatPhrases
   }
 
-  async activate(targetCard: CardModel) {
-    await targetCard.view.say(this.chatPhrases)
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    await context.targetCard.view.say(this.chatPhrases)
   }
 
   getDescription(): string {
@@ -369,19 +379,24 @@ export class ChatCardActivation implements CardActivation, DynamicDescriptionHol
   }
 }
 
-export class DelayActivation implements Activation {
+export class DelayActivation extends AsyncCardActivation {
   private readonly delay: number
 
   constructor(delay: number) {
+    super()
     this.delay = delay
   }
 
-  async activate() {
+  async activateTargettedAsync(_context: ActivationContextSingleCard) {
     await delay(this.delay)
+  }
+
+  getDescription(): string {
+    return ''
   }
 }
 
-export class GainHealthActivation implements Activation, DynamicDescriptionHolder {
+export class GainHealthActivation implements CardActivation {
   private readonly amount: number
   private readonly target: EventReceiver
 
@@ -390,7 +405,7 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
     this.target = target
   }
 
-  activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('HEAL', this.amount)
   }
 
@@ -399,16 +414,17 @@ export class GainHealthActivation implements Activation, DynamicDescriptionHolde
   }
 }
 
-export class DamageActivation implements Activation, DynamicDescriptionHolder {
+export class DamageActivation extends CardActivation {
   protected readonly amount: number
   protected readonly target: EventReceiver
 
   constructor(target: EventReceiver, amount: number) {
+    super()
     this.amount = amount
     this.target = target
   }
 
-  activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('DAMAGE', this.amount)
   }
 
@@ -417,18 +433,20 @@ export class DamageActivation implements Activation, DynamicDescriptionHolder {
   }
 }
 
-export class AttackHomunculusCardActivation extends DamageActivation implements CardActivation {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class AttackHomunculusCardActivation extends AsyncCardActivation {
   private readonly kamikaze: boolean
+  private readonly damageActivation: DamageActivation
+  private readonly target: EventReceiver
 
   constructor(target: EventReceiver, amount: number, kamikaze = true) {
-    super(target, amount)
+    super()
+    this.damageActivation = new DamageActivation(target, amount)
     this.kamikaze = kamikaze
+    this.target = target
   }
 
-  async activate(targetCard?: CardModel) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    const { targetCard } = context
     const currentX = targetCard.view.x
     const currentY = targetCard.view.y
 
@@ -436,7 +454,7 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
       x: 1280,
       y: 720,
     })
-    await super.activate()
+    this.damageActivation.activateTargetted(context)
     if (this.kamikaze) {
       return
     }
@@ -452,22 +470,21 @@ export class AttackHomunculusCardActivation extends DamageActivation implements 
   }
 }
 
-export class SearchAndDestroyCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class SearchAndDestroyCardActivation extends AsyncCardActivation {
   private readonly cardIdsToAttack: CardId | CardId[]
   private readonly searchZone: Zone
   private readonly kamikaze: boolean
   private readonly decompozeAcivation: DecomposeCardActivation = new DecomposeCardActivation()
 
   constructor(cardIdsToAttack: CardId | CardId[], searchZone: Zone = 'any', kamikaze = true) {
+    super()
     this.cardIdsToAttack = cardIdsToAttack
     this.searchZone = searchZone
     this.kamikaze = kamikaze
   }
 
-  async activate(targetCard: CardModel) {
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    const { targetCard } = context
     const foundCard = worldModel.searchForCards(this.cardIdsToAttack, this.searchZone)
 
     if (!foundCard) {
@@ -483,7 +500,9 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
       foundCard.destroy()
       return
     }
-    this.decompozeAcivation.activate(foundCard)
+    await this.decompozeAcivation.activateTargettedAsync({
+      targetCard: foundCard
+    })
     await targetCard.view.animateRushTo({
       x: currentX,
       y: currentY,
@@ -495,36 +514,33 @@ export class SearchAndDestroyCardActivation implements CardActivation, DynamicDe
   }
 }
 
-export class SearchAndDecideCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
+export class SearchAndDecideCardActivation extends AsyncCardActivation {
 
   private readonly cardIdsToSearch: CardId | CardId[]
   private readonly searchZone: Zone
-  private readonly successActivations: ActivationArray
-  private readonly failureActivations: ActivationArray
+  private readonly successActivations: ActivationContainer<ActivationContextSingleCard>
+  private readonly failureActivations: ActivationContainer<ActivationContextSingleCard>
 
   constructor(
     cardIdsToSearch: CardId | CardId[],
-    searchZone: Zone = 'any',
-    successActivations: ActivationArray,
-    failureActivations: ActivationArray,
+    searchZone: Zone, // = 'any',
+    successActivations: ActivationArrayNew,
+    failureActivations: ActivationArrayNew,
   ) {
+    super()
     this.cardIdsToSearch = cardIdsToSearch
     this.searchZone = searchZone
-    this.successActivations = successActivations
-    this.failureActivations = failureActivations
+    this.successActivations = new ActivationContainer(successActivations)
+    this.failureActivations = new ActivationContainer<ActivationContextSingleCard>(failureActivations)
   }
 
-  async activate(targetCard: CardModel) {
-    console.log(`Searching for ${targetCard.definition.id}`)
+  async activateTargettedAsync(context: ActivationContextSingleCard) {
+    console.log(`Searching for ${context.targetCard.definition.id}`)
     const foundCard = worldModel.searchForCards(this.cardIdsToSearch, this.searchZone)
     console.log(`Card was found: ${foundCard}`)
 
     const activations = foundCard ? this.successActivations : this.failureActivations
-    for (const activation of activations) {
-      await activation.activate(targetCard)
-    }
+    await activations.activateAsyncWithTarget(context)
   }
 
   getDescription(): string {
@@ -532,17 +548,18 @@ export class SearchAndDecideCardActivation implements CardActivation, DynamicDes
   }
 }
 
-export class NextTurnActivation implements Activation, DynamicDescriptionHolder {
-  activate() {
+export class NextTurnActivation extends CardActivation {
+  activateTargetted(_context: ActivationContext) {
     console.log('emit next turn')
     EventEmitters.boardEventEmitter.emit('NEXT_TURN')
   }
 
-  getDescription(): string {
+  override getDescription(): string {
     return `Time passes`
   }
 }
 
+/*
 export class GainConscienceActivation implements Activation, DynamicDescriptionHolder {
   private readonly amount: number
   private readonly target: EventReceiver
@@ -552,7 +569,7 @@ export class GainConscienceActivation implements Activation, DynamicDescriptionH
     this.target = target
   }
 
-  activate() {
+  activateTargetted() {
     this.target.eventSink.emit('GAIN_CONSCIENCE', this.amount)
   }
 
@@ -561,36 +578,21 @@ export class GainConscienceActivation implements Activation, DynamicDescriptionH
   }
 }
 
-export class GainHatredActivation implements Activation, DynamicDescriptionHolder {
-  private readonly amount: number
-  private readonly target: EventReceiver
+ */
 
-  constructor(target: EventReceiver, amount: number) {
-    this.amount = amount
-    this.target = target
-  }
-
-  activate() {
-    this.target.eventSink.emit('GAIN_HATRED', this.amount)
-  }
-
-  getDescription(): string {
-    return `Homunculus gets ${this.amount} hatred`
-  }
-}
-
-export class FeedActivation implements Activation, DynamicDescriptionHolder {
+export class FeedActivation extends CardActivation {
   private readonly amount: number
   private readonly target: EventReceiver
   private readonly starveProtection: boolean
 
   constructor(target: EventReceiver, amount: number, starveProtection = false) {
+    super()
     this.amount = amount
     this.target = target
     this.starveProtection = starveProtection
   }
 
-  activate() {
+  activateTargetted(_context: ActivationContextSingleCard) {
     this.target.eventSink.emit('FEED', this.amount, this.starveProtection)
   }
 
@@ -599,22 +601,20 @@ export class FeedActivation implements Activation, DynamicDescriptionHolder {
   }
 }
 
-export class QueueActivation implements Activation, CardActivation, StaticDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
-  private readonly activation: QueuedActivation
+export class QueueActivation extends CardOrEventActivation implements StaticDescriptionHolder {
+  private readonly activation: QueuedTargettedActivation<ActivationContextCardOrEvent>
   private readonly eventSink: EventSink<BoardSupportedEvents>
   readonly description: string
 
-  constructor(eventSink: EventSink<BoardSupportedEvents>, activation: QueuedActivation) {
+  constructor(activation: QueuedTargettedActivation<ActivationContextCardOrEvent>) {
+    super()
+    this.eventSink = EventEmitters.boardEventEmitter
     this.activation = activation
-    this.eventSink = eventSink
     this.description = activation.description ?? ''
   }
 
-  activate(targetCard?: CardModel) {
-    this.eventSink.emit('QUEUE_ACTIVATION', this.activation, targetCard)
+  activateTargetted(context: ActivationContextCardOrEvent) {
+    this.eventSink.emit('QUEUE_ACTIVATION', this.activation, context.targetCard)
   }
 
   getDescription(): string {
@@ -622,18 +622,21 @@ export class QueueActivation implements Activation, CardActivation, StaticDescri
   }
 }
 
-export class SetActiveCardActivation implements CardActivation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class SetActiveCardActivation extends CardOrEventActivation {
   private active: boolean
 
   constructor(active: boolean) {
+    super()
     this.active = active
   }
 
-  activate(targetCard: CardModel) {
-    targetCard.view.setActiveCard(this.active)
+  // ToDo revise this part
+  override activateTargetted(context: ActivationContextCardOrEvent): void {
+    if (!context.targetCard) {
+      throw new Error('Target card not passed for SetActiveCardActivation')
+    }
+
+    context.targetCard.view.setActiveCard(this.active)
   }
 
   getDescription(): string {
@@ -641,21 +644,19 @@ export class SetActiveCardActivation implements CardActivation, DynamicDescripti
   }
 }
 
-export class StartEventActivation implements CardActivation, Activation, DynamicDescriptionHolder {
-  isExclusive = true
-  priority = LOW_PRIORITY
-
+export class StartEventActivation extends CardActivation {
   private readonly eventId: EventId
   private readonly eventSink: EventSink<BoardSupportedEvents>
 
-  constructor(eventId: EventId, eventSink: EventSink<BoardSupportedEvents>) {
+  constructor(eventId: EventId) {
+    super()
     this.eventId = eventId
-    this.eventSink = eventSink
+    this.eventSink = EventEmitters.eventViewEmitter
   }
 
-  activate(targetCard?: CardModel) {
-    console.log('Start event', targetCard)
-    this.eventSink.emit('START_EVENT', this.eventId, targetCard)
+  activateTargetted(context: ActivationContext) {
+    console.log('Start event', context.sourceCard)
+    this.eventSink.emit('START_EVENT', this.eventId, context.sourceCard)
   }
 
   getDescription(): string {

@@ -1,4 +1,5 @@
 import type { Activation, ActivationCallback } from '@potato-golem/core'
+import type Phaser from 'phaser'
 
 export class ChangeSceneActivation implements Activation {
   readonly #newScene: Phaser.Scene | string
