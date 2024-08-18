@@ -26,7 +26,7 @@ export class SingingMushroomActivation extends QueuedActivation {
       zone: targetZone,
     })
     await spawnActivation.activateTargettedAsync({
-      fromEvent: null
+      fromEvent: null,
     })
   }
 
@@ -126,7 +126,7 @@ export class AlcoholismActivation extends QueuedActivation {
       const boozeCard = worldModel.zones.home.findCardByID('ABSINTHE')
       const decomposeActivation = new DecomposeCardActivation()
       await decomposeActivation.activateTargettedAsync({
-        targetCard: boozeCard.card.model
+        targetCard: boozeCard.card.model,
       })
       //EventEmitters.boardEventEmitter.emit('DESTROY', boozeCard.card)
 
@@ -188,7 +188,7 @@ export class TheRaidActivation extends QueuedActivation {
         zone: 'streets',
       })
       await spawnActivation.activateTargettedAsync({
-        fromEvent: null
+        fromEvent: null,
       })
     }
   }

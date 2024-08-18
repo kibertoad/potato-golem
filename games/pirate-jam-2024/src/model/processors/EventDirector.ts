@@ -1,13 +1,15 @@
 import {
   type EventSink,
   type QueuedActivation,
+  type QueuedTargettedActivation,
   type TurnProcessor,
+  executeTargettedActivation,
   normalizedRandom,
-  randomOneOf, type QueuedTargettedActivation, executeTargettedActivation,
+  randomOneOf,
 } from '@potato-golem/core'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
-import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
 import type { ActivationContextCardOrEvent } from '../activations/common/ActivationContext'
+import type { EventDefinition, EventDefinitions, EventId } from '../definitions/eventDefinitions'
 
 export class EventDirector implements TurnProcessor {
   private readonly eventsPlayed: Partial<Record<EventId, number>> = {}
@@ -32,7 +34,10 @@ export class EventDirector implements TurnProcessor {
     this.counterTillNextEvent = normalizedRandom(5)
   }
 
-  addQueuedActivation(activation: QueuedTargettedActivation<ActivationContextCardOrEvent>, context: ActivationContextCardOrEvent) {
+  addQueuedActivation(
+    activation: QueuedTargettedActivation<ActivationContextCardOrEvent>,
+    context: ActivationContextCardOrEvent,
+  ) {
     if (activation.unique) {
       if (this.queuedActivations.some((entry) => entry.activation.id === activation.id)) {
         return
@@ -103,7 +108,7 @@ export class EventDirector implements TurnProcessor {
     if (eventToPlay.effect) {
       for (const effect of eventToPlay.effect) {
         await executeTargettedActivation(effect, {
-          fromEvent: eventToPlay
+          fromEvent: eventToPlay,
         })
       }
     }

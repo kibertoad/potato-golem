@@ -1,15 +1,20 @@
 import {
   type EventSink,
   type TurnProcessor,
-  generateUuid, isPrecondition, isTargettedPrecondition,
+  generateUuid,
+  isPrecondition,
+  isTargettedPrecondition,
 } from '@potato-golem/core'
 
 import type { CommonEntity } from '@potato-golem/core'
 import type { CardView } from '../../scenes/board/views/CardView'
+import type {
+  CardActivationDefinitionNewCards,
+  CardDefinitionNew,
+} from '../definitions/cardDefinitionTypes'
 import type { CardEffectDefinition } from '../definitions/cardDefinitionsOld'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import { CardActivationDefinitionNewCards, CardDefinitionNew } from '../definitions/cardDefinitionTypes'
 
 export type CardModelParams = {
   definition: CardDefinitionNew
@@ -135,7 +140,6 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
       let preconditionResult: boolean | string
       for (const precondition of combinationEffect.preconditions) {
-
         let preconditionResult: string | boolean
         if (isPrecondition(precondition)) {
           preconditionResult = precondition.isSatisfied()

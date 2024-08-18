@@ -1,16 +1,13 @@
-import type {
-  EventSink,
-  Precondition,
-} from '@potato-golem/core'
+import type { EventSink, Precondition } from '@potato-golem/core'
 import type { SpawnAnimation } from '../../../scenes/board/views/CardView'
 import { delay } from '../../../utils/timeUtils'
 import type { CardModel } from '../../entities/CardModel'
 import type { CardId } from '../../registries/cardRegistry'
+import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { AsyncCardOrEventActivation } from '../card/CardActivation'
-import type { SpawnCardEventId } from './eventActivations'
 import type { ActivationContextCardOrEvent } from '../common/ActivationContext'
-import { EventEmitters } from '../../registries/eventEmitterRegistry'
+import type { SpawnCardEventId } from './eventActivations'
 
 export type SpawnActivationLocation = 'zone' | 'same_as_target' | 'same_as_combined'
 

@@ -1,15 +1,13 @@
-import type {
-  DescribedTargettedAsyncMultiplexActivation,
-} from '@potato-golem/core'
+import type { DescribedTargettedAsyncMultiplexActivation } from '@potato-golem/core'
 import type { Precondition } from '@potato-golem/core'
 import type { TargettedPrecondition, TargettedReasonedPrecondition } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
+import type { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 import type { CardModel } from '../entities/CardModel'
 import type { CardId } from '../registries/cardRegistry'
 import type { ImageId } from '../registries/imageRegistry'
 import type { SfxId } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
-import type { ActivationContextSingleCard } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -37,5 +35,3 @@ export type CardDefinition = {
 
   cardCombinationEffect?: Partial<Record<CardId, CardEffectDefinition>>
 }
-
-

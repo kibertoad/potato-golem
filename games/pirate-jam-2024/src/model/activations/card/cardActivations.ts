@@ -1,11 +1,13 @@
 import {
+  ActivationContainer,
   DescribedTargettedAsyncMultiplexActivation,
   type DynamicDescriptionHolder,
   type EventReceiver,
   type EventSink,
+  type QueuedTargettedActivation,
   type StaticDescriptionHolder,
   TargettedAsyncMultiplexActivation,
-  getRandomNumber, type QueuedTargettedActivation, ActivationContainer,
+  getRandomNumber,
 } from '@potato-golem/core'
 import { audioSystem } from '../../..'
 import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
@@ -17,12 +19,13 @@ import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import { type SfxEvent, SfxEventRegistry } from '../../registries/sfxEventRegistry'
 import type { Zone } from '../../registries/zoneRegistry'
 import { type WorldModel, worldModel } from '../../state/WorldModel'
-import { SpawnCardActivation } from '../event/extraEventActivations'
-import { AsyncCardActivation, CardActivation, CardOrEventActivation } from './CardActivation'
 import type {
-  ActivationContext, ActivationContextCardOrEvent,
+  ActivationContext,
+  ActivationContextCardOrEvent,
   ActivationContextSingleCard,
 } from '../common/ActivationContext'
+import { SpawnCardActivation } from '../event/extraEventActivations'
+import { AsyncCardActivation, CardActivation, CardOrEventActivation } from './CardActivation'
 
 export type ActivationArrayNew = Array<CardActivation | AsyncCardActivation>
 
@@ -82,7 +85,10 @@ export class CancelDragCardActivation extends CardActivation {
       return
     }
 
-    if (context.targetCard.combinedCard && context.targetCard.combinedCard.definition.id === this.cardToCancel) {
+    if (
+      context.targetCard.combinedCard &&
+      context.targetCard.combinedCard.definition.id === this.cardToCancel
+    ) {
       context.targetCard.combinedCard.view.cancelDrag()
     }
   }
@@ -94,7 +100,8 @@ export class CancelDragCardActivation extends CardActivation {
 
 export class DecomposeCardActivation
   extends AnimateCardActivation
-  implements AsyncCardActivation, DynamicDescriptionHolder {
+  implements AsyncCardActivation, DynamicDescriptionHolder
+{
   async activateTargettedAsync(context: ActivationContextSingleCard) {
     await super.activateTargettedAsync(context)
     context.targetCard.destroy()
@@ -145,9 +152,12 @@ export class DecomposeOtherCardActivation extends DecomposeCardActivation {
 
 export class DecomposeBothCardsActivation extends DecomposeCardActivation {
   async activateTargettedAsync(context: ActivationContextSingleCard) {
-    await Promise.all([super.activateTargettedAsync(context), super.activateTargettedAsync({
-      targetCard: context.targetCard.combinedCard,
-    })])
+    await Promise.all([
+      super.activateTargettedAsync(context),
+      super.activateTargettedAsync({
+        targetCard: context.targetCard.combinedCard,
+      }),
+    ])
   }
 
   getDescription(): string {
@@ -178,9 +188,11 @@ export class DestroyZoneCardsActivation extends DestroyCardActivation {
     const cards = worldModel.zones[this.zone].getAllCards()
     const promises = []
     for (const card of cards) {
-      promises.push(super.activateTargettedAsync({
-        targetCard: card.model,
-      }))
+      promises.push(
+        super.activateTargettedAsync({
+          targetCard: card.model,
+        }),
+      )
     }
     await Promise.all(promises)
   }
@@ -200,7 +212,6 @@ export class EatCardActivation extends AsyncCardActivation {
     return 'Consume card'
   }
 }
-
 
 export class PlaySfxActivation extends CardActivation {
   private readonly sfx: Array<SfxEvent>
@@ -503,7 +514,7 @@ export class SearchAndDestroyCardActivation extends AsyncCardActivation {
       return
     }
     await this.decompozeAcivation.activateTargettedAsync({
-      targetCard: foundCard
+      targetCard: foundCard,
     })
     await targetCard.view.animateRushTo({
       x: currentX,
@@ -517,7 +528,6 @@ export class SearchAndDestroyCardActivation extends AsyncCardActivation {
 }
 
 export class SearchAndDecideCardActivation extends AsyncCardActivation {
-
   private readonly cardIdsToSearch: CardId | CardId[]
   private readonly searchZone: Zone
   private readonly successActivations: ActivationContainer<ActivationContextSingleCard>
@@ -533,7 +543,9 @@ export class SearchAndDecideCardActivation extends AsyncCardActivation {
     this.cardIdsToSearch = cardIdsToSearch
     this.searchZone = searchZone
     this.successActivations = new ActivationContainer(successActivations)
-    this.failureActivations = new ActivationContainer<ActivationContextSingleCard>(failureActivations)
+    this.failureActivations = new ActivationContainer<ActivationContextSingleCard>(
+      failureActivations,
+    )
   }
 
   async activateTargettedAsync(context: ActivationContextSingleCard) {

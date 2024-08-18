@@ -1,17 +1,16 @@
-import type { CardId } from '../../registries/cardRegistry'
-import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
-import {
-  QueuedTargettedActivation,
-} from '@potato-golem/core'
+import { QueuedTargettedActivation } from '@potato-golem/core'
 import {
   DecomposeOtherCardActivation,
   QueueActivation,
-  SetActiveCardActivation, StartEventActivation,
+  SetActiveCardActivation,
+  StartEventActivation,
 } from '../../activations/card/cardActivations'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
-import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
-import { CardDefinitionNew } from '../cardDefinitionTypes'
+import { CheckIfActiveCardPrecondition } from '../../preconditions/CheckIfActiveCardPrecondition'
+import type { CardId } from '../../registries/cardRegistry'
 import { SfxEventRegistry } from '../../registries/sfxEventRegistry'
+import type { CardDefinitionNew } from '../cardDefinitionTypes'
+import { createMultiOptionCraftingActivation } from '../definitionGenerators/craftingDefinitions'
 
 export const propertyCardDefinitions = {
   WORKBENCH: {
@@ -64,20 +63,20 @@ export const propertyCardDefinitions = {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `Options are limitless`,
         effects: createMultiOptionCraftingActivation({
-          eventName: 'CRAFT_SUPPLIES'
-        })
+          eventName: 'CRAFT_SUPPLIES',
+        }),
       },
       WATCHING_FLOWER: {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         effects: createMultiOptionCraftingActivation({
-          eventName: 'CRAFT_FLOWERS'
-        })
+          eventName: 'CRAFT_FLOWERS',
+        }),
       },
       ENLIGHTENED_MANDRAKE: {
         preconditions: [new CheckIfActiveCardPrecondition(false, "It's already cooking")],
         effects: createMultiOptionCraftingActivation({
-          eventName: 'CRAFT_MANDRAKE'
-        })
+          eventName: 'CRAFT_MANDRAKE',
+        }),
       },
     },
   },

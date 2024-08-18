@@ -1,7 +1,12 @@
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
-import type { ActivationContext, ActivationContextSingleCard } from '../activations/common/ActivationContext'
+import type {
+  ActivationContext,
+  ActivationContextSingleCard,
+} from '../activations/common/ActivationContext'
 
-export class CheckIfActiveCardPrecondition implements TargettedReasonedPrecondition<ActivationContext> {
+export class CheckIfActiveCardPrecondition
+  implements TargettedReasonedPrecondition<ActivationContext>
+{
   private readonly active: boolean
   private readonly notSatisfiedReason: string
 

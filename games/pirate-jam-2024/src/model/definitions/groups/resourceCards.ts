@@ -1,3 +1,4 @@
+import { QueuedTargettedActivation } from '@potato-golem/core'
 import {
   AnimateCardActivation,
   AnimateZoneCardsActivation,
@@ -15,13 +16,12 @@ import {
   QueueActivation,
   StartEventActivation,
 } from '../../activations/card/cardActivations'
-import { worldModel } from '../../state/WorldModel'
 import { SpawnCardActivation } from '../../activations/event/extraEventActivations'
-import type { CardId } from '../../registries/cardRegistry'
-import { QueuedTargettedActivation } from '@potato-golem/core'
 import { CombinedZonePrecondition } from '../../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../../preconditions/RoughKindPrecondition'
-import { CardDefinitionNew } from '../cardDefinitionTypes'
+import type { CardId } from '../../registries/cardRegistry'
+import { worldModel } from '../../state/WorldModel'
+import type { CardDefinitionNew } from '../cardDefinitionTypes'
 
 export const resourceCardDefinitions = {
   ABSINTHE: {
@@ -275,18 +275,20 @@ export const resourceCardDefinitions = {
               unique: true,
               description: 'May attract attention',
               activatesIn: 1,
-              activations: [new SpawnCardActivation(
-                {
-                  zone: 'streets',
-                  precondition: new RoughKindPrecondition(),
-                  cardId: 'THE_ROUGH_KIND',
-                  description: '',
-                  spawnAnimation: 'fly_in_left',
-                },
-                -1,
-                'zone',
-                true,
-              )],
+              activations: [
+                new SpawnCardActivation(
+                  {
+                    zone: 'streets',
+                    precondition: new RoughKindPrecondition(),
+                    cardId: 'THE_ROUGH_KIND',
+                    description: '',
+                    spawnAnimation: 'fly_in_left',
+                  },
+                  -1,
+                  'zone',
+                  true,
+                ),
+              ],
             }),
           ),
         ],
@@ -294,18 +296,12 @@ export const resourceCardDefinitions = {
 
       THE_LAW: {
         tooltip: `It's not a bribe if it's a donation...`,
-        effects: [
-          new DecomposeBothCardsActivation(),
-          new NextTurnActivation(),
-        ],
+        effects: [new DecomposeBothCardsActivation(), new NextTurnActivation()],
       },
 
       THE_ROUGH_KIND: {
         tooltip: `Take it and leave me alone already!`,
-        effects: [
-          new DecomposeBothCardsActivation(),
-          new NextTurnActivation(),
-        ],
+        effects: [new DecomposeBothCardsActivation(), new NextTurnActivation()],
       },
     },
   },
@@ -332,26 +328,17 @@ export const resourceCardDefinitions = {
     image: 'money_card',
     cardCombinationEffect: {
       MERCHANT: {
-        effects: [
-          new DecomposeCardActivation(),
-          new StartEventActivation('SHOPKEEPER'),
-        ],
+        effects: [new DecomposeCardActivation(), new StartEventActivation('SHOPKEEPER')],
       },
 
       THE_LAW: {
         tooltip: `It's not a bribe if it's a donation...`,
-        effects: [
-          new DecomposeBothCardsActivation(),
-          new NextTurnActivation(),
-        ],
+        effects: [new DecomposeBothCardsActivation(), new NextTurnActivation()],
       },
 
       THE_ROUGH_KIND: {
         tooltip: `Take it and leave me alone already!`,
-        effects: [
-          new DecomposeBothCardsActivation(),
-          new NextTurnActivation(),
-        ],
+        effects: [new DecomposeBothCardsActivation(), new NextTurnActivation()],
       },
     },
   },
@@ -380,7 +367,7 @@ export const resourceCardDefinitions = {
         effects: [
           new CancelDragCardActivation('HEALTH'),
           new AnimateCardActivation('poof', 0),
-          new SpawnCardActivation( {
+          new SpawnCardActivation({
             zone: 'home',
             cardId: 'HEALTH',
             amount: 1,

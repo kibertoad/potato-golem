@@ -16,8 +16,9 @@ import Sprite = Phaser.GameObjects.Sprite
 import {
   type CommonEntity,
   type EventSink,
-  type EventSource, executeTargettedActivation,
-  type QueuedActivation, QueuedTargettedActivation,
+  type EventSource,
+  type QueuedTargettedActivation,
+  executeTargettedActivation,
   randomOneOf,
 } from '@potato-golem/core'
 import type { EVENT_EVENTS } from '../../model/activations/event/eventActivations'
@@ -49,7 +50,10 @@ import {
   SingingMushroomActivation,
   TheRaidActivation,
 } from '../../model/activations/card/recurringActivations'
+import type { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
 import type { SpawnCardMessage } from '../../model/activations/event/extraEventActivations'
+import type { CardDefinitionNew } from '../../model/definitions/cardDefinitionTypes'
+import { type CardDefinitions, cardDefinitions } from '../../model/definitions/cardDefinitionsNew'
 import { zones } from '../../model/definitions/zoneDefinitions'
 import { EventDirector } from '../../model/processors/EventDirector'
 import type { CardId } from '../../model/registries/cardRegistry'
@@ -60,9 +64,6 @@ import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
-import type { ActivationContextCardOrEvent } from '../../model/activations/common/ActivationContext'
-import { cardDefinitions, type CardDefinitions } from '../../model/definitions/cardDefinitionsNew'
-import { CardDefinitionNew } from '../../model/definitions/cardDefinitionTypes'
 
 const debug = true
 
@@ -177,7 +178,10 @@ export class BoardScene extends PotatoScene {
 
     this.eventSink.on(
       'QUEUE_ACTIVATION',
-      (activation: QueuedTargettedActivation<ActivationContextCardOrEvent>, context: ActivationContextCardOrEvent) => {
+      (
+        activation: QueuedTargettedActivation<ActivationContextCardOrEvent>,
+        context: ActivationContextCardOrEvent,
+      ) => {
         this.eventDirector.addQueuedActivation(activation, context)
       },
     )
@@ -391,18 +395,18 @@ export class BoardScene extends PotatoScene {
         for (const effect of activation.effect) {
           // ToDo add and fix await here later
           void executeTargettedActivation(effect, {
-            targetCard: cardView.model
+            targetCard: cardView.model,
           })
         }
 
-          //TODO: This is a HACK to compensate for homunculus eating animation
-          //Otherwise we have to deal with an unknown async system issue
-          if (this.pointedZoneView.id === 'homunculus') {
-            this.blockInput()
-            setTimeout(() => {
-              this.unblockInput()
-            }, 900)
-          }
+        //TODO: This is a HACK to compensate for homunculus eating animation
+        //Otherwise we have to deal with an unknown async system issue
+        if (this.pointedZoneView.id === 'homunculus') {
+          this.blockInput()
+          setTimeout(() => {
+            this.unblockInput()
+          }, 900)
+        }
       }
 
       // ToDo replace with more generic logic
@@ -470,9 +474,9 @@ export class BoardScene extends PotatoScene {
       // ToDo fix later
 
       for (const effect of combinationEffect.effects) {
-      void executeTargettedActivation(effect, {
-        targetCard: combinationOwnerCard.model
-      })
+        void executeTargettedActivation(effect, {
+          targetCard: combinationOwnerCard.model,
+        })
       }
       //}
       return true

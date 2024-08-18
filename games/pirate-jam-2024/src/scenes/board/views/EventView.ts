@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
-import { EventSink, EventSource, executeTargettedActivation } from '@potato-golem/core'
+import { type EventSink, type EventSource, executeTargettedActivation } from '@potato-golem/core'
 import { type PotatoScene, SpriteBuilder } from '@potato-golem/ui'
 import { ButtonListBuilder } from '../../../builders/ButtonListBuilder'
 import type { EventEventId } from '../../../model/activations/event/eventActivations'

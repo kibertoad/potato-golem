@@ -1,4 +1,4 @@
-import type {  EventSink, TargettedActivation } from '@potato-golem/core'
+import type { EventSink, TargettedActivation } from '@potato-golem/core'
 import { EventEmitters } from '../../registries/eventEmitterRegistry'
 import type { ActivationContextEvent } from '../common/ActivationContext'
 

@@ -1,13 +1,16 @@
 import {
   type EventSink,
   type Precondition,
-  QueuedTargettedActivation, type TargettedActivation, type TargettedAsyncActivation,
+  QueuedTargettedActivation,
+  type TargettedActivation,
+  type TargettedAsyncActivation,
 } from '@potato-golem/core'
 import {
   NextTurnActivation,
   QueueActivation,
   SetActiveCardActivation,
 } from '../activations/card/cardActivations'
+import type { ActivationContextCardOrEvent } from '../activations/common/ActivationContext'
 import {
   ConcludeEventActivation,
   type EventEventId,
@@ -16,11 +19,10 @@ import {
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { EventEmitters } from '../registries/eventEmitterRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import type {
-  ActivationContextCardOrEvent,
-} from '../activations/common/ActivationContext'
 
-export type TargettedMixedContextActivationType = TargettedActivation<ActivationContextCardOrEvent> | TargettedAsyncActivation<ActivationContextCardOrEvent>
+export type TargettedMixedContextActivationType =
+  | TargettedActivation<ActivationContextCardOrEvent>
+  | TargettedAsyncActivation<ActivationContextCardOrEvent>
 
 export type EventOption = {
   text: string
@@ -96,12 +98,14 @@ Drinking is unlikely to help, but probably won't hurt either. Who knows?
     playableByDirector: true,
     description: 'Suddenly a random group of law enforcement folks appear.',
     image: 'merchant_card',
-    effect: [new SpawnCardActivation({
-      description: '',
-      zone: 'streets',
-      cardId: 'THE_LAW',
-      spawnAnimation: 'fly_in_left',
-    })],
+    effect: [
+      new SpawnCardActivation({
+        description: '',
+        zone: 'streets',
+        cardId: 'THE_LAW',
+        spawnAnimation: 'fly_in_left',
+      }),
+    ],
   },
 
   MOLD_GROWS: {

@@ -1,12 +1,15 @@
-import type { CardId } from '../../registries/cardRegistry'
 import {
   AttackHomunculusCardActivation,
-  ChatCardActivation, DecomposeCardActivation, MoveToZoneCardActivation,
-  SearchAndDecideCardActivation, SearchAndDestroyCardActivation,
+  ChatCardActivation,
+  DecomposeCardActivation,
+  MoveToZoneCardActivation,
+  SearchAndDecideCardActivation,
+  SearchAndDestroyCardActivation,
   TheLawMoveActivation,
 } from '../../activations/card/cardActivations'
+import type { CardId } from '../../registries/cardRegistry'
 import { worldModel } from '../../state/WorldModel'
-import { CardDefinitionNew } from '../cardDefinitionTypes'
+import type { CardDefinitionNew } from '../cardDefinitionTypes'
 
 export const creatureCardDefinitions = {
   THE_ID: {
@@ -37,7 +40,7 @@ export const creatureCardDefinitions = {
     nonDraggable: true,
     prettyEffects: {
       chatBubbleOrigin: { x: 80, y: 80 },
-    }
+    },
   },
 
   BLACK_WIDOW: {

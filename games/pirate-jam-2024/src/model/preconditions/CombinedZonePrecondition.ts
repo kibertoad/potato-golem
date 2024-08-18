@@ -1,11 +1,13 @@
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
-import type { Zone } from '../registries/zoneRegistry'
 import type { ActivationContextSingleCard } from '../activations/common/ActivationContext'
+import type { Zone } from '../registries/zoneRegistry'
 
 /**
  * Can only be applied in a specified zone
  */
-export class CombinedZonePrecondition implements TargettedReasonedPrecondition<ActivationContextSingleCard> {
+export class CombinedZonePrecondition
+  implements TargettedReasonedPrecondition<ActivationContextSingleCard>
+{
   private readonly zones: Zone[]
   private readonly notSatisfiedReason: string
 

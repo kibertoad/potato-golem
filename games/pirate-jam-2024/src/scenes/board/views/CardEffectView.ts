@@ -3,11 +3,11 @@ import Phaser from 'phaser'
 import Sprite = Phaser.GameObjects.Sprite
 import { ImageRegistry } from '../../../model/registries/imageRegistry'
 import Container = Phaser.GameObjects.Container
+import { type DynamicDescriptionsHolder, isDynamicDescriptionsHolder } from '@potato-golem/core'
+import type { CardDefinitions } from '../../../model/definitions/cardDefinitionsNew'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { CardView, type DirectionResult } from './CardView'
 import type { ZoneView } from './ZoneView'
-import type { CardDefinitions } from '../../../model/definitions/cardDefinitionsNew'
-import { type DynamicDescriptionsHolder, isDynamicDescriptionsHolder } from '@potato-golem/core'
 
 export type CardEffectViewDependencies = {
   cardDefinitions: CardDefinitions
