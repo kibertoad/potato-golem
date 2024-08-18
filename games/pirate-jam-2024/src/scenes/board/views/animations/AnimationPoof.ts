@@ -32,7 +32,7 @@ export class AnimationPoof extends AnimationBase {
 
     audioSystem.playSfx(SfxEventRegistry.POOF)
 
-    return new Promise((resolve) => {
+    await new Promise((resolve) => {
       const tween = this.scene.tweens.add({
         targets: this.cardPoofSprite,
         alpha: 0,

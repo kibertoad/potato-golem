@@ -15,7 +15,6 @@ export abstract class AnimationBase extends Container {
   public abstract play(): Promise<void>
 
   private async playInternal(): Promise<void> {
-    this.scene.add.existing(this)
     this.scene.events.on('update', this.update, this)
     await this.play()
     this.cleanup()
@@ -24,10 +23,9 @@ export abstract class AnimationBase extends Container {
   private cleanup() {
     this.setTarget(null)
     this.scene.events.off('update', this.update)
-    this.scene.children.remove(this)
   }
 
-  public async playAt(x: number, y: number, depth: number = 1000): Promise<void> {
+  public async playAt(x: number, y: number, depth = 1000): Promise<void> {
     this.setDepth(depth)
     this.setPosition(x, y)
     await this.playInternal()
