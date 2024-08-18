@@ -43,9 +43,6 @@ export type DirectionResult = {
   horizontal: ChatHorizontalDirection
 }
 
-const textOffsetX = 35
-const textOffsetY = 5
-
 export class CardView extends Container implements IdHolder {
   private readonly cardShadowSprite: Phaser.GameObjects.Sprite
 
