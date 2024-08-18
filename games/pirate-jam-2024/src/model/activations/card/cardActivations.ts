@@ -107,6 +107,7 @@ export class DecomposeCardActivation
   implements AsyncCardActivation, DynamicDescriptionHolder
 {
   async activateTargettedAsync(context: ActivationContextSingleCard) {
+    context.targetCard.view.setVisible(false)
     await super.activateTargettedAsync(context)
     context.targetCard.destroy()
   }
