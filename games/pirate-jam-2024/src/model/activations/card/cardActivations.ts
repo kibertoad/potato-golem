@@ -13,6 +13,7 @@ import { audioSystem } from '../../..'
 import {
   type BoardSupportedEvents,
   bloodSplatAnimationPool,
+  explosionAnimationPool,
   poofAnimationPool,
 } from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
@@ -54,7 +55,7 @@ export class AnimateCardActivation extends AsyncCardActivation {
         await bloodSplatAnimationPool.playAtTarget(targetCard.view)
         break
       case 'explosion':
-        await targetCard.view.playExplosionAnimation()
+        await explosionAnimationPool.playAtTarget(targetCard.view)
         break
       case 'none':
         break

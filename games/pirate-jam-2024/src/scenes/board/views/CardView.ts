@@ -58,8 +58,6 @@ export class CardView extends Container implements IdHolder {
   private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
   private readonly cardFrameNailsSprite: Phaser.GameObjects.Sprite
 
-  private readonly cardExplosionSprite: Phaser.GameObjects.Sprite
-
   /**
    * Card-specific image for the card
    */
@@ -283,19 +281,6 @@ export class CardView extends Container implements IdHolder {
 
     this.add(this.cardMainSpriteContainer)
 
-    this.cardExplosionSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.EXPLOSION_1)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardWidth)
-      .setHeight(CardView.cardHeight)
-      .build()
-    this.cardExplosionSprite.setVisible(false)
-    this.add(this.cardExplosionSprite)
-
     setEntityType(this.cardFrameSprite, EntityTypeRegistry.CARD)
     setEntityModel(this.cardFrameSprite, this.model)
 
@@ -488,30 +473,6 @@ export class CardView extends Container implements IdHolder {
 
   isActiveCard(): boolean {
     return this.isActive
-  }
-
-  async playExplosionAnimation() {
-    this.depth = DepthRegistry.CARD_MAX + 1
-    this.cardShadowSprite.setVisible(false)
-    this.cardMainSpriteContainer.setVisible(false)
-    this.cardExplosionSprite.y = 0
-    this.cardExplosionSprite.setVisible(true)
-    this.cardExplosionSprite.setAlpha(1)
-    await this.cardExplosionSprite.play('explosion')
-
-    audioSystem.playSfx(SfxEventRegistry.EXPLOSION)
-
-    this.cardExplosionSprite.once('animationcomplete', () => {
-      this.scene.tweens.add({
-        targets: this.cardExplosionSprite,
-        alpha: 0,
-        delay: 0,
-        duration: 1200,
-        ease: 'Cubic',
-      })
-    })
-
-    await delay(1200)
   }
 
   async playEatAnimation(onEatenCallback?: () => void) {
