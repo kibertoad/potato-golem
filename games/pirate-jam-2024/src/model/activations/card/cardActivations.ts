@@ -10,7 +10,12 @@ import {
   getRandomNumber,
 } from '@potato-golem/core'
 import { audioSystem } from '../../..'
-import type { BoardSupportedEvents } from '../../../scenes/board/BoardScene'
+import {
+  type BoardSupportedEvents,
+  bloodSplatAnimationPool,
+  explosionAnimationPool,
+  poofAnimationPool,
+} from '../../../scenes/board/BoardScene'
 import { delay } from '../../../utils/timeUtils'
 import type { EventId } from '../../definitions/eventDefinitions'
 import type { CardModel } from '../../entities/CardModel'
@@ -44,13 +49,13 @@ export class AnimateCardActivation extends AsyncCardActivation {
   private async playAnimation(targetCard: CardModel) {
     switch (this.animationType) {
       case 'poof':
-        await targetCard.view.playPoofAnimation()
+        await poofAnimationPool.playAtTarget(targetCard.view)
         break
       case 'blood_splat':
-        await targetCard.view.playBloodSplatAnimation()
+        await bloodSplatAnimationPool.playAtTarget(targetCard.view)
         break
       case 'explosion':
-        await targetCard.view.playExplosionAnimation()
+        await explosionAnimationPool.playAtTarget(targetCard.view)
         break
       case 'none':
         break
@@ -103,6 +108,7 @@ export class DecomposeCardActivation
   implements AsyncCardActivation, DynamicDescriptionHolder
 {
   async activateTargettedAsync(context: ActivationContextSingleCard) {
+    context.targetCard.view.setVisible(false)
     await super.activateTargettedAsync(context)
     context.targetCard.destroy()
   }

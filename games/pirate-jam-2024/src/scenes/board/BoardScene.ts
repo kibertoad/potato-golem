@@ -64,8 +64,16 @@ import { delay } from '../../utils/timeUtils'
 import { CardEffectView } from './views/CardEffectView'
 import { HomunculusView } from './views/HomunculusView'
 import { ZoneView, type ZoneViewParams } from './views/ZoneView'
+import { AnimationBloodSplat } from './views/animations/AnimationBloodSplat'
+import { AnimationExplosion } from './views/animations/AnimationExplosion'
+import { AnimationPoof } from './views/animations/AnimationPoof'
+import { AnimationPool } from './views/animations/AnimationPool'
 
 const debug = true
+
+export let poofAnimationPool: AnimationPool<typeof AnimationPoof>
+export let bloodSplatAnimationPool: AnimationPool<typeof AnimationBloodSplat>
+export let explosionAnimationPool: AnimationPool<typeof AnimationExplosion>
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -103,6 +111,10 @@ export class BoardScene extends PotatoScene {
     this.cardDefinitions = cardDefinitions
 
     this.endTurnProcessor = endTurnProcessor
+
+    poofAnimationPool = new AnimationPool(this, AnimationPoof)
+    bloodSplatAnimationPool = new AnimationPool(this, AnimationBloodSplat)
+    explosionAnimationPool = new AnimationPool(this, AnimationExplosion)
 
     this.registerListeners()
   }

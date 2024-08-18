@@ -43,9 +43,6 @@ export type DirectionResult = {
   horizontal: ChatHorizontalDirection
 }
 
-const textOffsetX = 35
-const textOffsetY = 5
-
 export class CardView extends Container implements IdHolder {
   private readonly cardShadowSprite: Phaser.GameObjects.Sprite
 
@@ -57,10 +54,6 @@ export class CardView extends Container implements IdHolder {
   private readonly cardFrameRedGlow: Phaser.GameObjects.Sprite
   private readonly cardFrameDecorSprite: Phaser.GameObjects.Sprite
   private readonly cardFrameNailsSprite: Phaser.GameObjects.Sprite
-
-  private readonly cardPoofSprite: Phaser.GameObjects.Sprite
-  private readonly cardBloodSplatSprite: Phaser.GameObjects.Sprite
-  private readonly cardExplosionSprite: Phaser.GameObjects.Sprite
 
   /**
    * Card-specific image for the card
@@ -283,47 +276,7 @@ export class CardView extends Container implements IdHolder {
     this.chatBubbleContainer.add(this.chatTextView)
     this.cardMainSpriteContainer.add(this.chatBubbleContainer)
 
-    this.cardPoofSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.CLOUD_1)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardWidth)
-      .setHeight(CardView.cardHeight)
-      .build()
-    this.cardPoofSprite.setVisible(false)
-    this.cardPoofSprite.setScale(1.3)
-    this.add(this.cardPoofSprite)
-
-    this.cardBloodSplatSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.BLOOD_1)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardWidth)
-      .setHeight(CardView.cardHeight)
-      .build()
-    this.cardBloodSplatSprite.setVisible(false)
-    this.add(this.cardBloodSplatSprite)
-
     this.add(this.cardMainSpriteContainer)
-
-    this.cardExplosionSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.EXPLOSION_1)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0.5, 0.5)
-      .setWidth(CardView.cardWidth)
-      .setHeight(CardView.cardHeight)
-      .build()
-    this.cardExplosionSprite.setVisible(false)
-    this.add(this.cardExplosionSprite)
 
     setEntityType(this.cardFrameSprite, EntityTypeRegistry.CARD)
     setEntityModel(this.cardFrameSprite, this.model)
@@ -517,80 +470,6 @@ export class CardView extends Container implements IdHolder {
 
   isActiveCard(): boolean {
     return this.isActive
-  }
-
-  async playPoofAnimation() {
-    this.depth = DepthRegistry.CARD_MAX + 1
-    this.cardShadowSprite.setVisible(false)
-    this.cardMainSpriteContainer.setVisible(false)
-    this.cardPoofSprite.setVisible(true)
-    this.cardPoofSprite.once('animationcomplete', () => {
-      this.cardPoofSprite.setVisible(false)
-    })
-    this.cardPoofSprite.setAlpha(1)
-    await this.cardPoofSprite.play('poof')
-    audioSystem.playSfx(SfxEventRegistry.POOF)
-    this.scene.tweens.add({
-      targets: this,
-      alpha: 0,
-      delay: 60,
-      duration: 600,
-      ease: 'Cubic',
-    })
-    await delay(500)
-  }
-
-  async playBloodSplatAnimation() {
-    this.depth = DepthRegistry.CARD_MAX + 1
-    this.cardShadowSprite.setVisible(false)
-    this.cardMainSpriteContainer.setVisible(false)
-    this.cardBloodSplatSprite.setVisible(true)
-    this.cardBloodSplatSprite.once('animationcomplete', () => {
-      this.cardBloodSplatSprite.setVisible(false)
-    })
-    this.cardBloodSplatSprite.setAlpha(1)
-    await this.cardBloodSplatSprite.play('blood_splat')
-
-    audioSystem.playSfx(SfxEventRegistry.SLASH_SPLAT)
-    this.scene.tweens.add({
-      targets: this,
-      alpha: 0,
-      delay: 400,
-      duration: 700,
-      ease: 'Cubic',
-    })
-    this.scene.tweens.add({
-      targets: this,
-      y: this.y + 200,
-      delay: 200,
-      duration: 1000,
-      ease: 'Sine',
-    })
-    await delay(1200)
-  }
-
-  async playExplosionAnimation() {
-    this.depth = DepthRegistry.CARD_MAX + 1
-    this.cardShadowSprite.setVisible(false)
-    this.cardMainSpriteContainer.setVisible(false)
-    this.cardExplosionSprite.y = 0
-    this.cardExplosionSprite.setVisible(true)
-    this.cardExplosionSprite.setAlpha(1)
-    await this.cardExplosionSprite.play('explosion')
-
-    audioSystem.playSfx(SfxEventRegistry.EXPLOSION)
-
-    this.cardExplosionSprite.once('animationcomplete', () => {
-      this.scene.tweens.add({
-        targets: this.cardExplosionSprite,
-        alpha: 0,
-        delay: 0,
-        duration: 1200,
-        ease: 'Cubic',
-      })
-    })
-
-    await delay(1200)
   }
 
   async playEatAnimation(onEatenCallback?: () => void) {
