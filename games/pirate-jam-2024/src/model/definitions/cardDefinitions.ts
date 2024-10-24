@@ -1,11 +1,10 @@
 import {
-  DescribedTargettedMultipleActivation,
+   DescribedTargettedMultipleActivation,
   type EventSink,
-  QueuedActivation,
+  QueuedTargettedActivation,
 } from '@potato-golem/core'
 import type { Precondition } from '@potato-golem/core'
 import type { TargettedPrecondition } from '@potato-golem/core'
-import { MultiplexActivation } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
 import type { TargettedReasonedPrecondition } from '../../../../../packages/core/src/core/preconditions/Precondition'
 import type { BoardSupportedEvents } from '../../scenes/board/BoardScene'
@@ -23,7 +22,6 @@ import {
   DestroyZoneCardsActivation,
   EatCardActivation,
   FeedActivation,
-  GainHatredActivation,
   GainHealthActivation,
   LawIsDeadActivation,
   MoveToZoneCardActivation,
@@ -46,12 +44,13 @@ import type { ImageId } from '../registries/imageRegistry'
 import { type SfxEvent, SfxEventRegistry } from '../registries/sfxEventRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
+import type { ActivationContext, ActivationContextCardOrEvent } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
   tooltip?: string
   preconditions?: Array<
-    Precondition | TargettedPrecondition<CardModel> | TargettedReasonedPrecondition<CardModel>
+    Precondition | TargettedPrecondition<ActivationContext> | TargettedReasonedPrecondition<ActivationContext>
   >
   effect: DescribedTargettedMultipleActivation<CardModel>
 }
@@ -89,11 +88,9 @@ export const cardDefinitions = {
         tooltip: `This stuff is expensive...I hope it will be worth it...`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new EatCardActivation(),
-          new GainHatredActivation(worldModel.homunculusModel, 1),
           new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'home',
               cardId: 'GOLD',
@@ -125,7 +122,6 @@ export const cardDefinitions = {
         tooltip: `Make sure to keep fire away from this stuff`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new SpawnCardActivation(
-            eventSink,
             {
               cardId: 'EXPLOSIVES', // replace with explosives
               description: 'Create 1 Explosives',
@@ -161,21 +157,20 @@ export const cardDefinitions = {
         tooltip: `I bet I can make something more potent with this`,
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new QueueActivation(
-            eventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation({
               id: 'WORKBENCH_COOK_POISON',
               unique: true,
               description: 'Need to let it simmer',
               activatesIn: 1,
-              activation: new MultiplexActivation([
+              activations: [
                 new SetActiveCardActivation(false),
                 // new PlaySfxActivation([SfxRegistry.POOF]),
-                new SpawnCardActivation(eventSink, {
+                new SpawnCardActivation({
                   cardId: 'POISON', // replace with explosives
                   description: 'Create 1 Poison',
                   zone: 'lab',
                 }),
-              ]),
+              ]
             }),
           ),
           new DecomposeOtherCardActivation('poof', 300),
@@ -188,7 +183,7 @@ export const cardDefinitions = {
         tooltip: `I think I can make something out of this`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_MUSHROOMS', eventSink),
+          new StartEventActivation('CRAFT_MUSHROOMS'),
         ]),
       },
       ALCHEMICAL_SUPPLIES: {
@@ -197,7 +192,7 @@ export const cardDefinitions = {
         tooltip: `Options are limitless`,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_SUPPLIES', eventSink),
+          new StartEventActivation('CRAFT_SUPPLIES'),
         ]),
       },
       WATCHING_FLOWER: {
@@ -205,7 +200,7 @@ export const cardDefinitions = {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_FLOWERS', eventSink),
+          new StartEventActivation('CRAFT_FLOWERS'),
         ]),
       },
       ENLIGHTENED_MANDRAKE: {
@@ -213,7 +208,7 @@ export const cardDefinitions = {
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeOtherCardActivation('poof', 200),
-          new StartEventActivation('CRAFT_MANDRAKE', eventSink),
+          new StartEventActivation('CRAFT_MANDRAKE'),
         ]),
       },
     },
@@ -291,7 +286,6 @@ export const cardDefinitions = {
         tooltip: `Hopefully they will use it wisely`,
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'home',
               cardId: 'MONEY',
@@ -382,7 +376,6 @@ export const cardDefinitions = {
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'home',
               cardId: 'WATCHING_FLOWER',
@@ -408,7 +401,6 @@ export const cardDefinitions = {
         ],
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'any',
               cardId: 'CORPSE',
@@ -434,7 +426,6 @@ export const cardDefinitions = {
         ],
         effect: new DescribedTargettedMultipleActivation([
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'any',
               cardId: 'CORPSE',
@@ -460,16 +451,14 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeCardActivation(),
-          new StartEventActivation('SHOPKEEPER', eventSink),
+          new StartEventActivation('SHOPKEEPER'),
           new QueueActivation(
-            eventSink,
-            new QueuedActivation({
+            new QueuedTargettedActivation({
               id: 'SPAWN_ROUGH_KIND',
               unique: true,
               description: 'May attract attention',
               activatesIn: 1,
-              activation: new SpawnCardActivation(
-                eventSink,
+              activations: [new SpawnCardActivation(
                 {
                   zone: 'streets',
                   precondition: new RoughKindPrecondition(),
@@ -479,8 +468,7 @@ export const cardDefinitions = {
                 },
                 -1,
                 'zone',
-                true,
-              ),
+              )],
             }),
           ),
         ]),
@@ -515,7 +503,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         effect: new DescribedTargettedMultipleActivation([
           new DecomposeCardActivation(),
-          new StartEventActivation('SHOPKEEPER', eventSink),
+          new StartEventActivation('SHOPKEEPER'),
         ]),
       },
 
@@ -564,7 +552,7 @@ export const cardDefinitions = {
         effect: new DescribedTargettedMultipleActivation([
           new CancelDragCardActivation('HEALTH'),
           new AnimateCardActivation('poof', 0),
-          new SpawnCardActivation(eventSink, {
+          new SpawnCardActivation({
             zone: 'home',
             cardId: 'HEALTH',
             amount: 1,
@@ -723,10 +711,8 @@ export const cardDefinitions = {
         tooltip: 'I need to get rid of the evidence',
         effect: new DescribedTargettedMultipleActivation<CardModel>([
           new EatCardActivation(),
-          new GainHatredActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
-            eventSink,
             {
               zone: 'alchemy',
               cardId: 'ENLIGHTENED_MANDRAKE',
