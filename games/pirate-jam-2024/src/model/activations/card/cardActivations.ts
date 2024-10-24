@@ -671,11 +671,11 @@ export class StartEventActivation extends CardActivation {
   constructor(eventId: EventId) {
     super()
     this.eventId = eventId
-    this.eventSink = EventEmitters.eventViewEmitter
+    this.eventSink = EventEmitters.boardEventEmitter
   }
 
   activateTargetted(context: ActivationContext) {
-    console.log('Start event', context.sourceCard)
+    console.log(`Start event: ${this.eventId}`)
     this.eventSink.emit('START_EVENT', this.eventId, context.sourceCard)
   }
 
