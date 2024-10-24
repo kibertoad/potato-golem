@@ -1,5 +1,5 @@
 import {
-   DescribedTargettedMultipleActivation,
+  ActivationContainer,
   type EventSink,
   QueuedTargettedActivation,
 } from '@potato-golem/core'
@@ -34,7 +34,6 @@ import {
   TheLawMoveActivation,
 } from '../activations/card/cardActivations'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
-import type { CardModel } from '../entities/CardModel'
 import { CheckIfActiveCardPrecondition } from '../preconditions/CheckIfActiveCardPrecondition'
 import { CombinedZonePrecondition } from '../preconditions/CombinedZonePrecondition'
 import { RoughKindPrecondition } from '../preconditions/RoughKindPrecondition'
@@ -44,7 +43,7 @@ import type { ImageId } from '../registries/imageRegistry'
 import { type SfxEvent, SfxEventRegistry } from '../registries/sfxEventRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
-import type { ActivationContext, ActivationContextCardOrEvent } from '../activations/common/ActivationContext'
+import type { ActivationContext } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
@@ -52,7 +51,7 @@ export type CardEffectDefinition = {
   preconditions?: Array<
     Precondition | TargettedPrecondition<ActivationContext> | TargettedReasonedPrecondition<ActivationContext>
   >
-  effect: DescribedTargettedMultipleActivation<CardModel>
+  effect: ActivationContainer<ActivationContext>
 }
 
 export type CardDefinition = {
@@ -86,7 +85,7 @@ export const cardDefinitions = {
       homunculus: {
         timeTillTrigger: 0,
         tooltip: `This stuff is expensive...I hope it will be worth it...`,
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1),
@@ -107,7 +106,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([new DecomposeBothCardsActivation()]),
+        effect: new ActivationContainer([new DecomposeBothCardsActivation()]),
       },
     },
   },
@@ -120,7 +119,7 @@ export const cardDefinitions = {
       ALCHEMICAL_SUPPLIES: {
         timeTillTrigger: 0,
         tooltip: `Make sure to keep fire away from this stuff`,
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
+        effect: new ActivationContainer([
           new SpawnCardActivation(
             {
               cardId: 'EXPLOSIVES', // replace with explosives
@@ -155,7 +154,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `I bet I can make something more potent with this`,
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
+        effect: new ActivationContainer([
           new QueueActivation(
             new QueuedTargettedActivation({
               id: 'WORKBENCH_COOK_POISON',
@@ -181,7 +180,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `I think I can make something out of this`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_MUSHROOMS'),
         ]),
@@ -190,7 +189,7 @@ export const cardDefinitions = {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
         tooltip: `Options are limitless`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_SUPPLIES'),
         ]),
@@ -198,7 +197,7 @@ export const cardDefinitions = {
       WATCHING_FLOWER: {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_FLOWERS'),
         ]),
@@ -206,7 +205,7 @@ export const cardDefinitions = {
       ENLIGHTENED_MANDRAKE: {
         timeTillTrigger: 0,
         preconditions: [new CheckIfActiveCardPrecondition(false, `It's already cooking`)],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeOtherCardActivation('poof', 200),
           new StartEventActivation('CRAFT_MANDRAKE'),
         ]),
@@ -236,7 +235,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new FeedActivation(worldModel.homunculusModel, 1, true),
           new NextTurnActivation(),
@@ -284,7 +283,7 @@ export const cardDefinitions = {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
         tooltip: `Hopefully they will use it wisely`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SpawnCardActivation(
             {
               zone: 'home',
@@ -305,7 +304,7 @@ export const cardDefinitions = {
         preconditions: [
           new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
         ],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
           new DecomposeCardActivation('explosion'),
           new DestroyZoneCardsActivation('streets'),
@@ -319,7 +318,7 @@ export const cardDefinitions = {
         preconditions: [
           new CombinedZonePrecondition(['streets'], 'Not a good idea to use this inside...'),
         ],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new AnimateZoneCardsActivation('streets', 'blood_splat', 0),
           new DecomposeCardActivation('explosion'),
           new DestroyZoneCardsActivation('streets'),
@@ -337,7 +336,7 @@ export const cardDefinitions = {
       homunculus: {
         timeTillTrigger: 0,
         tooltip: `Sacrifices must be made...`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new GainHealthActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 3, true),
@@ -354,7 +353,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       homunculus: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new GainHealthActivation(worldModel.homunculusModel, 1),
           new FeedActivation(worldModel.homunculusModel, 1, true),
@@ -372,7 +371,7 @@ export const cardDefinitions = {
       homunculus: {
         timeTillTrigger: 0,
         tooltip: `I wonder if it is immune...`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new DamageActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
@@ -399,7 +398,7 @@ export const cardDefinitions = {
             "Not sure it's wise to try this on the street",
           ),
         ],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SpawnCardActivation(
             {
               zone: 'any',
@@ -424,7 +423,7 @@ export const cardDefinitions = {
             "Not sure it's wise to try this on the street",
           ),
         ],
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SpawnCardActivation(
             {
               zone: 'any',
@@ -449,7 +448,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       MERCHANT: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeCardActivation(),
           new StartEventActivation('SHOPKEEPER'),
           new QueueActivation(
@@ -477,7 +476,7 @@ export const cardDefinitions = {
       THE_LAW: {
         timeTillTrigger: 0,
         tooltip: `It's not a bribe if it's a donation...`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
         ]),
@@ -486,7 +485,7 @@ export const cardDefinitions = {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
         tooltip: `Take it and leave me alone already!`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
         ]),
@@ -501,7 +500,7 @@ export const cardDefinitions = {
     cardCombinationEffect: {
       MERCHANT: {
         timeTillTrigger: 0,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeCardActivation(),
           new StartEventActivation('SHOPKEEPER'),
         ]),
@@ -510,7 +509,7 @@ export const cardDefinitions = {
       THE_LAW: {
         timeTillTrigger: 0,
         tooltip: `It's not a bribe if it's a donation...`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
         ]),
@@ -519,7 +518,7 @@ export const cardDefinitions = {
       THE_ROUGH_KIND: {
         timeTillTrigger: 0,
         tooltip: `Take it and leave me alone already!`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new DecomposeBothCardsActivation(),
           new NextTurnActivation(),
         ]),
@@ -549,7 +548,7 @@ export const cardDefinitions = {
       HEALTH: {
         timeTillTrigger: 0,
         tooltip: `This won't hurt a bit`,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new CancelDragCardActivation('HEALTH'),
           new AnimateCardActivation('poof', 0),
           new SpawnCardActivation({
@@ -610,7 +609,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       any: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([new TheLawMoveActivation()]),
+        effect: new ActivationContainer([new TheLawMoveActivation()]),
       },
     },
   },
@@ -626,7 +625,7 @@ export const cardDefinitions = {
     idleZoneEffect: {
       streets: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -646,7 +645,7 @@ export const cardDefinitions = {
       },
       home: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -678,7 +677,7 @@ export const cardDefinitions = {
       },
       alchemy: {
         timeTillTrigger: 1,
-        effect: new DescribedTargettedMultipleActivation([
+        effect: new ActivationContainer([
           new SearchAndDecideCardActivation(
             ['THE_LAW', 'THE_RAID'],
             'any',
@@ -709,7 +708,7 @@ export const cardDefinitions = {
       homunculus: {
         timeTillTrigger: 0,
         tooltip: 'I need to get rid of the evidence',
-        effect: new DescribedTargettedMultipleActivation<CardModel>([
+        effect: new ActivationContainer([
           new EatCardActivation(),
           new FeedActivation(worldModel.homunculusModel, 1),
           new SpawnCardActivation(
