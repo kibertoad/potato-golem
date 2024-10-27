@@ -1,3 +1,6 @@
 {
   "extends": "@potato-golem/library-tsconfig/package",
+  "exclude": [
+    "vitest.config.ts"
+  ]
 }

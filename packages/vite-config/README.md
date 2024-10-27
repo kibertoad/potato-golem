@@ -1,3 +1,6 @@
+## Usage example
+
+```json
 import { resolve } from 'node:path'
 import defineConfig from '@potato-golem/library-vite-config/package'
 
@@ -20,3 +23,4 @@ export default defineConfig({
     },
   },
 })
+```

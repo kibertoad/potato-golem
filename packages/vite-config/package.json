@@ -1,0 +1,40 @@
+{
+  "name": "@potato-golem/library-vite-config",
+  "version": "1.2.0",
+  "description": "vite-config for potato-golem libraries",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kibertoad/potato-golem.git"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./package": {
+      "types": "./dist/vite.config.d.mts",
+      "default": "./dist/vite.config.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "package": ["dist/vite.config.d.mts"]
+    }
+  },
+  "devDependencies": {
+    "@potato-golem/library-tsconfig": "1.1.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  }
+}
