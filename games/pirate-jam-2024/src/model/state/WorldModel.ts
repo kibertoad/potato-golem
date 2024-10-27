@@ -35,8 +35,8 @@ export class WorldModel {
     this.zones[zoneId].removeCardByUUID(cardModelId)
   }
 
-  searchForCards(cardIds: CardId | CardId[], zone: Zone = 'any'): CardModel | undefined {
-    cardIds = Array.isArray(cardIds) ? cardIds : [cardIds]
+  searchForCards(_cardIds: CardId | CardId[], zone: Zone = 'any'): CardModel | undefined {
+    const cardIds = Array.isArray(_cardIds) ? _cardIds : [_cardIds]
     let card: CardModel
     for (let i = worldModel.cards.length - 1; i >= 0; i--) {
       card = worldModel.cards[i]

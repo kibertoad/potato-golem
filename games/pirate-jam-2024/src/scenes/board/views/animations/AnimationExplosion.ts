@@ -1,11 +1,11 @@
 import { SpriteBuilder } from '@potato-golem/ui'
 import type { PotatoScene } from '@potato-golem/ui'
+import type Phaser from 'phaser'
 import { audioSystem } from '../../../..'
 import { ImageRegistry } from '../../../../model/registries/imageRegistry'
 import { SfxEventRegistry } from '../../../../model/registries/sfxEventRegistry'
 import { CardView } from '../CardView'
 import { AnimationBase } from './AnimationBase'
-
 export class AnimationExplosion extends AnimationBase {
   private readonly cardExplosionSprite: Phaser.GameObjects.Sprite
 

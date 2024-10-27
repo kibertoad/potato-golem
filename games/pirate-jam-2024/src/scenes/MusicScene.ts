@@ -1,6 +1,7 @@
 import { PotatoScene } from '@potato-golem/ui'
 
 import { SpriteBuilder } from '@potato-golem/ui'
+import type Phaser from 'phaser'
 import { audioSystem } from '..'
 import { DepthRegistry } from '../model/registries/depthRegistry'
 import { ImageRegistry } from '../model/registries/imageRegistry'

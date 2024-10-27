@@ -387,7 +387,6 @@ export class BoardScene extends PotatoScene {
     this.cardEffectView.moveWithCard(cardView)
   }
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   onCardDragEnd(cardView: CardView) {
     this.blockInput()
     this.draggedCardView.unhighlight()

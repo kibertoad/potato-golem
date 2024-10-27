@@ -29,7 +29,7 @@ const fmod: FMOD = {
 }
 
 export const initFmod = (onInitialized: (fmodStudio: FMOD.StudioSystem) => void) => {
-  fmod['onRuntimeInitialized'] = () => {
+  fmod.onRuntimeInitialized = () => {
     const out = { val: null }
 
     fmod.Studio_System_Create(out)

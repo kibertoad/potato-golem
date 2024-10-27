@@ -8,10 +8,6 @@ export type AnimationTarget = Transform & Depth
 export abstract class AnimationBase extends Container {
   private _target?: AnimationTarget = null
 
-  constructor(scene: Phaser.Scene) {
-    super(scene)
-  }
-
   public abstract play(): Promise<void>
 
   private async playInternal(): Promise<void> {

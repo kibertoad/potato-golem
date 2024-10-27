@@ -1,8 +1,4 @@
-import {
-  ActivationContainer,
-  type EventSink,
-  QueuedTargettedActivation,
-} from '@potato-golem/core'
+import { ActivationContainer, type EventSink, QueuedTargettedActivation } from '@potato-golem/core'
 import type { Precondition } from '@potato-golem/core'
 import type { TargettedPrecondition } from '@potato-golem/core'
 import type { Position } from '@potato-golem/ui'
@@ -33,6 +29,7 @@ import {
   StartEventActivation,
   TheLawMoveActivation,
 } from '../activations/card/cardActivations'
+import type { ActivationContext } from '../activations/common/ActivationContext'
 import { SpawnCardActivation } from '../activations/event/extraEventActivations'
 import { CheckIfActiveCardPrecondition } from '../preconditions/CheckIfActiveCardPrecondition'
 import { CombinedZonePrecondition } from '../preconditions/CombinedZonePrecondition'
@@ -43,13 +40,14 @@ import type { ImageId } from '../registries/imageRegistry'
 import { type SfxEvent, SfxEventRegistry } from '../registries/sfxEventRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 import { worldModel } from '../state/WorldModel'
-import type { ActivationContext } from '../activations/common/ActivationContext'
 
 export type CardEffectDefinition = {
   timeTillTrigger: number
   tooltip?: string
   preconditions?: Array<
-    Precondition | TargettedPrecondition<ActivationContext> | TargettedReasonedPrecondition<ActivationContext>
+    | Precondition
+    | TargettedPrecondition<ActivationContext>
+    | TargettedReasonedPrecondition<ActivationContext>
   >
   effect: ActivationContainer<ActivationContext>
 }
@@ -169,7 +167,7 @@ export const cardDefinitions = {
                   description: 'Create 1 Poison',
                   zone: 'lab',
                 }),
-              ]
+              ],
             }),
           ),
           new DecomposeOtherCardActivation('poof', 300),
@@ -457,17 +455,19 @@ export const cardDefinitions = {
               unique: true,
               description: 'May attract attention',
               activatesIn: 1,
-              activations: [new SpawnCardActivation(
-                {
-                  zone: 'streets',
-                  precondition: new RoughKindPrecondition(),
-                  cardId: 'THE_ROUGH_KIND',
-                  description: '',
-                  spawnAnimation: 'fly_in_left',
-                },
-                -1,
-                'zone',
-              )],
+              activations: [
+                new SpawnCardActivation(
+                  {
+                    zone: 'streets',
+                    precondition: new RoughKindPrecondition(),
+                    cardId: 'THE_ROUGH_KIND',
+                    description: '',
+                    spawnAnimation: 'fly_in_left',
+                  },
+                  -1,
+                  'zone',
+                ),
+              ],
             }),
           ),
         ]),

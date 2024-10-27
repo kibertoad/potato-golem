@@ -1,3 +1,4 @@
+import Phaser from 'phaser'
 import type { AnimationBase, AnimationTarget } from './AnimationBase'
 
 export class AnimationPool<A extends typeof AnimationBase> extends Phaser.GameObjects.Group {

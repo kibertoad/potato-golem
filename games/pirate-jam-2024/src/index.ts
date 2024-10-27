@@ -1,4 +1,5 @@
 import { Game } from 'phaser'
+import Phaser from 'phaser'
 import type { FMOD } from '../lib/fmod/types'
 import { AudioSystem } from './core/AudioSystem'
 import { initFmod } from './initFmod'

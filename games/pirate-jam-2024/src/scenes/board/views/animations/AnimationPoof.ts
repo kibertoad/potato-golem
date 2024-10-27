@@ -1,5 +1,6 @@
 import { SpriteBuilder } from '@potato-golem/ui'
 import type { PotatoScene } from '@potato-golem/ui'
+import type Phaser from 'phaser'
 import { audioSystem } from '../../../..'
 import { ImageRegistry } from '../../../../model/registries/imageRegistry'
 import { SfxEventRegistry } from '../../../../model/registries/sfxEventRegistry'
