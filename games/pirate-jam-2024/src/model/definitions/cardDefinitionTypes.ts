@@ -12,8 +12,8 @@ import type {
 } from '../activations/common/ActivationContext'
 import type { CardId } from '../registries/cardRegistry'
 import type { ImageId } from '../registries/imageRegistry'
-import type { SfxId } from '../registries/sfxRegistry'
 import type { Zone } from '../registries/zoneRegistry'
+import { SfxEvent, SfxEventId } from '../registries/sfxEventRegistry'
 
 export type CardActivationDefinitionNew = {
   tooltip?: string
@@ -41,8 +41,8 @@ export type CardActivationDefinitionNewCards = {
   effects: PossibleCardEffects
 }
 export type CardPrettyEffectsDefinition = {
-  activateSfx?: SfxId
-  deactivateSfx?: SfxId
+  activateSfx?: SfxEvent
+  deactivateSfx?: SfxEvent
   chatBubbleOrigin?: Position
   chatBubbleRightOffset?: number
   spawnPhrases?: string[]

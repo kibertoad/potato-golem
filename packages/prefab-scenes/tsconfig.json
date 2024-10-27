@@ -1,0 +1,9 @@
+{
+  "extends": "@potato-golem/library-tsconfig/package",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "exclude": [
+    "vite.config.mts", "dist"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@potato-golem/library-vite-config",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "vite-config for potato-golem libraries",
   "scripts": {
     "build": "rimraf dist && tsc",

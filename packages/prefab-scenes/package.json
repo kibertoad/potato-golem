@@ -1,7 +1,7 @@
 {
-  "name": "@potato-golem/core",
+  "name": "@potato-golem/prefab-scenes",
   "version": "1.2.0",
-  "description": "potato golem game lib core",
+  "description": "potato golem reusable scenes",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
@@ -28,7 +28,7 @@
   "files": ["dist", "LICENSE"],
   "scripts": {
     "build": "tsc",
-    "build:vite": "vite build",
+    "build:vite": "rimraf dist && vite build",
     "lint": "biome check src biome.json && tsc --noEmit",
     "lint:fix": "biome check --write src biome.json",
     "test": "vitest",
@@ -47,9 +47,10 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
-    "eventemitter3": "^5.0.1",
-    "nanoid": "^5.0.7",
-    "validation-utils": "^11.0.1"
+  },
+  "peerDependencies": {
+    "@potato-golem/ui": "^1.0.0",
+    "phaser": "^3.86.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -57,6 +58,7 @@
     "@potato-golem/library-tsconfig": "1.2.0",
     "@potato-golem/library-vite-config": "1.1.0",
     "@types/node": "^20.17.1",
+    "rimraf": "^6.0.1",
     "vite": "^5.4.10",
     "vite-plugin-dts": "^4.3.0",
     "vitest": "^2.1.3",

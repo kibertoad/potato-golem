@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import defineConfig from '@potato-golem/library-vite-config/package'
+import defineConfig, { extractDependencies } from '@potato-golem/library-vite-config/package'
 
 // @ts-ignore
 import packageJson from './package.json'
@@ -7,7 +7,7 @@ import packageJson from './package.json'
 // biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineConfig({
   entry: resolve('./index.ts'),
-  dependencies: Object.keys(packageJson.dependencies),
+  dependencies: extractDependencies(packageJson),
   test: {
     coverage: {
       provider: 'v8',

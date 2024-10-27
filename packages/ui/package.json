@@ -46,7 +46,8 @@
   },
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "peerDependencies": {
-    "@potato-golem/core": "*"
+    "@potato-golem/core": "*",
+    "phaser": "^3.86.0"
   },
   "dependencies": {
     "phaser3-rex-plugins": "^1.80.5",
@@ -55,6 +56,8 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@potato-golem/core": "*",
+    "@potato-golem/library-tsconfig": "1.2.0",
+    "@potato-golem/library-vite-config": "1.1.0",
     "@types/node": "^20.14.10",
     "vite": "^5.3.3",
     "vite-plugin-dts": "3.9.1",

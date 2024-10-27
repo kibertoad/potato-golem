@@ -12,7 +12,6 @@ import type {
   CardActivationDefinitionNewCards,
   CardDefinitionNew,
 } from '../definitions/cardDefinitionTypes'
-import type { CardEffectDefinition } from '../definitions/cardDefinitionsOld'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 import type { Zone } from '../registries/zoneRegistry'
 
@@ -185,8 +184,11 @@ export class CardModel implements TurnProcessor, CommonEntity {
      */
   }
 
+  /*
   private findTriggeredActivations(): CardEffectDefinition[] {
     const relevantActivations: CardEffectDefinition[] = []
+
+   */
 
     // ToDo think about idle zone activations later, we don't really have any relevant ones now
     /*
@@ -212,6 +214,9 @@ export class CardModel implements TurnProcessor, CommonEntity {
 
      */
 
+  /*
     return relevantActivations
   }
+
+   */
 }

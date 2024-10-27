@@ -45,7 +45,7 @@ export class ButtonSquareBuilder extends ButtonListBuilder1 {
     return this.buttonBuilder
   }
 
-  build(): AbstractUIElement[] {
+  override build(): AbstractUIElement[] {
     return this.#buttonLists.flatMap((list) => {
       return list.getChildren()
     })
