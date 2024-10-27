@@ -3,8 +3,8 @@ import { instantiateContainer } from './model/diConfig'
 
 const GameResolutions = {
   default: {
-    width: 1900,
-    height: 900,
+    width: 2560,
+    height: 1440,
   },
 }
 
@@ -14,6 +14,10 @@ const container = instantiateContainer()
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   parent: undefined,
   width: resolution.width,
   height: resolution.height,
