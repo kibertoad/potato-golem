@@ -1,14 +1,14 @@
 import {
-  ButtonListBuilder,
   ChangeSceneActivation,
   PotatoScene,
   TextBuilder,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
-import { ImageRegistry } from '../model/registries/imageRegistry'
-import { MusicRegistry } from '../model/registries/musicRegistry'
-import { Scenes } from './SceneRegistry'
+import { imageRegistry } from '../registries/imageRegistry'
+import { sceneRegistry } from '../registries/sceneRegistry'
+import { musicRegistry } from '../registries/musicRegistry'
+import { ButtonListBuilder } from '../builders/ButtonListBuilder'
 
 const isMusicEnabled = false
 
@@ -22,7 +22,7 @@ export class MainMenuScene extends PotatoScene {
     | Phaser.Sound.WebAudioSound
 
   constructor() {
-    super(Scenes.MAIN_MENU_SCENE)
+    super(sceneRegistry.MAIN_MENU_SCENE)
   }
 
   init() {
@@ -30,24 +30,19 @@ export class MainMenuScene extends PotatoScene {
   }
 
   preload() {
-    this.load.image(ImageRegistry.ROCKET, require('../../assets/img/favicon.png'))
-    this.load.image(ImageRegistry.BOARD_BACKGROUND, require('../../assets/img/homun_bkgd1.png'))
-    this.load.image(ImageRegistry.HEALTH_CARD, require('../../assets/img/card_image.png'))
-    this.load.image(ImageRegistry.CARD_FRAME, require('../../assets/img/card_background.png'))
+    this.load.image(imageRegistry.ROCKET, require('../../assets/img/favicon.png'))
 
     if (isMusicEnabled) {
-      /*
       this.load.audio(
-        MusicRegistry.MAIN_THEME,
+        musicRegistry.MAIN_THEME,
         require("url:../../assets/music/bg_draft.mp3")
       );
-       */
     }
   }
 
   create() {
     if (isMusicEnabled) {
-      this.mainTheme = this.sound.add(MusicRegistry.MAIN_THEME)
+      this.mainTheme = this.sound.add(musicRegistry.MAIN_THEME)
       this.mainTheme.play({
         loop: true,
       })
@@ -61,8 +56,8 @@ export class MainMenuScene extends PotatoScene {
       .setPosition({ x: width * 0.3, y: height * 0.6 })
       .build()
 
-    const buttonList = new ButtonListBuilder1(this)
-      .textureKey(ImageRegistry.ROCKET)
+    const buttonList = new ButtonListBuilder(this)
+      .textureKey(imageRegistry.ROCKET)
       .displaySize(150, 50)
       .setExactPosition(width * 0.5, height * 0.6)
       .setSpacingOffset(0, 10)
@@ -70,7 +65,7 @@ export class MainMenuScene extends PotatoScene {
     const playButton = buttonList
       .addButton()
       .text('Play')
-      .onClick(ChangeSceneActivation.build(this, Scenes.BOARD_SCENE))
+      .onClick(ChangeSceneActivation.build(this, sceneRegistry.BOARD_SCENE))
       .build()
 
     const settingsButton = buttonList.addButton().text('Settings').build()

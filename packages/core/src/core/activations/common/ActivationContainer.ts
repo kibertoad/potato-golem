@@ -1,25 +1,27 @@
-import type {
-  Activation,
-  Activations,
-  AsyncActivation,
-  TargettedActivation, TargettedActivations,
-  TargettedAsyncActivation,
-} from './Activation'
 import {
   isActivation,
   isAsyncActivation,
   isTargettedActivation,
   isTargettedAsyncActivation,
 } from './AbstractActivation'
+import type {
+  Activation,
+  Activations,
+  AsyncActivation,
+  TargettedActivation,
+  TargettedActivations,
+  TargettedAsyncActivation,
+} from './Activation'
 
 export class ActivationContainer<Target> {
-
   private readonly activations: Activation[] = []
   private readonly asyncActivations: AsyncActivation[] = []
   private readonly targettedActivations: TargettedActivation<Target>[] = []
   private readonly targettedAsyncActivations: TargettedAsyncActivation<Target>[] = []
 
-  private allActivations: Array<Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>> = []
+  private allActivations: Array<
+    Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>
+  > = []
 
   constructor(activations?: Activations | TargettedActivations<Target>) {
     if (activations) {
@@ -27,13 +29,26 @@ export class ActivationContainer<Target> {
     }
   }
 
-  addBulk(activations: (Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>)[]) {
+  addBulk(
+    activations: (
+      | Activation
+      | AsyncActivation
+      | TargettedActivation<Target>
+      | TargettedAsyncActivation<Target>
+    )[],
+  ) {
     for (const activation of activations) {
       this.add(activation)
     }
   }
 
-  add(activation: Activation | AsyncActivation | TargettedActivation<Target> | TargettedAsyncActivation<Target>) {
+  add(
+    activation:
+      | Activation
+      | AsyncActivation
+      | TargettedActivation<Target>
+      | TargettedAsyncActivation<Target>,
+  ) {
     this.allActivations.push(activation)
 
     if (isActivation(activation)) {
@@ -107,10 +122,10 @@ export class ActivationContainer<Target> {
 
   private rebuildAllActivations() {
     this.allActivations = [
-    ...this.activations,
-    ...this.asyncActivations,
-    ...this.targettedActivations,
-    ...this.targettedAsyncActivations
+      ...this.activations,
+      ...this.asyncActivations,
+      ...this.targettedActivations,
+      ...this.targettedAsyncActivations,
     ]
   }
 

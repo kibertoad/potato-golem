@@ -1,11 +1,12 @@
+import { LimitedNumber } from '../../primitives/LimitedNumber'
 import type {
   Activation,
   Activations,
   AsyncActivation,
   TargettedActivation,
-  TargettedActivations, TargettedAsyncActivation,
+  TargettedActivations,
+  TargettedAsyncActivation,
 } from '../common/Activation'
-import { LimitedNumber } from '../../primitives/LimitedNumber'
 import { ActivationContainer } from '../common/ActivationContainer'
 
 export type QueuedActivationParams = {
@@ -16,11 +17,14 @@ export type QueuedActivationParams = {
   description?: string
 }
 
-export type QueuedTargettedActivationParams<Target> = Omit<QueuedActivationParams, 'activations'> & {
+export type QueuedTargettedActivationParams<Target> = Omit<
+  QueuedActivationParams,
+  'activations'
+> & {
   activations: TargettedActivations<Target>
 }
 
-export class QueuedActivation<Target = unknown> implements Activation, AsyncActivation{
+export class QueuedActivation<Target = unknown> implements Activation, AsyncActivation {
   private activatesIn: LimitedNumber
   private readonly activations: ActivationContainer<Target>
   public readonly unique: boolean
@@ -37,7 +41,7 @@ export class QueuedActivation<Target = unknown> implements Activation, AsyncActi
 
   processTime(timeUnits: number): boolean {
     this.activatesIn.decrease(timeUnits)
-    return (this.activatesIn.value <= 0)
+    return this.activatesIn.value <= 0
   }
 
   resetTime() {
@@ -59,7 +63,9 @@ export class QueuedActivation<Target = unknown> implements Activation, AsyncActi
   }
 }
 
-export class QueuedTargettedActivation<Target> implements TargettedActivation<Target>, TargettedAsyncActivation<Target> {
+export class QueuedTargettedActivation<Target>
+  implements TargettedActivation<Target>, TargettedAsyncActivation<Target>
+{
   private activatesIn: LimitedNumber
   private readonly activations: ActivationContainer<Target>
   public readonly unique: boolean
@@ -76,7 +82,7 @@ export class QueuedTargettedActivation<Target> implements TargettedActivation<Ta
 
   processTime(timeUnits: number): boolean {
     this.activatesIn.decrease(timeUnits)
-    return (this.activatesIn.value <= 0)
+    return this.activatesIn.value <= 0
   }
 
   resetTime() {

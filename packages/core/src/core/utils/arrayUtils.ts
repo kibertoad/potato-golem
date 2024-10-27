@@ -32,7 +32,7 @@ export function removeFromArrayById<T extends IdHolder>(
 
   // If the element is found, remove it from the array
   if (index !== -1) {
-    return targetArray.splice(index, 1)[0]
+    return targetArray.splice(index, 1)[0]!
   }
   return null
 }

@@ -13,7 +13,7 @@ import {
 import type { EntityModel } from '../../../model/EntityModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
-import { ImageRegistry } from '../../../model/registries/imageRegistry'
+import { imageRegistry } from '../../../registries/imageRegistry'
 
 export type CardViewParams = {
   model: EntityModel
@@ -62,7 +62,7 @@ export class EntityView extends Container implements IdHolder {
     this.endTurnProcessor = dependencies.endTurnProcessor
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.ROCKET)
+      .setTextureKey(imageRegistry.ROCKET)
       .setPosition({
         x: 0,
         y: 0,
@@ -73,7 +73,7 @@ export class EntityView extends Container implements IdHolder {
       .build()
 
     this.cardPictureSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(ImageRegistry.ROCKET)
+      .setTextureKey(imageRegistry.ROCKET)
       .setPosition({
         x: 0,
         y: 30,

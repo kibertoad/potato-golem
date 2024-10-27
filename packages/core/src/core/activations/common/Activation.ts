@@ -50,10 +50,13 @@ export type TargettedAsyncActivation<Target> = {
   activateTargettedAsync: TargettedAsyncActivationCallback<Target>
 }
 
-export function executeTargettedActivation<T>(activation: TargettedActivation<T> | TargettedAsyncActivation<T>, target: T): Promise<void> {
+export function executeTargettedActivation<T>(
+  activation: TargettedActivation<T> | TargettedAsyncActivation<T>,
+  target: T,
+): Promise<void> {
   if (isTargettedActivation(activation)) {
     activation.activateTargetted(target)
     return Promise.resolve()
   }
-    return (activation as TargettedAsyncActivation<T>).activateTargettedAsync(target)
+  return (activation as TargettedAsyncActivation<T>).activateTargettedAsync(target)
 }

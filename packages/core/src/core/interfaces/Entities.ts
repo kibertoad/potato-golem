@@ -1,5 +1,5 @@
-import type { LimitedNumber } from '../primitives/LimitedNumber'
 import type { EventSink } from '../messages/EventBus'
+import type { LimitedNumber } from '../primitives/LimitedNumber'
 
 export interface IdHolder {
   id: string

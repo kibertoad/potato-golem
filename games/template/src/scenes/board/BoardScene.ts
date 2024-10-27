@@ -10,13 +10,13 @@ import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-gole
 import { EntityModel } from '../../model/EntityModel'
 import type { WorldModel } from '../../model/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
-import { Scenes } from '../SceneRegistry'
+import { sceneRegistry } from '../../registries/sceneRegistry'
 import { EntityView } from './views/EntityView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
 import { entityDefinitions } from '../../model/definitions/entityDefinitions'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { ImageRegistry } from '../../model/registries/imageRegistry'
+import { imageRegistry } from '../../registries/imageRegistry'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 
 export class BoardScene extends PotatoScene {
@@ -29,7 +29,7 @@ export class BoardScene extends PotatoScene {
   private readonly endTurnProcessor: EndTurnProcessor
 
   constructor({ worldModel, endTurnProcessor }: Dependencies) {
-    super(Scenes.BOARD_SCENE)
+    super(sceneRegistry.BOARD_SCENE)
 
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
@@ -76,7 +76,7 @@ export class BoardScene extends PotatoScene {
 
   create() {
     this.backgroundImage = SpriteBuilder.instance(this)
-      .setTextureKey(ImageRegistry.ROCKET)
+      .setTextureKey(imageRegistry.ROCKET)
       .setPosition({
         x: 0,
         y: 0,

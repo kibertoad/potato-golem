@@ -1,7 +1,8 @@
 import {
   AVERAGE_PRIORITY,
   type TargettedActivation,
-  type TargettedActivationCallback, type TargettedActivations,
+  type TargettedActivationCallback,
+  type TargettedActivations,
   type TargettedAsyncActivation,
 } from '../common/Activation'
 import { ActivationContainer } from '../common/ActivationContainer'
@@ -22,10 +23,12 @@ export class TargettedAsyncMultiplexActivation<Target> implements TargettedAsync
     await this.activations.activateAsyncWithTarget(target)
   }
 
-  public static build<Target>(activations: TargettedActivationCallback<Target>[]): TargettedAsyncActivation<Target> {
+  public static build<Target>(
+    activations: TargettedActivationCallback<Target>[],
+  ): TargettedAsyncActivation<Target> {
     const activationObjects = activations.map((activation) => {
       return {
-        activateTargetted: (target) => activation(target)
+        activateTargetted: (target) => activation(target),
       } satisfies TargettedActivation<Target>
     })
     return new TargettedAsyncMultiplexActivation(activationObjects)

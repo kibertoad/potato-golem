@@ -1,4 +1,8 @@
-import { AVERAGE_PRIORITY, type TargettedActivation, type TargettedActivationCallback } from '../common/Activation'
+import {
+  AVERAGE_PRIORITY,
+  type TargettedActivation,
+  type TargettedActivationCallback,
+} from '../common/Activation'
 
 /**
  * Activation with a single target, which invokes other activations in bulk
@@ -20,10 +24,12 @@ export class TargettedMultiplexActivation<Target> implements TargettedActivation
     }
   }
 
-  public static build<Target>(activations: TargettedActivationCallback<Target>[]): TargettedActivation<Target> {
+  public static build<Target>(
+    activations: TargettedActivationCallback<Target>[],
+  ): TargettedActivation<Target> {
     const activationObjects = activations.map((activation) => {
       return {
-        activateTargetted: (target) => activation(target)
+        activateTargetted: (target) => activation(target),
       } satisfies TargettedActivation<Target>
     })
     return new TargettedMultiplexActivation(activationObjects)

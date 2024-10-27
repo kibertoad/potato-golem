@@ -1,0 +1,25 @@
+{
+  "name": "@potato-golem/library-tsconfig",
+  "version": "1.1.0",
+  "description": "tsconfig for potato-golem libraries",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    "./package": {
+      "default": "./tsconfig.json"
+    }
+  },
+  "files": [
+    "tsconfig.json"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kibertoad/potato-golem.git"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

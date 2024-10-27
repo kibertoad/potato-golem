@@ -13,8 +13,8 @@ export function sortAndFilterActivations<T extends Prioritized>(activations: rea
   const sortedActivations = [...activations].sort((a, b) => b.priority - a.priority)
 
   // Step 2: Check for the top priority entry and handle isExclusive logic
-  if (sortedActivations[0].isExclusive) {
-    return [sortedActivations[0]] // If the top priority entry isExclusive, return only it
+  if (sortedActivations[0]!.isExclusive) {
+    return [sortedActivations[0]!] // If the top priority entry isExclusive, return only it
   }
 
   // Step 3: If no isExclusive at the top, filter out all isExclusive entries

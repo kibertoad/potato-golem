@@ -24,9 +24,13 @@ export function normalizedRandom(maxValue: number) {
  * Return a random element from the array
  */
 export function randomOneOf<T>(items: readonly T[]): T {
-  return items[(items.length * Math.random()) | 0]
+  if (items.length === 0) {
+    throw new Error('Cannot return random object out of empty list')
+  }
+
+  return items[(items.length * Math.random()) | 0]!
 }
 
 export function getRandomNumber(xInclusive: number) {
-  return Math.floor(Math.random() * (xInclusive + 1));
+  return Math.floor(Math.random() * (xInclusive + 1))
 }
