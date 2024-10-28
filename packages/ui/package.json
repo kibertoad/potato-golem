@@ -1,6 +1,6 @@
 {
   "name": "@potato-golem/ui",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "potato golem game lib UI module",
   "type": "module",
   "module": "./dist/index.js",
@@ -26,7 +26,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json",
     "test": "vitest",
     "build:vite": "vite build",
     "lint": "biome check index.ts src biome.json",
@@ -59,9 +59,13 @@
     "@potato-golem/library-tsconfig": "1.2.0",
     "@potato-golem/library-vite-config": "1.1.0",
     "@types/node": "^20.14.10",
+    "rimraf": "^6.0.1",
     "vite": "^5.3.3",
     "vite-plugin-dts": "3.9.1",
     "vitest": "^2.0.3",
     "typescript": "^5.5.4"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
