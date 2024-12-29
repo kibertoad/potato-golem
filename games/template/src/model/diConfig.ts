@@ -1,11 +1,11 @@
-import { Lifetime, type Resolver, asClass, asValue, createContainer } from 'awilix'
+import { Lifetime, type NameAndRegistrationPair, asClass, asValue, createContainer } from 'awilix'
 import { MainMenuScene } from '../scenes/MainMenuScene'
 import { BoardScene } from '../scenes/board/BoardScene'
 import { WorldModel } from './WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
-type DiConfig = Record<keyof Dependencies, Resolver<any>>
+type DiConfig = NameAndRegistrationPair<Dependencies>
 
 export interface Dependencies {
   worldModel: WorldModel

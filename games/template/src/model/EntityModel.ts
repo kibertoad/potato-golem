@@ -1,8 +1,4 @@
-import {
-  type EventSink,
-  type TurnProcessor,
-  generateUuid,
-} from '@potato-golem/core'
+import { type EventSink, type TurnProcessor, generateUuid } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
 import type { EntityDefinition } from './definitions/entityDefinitions'
 import { EntityTypeRegistry } from './registries/entityTypeRegistry'
@@ -32,7 +28,5 @@ export class EntityModel implements TurnProcessor, CommonEntity {
     this.parentEventSink.emit('DESTROY', this)
   }
 
-  processTurn(): void {
-  }
-
+  processTurn(): void {}
 }

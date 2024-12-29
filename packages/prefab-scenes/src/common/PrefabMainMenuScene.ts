@@ -8,23 +8,23 @@ export type CreditsEntry = {
   names: string[]
 }
 
-export type MainMenuParams = {
+export type MainMenuParams<Scenes extends string = string> = {
   mainMenuSceneId: string
   credits: CreditsEntry[]
   buttonTextureKey: string
   subtitleText: string
-  gameStartScene: Phaser.Scene
+  gameStartScene: Phaser.Scene | Scenes
 }
 
-export abstract class PrefabMainMenuScene extends PotatoScene {
-  private readonly params: MainMenuParams
+export abstract class PrefabMainMenuScene<Scenes extends string = string> extends PotatoScene {
+  private readonly params: MainMenuParams<Scenes>
 
   private buttons: Container[] = []
   private selectedButtonIndex = 0
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   private subTitle!: UIContainer<Phaser.GameObjects.Text>
 
-  constructor(params: MainMenuParams) {
+  constructor(params: MainMenuParams<Scenes>) {
     super(params.mainMenuSceneId)
     this.params = params
   }

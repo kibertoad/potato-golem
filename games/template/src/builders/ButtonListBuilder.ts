@@ -6,7 +6,7 @@ interface ButtonListBuilderConfig {
   depth?: number
   width?: number
   height?: number
-  distance?: number
+  distance?: number // offset between buttons
   orientation?: 'vertical' | 'horizontal'
   hoverTint?: number
 }

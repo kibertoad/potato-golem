@@ -2,13 +2,16 @@ import { removeFromArrayById } from '@potato-golem/core'
 import type { EntityModel } from './EntityModel'
 
 export class WorldModel {
-  public readonly cards: EntityModel[] = []
+  public readonly entities: EntityModel[] = []
 
-  addCard(cardModel: EntityModel) {
-    this.cards.push(cardModel)
+  addEntity(cardModel: EntityModel) {
+    this.entities.push(cardModel)
   }
 
-  removeCard(cardModelId: string): EntityModel {
-    return removeFromArrayById(this.cards, cardModelId)
+  /**
+   * Remove entity by unique id
+   */
+  removeEntity(entityModelId: string): EntityModel {
+    return removeFromArrayById(this.entities, entityModelId)
   }
 }
