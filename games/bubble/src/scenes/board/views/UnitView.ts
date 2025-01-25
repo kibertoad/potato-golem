@@ -158,6 +158,7 @@ export class UnitView extends Container implements IdHolder {
 
   public enableHighlight() {
     const rectangular = RectangularBuilder.fromSprite(this.scene as PotatoScene, this.unitSprite, this)
+      .setBorderWidth(2)
       //.setBaseColour(BROWN)
       .build()
     this.highlightRectangular = rectangular

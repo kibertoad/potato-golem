@@ -21,6 +21,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
   private baseColour: number
   private dragHoverColour: number
   private hoverColour: number
+  private borderWidth: number
 
   private alpha: number
   private zone = false
@@ -30,6 +31,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
 
     this.width = 20
     this.height = 20
+    this.borderWidth = 10
 
     // Gray color
     this.alpha = 1.0
@@ -39,6 +41,11 @@ export class RectangularBuilder extends AbstractUIBuilder {
     this.hoverColour = 0xff0000
 
     this.dragHoverColour = this.hoverColour
+  }
+
+  public setBorderWidth(value: number): this {
+    this.borderWidth = value
+    return this
   }
 
   public addZone() {
@@ -58,11 +65,22 @@ export class RectangularBuilder extends AbstractUIBuilder {
   private addRectangular(): RectangularGraphicsContainer {
     const graphics = this.scene.add.graphics()
 
+    console.log(`Adding new rectangular: ${
+      JSON.stringify({
+        borderWidth: this.borderWidth,
+        x: this.position.x,
+        y: this.position.y,
+        width: this.width,
+        height: this.height,
+      })
+    }`)
+
+
     // Set the fill style for the rectangle
     graphics.fillStyle(this.baseColour, this.alpha)
 
     // Set the line style for the border (red color, 5 pixels thick)
-    graphics.lineStyle(10, this.baseColour, this.alpha) // Red color, fully opaque, 5 pixels thick
+    graphics.lineStyle(this.borderWidth, this.baseColour, this.alpha) // Red color, fully opaque, 5 pixels thick
 
     // Draw the filled rectangle
     graphics.fillRect(this.position.x, this.position.y, this.width, this.height)
@@ -123,13 +141,23 @@ export class RectangularBuilder extends AbstractUIBuilder {
     const resolvedX = sourceSpriteContainer ? sourceSprite.x + sourceSpriteContainer.x : sourceSprite.x
     const resolvedY = sourceSpriteContainer ? sourceSprite.y + sourceSpriteContainer.y : sourceSprite.y
 
+    /*
+    console.log(`Source sprite: ${JSON.stringify({
+      width: sourceSprite.width,
+      height: sourceSprite.height,
+      displayHeight: sourceSprite.displayHeight,
+      displayWidth: sourceSprite.displayWidth
+    })}`)
+    
+     */
+
     return new RectangularBuilder(scene)
       .setPosition({
         x: resolvedX,
         y: resolvedY,
       })
       .setOrigin(0, 0)
-      .setWidth(sourceSprite.width)
-      .setHeight(sourceSprite.height)
+      .setWidth(sourceSprite.displayWidth)
+      .setHeight(sourceSprite.displayHeight)
   }
 }
