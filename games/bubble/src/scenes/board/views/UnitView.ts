@@ -2,21 +2,23 @@ import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import type { Coords, IdHolder } from '@potato-golem/core'
 import {
-  ClickableElementHolder,
+  type ClickableElementHolder,
   type PotatoScene,
   RectangularBuilder,
-  RectangularGraphicsContainer,
+  type RectangularGraphicsContainer,
   SpriteBuilder,
   StateUIManager,
-  TextBuilder,ViewListener,
-  calculateViewPosition,
+  TextBuilder,
+  type ViewListener,
+  calculateViewPosition, addOnClickActivation,
 } from '@potato-golem/ui'
-import { UnitEntityModel, UnitStates } from '../../../model/entities/UnitEntityModel'
-import { WorldModel } from '../../../model/entities/WorldModel'
+import type { UnitEntityModel, UnitStates } from '../../../model/entities/UnitEntityModel'
+import type { WorldModel } from '../../../model/entities/WorldModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { imageRegistry } from '../../../registries/imageRegistry'
 import { TILE_DIMENSIONS } from '../BoardConstants'
+import { MovementProcessor } from '../processors/MovementProcessor'
 
 export type CardViewParams = {
   model: UnitEntityModel
@@ -24,6 +26,7 @@ export type CardViewParams = {
 
 export type CardViewDependencies = {
   worldModel: WorldModel
+  movementProcessor: MovementProcessor
 }
 
 const textOffsetX = 35
@@ -58,6 +61,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
   public readonly model: UnitEntityModel
   private readonly endTurnProcessor: EndTurnProcessor
   private readonly worldModel: WorldModel
+  private readonly movementProcessor: MovementProcessor
 
   getClickableElement(): ViewListener {
     return this.unitSprite
@@ -79,6 +83,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
 
     this.model = params.model
     this.worldModel = dependencies.worldModel
+    this.movementProcessor = dependencies.movementProcessor
 
     this.unitSprite = SpriteBuilder.instance(scene)
       .setTextureKey(imageRegistry.ROCKET)
@@ -114,18 +119,19 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     this.stateManager = new StateUIManager(this, this.model)
     const self = this
 
-    // Deselect
-    this.stateManager.addTransition('onClick', {
-      exclusiveLock: 'isSelected',
-      conditionPredicate(view: UnitView, model: UnitEntityModel) {
-        console.log('Check predicate for deselect')
-        return model.state.stateFlags.isSelected === true
-      },
-      stateMutation(view: UnitView, model: UnitEntityModel) {
-        console.log('Unit deselected')
-        self.worldModel.unselectUnit()
-      }
-    })
+    if (this.model.side === 'BLUE') {
+      // Deselect
+      this.stateManager.addTransition('onClick', {
+        exclusiveLock: 'isSelected',
+        conditionPredicate(view: UnitView, model: UnitEntityModel) {
+          console.log('Check predicate for deselect')
+          return model.state.stateFlags.isSelected === true
+        },
+        stateMutation(view: UnitView, model: UnitEntityModel) {
+          console.log('Unit deselected')
+          self.worldModel.unselectUnit()
+        },
+      })
 
     // Select
     this.stateManager.addTransition('onClick', {
@@ -137,10 +143,18 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
       stateMutation(view: UnitView, model: UnitEntityModel) {
         console.log('Unit selected')
         self.worldModel.selectUnit(view)
-      }
+      },
     })
+      this.stateManager.addOnClickTransitionProcessing(this.getClickableElement())
+    }
 
-    this.stateManager.addOnClickTransitionProcessing(this.getClickableElement())
+    if (this.model.side === 'RED') {
+      addOnClickActivation(this.getClickableElement(), () => {
+        if (this.worldModel.selectedUnit) {
+          this.movementProcessor.tryToAttackUnit(this.worldModel.selectedUnit, this)
+        }
+      })
+    }
 
     scene.add.existing(this)
 
@@ -148,7 +162,11 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
   }
 
   public enableHighlight() {
-    const rectangular = RectangularBuilder.fromSprite(this.scene as PotatoScene, this.unitSprite, this)
+    const rectangular = RectangularBuilder.fromSprite(
+      this.scene as PotatoScene,
+      this.unitSprite,
+      this,
+    )
       .setBorderWidth(2)
       //.setBaseColour(BROWN)
       .build()
@@ -160,5 +178,9 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     this.highlightRectangular.graphics.destroy(true)
     this.highlightRectangular = undefined
     this.model.state.stateFlags.isSelected = false
+  }
+
+  kill() {
+    this.destroy(true)
   }
 }

@@ -1,5 +1,5 @@
-import { type Coords, removeFromArrayById, TwoDimensionalMap } from '@potato-golem/core'
-import { UnitView } from '../../scenes/board/views/UnitView'
+import { type Coords, TwoDimensionalMap, removeFromArrayById } from '@potato-golem/core'
+import type { UnitView } from '../../scenes/board/views/UnitView'
 
 export class WorldModel {
   public readonly allUnits: UnitView[] = []
@@ -31,10 +31,11 @@ export class WorldModel {
   /**
    * Remove entity by unique id
    */
-  removeUnit(entityModelId: string): UnitView {
-    const removedUnit = removeFromArrayById(this.allUnits, entityModelId)
-    this.unitMap.setByCoords(removedUnit.model.coords, null)
-    return removedUnit
+  removeUnit(unitToRemove: UnitView): UnitView {
+    // const removedUnit = removeFromArrayById(this.allUnits, entityModelId)
+    this.unitMap.setByCoords(unitToRemove.model.coords, null)
+    unitToRemove.kill()
+    return unitToRemove
   }
 
   moveUnit(selectedUnit: UnitView, targetMapCoords: Coords) {

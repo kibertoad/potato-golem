@@ -1,24 +1,19 @@
-import {
-  PotatoScene,
-  createGlobalPositionLabel,
-  updateGlobalPositionLabel, addOnClickActivation,
-} from '@potato-golem/ui'
+import { PotatoScene, createGlobalPositionLabel, updateGlobalPositionLabel } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import type { WorldModel } from '../../model/entities/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
+import type { WorldModel } from '../../model/entities/WorldModel'
 import { sceneRegistry } from '../../registries/sceneRegistry'
 import { UnitView } from './views/UnitView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
+import { UnitEntityModel, type UnitEntityParams } from '../../model/entities/UnitEntityModel'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { UnitEntityModel, UnitEntityParams } from '../../model/entities/UnitEntityModel'
-import { TerrainView, TerrainViewParams } from './views/TerrainView'
 import { BOARD_SIZE } from './BoardConstants'
-import { MovementProcessor } from './processors/MovementProcessor'
-
+import type { MovementProcessor } from './processors/MovementProcessor'
+import { TerrainView, type TerrainViewParams } from './views/TerrainView'
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -42,15 +37,24 @@ export class BoardScene extends PotatoScene {
   init() {
     this.addEntity({
       powerValue: 1,
-      coords: { x: 1, y: 1},
+      coords: { x: 1, y: 1 },
+      side: 'BLUE',
     })
     this.addEntity({
       powerValue: 2,
-      coords: { x: 2, y: 1},
+      coords: { x: 2, y: 1 },
+      side: 'BLUE',
     })
     this.addEntity({
       powerValue: 3,
-      coords: { x: 3, y: 1},
+      coords: { x: 3, y: 1 },
+      side: 'BLUE',
+    })
+
+    this.addEntity({
+      powerValue: 2,
+      coords: { x: 3, y: 4 },
+      side: 'RED',
     })
 
     for (let x = 0; x <= BOARD_SIZE.width; x++) {
@@ -59,18 +63,20 @@ export class BoardScene extends PotatoScene {
           image: 'terrain',
           coords: {
             x,
-            y
-          }
-        }); // Call the method for each tile position
+            y,
+          },
+        }) // Call the method for each tile position
       }
     }
 
+    /*
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.DEFAULT) {
-        this.worldModel.removeUnit(entity.id)
+        this.worldModel.removeUnit(entity)
         this.destroyChildByModelId(entity.id)
       }
     })
+     */
   }
 
   addTerrain(terrainParams: TerrainViewParams) {
@@ -92,6 +98,7 @@ export class BoardScene extends PotatoScene {
       },
       {
         worldModel: this.worldModel,
+        movementProcessor: this.movementProcessor,
       },
     )
     this.worldModel.addUnit(entityView)

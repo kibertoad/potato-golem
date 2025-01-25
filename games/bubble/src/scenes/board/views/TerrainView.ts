@@ -1,20 +1,19 @@
 import Container = Phaser.GameObjects.Container
-import { Coords, generateUuid, IdHolder } from '@potato-golem/core'
-import Phaser from 'phaser'
+import { type Coords, type IdHolder, generateUuid } from '@potato-golem/core'
 import {
+  type ClickableElementHolder,
+  type PotatoScene,
+  SpriteBuilder,
+  type ViewListener,
   addOnClickActivation,
   calculateViewPosition,
-  ClickableElementHolder,
-  PotatoScene,
-  SpriteBuilder,
-  ViewListener,
 } from '@potato-golem/ui'
-import { ImageId } from '../../../registries/imageRegistry'
-import { TILE_DIMENSIONS } from '../BoardConstants'
+import Phaser from 'phaser'
+import type { WorldModel } from '../../../model/entities/WorldModel'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
-import { WorldModel } from '../../../model/entities/WorldModel'
-import { UnitView } from './UnitView'
-import { MovementProcessor } from '../processors/MovementProcessor'
+import type { ImageId } from '../../../registries/imageRegistry'
+import { TILE_DIMENSIONS } from '../BoardConstants'
+import type { MovementProcessor } from '../processors/MovementProcessor'
 
 export type TerrainViewParams = {
   image: ImageId
@@ -38,7 +37,11 @@ export class TerrainView extends Container implements IdHolder, ClickableElement
     return this.terrainSprite
   }
 
-  constructor(scene: PotatoScene, params: TerrainViewParams, dependencies: TerrainViewDependencies) {
+  constructor(
+    scene: PotatoScene,
+    params: TerrainViewParams,
+    dependencies: TerrainViewDependencies,
+  ) {
     super(scene)
     this.worldModel = dependencies.worldModel
     this.movementProcessor = dependencies.movementProcessor
@@ -70,10 +73,7 @@ export class TerrainView extends Container implements IdHolder, ClickableElement
 
     addOnClickActivation(this.getClickableElement(), () => {
       console.log('try moving')
-      this.movementProcessor.tryMoveToTile(
-        this.worldModel.selectedUnit,
-        this.mapCoords,
-      )
+      this.movementProcessor.tryMoveToTile(this.worldModel.selectedUnit, this.mapCoords)
     })
 
     scene.add.existing(this)

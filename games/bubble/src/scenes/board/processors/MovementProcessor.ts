@@ -1,13 +1,24 @@
-import { WorldModel } from '../../../model/entities/WorldModel'
-import { calculateManhattanDistance, Coords } from '@potato-golem/core'
-import { UnitView } from '../views/UnitView'
-import { Dependencies } from '../../../model/diConfig'
+import { type Coords, calculateManhattanDistance } from '@potato-golem/core'
+import type { Dependencies } from '../../../model/diConfig'
+import type { WorldModel } from '../../../model/entities/WorldModel'
+import type { UnitView } from '../views/UnitView'
 
 export class MovementProcessor {
   private readonly worldModel: WorldModel
 
   constructor({ worldModel }: Dependencies) {
     this.worldModel = worldModel
+  }
+
+  tryToAttackUnit(attackingUnit: UnitView, targetUnit: UnitView) {
+    if (!attackingUnit) {
+      console.log('unit is not selected')
+      return
+    }
+
+    this.worldModel.removeUnit(targetUnit)
+
+    this.tryMoveToTile(attackingUnit, targetUnit.model.coords)
   }
 
   tryMoveToTile(selectedUnit: UnitView, targetMapCoords: Coords) {

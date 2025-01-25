@@ -1,4 +1,4 @@
-import { Dimensions } from '@potato-golem/core'
+import type { Dimensions } from '@potato-golem/core'
 
 export const TILE_DIMENSIONS: Dimensions = {
   height: 200,
@@ -8,5 +8,5 @@ export const TILE_DIMENSIONS: Dimensions = {
 // In tiles
 export const BOARD_SIZE: Dimensions = {
   height: 6,
-  width: 6
+  width: 6,
 }

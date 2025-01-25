@@ -1,15 +1,30 @@
-import { CommonEntity, Coords, CoordsHolder, generateUuid, LimitedNumber, State, StateHolder } from '@potato-golem/core'
+import {
+  type CommonEntity,
+  type Coords,
+  type CoordsHolder,
+  LimitedNumber,
+  type State,
+  type StateHolder,
+  generateUuid,
+} from '@potato-golem/core'
 
 export type UnitEntityParams = {
   powerValue: number
   coords: Coords
+  side: Sides
 }
 
 export type UnitStates = 'isSelected'
 
-export class UnitEntityModel implements CommonEntity, CoordsHolder, StateHolder<UnitStates> {
+export type Sides = keyof typeof SIDES
+export const SIDES = {
+  RED: 'RED',
+  BLUE: 'BLUE',
+} as const
 
+export class UnitEntityModel implements CommonEntity, CoordsHolder, StateHolder<UnitStates> {
   public readonly id: string
+  public readonly side: Sides
   public readonly type: string
   public readonly powerValue: LimitedNumber
   public readonly coords: Coords
@@ -24,7 +39,8 @@ export class UnitEntityModel implements CommonEntity, CoordsHolder, StateHolder<
       stateFlags: {
         isSelected: false,
       },
-      mainState: ''
+      mainState: '',
     }
+    this.side = params.side
   }
 }
