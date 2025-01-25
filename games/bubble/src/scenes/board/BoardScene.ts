@@ -1,31 +1,27 @@
 import {
   PotatoScene,
-  SpriteBuilder,
   createGlobalPositionLabel,
-  updateGlobalPositionLabel,
+  updateGlobalPositionLabel, addOnClickActivation,
 } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import { EntityModel } from '../../model/entities/EntityModel'
 import type { WorldModel } from '../../model/entities/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
 import { sceneRegistry } from '../../registries/sceneRegistry'
 import { UnitView } from './views/UnitView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
-import { entityDefinitions } from '../../model/definitions/entityDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
-import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
-import { imageRegistry } from '../../registries/imageRegistry'
-import { UnitEntity, UnitEntityParams } from '../../model/entities/UnitEntity'
+import { UnitEntityModel, UnitEntityParams } from '../../model/entities/UnitEntityModel'
 import { TerrainView, TerrainViewParams } from './views/TerrainView'
 import { BOARD_SIZE } from './BoardConstants'
 
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
+  public selectedUnit: UnitView
 
   private globalPositionLabel: Phaser.GameObjects.Text
   private globalTrackerLabel: Phaser.GameObjects.Text
@@ -66,7 +62,6 @@ export class BoardScene extends PotatoScene {
       }
     }
 
-
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.DEFAULT) {
         this.worldModel.removeUnit(entity.id)
@@ -76,12 +71,15 @@ export class BoardScene extends PotatoScene {
   }
 
   addTerrain(terrainParams: TerrainViewParams) {
-    const terrainView = new TerrainView(this, terrainParams)
+    const terrainView = new TerrainView(this, terrainParams, {
+      worldModel: this.worldModel
+    })
+
     this.addChildViewObject(terrainView)
   }
 
   addEntity(unitParams: UnitEntityParams) {
-    const entityModel = new UnitEntity(unitParams)
+    const entityModel = new UnitEntityModel(unitParams)
     this.worldModel.addUnit(entityModel)
 
     const entityView = new UnitView(
@@ -90,7 +88,7 @@ export class BoardScene extends PotatoScene {
         model: entityModel,
       },
       {
-        endTurnProcessor: this.endTurnProcessor,
+        worldModel: this.worldModel,
       },
     )
     this.addChildViewObject(entityView)

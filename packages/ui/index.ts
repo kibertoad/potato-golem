@@ -49,6 +49,8 @@ export type { SiblingLink } from './src/ui/elements/UIContainer'
 
 export type { UIElementTemplate } from './src/ui/elements/UIElementTemplate'
 export * from './src/ui/constants/Colours'
+export * from './src/activations/ActivationHelpers'
+export * from './src/ui/input/InputInterfaces'
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
 

@@ -1,21 +1,40 @@
 import Container = Phaser.GameObjects.Container
 import { Coords, generateUuid, IdHolder } from '@potato-golem/core'
 import Phaser from 'phaser'
-import { calculateViewPosition, PotatoScene, SpriteBuilder } from '@potato-golem/ui'
+import {
+  addOnClickActivation,
+  calculateViewPosition,
+  ClickableElementHolder,
+  PotatoScene,
+  SpriteBuilder,
+  ViewListener,
+} from '@potato-golem/ui'
 import { ImageId } from '../../../registries/imageRegistry'
 import { TILE_DIMENSIONS } from '../BoardConstants'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
+import { WorldModel } from '../../../model/entities/WorldModel'
+import { UnitView } from './UnitView'
 
 export type TerrainViewParams = {
   image: ImageId
   coords: Coords
 }
 
-export class TerrainView extends Container implements IdHolder {
-  private readonly terrainSprite: Phaser.GameObjects.Sprite
+export type TerrainViewDependencies = {
+  worldModel: WorldModel
+}
+
+export class TerrainView extends Container implements IdHolder, ClickableElementHolder {
   public readonly id: string
 
-  constructor(scene: PotatoScene, params: TerrainViewParams) {
+  private readonly terrainSprite: Phaser.GameObjects.Sprite
+  private readonly worldModel: WorldModel
+
+  getClickableElement(): ViewListener {
+    return this.terrainSprite
+  }
+
+  constructor(scene: PotatoScene, params: TerrainViewParams, dependencies: TerrainViewDependencies) {
     super(scene)
 
     const viewCoords = calculateViewPosition(params.coords, TILE_DIMENSIONS)
@@ -23,6 +42,7 @@ export class TerrainView extends Container implements IdHolder {
     this.x = viewCoords.displayX
     this.y = viewCoords.displayY
     this.setDepth(DepthRegistry.BOARD_BACKGROUND)
+    this.worldModel = dependencies.worldModel
 
     this.terrainSprite = SpriteBuilder.instance(scene)
       .setTextureKey(params.image)
@@ -36,6 +56,13 @@ export class TerrainView extends Container implements IdHolder {
       .build()
 
     this.add(this.terrainSprite)
+
+    addOnClickActivation(this.getClickableElement(), () => {
+      if (!this.worldModel.selectedUnit) {
+        console.log('movinggg')
+      }
+    })
+
     scene.add.existing(this)
   }
 }

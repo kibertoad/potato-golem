@@ -7,7 +7,7 @@ export type UnitEntityParams = {
 
 export type UnitStates = 'isSelected'
 
-export class UnitEntity implements CommonEntity, CoordsHolder, StateHolder<UnitStates> {
+export class UnitEntityModel implements CommonEntity, CoordsHolder, StateHolder<UnitStates> {
 
   public readonly id: string
   public readonly type: string

@@ -2,30 +2,34 @@ import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import type { IdHolder } from '@potato-golem/core'
 import {
+  ClickableElementHolder,
   type PotatoScene,
+  RectangularBuilder,
+  RectangularGraphicsContainer,
   SpriteBuilder,
-  TextBuilder,
-  calculateViewPosition, StateUIManager, RectangularBuilder, BROWN, RectangularGraphicsContainer,
+  StateUIManager,
+  TextBuilder,ViewListener,
+  calculateViewPosition,
 } from '@potato-golem/ui'
-import type { EntityModel } from '../../../model/entities/EntityModel'
+import { UnitEntityModel, UnitStates } from '../../../model/entities/UnitEntityModel'
+import { WorldModel } from '../../../model/entities/WorldModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
-import { imageRegistry } from '../../../registries/imageRegistry'
-import { UnitEntity, UnitStates } from '../../../model/entities/UnitEntity'
-import { TILE_DIMENSIONS } from '../BoardConstants'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
+import { imageRegistry } from '../../../registries/imageRegistry'
+import { TILE_DIMENSIONS } from '../BoardConstants'
 
 export type CardViewParams = {
-  model: UnitEntity
+  model: UnitEntityModel
 }
 
 export type CardViewDependencies = {
-  endTurnProcessor: EndTurnProcessor
+  worldModel: WorldModel
 }
 
 const textOffsetX = 35
 const textOffsetY = 5
 
-export class UnitView extends Container implements IdHolder {
+export class UnitView extends Container implements IdHolder, ClickableElementHolder {
   /**
    * Generic frame for the card
    */
@@ -37,7 +41,7 @@ export class UnitView extends Container implements IdHolder {
   private readonly unitSprite: Phaser.GameObjects.Sprite
   private highlightRectangular: RectangularGraphicsContainer
 
-  private readonly stateManager: StateUIManager<UnitView, UnitEntity, UnitStates>
+  private readonly stateManager: StateUIManager<UnitView, UnitEntityModel, UnitStates>
 
   private readonly isSelected: boolean
 
@@ -51,8 +55,13 @@ export class UnitView extends Container implements IdHolder {
   /**
    * Domain model of the card
    */
-  private readonly model: EntityModel
+  public readonly model: UnitEntityModel
   private readonly endTurnProcessor: EndTurnProcessor
+  private readonly worldModel: WorldModel
+
+  getClickableElement(): ViewListener {
+    return this.unitSprite
+  }
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
@@ -66,22 +75,7 @@ export class UnitView extends Container implements IdHolder {
     this.setDepth(100)
 
     this.model = params.model
-    this.endTurnProcessor = dependencies.endTurnProcessor
-
-
-    /*
-    this.cardFrameSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(imageRegistry.ROCKET)
-      .setPosition({
-        x: 0,
-        y: 0,
-      })
-      .setOrigin(0, 0)
-      .setWidth(120)
-      .setHeight(180)
-      .build()
-
-     */
+    this.worldModel = dependencies.worldModel
 
     this.unitSprite = SpriteBuilder.instance(scene)
       .setTextureKey(imageRegistry.ROCKET)
@@ -115,36 +109,35 @@ export class UnitView extends Container implements IdHolder {
     this.add(this.title)
 
     this.stateManager = new StateUIManager(this, this.model)
+    const self = this
 
     // Deselect
     this.stateManager.addTransition('onClick', {
       exclusiveLock: 'isSelected',
-      conditionPredicate(view: UnitView, model: UnitEntity) {
+      conditionPredicate(view: UnitView, model: UnitEntityModel) {
         console.log('Check predicate for deselect')
         return model.state.stateFlags.isSelected === true
       },
-      stateMutation(view: UnitView, model: UnitEntity) {
+      stateMutation(view: UnitView, model: UnitEntityModel) {
         console.log('Unit deselected')
-        view.disableHighlight()
-        model.state.stateFlags.isSelected = false
+        self.worldModel.unselectUnit()
       }
     })
 
     // Select
     this.stateManager.addTransition('onClick', {
       exclusiveLock: 'isSelected',
-      conditionPredicate(view: UnitView, model: UnitEntity) {
+      conditionPredicate(view: UnitView, model: UnitEntityModel) {
         console.log('Check predicate for select')
         return model.state.stateFlags.isSelected === false
       },
-      stateMutation(view: UnitView, model: UnitEntity) {
+      stateMutation(view: UnitView, model: UnitEntityModel) {
         console.log('Unit selected')
-        view.enableHighlight()
-        model.state.stateFlags.isSelected = true
+        self.worldModel.selectUnit(view)
       }
     })
 
-    this.stateManager.addOnClickTransitionProcessing(this.unitSprite)
+    this.stateManager.addOnClickTransitionProcessing(this.getClickableElement())
 
     scene.add.existing(this)
 
@@ -157,10 +150,12 @@ export class UnitView extends Container implements IdHolder {
       //.setBaseColour(BROWN)
       .build()
     this.highlightRectangular = rectangular
+    this.model.state.stateFlags.isSelected = true
   }
 
   public disableHighlight() {
     this.highlightRectangular.graphics.destroy(true)
     this.highlightRectangular = undefined
+    this.model.state.stateFlags.isSelected = false
   }
 }
