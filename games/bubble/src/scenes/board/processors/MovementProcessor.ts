@@ -19,6 +19,11 @@ export class MovementProcessor {
       return false
     }
 
+    if (calculateManhattanDistance(attackingUnit.model.coords, targetUnit.model.coords) > 1) {
+      console.log('too far')
+      return false
+    }
+
     const newValue = attackingUnit.model.powerValue.value + targetUnit.model.powerValue.value
 
     // If new value exceeds 13, both units die

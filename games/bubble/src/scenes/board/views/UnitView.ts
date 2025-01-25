@@ -10,16 +10,16 @@ import {
   StateUIManager,
   TextBuilder,
   type ViewListener,
-  calculateViewPosition, addOnClickActivation,
+  calculateViewPosition, addOnClickActivation, BROWN, RED,
 } from '@potato-golem/ui'
 import type { UnitEntityModel, UnitStates } from '../../../model/entities/UnitEntityModel'
 import type { WorldModel } from '../../../model/entities/WorldModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
-import { imageRegistry } from '../../../registries/imageRegistry'
 import { TILE_DIMENSIONS } from '../BoardConstants'
 import { MovementProcessor } from '../processors/MovementProcessor'
 import { AIProcessor } from '../processors/AIProcessor'
+import { imageRegistry } from '../../../registries/imageRegistry'
 
 export type CardViewParams = {
   model: UnitEntityModel
@@ -93,15 +93,20 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     this.movementProcessor = dependencies.movementProcessor
     this.aiProcessor = dependencies.aiProcessor
 
+    //const resolvedImage = (this.model.powerValue.value === 5) ? imageRegistry.UNIT_5 : imageRegistry.ROCKET
+    const resolvedImage = imageRegistry.UNIT_5
+
+    //const resolvedImage = imageRegistry.
+
     this.unitSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(imageRegistry.ROCKET)
+      .setTextureKey(resolvedImage)
       .setPosition({
-        x: 0,
-        y: 0,
+        x: 10,
+        y: 10,
       })
       .setOrigin(0, 0)
-      .setWidth(TILE_DIMENSIONS.width)
-      .setHeight(TILE_DIMENSIONS.height)
+      .setWidth(TILE_DIMENSIONS.width - 20)
+      .setHeight(TILE_DIMENSIONS.height - 20)
       .setInteractive({
         draggable: false,
       })
@@ -184,8 +189,9 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
       this.unitSprite,
       this,
     )
-      .setBorderWidth(2)
-      //.setBaseColour(BROWN)
+      .setBorderWidth(10)
+      .setBaseColour(RED)
+      .setDepth(DepthRegistry.HIGHLIGHT)
       .build()
     this.highlightRectangular = rectangular
     this.model.state.stateFlags.isSelected = true

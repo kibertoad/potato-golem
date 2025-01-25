@@ -9,4 +9,5 @@ export const DepthRegistry = {
   EVENT: 1000,
   GAME_OVER: 10000,
   INPUT_BLOCK: 9000,
+  HIGHLIGHT: 20000,
 }

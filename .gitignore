@@ -103,7 +103,6 @@ dist
 # TernJS port file
 .tern-port
 /example/package-lock.json
-/package-lock.json
 /.idea/
 /packages/extras/package-lock.json
 /.parcel-cache/
