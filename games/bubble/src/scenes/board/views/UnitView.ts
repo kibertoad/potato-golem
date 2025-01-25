@@ -2,21 +2,16 @@ import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
 import type { IdHolder } from '@potato-golem/core'
 import {
-  type Position,
   type PotatoScene,
   SpriteBuilder,
   TextBuilder,
-  buildDragWithActivations,
-  setEntityModel,
-  setEntityType, calculateViewPosition, StateUIManager, RectangularBuilder, BROWN, RectangularGraphicsContainer,
+  calculateViewPosition, StateUIManager, RectangularBuilder, BROWN, RectangularGraphicsContainer,
 } from '@potato-golem/ui'
 import type { EntityModel } from '../../../model/entities/EntityModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
-import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../../registries/imageRegistry'
 import { UnitEntity, UnitStates } from '../../../model/entities/UnitEntity'
 import { TILE_DIMENSIONS } from '../BoardConstants'
-import Rectangle = Phaser.Geom.Rectangle
 import { DepthRegistry } from '../../../model/registries/depthRegistry'
 
 export type CardViewParams = {
@@ -92,7 +87,7 @@ export class UnitView extends Container implements IdHolder {
       .setTextureKey(imageRegistry.ROCKET)
       .setPosition({
         x: 0,
-        y: 30,
+        y: 0,
       })
       .setOrigin(0, 0)
       .setWidth(TILE_DIMENSIONS.width)

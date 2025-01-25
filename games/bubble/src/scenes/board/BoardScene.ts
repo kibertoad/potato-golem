@@ -20,6 +20,9 @@ import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
 import { UnitEntity, UnitEntityParams } from '../../model/entities/UnitEntity'
+import { TerrainView, TerrainViewParams } from './views/TerrainView'
+import { BOARD_SIZE } from './BoardConstants'
+
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -51,12 +54,30 @@ export class BoardScene extends PotatoScene {
       coords: { x: 3, y: 1},
     })
 
+    for (let x = 0; x <= BOARD_SIZE.width; x++) {
+      for (let y = 0; y <= BOARD_SIZE.height; y++) {
+        this.addTerrain({
+          image: 'terrain',
+          coords: {
+            x,
+            y
+          }
+        }); // Call the method for each tile position
+      }
+    }
+
+
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.DEFAULT) {
         this.worldModel.removeUnit(entity.id)
         this.destroyChildByModelId(entity.id)
       }
     })
+  }
+
+  addTerrain(terrainParams: TerrainViewParams) {
+    const terrainView = new TerrainView(this, terrainParams)
+    this.addChildViewObject(terrainView)
   }
 
   addEntity(unitParams: UnitEntityParams) {

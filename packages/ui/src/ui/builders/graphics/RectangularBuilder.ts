@@ -148,7 +148,7 @@ export class RectangularBuilder extends AbstractUIBuilder {
       displayHeight: sourceSprite.displayHeight,
       displayWidth: sourceSprite.displayWidth
     })}`)
-    
+
      */
 
     return new RectangularBuilder(scene)
