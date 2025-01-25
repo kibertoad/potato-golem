@@ -1,5 +1,5 @@
 import { WorldModel } from '../../../model/entities/WorldModel'
-import { Coords } from '@potato-golem/core'
+import { calculateManhattanDistance, Coords } from '@potato-golem/core'
 import { UnitView } from '../views/UnitView'
 import { Dependencies } from '../../../model/diConfig'
 
@@ -13,6 +13,11 @@ export class MovementProcessor {
   tryMoveToTile(selectedUnit: UnitView, targetMapCoords: Coords) {
     if (!selectedUnit) {
       console.log('unit is not selected')
+      return
+    }
+
+    if (calculateManhattanDistance(selectedUnit.model.coords, targetMapCoords) > 1) {
+      console.log('too far')
       return
     }
 

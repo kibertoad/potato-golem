@@ -72,7 +72,6 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
 
-
     this.isSelected = false
     this.id = params.model.id
     this.moveToTile(params.model.coords)

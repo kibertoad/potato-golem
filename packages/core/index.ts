@@ -54,5 +54,5 @@ export { QueuedActivation, QueuedTargettedActivation, type QueuedTargettedActiva
 export { ActivationContainer } from './src/core/activations/common/ActivationContainer'
 export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, isActivation } from './src/core/activations/common/AbstractActivation'
 export { TwoDimensionalMap } from './src/core/primitives/TwoDimensionalMap'
-
+export { calculateManhattanDistance } from './src/core/utils/coordsUtils'
 export type { State, StateHolder } from './src/core/state/State'
