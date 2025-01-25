@@ -18,6 +18,8 @@ export class MainMenuScene extends PrefabMainMenuScene<SceneId> {
   preloadImages(): void {
     this.load.image(imageRegistry.ROCKET, require('../../assets/img/favicon.png'))
     this.load.image(imageRegistry.TERRAIN, require('../../assets/img/terrain.png'))
+    this.load.image(imageRegistry.BLUE_OVERLAY, require('../../assets/img/violet.png'))
+    this.load.image(imageRegistry.RED_OVERLAY, require('../../assets/img/red.png'))
     this.load.image(imageRegistry.UNIT_5, require('../../assets/img/5.png'))
   }
 }

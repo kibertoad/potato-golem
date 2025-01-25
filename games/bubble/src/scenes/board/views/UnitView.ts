@@ -44,6 +44,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
    * Card-specific image for the card
    */
   private readonly unitSprite: Phaser.GameObjects.Sprite
+  private readonly unitSideOverlaySprite: Phaser.GameObjects.Sprite
   private highlightRectangular: RectangularGraphicsContainer
 
   private readonly stateManager: StateUIManager<UnitView, UnitEntityModel, UnitStates>
@@ -113,6 +114,18 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
       .setDepth(DepthRegistry.INPUT_BLOCK)
       .build()
 
+    this.unitSideOverlaySprite = SpriteBuilder.instance(scene)
+      .setTextureKey(this.model.side === 'RED' ? imageRegistry.RED_OVERLAY : imageRegistry.BLUE_OVERLAY)
+      .setPosition({
+        x: 10,
+        y: 10,
+      })
+      .setOrigin(0, 0)
+      .setWidth(TILE_DIMENSIONS.width - 20)
+      .setHeight(TILE_DIMENSIONS.height - 20)
+      .setDepth(DepthRegistry.HIGHLIGHT)
+      .build()
+
     console.log(`unit: ${JSON.stringify(params.model)}`)
 
     this.title = TextBuilder.instance(scene)
@@ -133,6 +146,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
 
     //this.add(this.cardFrameSprite)
     this.add(this.unitSprite)
+    this.add(this.unitSideOverlaySprite)
     this.add(this.title)
 
     this.stateManager = new StateUIManager(this, this.model)
