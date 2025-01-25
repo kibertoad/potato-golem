@@ -10,10 +10,13 @@ export class MovementProcessor {
     this.worldModel = worldModel
   }
 
-  tryToAttackUnit(attackingUnit: UnitView, targetUnit: UnitView) {
+  /**
+   * Returns true if turn is over
+   */
+  tryToAttackUnit(attackingUnit: UnitView, targetUnit: UnitView): boolean {
     if (!attackingUnit) {
       console.log('unit is not selected')
-      return
+      return false
     }
 
     const newValue = attackingUnit.model.powerValue.value + targetUnit.model.powerValue.value
@@ -23,7 +26,7 @@ export class MovementProcessor {
       this.worldModel.removeUnit(attackingUnit)
       this.worldModel.removeUnit(targetUnit)
       this.worldModel.unselectUnit()
-      return
+      return true
     }
 
     // attacker is stronger
@@ -40,26 +43,28 @@ export class MovementProcessor {
       targetUnit.increasePowerValue(attackingUnit.model.powerValue.value)
     }
     this.worldModel.unselectUnit()
+    return true
   }
 
   tryMoveToTile(selectedUnit: UnitView, targetMapCoords: Coords) {
     if (!selectedUnit) {
       console.log('unit is not selected')
-      return
+      return false
     }
 
     if (calculateManhattanDistance(selectedUnit.model.coords, targetMapCoords) > 1) {
       console.log('too far')
-      return
+      return false
     }
 
     // is tile busy?
     if (this.worldModel.unitMap.getByCoords(targetMapCoords)) {
       console.log('tile busy')
-      return
+      return false
     }
 
     this.worldModel.moveUnit(selectedUnit, targetMapCoords)
     this.worldModel.unselectUnit()
+    return true
   }
 }

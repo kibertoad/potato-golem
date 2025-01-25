@@ -14,6 +14,7 @@ import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { BOARD_SIZE } from './BoardConstants'
 import type { MovementProcessor } from './processors/MovementProcessor'
 import { TerrainView, type TerrainViewParams } from './views/TerrainView'
+import { AIProcessor } from './processors/AIProcessor'
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -25,13 +26,15 @@ export class BoardScene extends PotatoScene {
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
   private readonly movementProcessor: MovementProcessor
+  private readonly aiProcessor: AIProcessor
 
-  constructor({ worldModel, endTurnProcessor, movementProcessor }: Dependencies) {
+  constructor({ aiProcessor, worldModel, endTurnProcessor, movementProcessor }: Dependencies) {
     super(sceneRegistry.BOARD_SCENE)
 
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
     this.movementProcessor = movementProcessor
+    this.aiProcessor = aiProcessor
   }
 
   init() {
@@ -86,6 +89,7 @@ export class BoardScene extends PotatoScene {
     const terrainView = new TerrainView(this, terrainParams, {
       worldModel: this.worldModel,
       movementProcessor: this.movementProcessor,
+      aiProcessor: this.aiProcessor
     })
 
     this.addChildViewObject(terrainView)
@@ -102,6 +106,7 @@ export class BoardScene extends PotatoScene {
       {
         worldModel: this.worldModel,
         movementProcessor: this.movementProcessor,
+        aiProcessor: this.aiProcessor,
       },
     )
     this.worldModel.addUnit(entityView)

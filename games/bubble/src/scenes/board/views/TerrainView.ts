@@ -14,6 +14,7 @@ import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import type { ImageId } from '../../../registries/imageRegistry'
 import { TILE_DIMENSIONS } from '../BoardConstants'
 import type { MovementProcessor } from '../processors/MovementProcessor'
+import { AIProcessor } from '../processors/AIProcessor'
 
 export type TerrainViewParams = {
   image: ImageId
@@ -23,6 +24,7 @@ export type TerrainViewParams = {
 export type TerrainViewDependencies = {
   worldModel: WorldModel
   movementProcessor: MovementProcessor
+  aiProcessor: AIProcessor
 }
 
 export class TerrainView extends Container implements IdHolder, ClickableElementHolder {
@@ -32,6 +34,7 @@ export class TerrainView extends Container implements IdHolder, ClickableElement
   private readonly worldModel: WorldModel
   private readonly mapCoords: Coords
   private readonly movementProcessor: MovementProcessor
+  private readonly aiProcessor: AIProcessor
 
   getClickableElement(): ViewListener {
     return this.terrainSprite
@@ -45,6 +48,7 @@ export class TerrainView extends Container implements IdHolder, ClickableElement
     super(scene)
     this.worldModel = dependencies.worldModel
     this.movementProcessor = dependencies.movementProcessor
+    this.aiProcessor = dependencies.aiProcessor
 
     const viewCoords = calculateViewPosition(params.coords, TILE_DIMENSIONS)
     this.id = generateUuid()
@@ -73,7 +77,10 @@ export class TerrainView extends Container implements IdHolder, ClickableElement
 
     addOnClickActivation(this.getClickableElement(), () => {
       console.log('try moving')
-      this.movementProcessor.tryMoveToTile(this.worldModel.selectedUnit, this.mapCoords)
+      const isTurnOver = this.movementProcessor.tryMoveToTile(this.worldModel.selectedUnit, this.mapCoords)
+      if (isTurnOver) {
+        this.aiProcessor.processTurn()
+      }
     })
 
     scene.add.existing(this)

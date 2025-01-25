@@ -19,6 +19,7 @@ import { DepthRegistry } from '../../../model/registries/depthRegistry'
 import { imageRegistry } from '../../../registries/imageRegistry'
 import { TILE_DIMENSIONS } from '../BoardConstants'
 import { MovementProcessor } from '../processors/MovementProcessor'
+import { AIProcessor } from '../processors/AIProcessor'
 
 export type CardViewParams = {
   model: UnitEntityModel
@@ -27,6 +28,7 @@ export type CardViewParams = {
 export type CardViewDependencies = {
   worldModel: WorldModel
   movementProcessor: MovementProcessor
+  aiProcessor: AIProcessor
 }
 
 const textOffsetX = 0
@@ -62,6 +64,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
   private readonly endTurnProcessor: EndTurnProcessor
   private readonly worldModel: WorldModel
   private readonly movementProcessor: MovementProcessor
+  private readonly aiProcessor: AIProcessor
 
   getClickableElement(): ViewListener {
     return this.unitSprite
@@ -88,6 +91,7 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     this.model = params.model
     this.worldModel = dependencies.worldModel
     this.movementProcessor = dependencies.movementProcessor
+    this.aiProcessor = dependencies.aiProcessor
 
     this.unitSprite = SpriteBuilder.instance(scene)
       .setTextureKey(imageRegistry.ROCKET)
@@ -161,7 +165,10 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     if (this.model.side === 'RED') {
       addOnClickActivation(this.getClickableElement(), () => {
         if (this.worldModel.selectedUnit) {
-          this.movementProcessor.tryToAttackUnit(this.worldModel.selectedUnit, this)
+          const isTurnOver = this.movementProcessor.tryToAttackUnit(this.worldModel.selectedUnit, this)
+          if (isTurnOver) {
+            this.aiProcessor.processTurn()
+          }
         }
       })
     }

@@ -4,6 +4,7 @@ import { BoardScene } from '../scenes/board/BoardScene'
 import { MovementProcessor } from '../scenes/board/processors/MovementProcessor'
 import { WorldModel } from './entities/WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
+import { AIProcessor } from '../scenes/board/processors/AIProcessor'
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = NameAndRegistrationPair<Dependencies>
@@ -14,6 +15,7 @@ export interface Dependencies {
   mainMenuScene: MainMenuScene
   endTurnProcessor: EndTurnProcessor
   movementProcessor: MovementProcessor
+  aiProcessor: AIProcessor
 }
 
 export function instantiateContainer() {
@@ -27,6 +29,7 @@ export function instantiateContainer() {
     mainMenuScene: asClass(MainMenuScene, SINGLETON_CONFIG),
     endTurnProcessor: asClass(EndTurnProcessor, SINGLETON_CONFIG),
     movementProcessor: asClass(MovementProcessor, SINGLETON_CONFIG),
+    aiProcessor: asClass(AIProcessor, SINGLETON_CONFIG),
   }
 
   diContainer.register(diConfig)
