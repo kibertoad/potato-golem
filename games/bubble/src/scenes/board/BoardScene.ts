@@ -35,28 +35,7 @@ export class BoardScene extends PotatoScene {
   }
 
   init() {
-    this.addEntity({
-      powerValue: 1,
-      coords: { x: 1, y: 1 },
-      side: 'BLUE',
-    })
-    this.addEntity({
-      powerValue: 2,
-      coords: { x: 2, y: 1 },
-      side: 'BLUE',
-    })
-    this.addEntity({
-      powerValue: 3,
-      coords: { x: 3, y: 1 },
-      side: 'BLUE',
-    })
-
-    this.addEntity({
-      powerValue: 2,
-      coords: { x: 3, y: 4 },
-      side: 'RED',
-    })
-
+    // generate terrain
     for (let x = 0; x <= BOARD_SIZE.width; x++) {
       for (let y = 0; y <= BOARD_SIZE.height; y++) {
         this.addTerrain({
@@ -66,6 +45,30 @@ export class BoardScene extends PotatoScene {
             y,
           },
         }) // Call the method for each tile position
+      }
+    }
+
+    let counter = 0
+    for (let y = 0; y < 2; y++) {
+    for (let x = 1; x <= BOARD_SIZE.width; x++) {
+        counter++
+        this.addEntity({
+          powerValue: counter,
+          coords: { x: x, y: BOARD_SIZE.height - y },
+          side: 'RED',
+        })
+      }
+    }
+
+    counter = 0
+    for (let y = 1; y < 3; y++) {
+      for (let x = 1; x <= BOARD_SIZE.width; x++) {
+        counter++
+        this.addEntity({
+          powerValue: counter,
+          coords: { x: x, y: y },
+          side: 'BLUE',
+        })
       }
     }
 
