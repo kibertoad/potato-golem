@@ -16,9 +16,29 @@ export class MovementProcessor {
       return
     }
 
-    this.worldModel.removeUnit(targetUnit)
+    const newValue = attackingUnit.model.powerValue.value + targetUnit.model.powerValue.value
 
-    this.tryMoveToTile(attackingUnit, targetUnit.model.coords)
+    // If new value exceeds 13, both units die
+    if (newValue > 13) {
+      this.worldModel.removeUnit(attackingUnit)
+      this.worldModel.removeUnit(targetUnit)
+      return
+    }
+
+    // attacker is stronger
+    if (attackingUnit.model.powerValue.value > targetUnit.model.powerValue.value) {
+      console.log('Attacker won')
+      this.worldModel.removeUnit(targetUnit)
+      attackingUnit.increasePowerValue(targetUnit.model.powerValue.value)
+      this.tryMoveToTile(attackingUnit, targetUnit.model.coords)
+    }
+    // defender is stronger
+    else {
+      console.log('Defender won')
+      this.worldModel.removeUnit(attackingUnit)
+      targetUnit.increasePowerValue(attackingUnit.model.powerValue.value)
+    }
+    this.worldModel.unselectUnit()
   }
 
   tryMoveToTile(selectedUnit: UnitView, targetMapCoords: Coords) {
@@ -39,5 +59,6 @@ export class MovementProcessor {
     }
 
     this.worldModel.moveUnit(selectedUnit, targetMapCoords)
+    this.worldModel.unselectUnit()
   }
 }

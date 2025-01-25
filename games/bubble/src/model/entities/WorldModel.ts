@@ -44,6 +44,5 @@ export class WorldModel {
     selectedUnit.model.coords.y = targetMapCoords.y
     selectedUnit.moveToTile(targetMapCoords)
     this.unitMap.setByCoords(selectedUnit.model.coords, selectedUnit)
-    this.unselectUnit()
   }
 }

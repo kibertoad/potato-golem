@@ -29,7 +29,7 @@ export type CardViewDependencies = {
   movementProcessor: MovementProcessor
 }
 
-const textOffsetX = 35
+const textOffsetX = 0
 const textOffsetY = 5
 
 export class UnitView extends Container implements IdHolder, ClickableElementHolder {
@@ -73,6 +73,10 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     this.y = viewCoords.displayY
   }
 
+  updateLabelText() {
+    this.title.setText(`${this.model.powerValue.value}`)
+  }
+
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
 
@@ -103,11 +107,17 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     console.log(`unit: ${JSON.stringify(params.model)}`)
 
     this.title = TextBuilder.instance(scene)
-      .setRelativePositionFromBackground(this, textOffsetX, textOffsetY)
+      //.setRelativePositionFromBackground(this, textOffsetX, textOffsetY)
+      .setPosition({
+        x: 5,
+        y: 5,
+      })
       .setOrigin(0, 0)
-      .setText(`Soldier: ${params.model.powerValue.value}`)
-      .setDisplaySize(15, 15)
+      .setText(``)
+      .setDisplaySize(30, 30)
       .build().value
+
+    this.updateLabelText()
 
     //setEntityType(this.cardFrameSprite, EntityTypeRegistry.DEFAULT)
     //setEntityModel(this.cardFrameSprite, this.model)
@@ -182,5 +192,10 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
 
   kill() {
     this.destroy(true)
+  }
+
+  increasePowerValue(powerValue: number) {
+    this.model.powerValue.increase(powerValue)
+    this.updateLabelText()
   }
 }
