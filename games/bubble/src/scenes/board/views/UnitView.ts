@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Container = Phaser.GameObjects.Container
-import type { IdHolder } from '@potato-golem/core'
+import type { Coords, IdHolder } from '@potato-golem/core'
 import {
   ClickableElementHolder,
   type PotatoScene,
@@ -63,15 +63,19 @@ export class UnitView extends Container implements IdHolder, ClickableElementHol
     return this.unitSprite
   }
 
+  moveToTile(targetCoords: Coords) {
+    const viewCoords = calculateViewPosition(targetCoords, TILE_DIMENSIONS)
+    this.x = viewCoords.displayX
+    this.y = viewCoords.displayY
+  }
+
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
 
-    const viewCoords = calculateViewPosition(params.model.coords, TILE_DIMENSIONS)
 
     this.isSelected = false
     this.id = params.model.id
-    this.x = viewCoords.displayX
-    this.y = viewCoords.displayY
+    this.moveToTile(params.model.coords)
     this.setDepth(100)
 
     this.model = params.model

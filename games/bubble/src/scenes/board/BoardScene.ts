@@ -17,6 +17,7 @@ import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { UnitEntityModel, UnitEntityParams } from '../../model/entities/UnitEntityModel'
 import { TerrainView, TerrainViewParams } from './views/TerrainView'
 import { BOARD_SIZE } from './BoardConstants'
+import { MovementProcessor } from './processors/MovementProcessor'
 
 
 export class BoardScene extends PotatoScene {
@@ -28,12 +29,14 @@ export class BoardScene extends PotatoScene {
 
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
+  private readonly movementProcessor: MovementProcessor
 
-  constructor({ worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ worldModel, endTurnProcessor, movementProcessor }: Dependencies) {
     super(sceneRegistry.BOARD_SCENE)
 
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
+    this.movementProcessor = movementProcessor
   }
 
   init() {
@@ -72,7 +75,8 @@ export class BoardScene extends PotatoScene {
 
   addTerrain(terrainParams: TerrainViewParams) {
     const terrainView = new TerrainView(this, terrainParams, {
-      worldModel: this.worldModel
+      worldModel: this.worldModel,
+      movementProcessor: this.movementProcessor,
     })
 
     this.addChildViewObject(terrainView)
@@ -80,7 +84,6 @@ export class BoardScene extends PotatoScene {
 
   addEntity(unitParams: UnitEntityParams) {
     const entityModel = new UnitEntityModel(unitParams)
-    this.worldModel.addUnit(entityModel)
 
     const entityView = new UnitView(
       this,
@@ -91,6 +94,7 @@ export class BoardScene extends PotatoScene {
         worldModel: this.worldModel,
       },
     )
+    this.worldModel.addUnit(entityView)
     this.addChildViewObject(entityView)
   }
 
