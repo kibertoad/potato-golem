@@ -22,11 +22,12 @@ export class MovementProcessor {
     if (newValue > 13) {
       this.worldModel.removeUnit(attackingUnit)
       this.worldModel.removeUnit(targetUnit)
+      this.worldModel.unselectUnit()
       return
     }
 
     // attacker is stronger
-    if (attackingUnit.model.powerValue.value > targetUnit.model.powerValue.value) {
+    if (attackingUnit.model.powerValue.value >= targetUnit.model.powerValue.value) {
       console.log('Attacker won')
       this.worldModel.removeUnit(targetUnit)
       attackingUnit.increasePowerValue(targetUnit.model.powerValue.value)
