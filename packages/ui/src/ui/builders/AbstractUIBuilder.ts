@@ -3,6 +3,7 @@ import type { Dimensions, Position } from '../common/CommonUITypes'
 import type { PotatoScene } from '../common/PotatoScene'
 import Sprite = Phaser.GameObjects.Sprite
 import type { Coords } from '@potato-golem/core'
+import { Scene } from 'phaser'
 
 export abstract class AbstractUIBuilder {
   protected readonly scene: PotatoScene

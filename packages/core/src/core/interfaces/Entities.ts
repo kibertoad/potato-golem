@@ -1,5 +1,6 @@
 import type { EventSink } from '../messages/EventBus'
 import type { LimitedNumber } from '../primitives/LimitedNumber'
+import { Coords } from '../primitives/Coords'
 
 export interface IdHolder {
   id: string
@@ -7,6 +8,10 @@ export interface IdHolder {
 
 export interface HPHolder {
   hp: LimitedNumber
+}
+
+export interface CoordsHolder {
+  coords: Coords
 }
 
 export interface DynamicDescriptionHolder {

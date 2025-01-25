@@ -1,8 +1,10 @@
-import type { PotatoScene } from '../../common/PotatoScene'
 import { AbstractUIBuilder } from '../AbstractUIBuilder'
 import Graphics = Phaser.GameObjects.Graphics
 import Rectangle = Phaser.Geom.Rectangle
 import Zone = Phaser.GameObjects.Zone
+import  { Scene } from 'phaser'
+import { PotatoScene } from '../../common/PotatoScene'
+import Container = Phaser.GameObjects.Container
 
 export type RectangularGraphicsContainer = {
   graphics: Graphics
@@ -112,5 +114,22 @@ export class RectangularBuilder extends AbstractUIBuilder {
 
   static instance(scene: PotatoScene) {
     return new RectangularBuilder(scene)
+  }
+
+  static fromSprite(scene: PotatoScene,
+                    sourceSprite: Phaser.GameObjects.Sprite,
+                    sourceSpriteContainer?: Container,
+  ) {
+    const resolvedX = sourceSpriteContainer ? sourceSprite.x + sourceSpriteContainer.x : sourceSprite.x
+    const resolvedY = sourceSpriteContainer ? sourceSprite.y + sourceSpriteContainer.y : sourceSprite.y
+
+    return new RectangularBuilder(scene)
+      .setPosition({
+        x: resolvedX,
+        y: resolvedY,
+      })
+      .setOrigin(0, 0)
+      .setWidth(sourceSprite.width)
+      .setHeight(sourceSprite.height)
   }
 }

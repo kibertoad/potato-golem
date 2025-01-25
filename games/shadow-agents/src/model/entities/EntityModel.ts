@@ -1,7 +1,7 @@
 import { type EventSink, type TurnProcessor, generateUuid } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
-import type { EntityDefinition } from './definitions/entityDefinitions'
-import { EntityTypeRegistry } from './registries/entityTypeRegistry'
+import type { EntityDefinition } from '../definitions/entityDefinitions'
+import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 
 export type CardModelParams = {
   definition: EntityDefinition

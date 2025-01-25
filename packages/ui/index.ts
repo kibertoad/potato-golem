@@ -8,6 +8,7 @@ export { GridButtonBuilder } from './src/ui/builders/GridButtonBuilder'
 export { BarsBarBuilder } from './src/ui/builders/graphics/BarsBarBuilder'
 export { NameValueLabelBuilder } from './src/ui/builders/NameValueLabelBuilder'
 export type { OnClickCallback } from './src/ui/builders/ButtonBuilder'
+export { calculateViewPosition } from './src/ui/features/tiles/TileUtils'
 export { TabPageBuilder } from './src/ui/builders/TabPageBuilder'
 export { ImageBoxBuilder } from './src/ui/builders/ImageBoxBuilder'
 export { SizerBuilder } from './src/ui/builders/SizerBuilder'
@@ -47,8 +48,9 @@ export { UIContainer } from './src/ui/elements/UIContainer'
 export type { SiblingLink } from './src/ui/elements/UIContainer'
 
 export type { UIElementTemplate } from './src/ui/elements/UIElementTemplate'
-export { COLOR_LIGHT, COLOR_DARK, COLOR_PRIMARY, BLUE, GREENISH } from './src/ui/constants/Colours'
+export * from './src/ui/constants/Colours'
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
 
 export { createGlobalPositionLabel, updateGlobalPositionLabel, createGlobalTrackerLabel, updateGlobalTrackerLabel } from './src/ui/globals/globalPositionLabel'
+export { type Triggers, type StateTransition, StateUIManager, type ViewListener} from './src/ui/state/StateUIManager'
