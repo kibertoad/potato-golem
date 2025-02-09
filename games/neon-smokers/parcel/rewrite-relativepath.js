@@ -15,7 +15,7 @@ module.exports = new Reporter({
                 }
             }
             const line = "---------------------------------------------------------";
-            const msg = `Game Template (Production build)`;
+            const msg = `Neon Smokers (Production build)`;
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
             process.stdout.write(`✨ Built ${bundles.length} bundles in ${event.buildTime}ms!\n`);
         }
