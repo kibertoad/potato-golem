@@ -1,6 +1,6 @@
 export { ButtonBuilder } from './src/ui/builders/ButtonBuilder'
 export { ButtonListBuilder1 as ButtonListBuilderV1  } from './src/ui/builders/ButtonListBuilder1'
-export { ButtonListBuilder } from './src/ui/builders/ButtonListBuilderV3'
+export { ButtonListBuilderV3 } from './src/ui/builders/ButtonListBuilderV3'
 export { ButtonListBuilder as ButtonListBuilderV2  } from './src/ui/builders/ButtonListBuilder'
 export { TextWithBackgroundBuilder } from './src/ui/builders/TextWithBackgroundBuilder'
 export { TextBuilder } from './src/ui/builders/TextBuilder'
@@ -53,6 +53,7 @@ export * from './src/activations/ActivationHelpers'
 export * from './src/ui/input/InputInterfaces'
 
 export { PotatoScene } from './src/ui/common/PotatoScene'
+export { PotatoContainer } from './src/ui/common/PotatoContainer'
 
 export { createGlobalPositionLabel, updateGlobalPositionLabel, createGlobalTrackerLabel, updateGlobalTrackerLabel } from './src/ui/globals/globalPositionLabel'
 export { type Triggers, type StateTransition, StateUIManager, type ViewListener} from './src/ui/state/StateUIManager'

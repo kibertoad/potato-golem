@@ -1,19 +1,19 @@
 import { type EventSink, type TurnProcessor, generateUuid } from '@potato-golem/core'
 import type { CommonEntity } from '@potato-golem/core'
-import type { EntityDefinition } from '../definitions/entityDefinitions'
+import type { ChoiceDefinition } from '../definitions/choiceDefinitions'
 import { EntityTypeRegistry } from '../registries/entityTypeRegistry'
 
 export type CardModelParams = {
-  definition: EntityDefinition
+  definition: ChoiceDefinition
   parentEventSink: EventSink
 }
 
-export class EntityModel implements TurnProcessor, CommonEntity {
+export class ChoiceModel implements TurnProcessor, CommonEntity {
   type = EntityTypeRegistry.DEFAULT
 
   private readonly parentEventSink: EventSink
   readonly name: string
-  readonly definition: EntityDefinition
+  readonly definition: ChoiceDefinition
 
   id: string
 

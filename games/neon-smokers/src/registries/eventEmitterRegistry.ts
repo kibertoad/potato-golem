@@ -1,8 +1,8 @@
 import EventEmitter from 'emitix'
-import type { EntityId } from '../model/definitions/entityDefinitions'
+import type { ChoiceId } from '../model/definitions/choiceDefinitions'
 
 export type SpawnEntityParams = {
-  entityId: EntityId
+  entityId: ChoiceId
 }
 
 const boardEmitter = new EventEmitter<{

@@ -1,4 +1,4 @@
-import { ButtonListBuilder, ChangeSceneActivation, PotatoScene, TextBuilder, type UIContainer } from '@potato-golem/ui'
+import { ButtonListBuilderV3, ChangeSceneActivation, PotatoScene, TextBuilder, type UIContainer } from '@potato-golem/ui'
 import Phaser from 'phaser'
 
 import Container = Phaser.GameObjects.Container
@@ -50,7 +50,7 @@ export abstract class PrefabMainMenuScene<Scenes extends string = string> extend
       .build()
     this.subTitle.value.setFontSize(50)
 
-    const buttonList = new ButtonListBuilder(this, {
+    const buttonList = new ButtonListBuilderV3(this, {
       depth: 100,
       distance: 20,
       height: 50,
@@ -108,7 +108,8 @@ export abstract class PrefabMainMenuScene<Scenes extends string = string> extend
       ChangeSceneActivation.build(this, this.params.gameStartScene)()
     })
 
-    this.add.existing(buttonList.build())
+    buttonList.build()
+    // this.add.existing(buttonList.build())
 
     const clickForSoundBg = new Phaser.GameObjects.Rectangle(this, 1280, 720, 2560, 1440, 0, 1)
     clickForSoundBg.setInteractive({

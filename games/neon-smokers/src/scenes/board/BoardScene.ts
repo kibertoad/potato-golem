@@ -7,18 +7,18 @@ import {
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import { EntityModel } from '../../model/entities/EntityModel'
+import { ChoiceModel } from '../../model/entities/ChoiceModel'
 import type { WorldModel } from '../../model/entities/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
 import { sceneRegistry } from '../../registries/sceneRegistry'
-import { EntityView } from './views/EntityView'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
-import { entityDefinitions } from '../../model/definitions/entityDefinitions'
+import { choiceDefinitions } from '../../model/definitions/choiceDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
+import { ChoicesView } from './organisms/ChoicesView'
 
 export class BoardScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -28,6 +28,7 @@ export class BoardScene extends PotatoScene {
 
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
+  private choicesView: ChoicesView
 
   constructor({ worldModel, endTurnProcessor }: Dependencies) {
     super(sceneRegistry.BOARD_SCENE)
@@ -37,35 +38,8 @@ export class BoardScene extends PotatoScene {
   }
 
   init() {
-    this.addEntity()
-
-    this.eventBus.on('DESTROY', (entity: CommonEntity) => {
-      if (entity.type === EntityTypeRegistry.DEFAULT) {
-        this.worldModel.removeEntity(entity.id)
-        this.destroyChildByModelId(entity.id)
-      }
-    })
-  }
-
-  addEntity() {
-    const entityModel = new EntityModel({
-      parentEventSink: this.eventBus,
-      definition: entityDefinitions.sausage,
-    })
-    this.worldModel.addEntity(entityModel)
-
-    const entityView = new EntityView(
-      this,
-      {
-        model: entityModel,
-        x: 0,
-        y: 0,
-      },
-      {
-        endTurnProcessor: this.endTurnProcessor,
-      },
-    )
-    this.addChildViewObject(entityView)
+    this.choicesView = new ChoicesView(this, {}, {})
+    this.choicesView.init()
   }
 
   preload() {}
@@ -88,6 +62,9 @@ export class BoardScene extends PotatoScene {
         height: 900,
       })
       .build()
+
+    // ToDo reenable later
+    this.backgroundImage.setVisible(false)
 
     this.globalPositionLabel = createGlobalPositionLabel(this)
     this.globalTrackerLabel = createGlobalTrackerLabel(this)

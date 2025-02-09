@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 import Container = Phaser.GameObjects.Container
 import type { IdHolder } from '@potato-golem/core'
 import {
@@ -10,23 +10,23 @@ import {
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
-import type { EntityModel } from '../../../model/entities/EntityModel'
+import type { ChoiceModel } from '../../../model/entities/ChoiceModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../../registries/imageRegistry'
 
 export type CardViewParams = {
-  model: EntityModel
+  model: ChoiceModel
 } & Position
 
 export type CardViewDependencies = {
-  endTurnProcessor: EndTurnProcessor
+
 }
 
 const textOffsetX = 35
 const textOffsetY = 5
 
-export class EntityView extends Container implements IdHolder {
+export class CardView extends Container implements IdHolder {
   /**
    * Generic frame for the card
    */
@@ -47,8 +47,7 @@ export class EntityView extends Container implements IdHolder {
   /**
    * Domain model of the card
    */
-  private readonly model: EntityModel
-  private readonly endTurnProcessor: EndTurnProcessor
+  private readonly model: ChoiceModel
 
   constructor(scene: PotatoScene, params: CardViewParams, dependencies: CardViewDependencies) {
     super(scene)
@@ -59,10 +58,9 @@ export class EntityView extends Container implements IdHolder {
     this.setDepth(100)
 
     this.model = params.model
-    this.endTurnProcessor = dependencies.endTurnProcessor
 
     this.cardFrameSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(imageRegistry.ROCKET)
+      .setTextureKey(imageRegistry.CARD_BACKGROUND)
       .setPosition({
         x: 0,
         y: 0,
@@ -73,7 +71,7 @@ export class EntityView extends Container implements IdHolder {
       .build()
 
     this.cardPictureSprite = SpriteBuilder.instance(scene)
-      .setTextureKey(imageRegistry.ROCKET)
+      .setTextureKey(this.model.definition.image)
       .setPosition({
         x: 0,
         y: 30,
@@ -98,20 +96,5 @@ export class EntityView extends Container implements IdHolder {
     this.add(this.title)
 
     scene.add.existing(this)
-
-    // Build ticket drag'n'drop
-    buildDragWithActivations({
-      dragStartItem: this.cardFrameSprite,
-      draggedItem: this,
-      dropActivations: {
-        [EntityTypeRegistry.DEFAULT]: () => {
-          // restoreStartPosition(this)
-          this.endTurnProcessor.processTurn()
-        },
-      },
-      config: {},
-      potentialHoverTargets: [],
-      potentialDropTargets: [],
-    })
   }
 }

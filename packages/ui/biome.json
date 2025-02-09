@@ -17,7 +17,9 @@
 				"noParameterAssign": "off",
 				"useSingleVarDeclarator": "off"
 			},
-			"correctness": {},
+			"correctness": {
+				"useImportExtensions": "off"
+			},
 			"suspicious": {
 				"noGlobalIsNan": "off",
 				"noExplicitAny": "off",

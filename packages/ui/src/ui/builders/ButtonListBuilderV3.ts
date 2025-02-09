@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
-interface ButtonListBuilderConfig {
-  textureKey: string
+export interface ButtonListBuilderConfig<SupportedImages extends string = string> {
+  textureKey: SupportedImages
   position?: { x: number; y: number }
   depth?: number
   width?: number
@@ -11,22 +11,25 @@ interface ButtonListBuilderConfig {
   hoverTint?: number
 }
 
-export class ButtonListBuilder {
-  private scene: Phaser.Scene
-  private textureKey: string
-  private position: { x: number; y: number }
+export class ButtonListBuilderV3<SupportedImages extends string = string> {
+  protected scene: Phaser.Scene
+  private textureKey: SupportedImages
+  public position: { x: number; y: number }
   private depth: number
-  private width: number
-  private height: number
+  public width: number
+  public height: number
   private distance: number
   private orientation: 'vertical' | 'horizontal'
-  private buttons: Phaser.GameObjects.Container[]
+  public buttons: Phaser.GameObjects.Container[]
   private container: Phaser.GameObjects.Container
   private currentX: number
   private currentY: number
   private hoverTint: number
+  private config: ButtonListBuilderConfig<SupportedImages>
 
-  constructor(scene: Phaser.Scene, config: ButtonListBuilderConfig) {
+  constructor(scene: Phaser.Scene, config: ButtonListBuilderConfig<SupportedImages>) {
+    this.config = config
+
     this.scene = scene
     this.textureKey = config.textureKey
     this.position = config.position || { x: 0, y: 0 }
@@ -97,6 +100,7 @@ export class ButtonListBuilder {
   }
 
   build(): Phaser.GameObjects.Container {
+    this.scene.add.existing(this.container)
     return this.container
   }
 
@@ -118,4 +122,10 @@ export class ButtonListBuilder {
     }
     this.buttons = []
   }
+
+  public static from<T extends string>(source: ButtonListBuilderV3<T>, overrides?: Partial<ButtonListBuilderConfig<T>>) {
+    return new ButtonListBuilderV3(source.scene, {
+      ...source.config,
+      ...overrides,
+    })}
 }

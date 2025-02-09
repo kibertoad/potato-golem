@@ -68,11 +68,11 @@ export abstract class AbstractUIBuilder {
   }
 
   public getX() {
-    return validateNumber(this.position?.x)
+    return validateNumber(this.position?.x, 'this.position.x is a mandatory field')
   }
 
   public getY() {
-    return validateNumber(this.position?.y)
+    return validateNumber(this.position?.y, 'this.position.y is a mandatory field')
   }
 
   public getWidth() {

@@ -5,9 +5,9 @@ import type { UIElementTemplate } from '../elements/UIElementTemplate'
 import { type AbstractUIElement, CommonUIGroup, UIGroup } from '../elements/UIGroup'
 import { ButtonBuilder } from './ButtonBuilder'
 
-export class ButtonListBuilder1 extends CommonUIGroup {
+export class ButtonListBuilder1<SupportedImages extends string = string> extends CommonUIGroup {
   public readonly buttons: Phaser.GameObjects.Image[]
-  protected buttonBuilder?: ButtonBuilder
+  protected buttonBuilder?: ButtonBuilder<SupportedImages>
   protected scene: Scene
 
   #textureKey?: string
@@ -69,8 +69,8 @@ export class ButtonListBuilder1 extends CommonUIGroup {
   }
 
   protected resolveNextButtonPosition(): Position {
-    validateNumber(this.positionX)
-    validateNumber(this.positionY)
+    validateNumber(this.positionX, 'positionX is a mandatory field')
+    validateNumber(this.positionY, 'positionY is a mandatory field')
 
     if (!this.buttons.length) {
       return {
@@ -97,18 +97,18 @@ export class ButtonListBuilder1 extends CommonUIGroup {
     throw new Error('No offset defined for the button list')
   }
 
-  protected initButtonBuilder(listBuilder: ButtonListBuilder1) {
+  protected initButtonBuilder(listBuilder: ButtonListBuilder1<SupportedImages>) {
     const position = listBuilder.resolveNextButtonPosition()
     return new ButtonBuilder(listBuilder.scene, listBuilder.children, listBuilder.buttons)
       .position(position.x, position.y)
-      .textureKey(validateString(listBuilder.#textureKey))
+      .textureKey(validateString(listBuilder.#textureKey, 'textureKey is mandatory'))
       .displaySize(
-        validateNumber(listBuilder.displaySizeX),
-        validateNumber(listBuilder.displaySizeY),
+        validateNumber(listBuilder.displaySizeX, 'displaySizeX is mandatory'),
+        validateNumber(listBuilder.displaySizeY, 'displaySizeY is mandatory'),
       )
   }
 
-  public static from(source: ButtonListBuilder1) {
+  public static from<T extends string>(source: ButtonListBuilder1<T>) {
     return new ButtonListBuilder1(source.scene)
       .displaySize(source.displaySizeX!, source.displaySizeY!)
       .setSpacingOffset(source.#spacingOffsetX!, source.#spacingOffsetY!)
@@ -116,7 +116,7 @@ export class ButtonListBuilder1 extends CommonUIGroup {
       .textureKey(source.#textureKey!)
   }
 
-  public addButton(): ButtonBuilder {
+  public addButton(): ButtonBuilder<SupportedImages> {
     this.buttonBuilder = this.initButtonBuilder(this)
     return this.buttonBuilder
   }

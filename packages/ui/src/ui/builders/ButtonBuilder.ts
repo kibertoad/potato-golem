@@ -9,7 +9,7 @@ export type OnClickCallback = (button: any) => void
 /**
  * Used for creating clickable images with text
  */
-export class ButtonBuilder {
+export class ButtonBuilder<SupportedImages extends string = string> {
   #text?: string
   #textureKey?: string
 
@@ -96,7 +96,7 @@ export class ButtonBuilder {
     return this
   }
 
-  public textureKey(value: string) {
+  public textureKey(value: SupportedImages) {
     this.#textureKey = value
     return this
   }
