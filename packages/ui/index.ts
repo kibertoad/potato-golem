@@ -36,7 +36,7 @@ export {
 } from './src/ui/builders/OnHoverBuilder'
 
 export { SpriteBuilder } from './src/ui/builders/SpriteBuilder'
-export { ButtonSquareBuilder } from './src/ui/builders/ButtonSquareBuilder'
+export { ButtonGridBuilder } from './src/ui/builders/ButtonGridBuilder'
 export { UIGroupSlot, CommonUIGroup, type AbstractUIElementLite } from './src/ui/elements/UIGroup'
 export type { UIGroup, AbstractUIElement } from './src/ui/elements/UIGroup'
 

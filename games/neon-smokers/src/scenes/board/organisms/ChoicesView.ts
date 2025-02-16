@@ -1,13 +1,11 @@
-import Container = Phaser.GameObjects.Container
-import type { COMMON_EVENT_TYPES, CommonEntity, EventSink, EventSource } from '@potato-golem/core'
-import { ButtonSquareBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
+import type { CommonEntity, EventSink, EventSource } from '@potato-golem/core'
+import { ButtonGridBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
-import { choiceDefinitions, ChoiceId } from '../../../model/definitions/choiceDefinitions'
+import { choiceDefinitions, type ChoiceId } from '../../../model/definitions/01_district1/choiceDefinitions'
 import { ChoiceModel } from '../../../model/entities/ChoiceModel'
 import EventEmitter = Phaser.Events.EventEmitter
-import { CardView } from '../molecules/CardView'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
-import { ImageId } from '../../../registries/imageRegistry'
+import type { ImageId } from '../../../registries/imageRegistry'
 
 export type CardViewParams = {
 }
@@ -18,7 +16,7 @@ export type CardViewDependencies = {
 export class ChoicesView extends PotatoContainer {
 
   protected readonly eventBus: EventSink & EventSource
-  protected squareBuilder: ButtonSquareBuilder<ImageId>
+  protected buttonGridBuilder: ButtonGridBuilder<ImageId>
 
   constructor(
     scene: PotatoScene,
@@ -35,7 +33,7 @@ export class ChoicesView extends PotatoContainer {
   }
 
   init() {
-    this.squareBuilder = new ButtonSquareBuilder(this.scene, {
+    this.buttonGridBuilder = new ButtonGridBuilder(this.scene, {
       textureKey: 'card_background',
       rowSize: 4,
       rowSpacingOffset: 10,
@@ -68,7 +66,7 @@ export class ChoicesView extends PotatoContainer {
 
   finishChoices() {
     console.log('finished')
-    this.squareBuilder.build()
+    this.buttonGridBuilder.build()
 
     /*
     for (const element of con) {
@@ -84,7 +82,7 @@ export class ChoicesView extends PotatoContainer {
       definition: choiceDefinitions[choiceId],
     })
 
-    this.squareBuilder.addButton(choiceModel.definition.name, () => {
+    this.buttonGridBuilder.addButton(choiceModel.definition.name, () => {
       console.log(`Clicked ${choiceModel.id}`)
     })
     console.log('added button')

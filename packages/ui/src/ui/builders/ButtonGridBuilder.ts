@@ -1,20 +1,23 @@
-import  { Scene } from 'phaser'
-import { ButtonListBuilderConfig, ButtonListBuilderV3 } from './ButtonListBuilderV3'
+import  type { Scene } from 'phaser'
+import { type ButtonListBuilderConfig, ButtonListBuilderV3 } from './ButtonListBuilderV3'
 import Container = Phaser.GameObjects.Container
 
-export type ButtonSquareBuilderParams<SupportedImages extends string = string> = {
+export type ButtonGridBuilderParams<SupportedImages extends string = string> = {
   rowSize: number
   rowSpacingOffset: number
 } & ButtonListBuilderConfig<SupportedImages>
 
-export class ButtonSquareBuilder<SupportedImages extends string = string> extends ButtonListBuilderV3<SupportedImages> {
+/**
+ * This class allows building a two-dimensional grid of buttons with optional images
+ */
+export class ButtonGridBuilder<SupportedImages extends string = string> extends ButtonListBuilderV3<SupportedImages> {
   #buttonListBuilder?: ButtonListBuilderV3<SupportedImages>
   readonly #buttonLists: ButtonListBuilderV3<SupportedImages>[]
 
   #rowSize?: number
   #rowSpacingOffset?: number
 
-  constructor(scene: Scene, params: ButtonSquareBuilderParams<SupportedImages>) {
+  constructor(scene: Scene, params: ButtonGridBuilderParams<SupportedImages>) {
     super(scene, params)
     this.#buttonLists = []
     this.#rowSize = params.rowSize

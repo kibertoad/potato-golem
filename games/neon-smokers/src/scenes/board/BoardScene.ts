@@ -13,7 +13,7 @@ import type { Dependencies } from '../../model/diConfig'
 import { sceneRegistry } from '../../registries/sceneRegistry'
 import Sprite = Phaser.GameObjects.Sprite
 import type { CommonEntity } from '@potato-golem/core'
-import { choiceDefinitions } from '../../model/definitions/choiceDefinitions'
+import { choiceDefinitions } from '../../model/definitions/01_district1/choiceDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'

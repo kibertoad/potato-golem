@@ -13,7 +13,7 @@ import type {
   TargettedAsyncActivation,
 } from './Activation'
 
-export class ActivationContainer<Target> {
+export class ActivationContainer<Target = unknown> {
   private readonly activations: Activation[] = []
   private readonly asyncActivations: AsyncActivation[] = []
   private readonly targettedActivations: TargettedActivation<Target>[] = []

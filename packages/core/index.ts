@@ -56,3 +56,5 @@ export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, i
 export { TwoDimensionalMap } from './src/core/primitives/TwoDimensionalMap'
 export { calculateManhattanDistance } from './src/core/utils/coordsUtils'
 export type { State, StateHolder } from './src/core/state/State'
+
+export type { RegistryEntityId } from './src/core/registries/RegistryUtils'
