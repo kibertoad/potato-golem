@@ -1,5 +1,5 @@
 import EventEmitter from 'emitix'
-import type { ChoiceId } from '../model/definitions/01_district1/choiceDefinitions'
+import type { ChoiceId } from '../model/definitions/zones/01_district1/district1ChoiceDefinitions'
 
 export type SpawnEntityParams = {
   entityId: ChoiceId

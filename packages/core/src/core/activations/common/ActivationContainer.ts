@@ -53,22 +53,22 @@ export class ActivationContainer<Target = unknown> {
 
     if (isActivation(activation)) {
       this.activations.push(activation)
-      return
+      return this
     }
 
     if (isAsyncActivation(activation)) {
       this.asyncActivations.push(activation)
-      return
+      return this
     }
 
     if (isTargettedActivation(activation)) {
       this.targettedActivations.push(activation)
-      return
+      return this
     }
 
     if (isTargettedAsyncActivation(activation)) {
       this.targettedAsyncActivations.push(activation)
-      return
+      return this
     }
 
     return this

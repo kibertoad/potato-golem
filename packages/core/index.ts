@@ -58,3 +58,4 @@ export { calculateManhattanDistance } from './src/core/utils/coordsUtils'
 export type { State, StateHolder } from './src/core/state/State'
 
 export type { RegistryEntityId } from './src/core/registries/RegistryUtils'
+export { allConditionsPass } from './src/core/preconditions/preconditionUtils'

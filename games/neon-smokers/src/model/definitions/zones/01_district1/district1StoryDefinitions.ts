@@ -1,7 +1,8 @@
-import { ImageId } from '../../../registries/imageRegistry'
+import { ImageId } from '../../../../registries/imageRegistry'
 import { ActivationContainer, Precondition, RegistryEntityId } from '@potato-golem/core'
-import { ChoiceDefinition, choiceRegistry } from './choiceDefinitions'
+import { ChoiceDefinition, choiceRegistry } from './district1ChoiceDefinitions'
 import { StartStoryActivation } from '../../activations/activations'
+import { EndStoryActivation } from '../../../activations/EndStoryActivation'
 
 export const storyRegistry = {
   EXPLORE_DISTRICT_1: 'exploreDistrict1',
@@ -14,7 +15,7 @@ export type StoryDefinition = {
   choices: ChoiceDefinition[]
 }
 
-export const storyDefinitions = {
+export const district1StoryDefinitions = {
   exploreDistrict1: {
     id: 'exploreDistrict1',
     name: 'Explore District 1',
@@ -25,7 +26,7 @@ export const storyDefinitions = {
       description: 'Take your time, leave no traces',
       image: 'card_background_decor',
       effects: ActivationContainer.instance()
-        .add(new StartStoryActivation(storyRegistry.EXPLORE_DISTRICT_1))
+        .add(new EndStoryActivation())
     }]
   },
 } as const satisfies Record<RegistryEntityId<typeof storyRegistry>, StoryDefinition>
