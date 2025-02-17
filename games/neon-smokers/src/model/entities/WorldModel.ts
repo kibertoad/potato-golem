@@ -1,5 +1,5 @@
 import { removeFromArrayById } from '@potato-golem/core'
-import type { ChoiceModel } from './ChoiceModel'
+import type { ChoiceModel } from './narrative/ChoiceModel'
 
 export class WorldModel {
   public readonly choices: ChoiceModel[] = []

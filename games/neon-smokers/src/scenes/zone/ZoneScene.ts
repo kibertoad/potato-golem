@@ -7,7 +7,7 @@ import {
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import { ChoiceModel } from '../../model/entities/ChoiceModel'
+import { ChoiceModel } from '../../model/entities/narrative/ChoiceModel'
 import type { WorldModel } from '../../model/entities/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
 import { sceneRegistry } from '../../registries/sceneRegistry'
@@ -18,9 +18,9 @@ import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
-import { ChoicesView } from './organisms/ChoicesView'
+import { ChoicesView } from '../common/organisms/ChoicesView'
 
-export class BoardScene extends PotatoScene {
+export class ZoneScene extends PotatoScene {
   private readonly worldModel: WorldModel
 
   private globalPositionLabel: Phaser.GameObjects.Text

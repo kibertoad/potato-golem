@@ -2,12 +2,13 @@ import { allConditionsPass, CommonEntity, EventSink, EventSource } from '@potato
 import { ButtonGridBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import { district1ChoiceDefinitions } from '../../../model/definitions/zones/01_district1/district1ChoiceDefinitions'
-import { ChoiceModel } from '../../../model/entities/ChoiceModel'
+import { ChoiceModel } from '../../../model/entities/narrative/ChoiceModel'
 import EventEmitter = Phaser.Events.EventEmitter
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import type { ImageId } from '../../../registries/imageRegistry'
 import { ZoneBundle } from '../../../model/definitions/zones/common/ZoneBundle'
 import { district1Bundle } from '../../../model/definitions/zones/01_district1/district1Bundle'
+import { LocationModel } from '../../../model/entities/narrative/LocationModel'
 
 export type CardViewParams = {
 }
@@ -15,7 +16,7 @@ export type CardViewParams = {
 export type CardViewDependencies = {
 }
 
-export class ChoicesView extends PotatoContainer {
+export class LocationsView extends PotatoContainer {
 
   protected readonly eventBus: EventSink & EventSource
   protected buttonGridBuilder: ButtonGridBuilder<ImageId>
@@ -53,62 +54,26 @@ export class ChoicesView extends PotatoContainer {
         y: 450,
       },
     })
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.finishChoices()
-
-    this.eventBus.on('DESTROY', (entity: CommonEntity) => {
-      if (entity.type === EntityTypeRegistry.DEFAULT) {
-        this.destroyChildByModelId(entity.id)
-      }
-    })
+    this.addLocation(district1ChoiceDefinitions.exploreDistrict1.id)
+    this.finishLocations()
   }
 
-  finishChoices() {
+  finishLocations() {
     console.log('finished')
     this.buttonGridBuilder.build()
-
-    /*
-    for (const element of con) {
-      this.scene.add.existing(element)
-    }
-
-     */
   }
 
-  addChoice(choiceId: string) {
-    const choiceModel = new ChoiceModel({
-      parentEventSink: this.eventBus,
-      definition: this.zone.globalChoices[choiceId],
+  addLocation(locationId: string) {
+    const locationModel = new LocationModel({
+      definition: this.zone.zoneLocations[locationId],
     })
-    const choiceDefinition = choiceModel.definition
+    const locationDefinition = locationModel.definition
 
-    this.buttonGridBuilder.addButton(choiceDefinition.name, () => {
-      console.log(`Clicked ${choiceModel.id}`)
-      console.log(`Definition: ${JSON.stringify(choiceDefinition)}`)
-      if (allConditionsPass(choiceDefinition.conditionsToEnable)) {
-        choiceDefinition.effects.activateOnlySync()
-      }
+    this.buttonGridBuilder.addButton(locationDefinition.name, () => {
+      console.log(`Clicked ${locationModel.id} location`)
+      console.log(`Definition: ${JSON.stringify(locationDefinition)}`)
+      // ToDo navigate to a location
     })
     console.log('added button')
-
-    /*
-    const entityView = new CardView(
-      this.potatoScene,
-      {
-        model: choiceModel,
-        x: 0,
-        y: 0,
-      },
-      {
-      },
-    )
-    this.addChildViewObject(entityView)
-
-     */
   }
 }

@@ -1,6 +1,6 @@
 import { Lifetime, type NameAndRegistrationPair, asClass, asValue, createContainer } from 'awilix'
 import { MainMenuScene } from '../scenes/MainMenuScene'
-import { BoardScene } from '../scenes/board/BoardScene'
+import { ZoneScene } from '../scenes/board/ZoneScene'
 import { WorldModel } from './entities/WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
 
@@ -9,7 +9,7 @@ type DiConfig = NameAndRegistrationPair<Dependencies>
 
 export interface Dependencies {
   worldModel: WorldModel
-  boardScene: BoardScene
+  boardScene: ZoneScene
   mainMenuScene: MainMenuScene
   endTurnProcessor: EndTurnProcessor
 }
@@ -21,7 +21,7 @@ export function instantiateContainer() {
 
   const diConfig: DiConfig = {
     worldModel: asValue(new WorldModel()),
-    boardScene: asClass(BoardScene, SINGLETON_CONFIG),
+    boardScene: asClass(ZoneScene, SINGLETON_CONFIG),
     mainMenuScene: asClass(MainMenuScene, SINGLETON_CONFIG),
     endTurnProcessor: asClass(EndTurnProcessor, SINGLETON_CONFIG),
   }

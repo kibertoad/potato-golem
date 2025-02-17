@@ -10,7 +10,7 @@ import {
   setEntityModel,
   setEntityType,
 } from '@potato-golem/ui'
-import type { ChoiceModel } from '../../../model/entities/ChoiceModel'
+import type { ChoiceModel } from '../../../model/entities/narrative/ChoiceModel'
 import type { EndTurnProcessor } from '../../../model/processors/EndTurnProcessor'
 import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../../registries/imageRegistry'
