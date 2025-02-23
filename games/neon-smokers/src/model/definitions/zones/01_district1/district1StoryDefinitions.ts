@@ -1,7 +1,6 @@
 import { ImageId } from '../../../../registries/imageRegistry'
 import { ActivationContainer, Precondition, RegistryEntityId } from '@potato-golem/core'
 import { ChoiceDefinition, choiceRegistry } from './district1ChoiceDefinitions'
-import { StartStoryActivation } from '../../activations/activations'
 import { EndStoryActivation } from '../../../activations/EndStoryActivation'
 
 export const storyRegistry = {

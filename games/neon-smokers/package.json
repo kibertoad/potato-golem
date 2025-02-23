@@ -35,6 +35,7 @@
   "homepage": "https://github.com/kibertoad/potato-golem#readme",
   "dependencies": {
     "@potato-golem/core": "1.2.0",
+    "@potato-golem/prefab-scenes": "^1.0.0",
     "@potato-golem/ui": "1.3.1",
     "awilix": "^12.0.4",
     "emitix": "^2.3.2",

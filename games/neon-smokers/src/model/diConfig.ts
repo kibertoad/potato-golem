@@ -1,8 +1,8 @@
 import { Lifetime, type NameAndRegistrationPair, asClass, asValue, createContainer } from 'awilix'
 import { MainMenuScene } from '../scenes/MainMenuScene'
-import { ZoneScene } from '../scenes/board/ZoneScene'
 import { WorldModel } from './entities/WorldModel'
 import { EndTurnProcessor } from './processors/EndTurnProcessor'
+import {ZoneScene} from "../scenes/zone/ZoneScene";
 
 export const SINGLETON_CONFIG = { lifetime: Lifetime.SINGLETON }
 type DiConfig = NameAndRegistrationPair<Dependencies>
