@@ -1,4 +1,5 @@
 import { isTargettedActivation } from './AbstractActivation'
+import {ActivationContainer} from "./ActivationContainer";
 
 export const LOW_PRIORITY = 10
 export const AVERAGE_PRIORITY = 50
@@ -6,6 +7,10 @@ export const HIGH_PRIORITY = 100
 
 export type Activations = Array<Activation | AsyncActivation>
 export type TargettedActivations<T> = Array<TargettedActivation<T> | TargettedAsyncActivation<T>>
+
+export type EffectHolder = {
+  effects: ActivationContainer
+}
 
 export type Prioritized = {
   isExclusive?: boolean // if true, this will only trigger if no other activations were triggered

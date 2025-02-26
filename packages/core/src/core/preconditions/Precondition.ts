@@ -1,3 +1,8 @@
+export type OptionWithPreconditions = {
+  conditionsToShow?: Precondition[]
+  conditionsToEnable?: Precondition[]
+}
+
 export type Precondition = {
   isSatisfied(): boolean
 }

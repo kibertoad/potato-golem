@@ -6,6 +6,7 @@ export {
   executeTargettedActivation,
 } from './src/core/activations/common/Activation'
 export type {
+  EffectHolder,
   AsyncActivation,
   AsyncActivationCallback,
   Activations,
@@ -19,7 +20,7 @@ export type {
   TargettedActivations,
   TargettedAsyncActivationCallback,
 } from './src/core/activations/common/Activation'
-export type { Precondition, ReasonedPrecondition, TargettedPrecondition, TargettedReasonedPrecondition } from './src/core/preconditions/Precondition'
+export type { OptionWithPreconditions, Precondition, ReasonedPrecondition, TargettedPrecondition, TargettedReasonedPrecondition } from './src/core/preconditions/Precondition'
 export { isPrecondition, isTargettedPrecondition } from './src/core/preconditions/Precondition'
 export { HIGH_PRIORITY, AVERAGE_PRIORITY, LOW_PRIORITY } from './src/core/activations/common/Activation'
 export { sortAndFilterActivations } from './src/core/activations/utils/activationFilter'

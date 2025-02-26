@@ -19,6 +19,7 @@ import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
 import { ChoicesView } from '../common/organisms/ChoicesView'
+import {ChoicesDirector} from "../../model/director/ChoicesDirector";
 
 export class ZoneScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -29,16 +30,21 @@ export class ZoneScene extends PotatoScene {
   private backgroundImage: Sprite
   private readonly endTurnProcessor: EndTurnProcessor
   private choicesView: ChoicesView
+  private readonly choicesDirector: ChoicesDirector;
 
-  constructor({ worldModel, endTurnProcessor }: Dependencies) {
+  constructor({ worldModel, endTurnProcessor, choicesDirector }: Dependencies) {
     super(sceneRegistry.BOARD_SCENE)
 
     this.worldModel = worldModel
     this.endTurnProcessor = endTurnProcessor
+    this.choicesDirector = choicesDirector
   }
 
   init() {
-    this.choicesView = new ChoicesView(this, {}, {})
+    this.choicesView = new ChoicesView(this, {}, {
+      worldModel: this.worldModel,
+      choicesDirector: this.choicesDirector
+    })
     this.choicesView.init()
   }
 

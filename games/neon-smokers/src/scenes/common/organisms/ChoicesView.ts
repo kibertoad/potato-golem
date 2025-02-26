@@ -1,4 +1,11 @@
-import { allConditionsPass, CommonEntity, EventSink, EventSource } from '@potato-golem/core'
+import {
+  allConditionsPass,
+  CommonEntity,
+  EffectHolder,
+  EventSink,
+  EventSource,
+  OptionWithPreconditions
+} from '@potato-golem/core'
 import { ButtonGridBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import { district1ChoiceDefinitions } from '../../../model/definitions/zones/01_district1/district1ChoiceDefinitions'
@@ -8,29 +15,34 @@ import { EntityTypeRegistry } from '../../../model/registries/entityTypeRegistry
 import type { ImageId } from '../../../registries/imageRegistry'
 import { ZoneBundle } from '../../../model/definitions/zones/common/ZoneBundle'
 import { district1Bundle } from '../../../model/definitions/zones/01_district1/district1Bundle'
+import {ChoicesDirector} from "../../../model/director/ChoicesDirector";
+import {WorldModel} from "../../../model/entities/WorldModel";
+import {MenuItem} from "../../../model/definitions/definitionInterfaces";
 
 export type CardViewParams = {
 }
 
-export type CardViewDependencies = {
+export type ChoicesViewDependencies = {
+  worldModel: WorldModel
+  choicesDirector: ChoicesDirector
 }
 
 export class ChoicesView extends PotatoContainer {
 
   protected readonly eventBus: EventSink & EventSource
   protected buttonGridBuilder: ButtonGridBuilder<ImageId>
-  protected zone: ZoneBundle
+  private readonly choicesDirector: ChoicesDirector;
+  private readonly worldModel: WorldModel;
 
   constructor(
     scene: PotatoScene,
     params: CardViewParams,
-    dependencies: CardViewDependencies
+    dependencies: ChoicesViewDependencies
   ) {
     super(scene, {})
+    this.choicesDirector = dependencies.choicesDirector
+    this.worldModel = dependencies.worldModel
     this.eventBus = new EventEmitter()
-    this.zone = district1Bundle
-
-    console.log('test')
 
     this.x = 300
     this.y = 100
@@ -53,8 +65,19 @@ export class ChoicesView extends PotatoContainer {
         y: 450,
       },
     })
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
-    this.addChoice(district1ChoiceDefinitions.exploreDistrict1.id)
+
+    const availableStories = this.choicesDirector.resolveAvailableStories(this.worldModel.currentZone, this.worldModel.currentLocation)
+
+    for (const story of availableStories) {
+      this.addOption(story)
+    }
+
+    const availableLocations = this.choicesDirector.resolveAvailableLocations(this.worldModel.currentZone, this.worldModel.currentLocation)
+
+    for (const location of availableLocations) {
+      this.addOption(location)
+    }
+
     this.finishChoices()
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
@@ -76,18 +99,20 @@ export class ChoicesView extends PotatoContainer {
      */
   }
 
-  addChoice(choiceId: string) {
+  addOption(option: MenuItem & EffectHolder & OptionWithPreconditions) {
+    /*
     const choiceModel = new ChoiceModel({
       parentEventSink: this.eventBus,
-      definition: this.zone.globalChoices[choiceId],
+      definition: this.worldModel.currentZone.globalChoices[choiceId],
     })
-    const choiceDefinition = choiceModel.definition
 
-    this.buttonGridBuilder.addButton(choiceDefinition.name, () => {
-      console.log(`Clicked ${choiceModel.id}`)
-      console.log(`Definition: ${JSON.stringify(choiceDefinition)}`)
-      if (allConditionsPass(choiceDefinition.conditionsToEnable)) {
-        choiceDefinition.effects.activateOnlySync()
+     */
+
+    this.buttonGridBuilder.addButton(option.name, () => {
+      console.log(`Clicked ${option.name}`)
+      //console.log(`Definition: ${JSON.stringify(choiceDefinition)}`)
+      if (allConditionsPass(option.conditionsToEnable)) {
+        option.effects.activateOnlySync()
       }
     })
     console.log('added button')

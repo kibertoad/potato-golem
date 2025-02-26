@@ -1,7 +1,6 @@
 import { RegistryEntityId } from '@potato-golem/core'
-import { ChoiceDefinition, choiceRegistry } from '../01_district1/district1ChoiceDefinitions'
-import { StoryDefinition } from '../01_district1/district1StoryDefinitions'
-import { LocationDefinition } from './LocationDefinition'
+\import { LocationDefinition } from './LocationDefinition'
+import {StoryDefinition} from "../../definitionInterfaces";
 
 export const zoneRegistry = {
   DISTRICT_1: 'district1',
@@ -10,7 +9,6 @@ export const zoneRegistry = {
 export type ZoneBundle = {
   id: RegistryEntityId<typeof zoneRegistry>
   name: string
-  globalChoices: Record<string, ChoiceDefinition>
   zoneStories: Record<string, StoryDefinition>
   zoneLocations: Record<string, LocationDefinition>
 }

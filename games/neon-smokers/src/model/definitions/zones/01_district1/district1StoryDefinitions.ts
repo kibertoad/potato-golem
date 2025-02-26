@@ -1,22 +1,16 @@
 import { ImageId } from '../../../../registries/imageRegistry'
 import { ActivationContainer, Precondition, RegistryEntityId } from '@potato-golem/core'
-import { ChoiceDefinition, choiceRegistry } from './district1ChoiceDefinitions'
 import { EndStoryActivation } from '../../../activations/EndStoryActivation'
+import {StoryDefinition} from "../../definitionInterfaces";
 
 export const storyRegistry = {
   EXPLORE_DISTRICT_1: 'exploreDistrict1',
 } as const
 
-export type StoryDefinition = {
-  id: RegistryEntityId<typeof storyRegistry>
-  name: string
-  image: ImageId
-  choices: ChoiceDefinition[]
-}
 
 export const district1StoryDefinitions = {
   exploreDistrict1: {
-    id: 'exploreDistrict1',
+    id: storyRegistry.EXPLORE_DISTRICT_1,
     name: 'Explore District 1',
     image: 'card_background_decor',
     choices: [{

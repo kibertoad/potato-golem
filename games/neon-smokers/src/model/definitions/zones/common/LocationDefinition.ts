@@ -1,9 +1,8 @@
 import type { ImageId } from '../../../../registries/imageRegistry'
-import type { StoryDefinition } from '../01_district1/district1StoryDefinitions'
+import {MenuItem, StoryDefinition} from "../../definitionInterfaces";
+import {EffectHolder, OptionWithPreconditions} from "@potato-golem/core";
 
 export type LocationDefinition = {
   id: string
-  name: string
-  image: ImageId
   stories: StoryDefinition[]
-}
+} & MenuItem & OptionWithPreconditions & EffectHolder
