@@ -35,3 +35,5 @@ export class WorldModel {
     return removeFromArrayById(this.choices, entityModelId)
   }
 }
+
+export const worldModel = new WorldModel()

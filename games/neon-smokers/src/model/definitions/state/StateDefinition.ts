@@ -17,9 +17,10 @@ export const stateRegistry = {
   ENERGY: 'energy', // replenished by sleep and rest
   EXHAUSTION: 'exhaustion', // replenished by enjoyable activities
 
-  /*
   WOUNDS: 'wounds', // replenished by patching up
   TRAUMAS: 'traumas', // replenished by deep treatment, slowly
+
+  /*
   STRESS: 'stress', // replenished by resting
   PSYCHOSIS: 'psychosis', // replenished by therapy
 
@@ -45,6 +46,22 @@ export const stateDefinitions = {
     image: 'rocket',
     maxAmount: 10,
   },
+
+  wounds: {
+    name: 'Wounds',
+    description: 'Light wounds',
+    group: 'physical',
+    image: 'rocket',
+    maxAmount: 10
+  },
+  traumas: {
+    name: 'Traumas',
+    description: 'Body brokenness',
+    group: 'physical',
+    image: 'rocket',
+    maxAmount: 10,
+  },
+
   euros: {
     name: 'Euros',
     description: 'Money',

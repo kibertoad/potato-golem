@@ -57,6 +57,9 @@ export { isTargettedAsyncActivation, isTargettedActivation, isAsyncActivation, i
 export { TwoDimensionalMap } from './src/core/primitives/TwoDimensionalMap'
 export { calculateManhattanDistance } from './src/core/utils/coordsUtils'
 export type { State, StateHolder } from './src/core/state/State'
+export { ValueSufficientPrecondition } from './src/core/preconditions/ValueSufficientPrecondition'
+export { ValueBelowPrecondition } from './src/core/preconditions/ValueBelowPrecondition'
+export { PreconditionWithMetadata, type CommonPreconditionMetadata } from './src/core/preconditions/PreconditionWithMetadata'
 
 export type { RegistryEntityId } from './src/core/registries/RegistryUtils'
 export { allConditionsPass } from './src/core/preconditions/preconditionUtils'
