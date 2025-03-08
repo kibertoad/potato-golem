@@ -1,8 +1,7 @@
-import { LimitedNumber, RegistryEntityId, removeFromArrayById } from '@potato-golem/core'
-import  { ChoiceModel } from './narrative/ChoiceModel'
-import {ZoneBundle} from "../definitions/zones/common/ZoneBundle";
-import {LocationDefinition} from "../definitions/zones/common/LocationDefinition";
-import {district1Bundle} from "../definitions/zones/01_district1/district1Bundle";
+import { LimitedNumber, type RegistryEntityId, removeFromArrayById } from '@potato-golem/core'
+import type { ChoiceModel } from './narrative/ChoiceModel'
+import type {ZoneBundle} from "../definitions/zones/common/ZoneBundle";
+import type {LocationDefinition} from "../definitions/zones/common/LocationDefinition";
 import { stateDefinitions, stateRegistry } from '../definitions/state/StateDefinition'
 
 export class WorldModel {
@@ -13,7 +12,6 @@ export class WorldModel {
   public readonly choices: ChoiceModel[] = []
 
   constructor() {
-    this.currentZone = district1Bundle
     // @ts-ignore
     this.playerStates = {}
     for (const stateId of Object.values(stateRegistry)) {
@@ -33,6 +31,10 @@ export class WorldModel {
    */
   removeEntity(entityModelId: string): ChoiceModel {
     return removeFromArrayById(this.choices, entityModelId)
+  }
+
+  setZone(zone: ZoneBundle) {
+    this.currentZone = zone
   }
 }
 

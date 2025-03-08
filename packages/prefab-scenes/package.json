@@ -49,6 +49,7 @@
   "dependencies": {
   },
   "peerDependencies": {
+    "@potato-golem/core": "^1.2.0",
     "@potato-golem/ui": "^1.0.0",
     "phaser": "^3.86.0"
   },

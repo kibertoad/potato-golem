@@ -2,6 +2,7 @@ import { ButtonListBuilderV3, ChangeSceneActivation, PotatoScene, TextBuilder, t
 import Phaser from 'phaser'
 
 import Container = Phaser.GameObjects.Container
+import type { ActivationCallback } from '@potato-golem/core'
 
 export type CreditsEntry = {
   position: string,
@@ -14,6 +15,7 @@ export type MainMenuParams<Scenes extends string = string> = {
   buttonTextureKey: string
   subtitleText: string
   gameStartScene: Phaser.Scene | Scenes
+  worldModelPopulator?: ActivationCallback
 }
 
 export abstract class PrefabMainMenuScene<Scenes extends string = string> extends PotatoScene {
@@ -105,6 +107,9 @@ export abstract class PrefabMainMenuScene<Scenes extends string = string> extend
     // this.centerButtonList(buttonList, 3, 50)
 
     buttonList.addButton('Play', () => {
+      if (this.params.worldModelPopulator) {
+        this.params.worldModelPopulator()
+      }
       ChangeSceneActivation.build(this, this.params.gameStartScene)()
     })
 
