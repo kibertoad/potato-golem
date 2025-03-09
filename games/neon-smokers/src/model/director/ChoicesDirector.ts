@@ -39,12 +39,12 @@ export class ChoicesDirector {
         return availableStories
     }
 
-    resolveAvailableLocations(zone: ZoneBundle, currentLocation: LocationDefinition): LocationDefinition[] {
+    resolveAvailableLocations(zone: ZoneBundle, currentLocation?: LocationDefinition): LocationDefinition[] {
         const availableLocations = Object.values(zone.zoneLocations)
           .filter((entry) => {
               return (
-                (!this.worldModel.currentLocation && !entry.parentLocation) ||
-                (entry.parentLocation === this.worldModel.currentLocation.id)
+                (!currentLocation && !entry.parentLocation) ||
+                (entry.parentLocation === currentLocation.id)
               )
           })
           .filter(isOptionShown)
