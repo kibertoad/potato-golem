@@ -1,4 +1,5 @@
 import {Activation} from "@potato-golem/core";
+import { worldModel } from '../entities/WorldModel'
 
 export class EnterLocationActivation implements Activation {
     private readonly locationId: string
@@ -9,5 +10,6 @@ export class EnterLocationActivation implements Activation {
 
     activate(): void {
         console.log(`Entered location ${this.locationId}`)
+        throw new Error('Not implemented yet, use direct navigation from View')
     }
 }

@@ -18,6 +18,7 @@ import { district1Bundle } from '../../../model/definitions/zones/01_district1/d
 import {ChoicesDirector} from "../../../model/director/ChoicesDirector";
 import {WorldModel} from "../../../model/entities/WorldModel";
 import {MenuItem} from "../../../model/definitions/definitionInterfaces";
+import { LocationDefinition } from '../../../model/definitions/zones/common/LocationDefinition'
 
 export type CardViewParams = {
 }
@@ -27,12 +28,16 @@ export type ChoicesViewDependencies = {
   choicesDirector: ChoicesDirector
 }
 
+/**
+ * Displays stories and locations of a zone, and potentially a location
+ */
 export class ChoicesView extends PotatoContainer {
 
   protected readonly eventBus: EventSink & EventSource
   protected buttonGridBuilder: ButtonGridBuilder<ImageId>
   private readonly choicesDirector: ChoicesDirector;
   private readonly worldModel: WorldModel;
+  private choicesContainer: Phaser.GameObjects.Container
 
   constructor(
     scene: PotatoScene,
@@ -48,7 +53,11 @@ export class ChoicesView extends PotatoContainer {
     this.y = 100
   }
 
-  init() {
+  refreshChoices() {
+    if (this.choicesContainer) {
+      this.choicesContainer.destroy(true)
+    }
+
     this.buttonGridBuilder = new ButtonGridBuilder(this.scene, {
       textureKey: 'card_background',
       rowSize: 4,
@@ -75,28 +84,20 @@ export class ChoicesView extends PotatoContainer {
     const availableLocations = this.choicesDirector.resolveAvailableLocations(this.worldModel.currentZone, this.worldModel.currentLocation)
 
     for (const location of availableLocations) {
-      this.addOption(location)
+      this.addLocation(location)
     }
 
-    this.finishChoices()
+    this.choicesContainer = this.buttonGridBuilder.build()
+  }
+
+  init() {
+    this.refreshChoices()
 
     this.eventBus.on('DESTROY', (entity: CommonEntity) => {
       if (entity.type === EntityTypeRegistry.DEFAULT) {
         this.destroyChildByModelId(entity.id)
       }
     })
-  }
-
-  finishChoices() {
-    console.log('finished')
-    this.buttonGridBuilder.build()
-
-    /*
-    for (const element of con) {
-      this.scene.add.existing(element)
-    }
-
-     */
   }
 
   addOption(option: MenuItem & EffectHolder & OptionWithPreconditions) {
@@ -116,20 +117,18 @@ export class ChoicesView extends PotatoContainer {
       }
     })
     console.log('added button')
+  }
 
-    /*
-    const entityView = new CardView(
-      this.potatoScene,
-      {
-        model: choiceModel,
-        x: 0,
-        y: 0,
-      },
-      {
-      },
-    )
-    this.addChildViewObject(entityView)
-
-     */
+  addLocation(option: LocationDefinition) {
+    this.buttonGridBuilder.addButton(option.name, () => {
+      console.log(`Clicked location ${option.name}`)
+      if (allConditionsPass(option.conditionsToEnable)) {
+        option.effects?.activateOnlySync()
+        this.worldModel.setLocation(option)
+        this.refreshChoices()
+        console.log('location changed')
+      }
+    })
+    console.log('added location')
   }
 }

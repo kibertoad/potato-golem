@@ -38,6 +38,10 @@ export class WorldModel {
   setZone(zone: ZoneBundle) {
     this.currentZone = zone
   }
+
+  setLocation(newLocation: LocationDefinition) {
+    this.currentLocation = newLocation
+  }
 }
 
 export const worldModel = new WorldModel()

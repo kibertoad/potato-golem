@@ -1,6 +1,6 @@
-import { Activation, LimitedNumber, type RegistryEntityId } from '@potato-golem/core'
-import { ImageId } from '../../registries/imageRegistry'
-import { StateDelta, stateRegistry } from '../definitions/state/StateDefinition'
+import type { Activation } from '@potato-golem/core'
+import type { ImageId } from '../../registries/imageRegistry'
+import type { StateDelta } from '../definitions/state/StateDefinition'
 import { worldModel } from '../entities/WorldModel'
 
 export type StoryConclusionActivationParams = {

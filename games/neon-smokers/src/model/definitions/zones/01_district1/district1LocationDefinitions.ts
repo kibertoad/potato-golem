@@ -23,7 +23,6 @@ export const district1LocationDefinitions = {
     image: 'card_background_decor',
     stories: [
     ],
-    effects: new ActivationContainer([new EnterLocationActivation(locationRegistry.EXPLORE_DISTRICT_1)])
   },
 
   backAlleySawbones: {
@@ -68,13 +67,12 @@ export const district1LocationDefinitions = {
             image: "rocket",
             stateChanges: {
               cheap_meds: 1,
-              cred: -10
+              euros: -10
             }
           })),
         image: 'rocket',
       }
     ],
-    effects: new ActivationContainer([new EnterLocationActivation(locationRegistry.BACK_ALLEY_SAWBONES)])
   },
 
   yacht: {
@@ -83,7 +81,6 @@ export const district1LocationDefinitions = {
     image: 'card_background_decor',
     stories: [
     ],
-    conditionsToShow: [new NeverPrecondition()],
-    effects: new ActivationContainer([new EnterLocationActivation(locationRegistry.BACK_ALLEY_SAWBONES)])
+    conditionsToShow: [new NeverPrecondition()]
   },
 } as const satisfies Record<RegistryEntityId<typeof locationRegistry>, LocationDefinition>
