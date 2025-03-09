@@ -16,6 +16,7 @@ import { DepthRegistry } from '../../model/registries/depthRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
 import { ChoicesView } from '../common/organisms/ChoicesView'
 import type {ChoicesDirector} from "../../model/director/ChoicesDirector";
+import { StatesView } from '../common/organisms/StatesView'
 
 export class ZoneScene extends PotatoScene {
   private readonly worldModel: WorldModel
@@ -27,6 +28,7 @@ export class ZoneScene extends PotatoScene {
   private readonly endTurnProcessor: EndTurnProcessor
   private choicesView: ChoicesView
   private readonly choicesDirector: ChoicesDirector;
+  private statesView: StatesView
 
   constructor({ worldModel, endTurnProcessor, choicesDirector }: Dependencies) {
     super(sceneRegistry.BOARD_SCENE)
@@ -42,6 +44,11 @@ export class ZoneScene extends PotatoScene {
       choicesDirector: this.choicesDirector
     })
     this.choicesView.init()
+
+    this.statesView = new StatesView(this, {
+      worldModel: this.worldModel
+      })
+    this.statesView.init()
   }
 
   preload() {}

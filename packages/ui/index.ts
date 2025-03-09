@@ -3,6 +3,7 @@ export { ButtonListBuilder1 as ButtonListBuilderV1  } from './src/ui/builders/Bu
 export { ButtonListBuilderV3 } from './src/ui/builders/ButtonListBuilderV3'
 export { ButtonListBuilder as ButtonListBuilderV2  } from './src/ui/builders/ButtonListBuilder'
 export { TextWithBackgroundBuilder } from './src/ui/builders/TextWithBackgroundBuilder'
+export { StateListBuilder } from './src/ui/builders/StateListBuilder'
 export { TextBuilder } from './src/ui/builders/TextBuilder'
 export { GridButtonBuilder } from './src/ui/builders/GridButtonBuilder'
 export { BarsBarBuilder } from './src/ui/builders/graphics/BarsBarBuilder'

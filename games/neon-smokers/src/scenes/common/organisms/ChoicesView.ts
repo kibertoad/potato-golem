@@ -4,10 +4,10 @@ import {
   CommonEntity,
   EffectHolder, EffectsHolder,
   EventSink,
-  EventSource,
+  EventSource, LimitedNumber,
   OptionWithPreconditions,
 } from '@potato-golem/core'
-import { ButtonGridBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
+import { ButtonGridBuilder, PotatoContainer, type PotatoScene, StateListBuilder } from '@potato-golem/ui'
 import Phaser from 'phaser'
 import { district1ChoiceDefinitions } from '../../../model/definitions/zones/01_district1/district1ChoiceDefinitions'
 import { ChoiceModel } from '../../../model/entities/narrative/ChoiceModel'
