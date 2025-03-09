@@ -1,12 +1,9 @@
-import {
-    ActivationContainer,
+import type {
     EffectHolder,
     OptionWithPreconditions,
-    Precondition,
-    RegistryEntityId
-} from "@potato-golem/core";
-import {ImageId} from "../../registries/imageRegistry";
-import {storyRegistry} from "./zones/01_district1/district1StoryDefinitions";
+    RegistryEntityId,
+} from '@potato-golem/core'
+import type {ImageId} from "../../registries/imageRegistry";
 
 export type MenuItem = {
     name: string
@@ -18,7 +15,11 @@ export type ChoiceDefinition<Registry extends Record<string, string> = Record<st
     description: string
 } & OptionWithPreconditions & EffectHolder & MenuItem
 
+export type MaybeChoicesMaybeDirect = {
+    choices: ChoiceDefinition[]
+    effects?: never
+} | (EffectHolder & { choices?: never })
+
 export type StoryDefinition<Registry extends Record<string, string> = Record<string, string>> = {
     id: RegistryEntityId<Registry>
-    choices: ChoiceDefinition[]
-} & OptionWithPreconditions & MenuItem
+} & OptionWithPreconditions & MaybeChoicesMaybeDirect & MenuItem

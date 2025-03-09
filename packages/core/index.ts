@@ -1,4 +1,5 @@
 export { LimitedNumber } from './src/core/primitives/LimitedNumber'
+export { StateTracker, type StateValues } from './src/core/primitives/StateTracker'
 export { getRandomNumber, randomOneOf, normalizedRandom, generateUuid } from './src/core/utils/randomUtils'
 export { chunk, removeFromArrayById, removeFalsy, removeNullish } from './src/core/utils/arrayUtils'
 export type { Processor, TurnProcessor, ParameterlessProcessor } from './src/core/interfaces/Processor'
@@ -58,6 +59,7 @@ export { TwoDimensionalMap } from './src/core/primitives/TwoDimensionalMap'
 export { calculateManhattanDistance } from './src/core/utils/coordsUtils'
 export type { State, StateHolder } from './src/core/state/State'
 export { ValueSufficientPrecondition } from './src/core/preconditions/ValueSufficientPrecondition'
+export { buildValueSufficientPreconditions } from './src/core/preconditions/ValueSufficientPreconditionsBuilder'
 export { ValueBelowPrecondition } from './src/core/preconditions/ValueBelowPrecondition'
 export { PreconditionWithMetadata, type CommonPreconditionMetadata } from './src/core/preconditions/PreconditionWithMetadata'
 

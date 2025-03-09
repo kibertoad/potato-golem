@@ -1,4 +1,8 @@
-import { LimitedNumber, type RegistryEntityId, removeFromArrayById } from '@potato-golem/core'
+import {
+  removeFromArrayById,
+  StateTracker,
+  type StateValues,
+} from '@potato-golem/core'
 import type { ChoiceModel } from './narrative/ChoiceModel'
 import type {ZoneBundle} from "../definitions/zones/common/ZoneBundle";
 import type {LocationDefinition} from "../definitions/zones/common/LocationDefinition";
@@ -8,15 +12,13 @@ export class WorldModel {
   public currentZone: ZoneBundle
   public currentLocation?: LocationDefinition
 
-  public readonly playerStates: Record<RegistryEntityId<typeof stateRegistry>, LimitedNumber>
+  public readonly playerStateTracker: StateTracker<typeof stateRegistry>
+  public readonly playerStates: StateValues<typeof stateRegistry>
   public readonly choices: ChoiceModel[] = []
 
   constructor() {
-    // @ts-ignore
-    this.playerStates = {}
-    for (const stateId of Object.values(stateRegistry)) {
-      this.playerStates[stateId] = new LimitedNumber(0, stateDefinitions[stateId].maxAmount, false)
-    }
+    this.playerStateTracker = new StateTracker(stateRegistry, stateDefinitions)
+    this.playerStates = this.playerStateTracker.states
 
     this.playerStates.energy.setValue(10)
     this.playerStates.euros.setValue(1000)

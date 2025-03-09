@@ -1,5 +1,5 @@
 import type { ImageId } from '../../../registries/imageRegistry'
-import { RegistryEntityId } from '@potato-golem/core'
+import { LimitedNumber, RegistryEntityId } from '@potato-golem/core'
 import { ChoiceDefinition } from '../definitionInterfaces'
 import { choiceRegistry } from '../zones/01_district1/district1ChoiceDefinitions'
 
@@ -12,6 +12,8 @@ export type StateDefinition = {
   group: StateGroup
   maxAmount?: number // default is 100
 }
+
+export type StateDelta = Partial<Record<RegistryEntityId<typeof stateRegistry>, number>>
 
 export const stateRegistry = {
   ENERGY: 'energy', // replenished by sleep and rest
@@ -28,7 +30,11 @@ export const stateRegistry = {
 
   EUROS: 'euros', // money
 
-  CRED: 'cred' // fame
+  CRED: 'cred', // fame
+
+  // items
+
+  CHEAP_MEDS: 'cheap_meds'
 } as const
 
 export const stateDefinitions = {
@@ -69,6 +75,14 @@ export const stateDefinitions = {
     image: 'rocket',
     maxAmount: 10000000,
   },
+  cheap_meds: {
+    name: 'Cheap meds',
+    description: 'They are better than trying to sleep it off, but just barely.',
+    group: 'assets',
+    image: 'rocket',
+    maxAmount: 10000,
+  },
+
   cred: {
     name: 'Cred',
     description: 'Renown, reputation, prestige - you name it',

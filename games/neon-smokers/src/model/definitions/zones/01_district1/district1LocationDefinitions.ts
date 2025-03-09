@@ -1,9 +1,14 @@
-import { ActivationContainer, type RegistryEntityId, ValueSufficientPrecondition } from '@potato-golem/core'
+import {
+  ActivationContainer,
+  buildValueSufficientPreconditions,
+  type RegistryEntityId,
+  ValueSufficientPrecondition,
+} from '@potato-golem/core'
 import type { LocationDefinition } from '../common/LocationDefinition'
 import {EnterLocationActivation} from "../../../activations/EnterLocationActivation";
 import {NeverPrecondition} from "../../../preconditions/NeverPrecondition";
 import { worldModel } from '../../../entities/WorldModel'
-import { stateRegistry } from '../../state/StateDefinition'
+import { StoryConclusionActivation } from '../../../activations/StoryConclusionActivation'
 
 export const locationRegistry = {
   EXPLORE_DISTRICT_1: 'exploreDistrict1',
@@ -29,10 +34,43 @@ export const district1LocationDefinitions = {
       {
         id: 'patchup_job',
         name: 'Get a quick patchup job',
+        conditionsToEnable: buildValueSufficientPreconditions([
+          {
+            trackedValue: worldModel.playerStates.wounds,
+            targetValue: 3,
+          },
+          {
+            trackedValue: worldModel.playerStates.euros,
+            targetValue: 20,
+          }
+        ]),
+        effects: new ActivationContainer()
+          .add(new StoryConclusionActivation({
+            text: 'The pain. The blood. Hope it was all worth it.',
+            image: "rocket",
+            stateChanges: {
+              wounds: -1,
+              cred: -20
+            }
+          })),
+        image: 'rocket',
+      },
+
+      {
+        id: 'buy_cheap_meds',
+        name: 'Buy some cheap meds',
         conditionsToEnable: [new ValueSufficientPrecondition(
-          worldModel.playerStates.wounds, 3, stateRegistry.WOUNDS,
+          worldModel.playerStates.euros, 10,
         )],
-        choices: [],
+        effects: new ActivationContainer()
+          .add(new StoryConclusionActivation({
+            text: 'Will it make you feel better? No. But will it eventually help? Who knows.',
+            image: "rocket",
+            stateChanges: {
+              cheap_meds: 1,
+              cred: -10
+            }
+          })),
         image: 'rocket',
       }
     ],

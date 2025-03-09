@@ -4,12 +4,14 @@
 export class LimitedNumber {
   public value: number
   public maxValue: number
+  public referenceId?: string // allows to identify what the number is pointing at
   private canBeNegative: boolean
 
-  constructor(value: number, maxValue: number, canBeNegative?: boolean) {
+  constructor(value: number, maxValue: number, canBeNegative?: boolean, referenceId?: string) {
     this.value = value
     this.maxValue = maxValue
     this.canBeNegative = canBeNegative ?? true
+    this.referenceId = referenceId
   }
 
   increase(delta: number) {
