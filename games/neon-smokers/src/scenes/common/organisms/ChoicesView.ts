@@ -1,10 +1,11 @@
 import {
-  allConditionsPass,
+  ActivationContainer,
+  allConditionsPass, COMMON_EVENT_TYPES,
   CommonEntity,
-  EffectHolder,
+  EffectHolder, EffectsHolder,
   EventSink,
   EventSource,
-  OptionWithPreconditions
+  OptionWithPreconditions,
 } from '@potato-golem/core'
 import { ButtonGridBuilder, PotatoContainer, type PotatoScene } from '@potato-golem/ui'
 import Phaser from 'phaser'
@@ -19,6 +20,8 @@ import {ChoicesDirector} from "../../../model/director/ChoicesDirector";
 import {WorldModel} from "../../../model/entities/WorldModel";
 import {MenuItem} from "../../../model/definitions/definitionInterfaces";
 import { LocationDefinition } from '../../../model/definitions/zones/common/LocationDefinition'
+import { choicesViewEventBus } from '../../../registries/eventEmitterRegistry'
+import { LeaveLocationActivation } from '../../../model/activations/LeaveLocationActivation'
 
 export type CardViewParams = {
 }
@@ -33,7 +36,7 @@ export type ChoicesViewDependencies = {
  */
 export class ChoicesView extends PotatoContainer {
 
-  protected readonly eventBus: EventSink & EventSource
+  protected readonly eventBus: EventSink & EventSource<COMMON_EVENT_TYPES | 'REFRESH'>
   protected buttonGridBuilder: ButtonGridBuilder<ImageId>
   private readonly choicesDirector: ChoicesDirector;
   private readonly worldModel: WorldModel;
@@ -47,7 +50,7 @@ export class ChoicesView extends PotatoContainer {
     super(scene, {})
     this.choicesDirector = dependencies.choicesDirector
     this.worldModel = dependencies.worldModel
-    this.eventBus = new EventEmitter()
+    this.eventBus = choicesViewEventBus
 
     this.x = 300
     this.y = 100
@@ -87,6 +90,14 @@ export class ChoicesView extends PotatoContainer {
       this.addLocation(location)
     }
 
+    if (this.worldModel.currentLocation && this.worldModel.playerStates.restricted_movement.value === 0) {
+      this.addOption({
+        image: 'rocket',
+        name: 'Leave',
+        effects: [new LeaveLocationActivation()]
+      })
+    }
+
     this.choicesContainer = this.buttonGridBuilder.build()
   }
 
@@ -98,9 +109,13 @@ export class ChoicesView extends PotatoContainer {
         this.destroyChildByModelId(entity.id)
       }
     })
+
+    this.eventBus.on('REFRESH', () => {
+      this.refreshChoices()
+    })
   }
 
-  addOption(option: MenuItem & EffectHolder & OptionWithPreconditions) {
+  addOption(option: MenuItem & EffectsHolder & OptionWithPreconditions) {
     /*
     const choiceModel = new ChoiceModel({
       parentEventSink: this.eventBus,
@@ -113,7 +128,8 @@ export class ChoicesView extends PotatoContainer {
       console.log(`Clicked ${option.name}`)
       //console.log(`Definition: ${JSON.stringify(choiceDefinition)}`)
       if (allConditionsPass(option.conditionsToEnable)) {
-        option.effects.activateOnlySync()
+        const effectContainer = ActivationContainer.fromEffectList(option.effects)
+        effectContainer.activateOnlySync()
       }
     })
     console.log('added button')
@@ -123,7 +139,8 @@ export class ChoicesView extends PotatoContainer {
     this.buttonGridBuilder.addButton(option.name, () => {
       console.log(`Clicked location ${option.name}`)
       if (allConditionsPass(option.conditionsToEnable)) {
-        option.effects?.activateOnlySync()
+        const effectContainer = ActivationContainer.fromEffectList(option.effects)
+        effectContainer.activateOnlySync()
         this.worldModel.setLocation(option)
         this.refreshChoices()
         console.log('location changed')

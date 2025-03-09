@@ -8,6 +8,7 @@ export {
 } from './src/core/activations/common/Activation'
 export type {
   EffectHolder,
+  EffectsHolder,
   AsyncActivation,
   AsyncActivationCallback,
   Activations,

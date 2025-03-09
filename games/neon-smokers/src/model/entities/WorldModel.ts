@@ -39,7 +39,7 @@ export class WorldModel {
     this.currentZone = zone
   }
 
-  setLocation(newLocation: LocationDefinition) {
+  setLocation(newLocation: LocationDefinition | undefined) {
     this.currentLocation = newLocation
   }
 }

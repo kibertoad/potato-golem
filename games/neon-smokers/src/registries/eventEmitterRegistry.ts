@@ -1,16 +1,4 @@
-import EventEmitter from 'emitix'
-import type { ChoiceId } from '../model/definitions/zones/01_district1/district1ChoiceDefinitions'
+import type { EventSink, EventSource } from '@potato-golem/core'
+import EventEmitter = Phaser.Events.EventEmitter
 
-export type SpawnEntityParams = {
-  entityId: ChoiceId
-}
-
-const boardEmitter = new EventEmitter<{
-  spawnEntity: [SpawnEntityParams]
-}>()
-
-export type BoardEmitter = typeof boardEmitter
-
-export const eventEmitters = {
-  boardEmitter,
-} as const satisfies Record<string, EventEmitter>
+export const choicesViewEventBus: EventSink<'REFRESH'> & EventSource<'REFRESH'> = new EventEmitter

@@ -10,6 +10,6 @@ export class EnterLocationActivation implements Activation {
 
     activate(): void {
         console.log(`Entered location ${this.locationId}`)
-        throw new Error('Not implemented yet, use direct navigation from View')
+        throw new Error('Not implemented')
     }
 }

@@ -1,5 +1,5 @@
 import type {
-    EffectHolder,
+    EffectHolder, EffectsHolder,
     OptionWithPreconditions,
     RegistryEntityId,
 } from '@potato-golem/core'
@@ -13,12 +13,12 @@ export type MenuItem = {
 export type ChoiceDefinition<Registry extends Record<string, string> = Record<string, string>> = {
     id: RegistryEntityId<Registry>
     description: string
-} & OptionWithPreconditions & EffectHolder & MenuItem
+} & OptionWithPreconditions & EffectsHolder & MenuItem
 
 export type MaybeChoicesMaybeDirect = {
     choices: ChoiceDefinition[]
     effects?: never
-} | (EffectHolder & { choices?: never })
+} | (EffectsHolder & { choices?: never })
 
 export type StoryDefinition<Registry extends Record<string, string> = Record<string, string>> = {
     id: RegistryEntityId<Registry>

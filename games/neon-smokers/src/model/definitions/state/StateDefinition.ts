@@ -1,9 +1,7 @@
 import type { ImageId } from '../../../registries/imageRegistry'
-import { LimitedNumber, RegistryEntityId } from '@potato-golem/core'
-import { ChoiceDefinition } from '../definitionInterfaces'
-import { choiceRegistry } from '../zones/01_district1/district1ChoiceDefinitions'
+import type { RegistryEntityId } from '@potato-golem/core'
 
-export type StateGroup = 'physical' | 'emotional' | 'rumours' | 'knowledge' | 'assets' | 'reputation'
+export type StateGroup = 'physical' | 'emotional' | 'rumours' | 'knowledge' | 'assets' | 'reputation' | 'environment'
 
 export type StateDefinition = {
   name: string
@@ -34,7 +32,9 @@ export const stateRegistry = {
 
   // items
 
-  CHEAP_MEDS: 'cheap_meds'
+  CHEAP_MEDS: 'cheap_meds',
+
+  RESTRICTED_MOVEMENT: 'restricted_movement'
 } as const
 
 export const stateDefinitions = {
@@ -89,6 +89,14 @@ export const stateDefinitions = {
     group: 'reputation',
     image: 'rocket',
     maxAmount: 10000,
+  },
+
+  restricted_movement: {
+    name: 'Restricted movement',
+    description: 'Cannot move freely currently',
+    group: 'environment',
+    image: 'rocket',
+    maxAmount: 1,
   },
 
 } as const satisfies Record<RegistryEntityId<typeof stateRegistry>, StateDefinition>

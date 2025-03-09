@@ -7,19 +7,15 @@ import {
 import Phaser from 'phaser'
 
 import { createGlobalTrackerLabel, updateGlobalTrackerLabel } from '@potato-golem/ui'
-import { ChoiceModel } from '../../model/entities/narrative/ChoiceModel'
 import type { WorldModel } from '../../model/entities/WorldModel'
 import type { Dependencies } from '../../model/diConfig'
 import { sceneRegistry } from '../../registries/sceneRegistry'
 import Sprite = Phaser.GameObjects.Sprite
-import type { CommonEntity } from '@potato-golem/core'
-import { district1ChoiceDefinitions } from '../../model/definitions/zones/01_district1/district1ChoiceDefinitions'
 import type { EndTurnProcessor } from '../../model/processors/EndTurnProcessor'
 import { DepthRegistry } from '../../model/registries/depthRegistry'
-import { EntityTypeRegistry } from '../../model/registries/entityTypeRegistry'
 import { imageRegistry } from '../../registries/imageRegistry'
 import { ChoicesView } from '../common/organisms/ChoicesView'
-import {ChoicesDirector} from "../../model/director/ChoicesDirector";
+import type {ChoicesDirector} from "../../model/director/ChoicesDirector";
 
 export class ZoneScene extends PotatoScene {
   private readonly worldModel: WorldModel

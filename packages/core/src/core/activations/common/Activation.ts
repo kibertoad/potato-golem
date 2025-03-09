@@ -1,5 +1,5 @@
 import { isTargettedActivation } from './AbstractActivation'
-import {ActivationContainer} from "./ActivationContainer";
+import type { ActivationContainer, AnyActivation } from './ActivationContainer'
 
 export const LOW_PRIORITY = 10
 export const AVERAGE_PRIORITY = 50
@@ -10,6 +10,10 @@ export type TargettedActivations<T> = Array<TargettedActivation<T> | TargettedAs
 
 export type EffectHolder = {
   effects: ActivationContainer
+}
+
+export type EffectsHolder<T = unknown> = {
+  effects: AnyActivation<T>[]
 }
 
 export type Prioritized = {

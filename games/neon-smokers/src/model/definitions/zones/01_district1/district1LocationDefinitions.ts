@@ -1,11 +1,9 @@
 import {
-  ActivationContainer,
   buildValueSufficientPreconditions,
   type RegistryEntityId,
   ValueSufficientPrecondition,
 } from '@potato-golem/core'
 import type { LocationDefinition } from '../common/LocationDefinition'
-import {EnterLocationActivation} from "../../../activations/EnterLocationActivation";
 import {NeverPrecondition} from "../../../preconditions/NeverPrecondition";
 import { worldModel } from '../../../entities/WorldModel'
 import { StoryConclusionActivation } from '../../../activations/StoryConclusionActivation'
@@ -43,15 +41,14 @@ export const district1LocationDefinitions = {
             targetValue: 20,
           }
         ]),
-        effects: new ActivationContainer()
-          .add(new StoryConclusionActivation({
+        effects: [new StoryConclusionActivation({
             text: 'The pain. The blood. Hope it was all worth it.',
             image: "rocket",
             stateChanges: {
               wounds: -1,
               cred: -20
             }
-          })),
+          })],
         image: 'rocket',
       },
 
@@ -61,15 +58,14 @@ export const district1LocationDefinitions = {
         conditionsToEnable: [new ValueSufficientPrecondition(
           worldModel.playerStates.euros, 10,
         )],
-        effects: new ActivationContainer()
-          .add(new StoryConclusionActivation({
+        effects: [new StoryConclusionActivation({
             text: 'Will it make you feel better? No. But will it eventually help? Who knows.',
             image: "rocket",
             stateChanges: {
               cheap_meds: 1,
               euros: -10
-            }
-          })),
+            }})
+          ],
         image: 'rocket',
       }
     ],

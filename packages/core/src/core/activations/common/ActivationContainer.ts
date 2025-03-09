@@ -13,6 +13,11 @@ import type {
   TargettedAsyncActivation,
 } from './Activation'
 
+export type AnyActivation<Target = unknown> = | Activation
+  | AsyncActivation
+  | TargettedActivation<Target>
+  | TargettedAsyncActivation<Target>
+
 export class ActivationContainer<Target = unknown> {
   private readonly activations: Activation[] = []
   private readonly asyncActivations: AsyncActivation[] = []
@@ -30,16 +35,12 @@ export class ActivationContainer<Target = unknown> {
   }
 
   addBulk(
-    activations: (
-      | Activation
-      | AsyncActivation
-      | TargettedActivation<Target>
-      | TargettedAsyncActivation<Target>
-    )[],
+    activations: readonly (AnyActivation<Target>)[],
   ) {
     for (const activation of activations) {
       this.add(activation)
     }
+    return this
   }
 
   add(
@@ -132,4 +133,40 @@ export class ActivationContainer<Target = unknown> {
   getAllActivations() {
     return this.allActivations
   }
+
+  static fromEffectList(effects?: readonly AnyActivation[]) {
+    if (!effects || effects.length === 0) {
+      return EMPTY_ACTIVATION_CONTAINER
+    }
+    return new ActivationContainer().addBulk(effects)
+  }
 }
+
+class EmptyActivationContainer extends ActivationContainer {
+
+  override addBulk(): never {
+    throw new Error('Immutable container')
+  }
+
+  override add(): never {
+    throw new Error('Immutable container')
+  }
+
+  override activateOnlySync() {}
+
+  override activateOnlySyncWithTarget() {}
+
+  override activateAsync(): Promise<void> {
+    return Promise.resolve()
+  }
+
+  override activateAsyncWithTarget(): Promise<void> {
+    return Promise.resolve()
+  }
+
+  override getAllActivations(): Array<Activation | AsyncActivation> {
+    return [];
+  }
+}
+
+const EMPTY_ACTIVATION_CONTAINER = new EmptyActivationContainer()
