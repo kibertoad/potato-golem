@@ -40,7 +40,14 @@ export class ChoicesDirector {
     }
 
     resolveAvailableLocations(zone: ZoneBundle, currentLocation: LocationDefinition): LocationDefinition[] {
-        const availableLocations = Object.values(zone.zoneLocations).filter(isOptionShown)
+        const availableLocations = Object.values(zone.zoneLocations)
+          .filter((entry) => {
+              return (
+                (!this.worldModel.currentLocation && !entry.parentLocation) ||
+                (entry.parentLocation === this.worldModel.currentLocation.id)
+              )
+          })
+          .filter(isOptionShown)
 
         return availableLocations
     }
